@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=IPlan
+Exec=iplan
+Icon=ir.imansalmani.iplan
+Terminal=false
+Type=Application
+Categories=GTK;
+StartupNotify=true

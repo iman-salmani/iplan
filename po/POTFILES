@@ -1,0 +1,6 @@
+data/ir.imansalmani.iplan.desktop.in
+data/ir.imansalmani.iplan.appdata.xml.in
+data/ir.imansalmani.iplan.gschema.xml
+src/main.py
+src/window.py
+src/window.ui
