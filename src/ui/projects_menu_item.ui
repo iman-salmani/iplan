@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <requires lib="gtk" version="4.0"/>
+  <requires lib="Adw" version="1.0"/>
+  <template class="ProjectsMenuItem" parent="GtkButton">
+    <property name="hexpand">true</property>
+    <property name="action-name">win.open_project</property>
+    <style>
+      <class name="flat"/>
+    </style>
+    <child>
+      <object class="GtkLabel" id="name">
+        <property name="halign">start</property>
+        <style>
+          <class name="heading"/>
+        </style>
+      </object>
+    </child>
+  </template>
+</interface>

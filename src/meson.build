@@ -28,14 +28,14 @@ configure_file(
 iplan_sources = [
   '__init__.py',
   'main.py',
-  'signal_controller.py'
 ]
 
 views_sources = [
   'views/projects_menu.py',
   'views/window.py',
   'views/page.py',
-  'views/page_header.py'
+  'views/page_header.py',
+  'views/page_item.py'
 ]
 
 install_data(iplan_sources, install_dir: moduledir)

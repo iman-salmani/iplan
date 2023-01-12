@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <requires lib="gtk" version="4.0"/>
+  <requires lib="Adw" version="1.0"/>
+  <template class="ProjectsMenu" parent="GtkBox">
+    <child>
+      <object class="GtkMenuButton" id="menu_button">
+        <property name="label">Projects</property>
+        <property name="popover">menu</property>
+        <style>
+          <class name="flat"/>
+        </style>
+      </object>
+    </child>
+    <child>
+      <object class="GtkButton">
+        <property name="icon-name">tab-new-symbolic</property>
+        <property name="has-frame">false</property>
+        <property name="action-name">win.new_project</property>
+      </object>
+    </child>
+  </template>
+  <object class="GtkPopover" id="menu"><!-- Menu Popover -->
+    <property name="halign">start</property>
+    <property name="width-request">250</property>
+    <property name="width-request">100</property>
+    <style>
+      <class name="menu"/>
+    </style>
+    <child><!-- Row -->
+      <object class="GtkBox">
+        <property name="orientation">vertical</property>
+        <child><!-- Head -->
+          <object class="GtkBox">
+            <property name="spacing">6</property>
+            <property name="margin-top">6</property>
+            <property name="margin-start">6</property>
+            <property name="margin-end">6</property>
+            <child>
+              <object class="GtkSearchEntry" id="search"></object>
+            </child>
+            <child>
+              <object class="GtkButton" id="archive">
+                <property name="icon_name">folder-open-symbolic</property>
+                <property name="has_frame">false</property>
+              </object>
+            </child>
+          </object>
+        </child><!-- End Head -->
+        <child>
+          <object class="GtkSeparator"></object>
+        </child>
+        <child><!-- No Results Found -->
+          <object class="GtkLabel" id="no_results">
+            <property name="label">No Results Found</property>
+            <property name="visible">false</property>
+            <property name="halign">center</property>
+            <property name="margin-top">18</property>
+            <property name="margin-bottom">24</property>
+            <style>
+              <class name="heading"/>
+            </style>
+          </object>
+        </child><!-- End No Results Found -->
+        <child><!-- Projects List -->
+          <object class="GtkBox" id="projects_list">
+            <property name="orientation">vertical</property>
+            <property name="margin-bottom">6</property>
+            <property name="margin-start">6</property>
+            <property name="margin-end">6</property>
+          </object>
+        </child><!-- End Projects List -->
+      </object>
+    </child><!-- End Row -->
+  </object><!-- End Menu Popover -->
+</interface>

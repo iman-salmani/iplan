@@ -7,7 +7,7 @@ from datetime import datetime, date
 
 class Database:
     def __init__(self) -> None:
-        if os.path.isfile("database.db"):
+        if os.path.isfile(".local/database.db"):
             self.connect()
         else:
             self.connect()
@@ -41,7 +41,7 @@ class Database:
             self.connection.commit()
 
     def connect(self) -> None:
-        self.connection = sqlite3.connect("database.db")
+        self.connection = sqlite3.connect(".local/database.db")
         self.cursor = self.connection.cursor()
 
 
@@ -99,13 +99,19 @@ class ProjectsData(Database):
         """convert database record to Project dataclass"""
         return Project(id=record[0], name=record[1], archive=record[2])
 
-    def all(self, archive) -> list[Project]:
-        if archive:
-            result = self.cursor.execute("SELECT * FROM projects").fetchall()
-        else:
-            result = self.cursor.execute(
-                "SELECT * FROM projects WHERE archive = False"
-            ).fetchall()
+    def get(self, project_id: int) -> Project:
+        return self.record_to_project(
+            self.cursor.execute(
+                f"SELECT * FROM projects WHERE id = {project_id}"
+            ).fetchone()
+        )
+
+    def all(self, archive=False) -> list[Project]:
+        _filter = ""
+        if not archive:
+            _filter = "WHERE archive = False"
+
+        result = self.cursor.execute(f"SELECT * FROM projects {_filter}").fetchall()
 
         projects = []
         for record in result:
@@ -134,7 +140,9 @@ class ProjectsData(Database):
         self.connection.commit()
 
     def first(self) -> Project:
-        all = self.all(True)
+        all = self.all()
+        if not all:
+            return self.all(archive=True)[0]
         return all[0]
 
     def search(self, text, archive) -> list[Project]:

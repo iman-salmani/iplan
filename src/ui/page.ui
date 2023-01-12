@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <requires lib="gtk" version="4.0"/>
+  <requires lib="Adw" version="1.0"/>
+  <template class="Page" parent="GtkBox">
+    <property name="vexpand">true</property>
+    <property name="hexpand">true</property>
+    <property name="orientation">vertical</property>
+    <child><!-- Scrolled Window -->
+      <object class="GtkScrolledWindow">
+        <property name="vexpand">true</property>
+        <property name="hexpand">true</property>
+        <child><!-- Todo List -->
+          <object class="GtkListBox" id="todos_list">
+            <property name="valign">start</property>
+            <property name="selection_mode">none</property>
+            <property name="margin-top">24</property>
+            <property name="margin-bottom">24</property>
+            <property name="margin-start">24</property>
+            <property name="margin-end">24</property>
+            <style>
+              <class name="boxed-list"/>
+            </style>
+          </object>
+        </child><!-- End Todo List -->
+      </object>
+    </child><!-- End Scrolled Window -->
+  </template>
+</interface>

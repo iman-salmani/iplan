@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <requires lib="gtk" version="4.0"/>
+  <requires lib="Adw" version="1.0"/>
+  <template class="PageHeader" parent="GtkBox">
+    <property name="margin-top">15</property>
+    <property name="margin-start">15</property>
+    <property name="margin-end">24</property>
+    <style>
+      <class name="toolbar"/>
+    </style>
+    <child><!-- Project Name Button -->
+      <object class="GtkButton" id="project_name_button">
+        <property name="halign">start</property>
+        <style>
+          <class name="flat"/>
+        </style>
+        <child><!-- Project Name Label -->
+          <object class="GtkLabel" id="project_name_button_label">
+            <style>
+              <class name="heading"/>
+            </style>
+          </object>
+        </child><!-- End Project Name Label -->
+      </object>
+    </child><!-- End Project Name Button -->
+    <child><!-- Project Name Entry -->
+      <object class="GtkEntry" id="project_name_entry">
+        <property name="margin-start">1</property>
+        <property name="hexpand">true</property>
+        <property name="visible">false</property>
+        <property name="buffer">
+          <object class="GtkEntryBuffer"></object>
+        </property>
+        <style>
+          <class name="heading"/>
+        </style>
+      </object>
+    </child><!-- End Project Name Entry -->
+    <child><!-- Project Duration button -->
+      <object class="GtkMenuButton" id="project_duration_button">
+        <property name="popover">project_duration_popover</property>
+        <style>
+          <class name="flat"/>
+        </style>
+        <child>
+          <object class="AdwButtonContent" id="project_duration_button_content">
+            <property name="icon-name">preferences-system-time-symbolic</property>
+          </object>
+        </child>
+      </object>
+    </child><!-- End Project Duration button -->
+    <child>
+      <object class="GtkSeparator" id="separator">
+        <property name="hexpand">true</property>
+        <style>
+          <class name="spacer"/>
+        </style>
+      </object>
+    </child>
+    <child><!-- Project Name Edit Button -->
+      <object class="GtkButton" id="project_name_edit_button">
+        <property name="icon-name">document-edit-symbolic</property>
+        <property name="has_frame">false</property>
+      </object>
+    </child><!-- End Project Name Edit Button -->
+    <child><!-- Project Name Apply Button -->
+      <object class="GtkButton" id="project_name_apply_button">
+        <property name="icon-name">document-edit-symbolic</property>
+        <property name="visible">false</property>
+        <style>
+          <class name="suggested-action"/>
+          <class name="circular"/>
+        </style>
+      </object>
+    </child><!-- End Project Name Apply Button -->
+    <child><!-- New Todo Button -->
+      <object class="GtkButton" id="new_todo_button">
+        <property name="icon-name">list-add-symbolic</property>
+        <property name="has_frame">false</property>
+        <property name="action-name">win.new_todo</property>
+      </object>
+    </child><!-- End New Todo Button -->
+    <child><!-- Project Options Button -->
+      <object class="GtkMenuButton">
+        <property name="icon_name">view-more-symbolic</property>
+        <property name="has_frame">false</property>
+        <property name="popover">project_options_popover</property>
+      </object>
+    </child><!-- End Project Options Button -->
+  </template>
+  <!-- Project duration Popover -->
+  <object class="GtkPopover" id="project_duration_popover">
+    <child>
+      <object class="GtkBox" id="project_duration_records">
+        <property name="orientation">vertical</property>
+      </object>
+    </child>
+  </object>
+  <!-- End Project duration Popover -->
+  <!-- Project Options Popover -->
+  <object class="GtkPopover" id="project_options_popover">
+    <property name="halign">end</property>
+    <property name="valign">start</property>
+    <property name="has_arrow">false</property>
+    <!-- offset 0,6 -->
+    <child>
+      <object class="GtkBox"><!-- Project Options -->
+        <property name="orientation">vertical</property>
+        <child><!-- Toggle Show Completed Tasks -->
+          <object class="GtkBox">
+            <property name="margin-start">6</property>
+            <property name="margin-end">6</property>
+            <property name="margin-top">6</property>
+            <property name="margin-bottom">6</property>
+            <child>
+              <object class="GtkLabel">
+                <property name="label">Completed tasks</property>
+                <property name="hexpand">true</property>
+                <property name="halign">start</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkSwitch" id="show_completed_tasks_switch">
+                <property name="margin-start">24</property>
+                <property name="valign">center</property>
+              </object>
+            </child>
+          </object>
+        </child><!-- End Toggle Show Completed Tasks -->
+        <child>
+          <object class="GtkSeparator">
+            <property name="margin-top">6</property>
+            <property name="margin-bottom">6</property>
+          </object>
+        </child>
+        <child><!-- Toggle Archive Project -->
+          <object class="GtkBox">
+            <property name="margin-start">6</property>
+            <property name="margin-end">6</property>
+            <property name="margin-top">6</property>
+            <property name="margin-bottom">6</property>
+            <child>
+              <object class="GtkLabel">
+                <property name="label">Archive project</property>
+                <property name="hexpand">true</property>
+                <property name="halign">start</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkSwitch" id="archive_project_switch">
+                <property name="margin-start">24</property>
+                <property name="valign">center</property>
+
+              </object>
+            </child>
+          </object>
+        </child><!-- End Toggle Archive Project -->
+        <child><!-- Delete Project -->
+          <object class="GtkBox">
+            <property name="margin-start">6</property>
+            <property name="margin-end">6</property>
+            <property name="margin-top">6</property>
+            <property name="margin-bottom">6</property>
+            <child>
+              <object class="GtkLabel">
+                <property name="label">Delete project</property>
+                <property name="hexpand">true</property>
+                <property name="halign">start</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkButton" id="delete_project_button">
+                <property name="icon-name">user-trash-symbolic</property>
+                <property name="valign">center</property>
+                <style>
+                  <class name="flat"/>
+                </style>
+              </object>
+            </child>
+          </object>
+        </child><!-- End Delete Project -->
+      </object><!-- End Project Options -->
+    </child>
+  </object>
+  <!-- End Project Options Popover -->
+</interface>
