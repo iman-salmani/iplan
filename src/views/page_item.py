@@ -114,7 +114,7 @@ class TodoRow(Gtk.ListBoxRow):
 
     def clicked_check_button(self, todo):
         todos_data.update(todo)
-        self.props.root.actions["refresh_todos"].activate()
+        self.activate_action("win.refresh_todos")
 
     def toggle_timer(self, button, content, todo, last_time=False):
         if button.has_css_class("flat"):
@@ -158,7 +158,7 @@ class TodoRow(Gtk.ListBoxRow):
         todo.times = todo.times[0:-2] + str(diffrence.seconds) + ";"
         content.set_label(todo.get_duration_text())
         todos_data.update(todo)
-        self.props.root.actions["refresh_project_duration"].activate()
+        self.activate_action("win.refresh_project_duration")
 
 
 class TodoModal(Adw.Window):

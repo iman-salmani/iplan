@@ -11,18 +11,14 @@ class ProjectsMenu(Gtk.Box):
     __gtype_name__ = "ProjectsMenu"
     menu = Gtk.Template.Child()
     menu_button = Gtk.Template.Child()
-    search = Gtk.Template.Child()
     no_results = Gtk.Template.Child()
     projects_list = Gtk.Template.Child()
-    archive = Gtk.Template.Child()
     archive_status: bool = False
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
         # add actions
-        self.search.connect("search-changed", self.search_changed)
-        self.archive.connect("clicked", self.toggle_archive)
         self.connect("map", lambda *args: self.install_actions())
 
         self.fetch()
@@ -50,6 +46,7 @@ class ProjectsMenu(Gtk.Box):
         self.menu_button.set_label(project.name)
         self.menu.popdown()
 
+    @Gtk.Template.Callback()
     def search_changed(self, sender):
         self.clear()
 
@@ -69,6 +66,7 @@ class ProjectsMenu(Gtk.Box):
             self.no_results.set_visible(False)
             self.projects_list.set_visible(True)
 
+    @Gtk.Template.Callback()
     def toggle_archive(self, sender):
         sender.set_has_frame(not sender.get_has_frame())
         self.archive_status = not self.archive_status

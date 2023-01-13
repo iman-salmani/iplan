@@ -12,6 +12,7 @@
     <child><!-- Project Name Button -->
       <object class="GtkButton" id="project_name_button">
         <property name="halign">start</property>
+        <signal name="clicked" handler="click_edit_project_name"/>
         <style>
           <class name="flat"/>
         </style>
@@ -32,6 +33,7 @@
         <property name="buffer">
           <object class="GtkEntryBuffer"></object>
         </property>
+        <signal name="activate" handler="change_project_name"/>
         <style>
           <class name="heading"/>
         </style>
@@ -62,12 +64,14 @@
       <object class="GtkButton" id="project_name_edit_button">
         <property name="icon-name">document-edit-symbolic</property>
         <property name="has_frame">false</property>
+        <signal name="clicked" handler="click_edit_project_name"/>
       </object>
     </child><!-- End Project Name Edit Button -->
     <child><!-- Project Name Apply Button -->
       <object class="GtkButton" id="project_name_apply_button">
         <property name="icon-name">document-edit-symbolic</property>
         <property name="visible">false</property>
+        <signal name="clicked" handler="change_project_name"/>
         <style>
           <class name="suggested-action"/>
           <class name="circular"/>
@@ -151,7 +155,6 @@
               <object class="GtkSwitch" id="archive_project_switch">
                 <property name="margin-start">24</property>
                 <property name="valign">center</property>
-
               </object>
             </child>
           </object>
@@ -173,6 +176,7 @@
               <object class="GtkButton" id="delete_project_button">
                 <property name="icon-name">user-trash-symbolic</property>
                 <property name="valign">center</property>
+                <signal name="clicked" handler="open_project_delete_dialog"/>
                 <style>
                   <class name="flat"/>
                 </style>

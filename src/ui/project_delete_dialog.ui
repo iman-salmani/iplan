@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <requires lib="gtk" version="4.0"/>
+  <requires lib="Adw" version="1.0"/>
+  <template class="ProjectDeleteDialog" parent="AdwMessageDialog">
+    <property name="heading" translatable="yes">Delete Project?</property>
+    <property name="body" translatable="yes">Project and tasks will be permanently lost.</property>
+    <property name="default-response">delete</property>
+    <property name="close-response">cancel</property>
+    <signal name="response" handler="response_cb"/>
+    <responses>
+      <response id="cancel" translatable="yes">_Cancel</response>
+      <response id="delete" translatable="yes" appearance="destructive">_Delete</response>
+    </responses>
+  </template>
+</interface>

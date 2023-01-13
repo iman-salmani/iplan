@@ -30,14 +30,7 @@ class PageHeader(Gtk.Box):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-
-        self.project_name_button.connect("clicked", self.click_edit_project_name)
-        self.project_name_entry.connect("activate", self.change_project_name)
-        self.project_name_edit_button.connect("clicked", self.click_edit_project_name)
-        self.project_name_apply_button.connect("clicked", self.change_project_name)
         self.archive_project_switch.connect("notify::state", self.toggle_archive_project)
-        self.delete_project_button.connect("clicked", self.delete)
-
         self.connect("map", lambda *args: self.install_actions())
 
     # Actions
@@ -61,10 +54,11 @@ class PageHeader(Gtk.Box):
             )
         )
 
+    @Gtk.Template.Callback()
     def change_project_name(self, sender):
         self.project.name = self.project_name_entry.get_buffer().get_text()
         projects_data.update(self.project)
-        self.props.root.actions["update_project"].activate()
+        self.activate_action("win.update_project")
         self.project_name_button_label.set_text(self.project.name)
         self.change_status("show")
 
@@ -117,6 +111,7 @@ class PageHeader(Gtk.Box):
 
         self.show_completed_tasks_switch.set_state(False)
 
+    @Gtk.Template.Callback()
     def click_edit_project_name(self, sender):
         self.change_status("edit")
 
@@ -135,15 +130,15 @@ class PageHeader(Gtk.Box):
             )
             self.project_options_popover.popdown()
 
-    def delete(self, sender):
-        projects_data.delete(self.project.id)
-        actions = self.props.root.actions
-        actions["update_project"].activate()
-        self.activate_action(
-            "win.open_project",
-            GLib.Variant('i', projects_data.first().id)
-        )
+    @Gtk.Template.Callback()
+    def open_project_delete_dialog(self, sender):
         self.project_options_popover.popdown()
+        window = self.get_root()
+        dialog = ProjectDeleteDialog(self.project.id)
+        dialog.set_transient_for(window)
+        dialog.set_modal(True)
+        dialog.set_destroy_with_parent(True)
+        dialog.present()
 
     # UI Functions
     def clear(self, box):
@@ -171,4 +166,23 @@ class PageHeader(Gtk.Box):
             self.project_duration_button.set_visible(True)
             self.separator.set_visible(True)
             self.project_name_edit_button.set_visible(True)
+
+
+@Gtk.Template(resource_path="/ir/imansalmani/iplan/ui/project_delete_dialog.ui")
+class ProjectDeleteDialog(Adw.MessageDialog):
+    __gtype_name__ = "ProjectDeleteDialog"
+    project_id: int
+    def __init__(self, project_id):
+        super().__init__()
+        self.project_id = project_id
+
+    @Gtk.Template.Callback()
+    def response_cb(self, dialog, response):
+        if response == "delete":
+            projects_data.delete(self.project_id)
+            self.activate_action("win.update_project")
+            self.activate_action(
+                "win.open_project",
+                GLib.Variant('i', projects_data.first().id)
+            )
 
