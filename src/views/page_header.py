@@ -115,6 +115,8 @@ class PageHeader(Gtk.Box):
         self.archive_project_switch.set_state(self.project.archive)
         self.archive_project_switch.handler_unblock_by_func(self.toggle_archive_project)
 
+        self.show_completed_tasks_switch.set_state(False)
+
     def click_edit_project_name(self, sender):
         self.change_status("edit")
 
