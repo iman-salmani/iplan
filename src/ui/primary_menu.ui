@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <requires lib="gtk" version="4.0"/>
+  <requires lib="Adw" version="1.0"/>
+  <template class="PrimaryMenu" parent="GtkMenuButton">
+    <property name="icon-name">open-menu-symbolic</property>
+    <property name="menu-model">primary_menu_model</property>
+  </template>
+  <!-- Primary Menu Model -->
+  <menu id='primary_menu_model'>
+    <section>
+      <item>
+        <attribute name='label' translatable='yes'>_Preferences</attribute>
+        <attribute name='action'>app.preferences</attribute>
+      </item>
+      <item>
+        <attribute name='label' translatable='yes'>_About Iplan</attribute>
+        <attribute name='action'>app.about</attribute>
+      </item>
+      <item>
+        <attribute name='label' translatable='yes'>_Quit</attribute>
+        <attribute name='action'>app.quit</attribute>
+      </item>
+    </section>
+  </menu>
+  <!-- End Primary Menu Model -->
+</interface>
