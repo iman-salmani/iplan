@@ -35,7 +35,8 @@ views_sources = [
   'views/window.py',
   'views/page.py',
   'views/page_header.py',
-  'views/page_item.py'
+  'views/page_item.py',
+  'views/primary_menu.py',
 ]
 
 install_data(iplan_sources, install_dir: moduledir)

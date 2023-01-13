@@ -20,6 +20,7 @@
 from gi.repository import Gtk, Adw, Gio, GLib
 
 from iplan.views.page import Page
+from iplan.views.primary_menu import PrimaryMenu
 from iplan.views.projects_menu import ProjectsMenu
 from iplan.database.database import Project
 
@@ -59,12 +60,8 @@ class IplanWindow(Adw.ApplicationWindow):
         projects_menu = ProjectsMenu()
         header.pack_start(projects_menu)
 
-        primary_menu = Gtk.MenuButton()
-        primary_menu.set_icon_name("open-menu-symbolic")
+        primary_menu = PrimaryMenu()
         header.pack_end(primary_menu)
-
-        menu = Gtk.Popover()
-        primary_menu.set_popover(menu)
 
         # Page
         page = Page()
