@@ -7,7 +7,6 @@
     <property name="body" translatable="yes">Project and tasks will be permanently lost.</property>
     <property name="default-response">delete</property>
     <property name="close-response">cancel</property>
-    <signal name="response" handler="response_cb"/>
     <responses>
       <response id="cancel" translatable="yes">_Cancel</response>
       <response id="delete" translatable="yes" appearance="destructive">_Delete</response>

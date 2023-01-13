@@ -12,7 +12,6 @@ projects_data = ProjectsData()
 @Gtk.Template(resource_path="/ir/imansalmani/iplan/ui/page_header.ui")
 class PageHeader(Gtk.Box):
     __gtype_name__ = "PageHeader"
-    project = None
     project_name_button: Gtk.Button = Gtk.Template.Child()
     project_name_button_label: Gtk.Label = Gtk.Template.Child()
     project_name_entry: Gtk.Entry = Gtk.Template.Child()
@@ -39,7 +38,7 @@ class PageHeader(Gtk.Box):
 
         actions["open_project"].connect(
             "activate",
-            lambda *args: self.open_project(args[1])
+            lambda *args: self.open_project()
         )
 
         actions["refresh_project_duration"].connect(
@@ -56,22 +55,22 @@ class PageHeader(Gtk.Box):
 
     @Gtk.Template.Callback()
     def change_project_name(self, sender):
-        self.project.name = self.project_name_entry.get_buffer().get_text()
-        projects_data.update(self.project)
+        self.props.root.project.name = self.project_name_entry.get_buffer().get_text()
+        projects_data.update(self.props.root.project)
         self.activate_action("win.update_project")
-        self.project_name_button_label.set_text(self.project.name)
+        self.project_name_button_label.set_text(self.props.root.project.name)
         self.change_status("show")
 
     def refresh_project_duration(self):
-        duration = self.project.get_duration()
+        duration = self.props.root.project.get_duration()
         if duration:
             self.project_duration_button_content.set_label(
-                self.project.duration_to_text(duration)
+                self.props.root.project.duration_to_text(duration)
             )
         else:
             self.project_duration_button_content.set_label("")
 
-        table = self.project.get_duration_table()
+        table = self.props.root.project.get_duration_table()
         self.clear(self.project_duration_records)
         dates = list(table.keys())
         dates.sort()
@@ -92,21 +91,20 @@ class PageHeader(Gtk.Box):
             box.append(date_label)
 
             duration_label = Gtk.Label()
-            duration_label.set_text(self.project.duration_to_text(table[date]))
+            duration_label.set_text(self.props.root.project.duration_to_text(table[date]))
             box.append(duration_label)
 
             if date != dates[-1]:
                 self.project_duration_records.append(Gtk.Separator())
 
-    def open_project(self, project_id: int):
-        self.project = projects_data.get(project_id)
-        self.project_name_entry.get_buffer().set_text(self.project.name, -1)
-        self.project_name_button_label.set_text(self.project.name)
+    def open_project(self):
+        self.project_name_entry.get_buffer().set_text(self.props.root.project.name, -1)
+        self.project_name_button_label.set_text(self.props.root.project.name)
 
         self.refresh_project_duration()
 
         self.archive_project_switch.handler_block_by_func(self.toggle_archive_project)
-        self.archive_project_switch.set_state(self.project.archive)
+        self.archive_project_switch.set_state(self.props.root.project.archive)
         self.archive_project_switch.handler_unblock_by_func(self.toggle_archive_project)
 
         self.show_completed_tasks_switch.set_state(False)
@@ -119,26 +117,32 @@ class PageHeader(Gtk.Box):
 
     def toggle_archive_project(self, sender, param):
         state = sender.get_state()
-        self.project.archive = state
-        projects_data.update(self.project)
+        self.props.root.project.archive = state
+        projects_data.update(self.props.root.project)
         self.activate_action("win.update_project")
 
         if state:
-            self.activate_action(
-                "win.open_project",
-                GLib.Variant('i', projects_data.first().id)
-            )
+            self.props.root.project = projects_data.first()
+            self.activate_action("win.open_project")
             self.project_options_popover.popdown()
 
     @Gtk.Template.Callback()
     def open_project_delete_dialog(self, sender):
         self.project_options_popover.popdown()
         window = self.get_root()
-        dialog = ProjectDeleteDialog(self.project.id)
+        dialog = ProjectDeleteDialog()
         dialog.set_transient_for(window)
         dialog.set_modal(True)
         dialog.set_destroy_with_parent(True)
+        dialog.connect("response", self.delete_project)
         dialog.present()
+
+    def delete_project(self, dialog, response):
+        if response == "delete":
+            projects_data.delete(self.props.root.project.id)
+            self.activate_action("win.update_project")
+            self.props.root.project = projects_data.first()
+            self.activate_action("win.open_project")
 
     # UI Functions
     def clear(self, box):
@@ -171,18 +175,4 @@ class PageHeader(Gtk.Box):
 @Gtk.Template(resource_path="/ir/imansalmani/iplan/ui/project_delete_dialog.ui")
 class ProjectDeleteDialog(Adw.MessageDialog):
     __gtype_name__ = "ProjectDeleteDialog"
-    project_id: int
-    def __init__(self, project_id):
-        super().__init__()
-        self.project_id = project_id
-
-    @Gtk.Template.Callback()
-    def response_cb(self, dialog, response):
-        if response == "delete":
-            projects_data.delete(self.project_id)
-            self.activate_action("win.update_project")
-            self.activate_action(
-                "win.open_project",
-                GLib.Variant('i', projects_data.first().id)
-            )
 

@@ -28,22 +28,23 @@ class ProjectsMenu(Gtk.Box):
         actions = self.props.root.actions
         actions["update_project"].connect("activate", lambda *args: self.refresh_projects())
         actions["new_project"].connect("activate", lambda *args: self.new())
-        actions["open_project"].connect("activate", lambda *args: self.open_project(args[1]))
+        actions["open_project"].connect("activate", lambda *args: self.open_project())
 
     def new(self):
         name = "New Project"
         project_id = projects_data.add(name)
         project = Project(id=project_id, name=name, archive=False)
         self.projects_list.append(ProjectsMenuItem(project))
-        self.activate_action("win.open_project", GLib.Variant('i', project_id))
+        self.props.root.project = project
+        self.activate_action("win.open_project")
 
     def refresh_projects(self):
+        self.menu_button.set_label(self.props.root.project.name)
         self.clear()
         self.fetch()
 
-    def open_project(self, project_id):
-        project = projects_data.get(project_id)
-        self.menu_button.set_label(project.name)
+    def open_project(self):
+        self.menu_button.set_label(self.props.root.project.name)
         self.menu.popdown()
 
     @Gtk.Template.Callback()
@@ -91,10 +92,14 @@ class ProjectsMenu(Gtk.Box):
 class ProjectsMenuItem(Gtk.Button):
     __gtype_name__ = "ProjectsMenuItem"
     name = Gtk.Template.Child()
+    project: Project
 
     def __init__(self, project: Project, **kwargs):
         super().__init__(**kwargs)
-
-        self.set_action_target_value(GLib.Variant('i', project.id))
+        self.project = project
         self.name.set_label(project.name)
 
+    @Gtk.Template.Callback()
+    def open_project(self, sender):
+        self.props.root.project = self.project
+        self.activate_action("win.open_project")

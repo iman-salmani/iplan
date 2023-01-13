@@ -17,7 +17,6 @@ projects_data = ProjectsData()
 class Page(Gtk.Box):
     __gtype_name__ = "Page"
     show_completed_tasks: bool = False
-    project = None
     todos_list: Gtk.ListBox = Gtk.Template.Child()
 
     def __init__(self) -> None:
@@ -44,7 +43,7 @@ class Page(Gtk.Box):
 
         actions["open_project"].connect(
             "activate",
-            lambda *args: self.open_project(args[1])
+            lambda *args: self.open_project()
         )
 
         actions["new_todo"].connect("activate", lambda *args: self.new())
@@ -56,19 +55,15 @@ class Page(Gtk.Box):
         )
 
         # open first project
-        self.activate_action(
-            "win.open_project",
-            GLib.Variant('i', projects_data.first().id)
-        )
+        self.props.root.project = projects_data.first()
+        self.activate_action("win.open_project")
 
     def new(self):
-        todo = todos_data.add("", project_id=self.project.id)
+        todo = todos_data.add("", project_id=self.props.root.project.id)
         todo_ui = TodoRow(todo, new=True)
         self.todos_list.prepend(todo_ui)
 
-    def open_project(self, project_id):
-        project = projects_data.get(project_id)
-        self.project = project
+    def open_project(self):
         self.timer_running = False
         self.clear()
         self.fetch()
@@ -86,7 +81,7 @@ class Page(Gtk.Box):
     def fetch(self):
         todos = todos_data.all(
             show_completed_tasks=self.show_completed_tasks,
-            project=self.project
+            project=self.props.root.project
         )
         for todo in todos:
             todo_ui = TodoRow(todo)

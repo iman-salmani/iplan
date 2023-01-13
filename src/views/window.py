@@ -21,11 +21,12 @@ from gi.repository import Gtk, Adw, Gio, GLib
 
 from iplan.views.page import Page
 from iplan.views.projects_menu import ProjectsMenu
-
+from iplan.database.database import Project
 
 class IplanWindow(Adw.ApplicationWindow):
     __gtype_name__ = 'IplanWindow'
     actions = {}
+    project: Project = None
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -39,7 +40,8 @@ class IplanWindow(Adw.ApplicationWindow):
         # Global actions
         self.create_action("update_project")
         self.create_action("new_project")
-        self.create_action("open_project", param=GLib.VariantType("i"))
+        self.create_action("open_project")
+        # callbacks using window project attribute like self.props.root.project
         self.create_action("refresh_project_duration")
         self.create_action("new_todo")
         self.create_action("refresh_todos")

@@ -4,7 +4,7 @@
   <requires lib="Adw" version="1.0"/>
   <template class="ProjectsMenuItem" parent="GtkButton">
     <property name="hexpand">true</property>
-    <property name="action-name">win.open_project</property>
+    <signal name="clicked" handler="open_project"/>
     <style>
       <class name="flat"/>
     </style>
