@@ -12,7 +12,6 @@
   <img src="https://user-images.githubusercontent.com/32843050/212471863-41026778-2cb7-44c3-981e-873c2e66aef8.png">
 </div>
 
-## Key Features
-
+## Features
 * Grouping tasks with Projects
 * Timer for tasks
