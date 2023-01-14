@@ -6,8 +6,10 @@ from datetime import datetime, date
 
 
 class Database:
+    path = os.path.join(os.getenv("HOME"), ".var/app/ir.imansalmani.iplan/data/database.db")
+
     def __init__(self) -> None:
-        if os.path.isfile(".local/database.db"):
+        if os.path.isfile(self.path):
             self.connect()
         else:
             self.connect()
@@ -41,7 +43,7 @@ class Database:
             self.connection.commit()
 
     def connect(self) -> None:
-        self.connection = sqlite3.connect(".local/database.db")
+        self.connection = sqlite3.connect(self.path)
         self.cursor = self.connection.cursor()
 
 
