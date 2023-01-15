@@ -3,10 +3,10 @@ import os
 from dataclasses import dataclass
 from typing import Optional
 from datetime import datetime, date
-
+from gi.repository import GLib
 
 class Database:
-    path = os.path.join(os.getenv("HOME"), ".var/app/ir.imansalmani.iplan/data/database.db")
+    path = os.path.join(GLib.get_user_data_dir(), "database.db")
 
     def __init__(self) -> None:
         if os.path.isfile(self.path):
