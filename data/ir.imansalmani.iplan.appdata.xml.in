@@ -7,13 +7,15 @@
   <screenshots>
     <screenshot type="default">
       <caption>The IPlan main window.</caption>
-      <image type="source" width="900" height="450">https://github.com/iman-salmani/iplan/blob/23e65484c1cb64e60ce71d499066ecee2949d7a0/data/screenshots/window.png</image>
+      <image type="source" width="800" height="450">http://5.75.147.226/imgs/window.png</image>
     </screenshot>
   </screenshots>
 	<project_license>GPL-3.0-or-later</project_license>
 	<description>
-	  <h1>Features</h1>
-	  <p>Grouping tasks with Projects</p>
-	  <p>Timer for tasks</p>
+	  <p>Features</p>
+	  <ul>
+	    <li>Grouping tasks with Projects</li>
+	    <li>Timer for tasks</li>
+	  </ul>
 	</description>
 </component>
