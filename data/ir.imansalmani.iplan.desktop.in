@@ -4,5 +4,5 @@ Exec=iplan
 Icon=ir.imansalmani.iplan
 Terminal=false
 Type=Application
-Categories=Utility;
+Categories=GNOME;GTK;Utility;
 StartupNotify=true
