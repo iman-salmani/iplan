@@ -6,6 +6,24 @@ install_data(
   install_dir: join_paths(get_option('datadir'), 'icons', scalable_dir)
 )
 
+static_512_dir = join_paths('hicolor', '512x512', 'apps')
+install_data(
+  join_paths(static_512_dir, ('@0@.png').format(application_id)),
+  install_dir: join_paths(get_option('datadir'), 'icons', static_512_dir)
+)
+
+static_256_dir = join_paths('hicolor', '256x256', 'apps')
+install_data(
+  join_paths(static_256_dir, ('@0@.png').format(application_id)),
+  install_dir: join_paths(get_option('datadir'), 'icons', static_256_dir)
+)
+
+static_128_dir = join_paths('hicolor', '128x128', 'apps')
+install_data(
+  join_paths(static_128_dir, ('@0@.png').format(application_id)),
+  install_dir: join_paths(get_option('datadir'), 'icons', static_128_dir)
+)
+
 symbolic_dir = join_paths('hicolor', 'symbolic', 'apps')
 install_data(
   join_paths(symbolic_dir, ('@0@-symbolic.svg').format(application_id)),
