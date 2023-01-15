@@ -31,7 +31,7 @@ class IplanWindow(Adw.ApplicationWindow):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.set_size_request(512, 512)
+        self.set_size_request(800, 450)
 
         # Root
         root = Gtk.Box()

@@ -2,8 +2,12 @@
 <component type="desktop">
 	<id>ir.imansalmani.iplan.desktop</id>
 	<metadata_license>CC0-1.0</metadata_license>
+  <name>IPlan</name>
+  <summary>Planner application with time tracking ability</summary>
 	<project_license>GPL-3.0-or-later</project_license>
 	<description>
-	  <p>No description</p>
+	  <h1>Features</h1>
+	  <p>Grouping tasks with Projects</p>
+	  <p>Timer for tasks</p>
 	</description>
 </component>
