@@ -21,7 +21,7 @@ class PageHeader(Gtk.Box):
     project_duration_button_content: Adw.ButtonContent = Gtk.Template.Child()
     project_duration_records: Gtk.Box = Gtk.Template.Child()
     project_options_popover: Gtk.Popover = Gtk.Template.Child()
-    new_todo_button: Gtk.Button = Gtk.Template.Child()
+    new_task_button: Gtk.Button = Gtk.Template.Child()
     separator: Gtk.Separator = Gtk.Template.Child()
     show_completed_tasks_switch: Gtk.Switch = Gtk.Template.Child()
     archive_project_switch: Gtk.Switch = Gtk.Template.Child()

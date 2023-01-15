@@ -44,8 +44,8 @@ class IplanWindow(Adw.ApplicationWindow):
         self.create_action("open_project")
         # callbacks using window project attribute like self.props.root.project
         self.create_action("refresh_project_duration")
-        self.create_action("new_todo")
-        self.create_action("refresh_todos")
+        self.create_action("new_task")
+        self.create_action("refresh_tasks")
         self.create_action(
             "toggle_completed_tasks",
             param=GLib.VariantType("b"),

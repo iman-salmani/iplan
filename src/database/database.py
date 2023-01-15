@@ -9,6 +9,7 @@ class Database:
     path = os.path.join(os.getenv("HOME"), ".var/app/ir.imansalmani.iplan/data/database.db")
 
     def __init__(self) -> None:
+        print(os.getenv("XDG_DATA_HOME"))
         if os.path.isfile(self.path):
             self.connect()
         else:
@@ -16,7 +17,7 @@ class Database:
 
             self.cursor.execute(
                 """
-                CREATE TABLE "todos" (
+                CREATE TABLE "tasks" (
                 "id"	  INTEGER NOT NULL,
                 "name"	  TEXT NOT NULL,
                 "done"	  INTEGER NOT NULL,
@@ -54,19 +55,19 @@ class Project:
     archive: bool
 
     def get_duration(self):
-        todos = TodosData().all(show_completed_tasks=True, project=self)
+        tasks = TasksData().all(show_completed_tasks=True, project=self)
         duration = 0
-        for todo in todos:
-            duration += todo.get_duration()
+        for task in tasks:
+            duration += task.get_duration()
 
         return duration
 
     def get_duration_table(self) -> dict[date, int]:
         table = {}
 
-        todos = TodosData().all(show_completed_tasks=True, project=self)
-        for todo in todos:
-            for time in todo.times.split(";")[0:-1]:
+        tasks = TasksData().all(show_completed_tasks=True, project=self)
+        for task in tasks:
+            for time in task.times.split(";")[0:-1]:
                 _datetime = float(time.split(",")[0])
                 _date = datetime.fromtimestamp(_datetime).date()
                 duration = int(time.split(",")[1])
@@ -138,7 +139,7 @@ class ProjectsData(Database):
 
     def delete(self, _id) -> None:
         self.cursor.execute(f"DELETE FROM projects WHERE id = {_id}")
-        self.cursor.execute(f"DELETE FROM todos WHERE project = {_id}")
+        self.cursor.execute(f"DELETE FROM tasks WHERE project = {_id}")
         self.connection.commit()
 
     def first(self) -> Project:
@@ -159,7 +160,7 @@ class ProjectsData(Database):
 
 
 @dataclass
-class Todo:
+class Task:
     id: int
     name: str
     done: bool
@@ -198,13 +199,13 @@ class Todo:
         return text
 
 
-class TodosData(Database):
+class TasksData(Database):
     def __init__(self) -> None:
         super().__init__()
 
-    def record_to_todo(self, record) -> Project:
-        """convert database record to Todo dataclass"""
-        return Todo(
+    def record_to_task(self, record) -> Project:
+        """convert database record to Task dataclass"""
+        return Task(
             id=record[0],
             name=record[1],
             done=record[2],
@@ -212,7 +213,7 @@ class TodosData(Database):
             times=record[4],
         )
 
-    def all(self, show_completed_tasks=False, project=None) -> list[Todo]:
+    def all(self, show_completed_tasks=False, project=None) -> list[Task]:
         if project == None:
             project_filter = "project is NULL"
         else:
@@ -225,28 +226,28 @@ class TodosData(Database):
         else:
             completed_tasks_filter = f"AND done = {show_completed_tasks} "
 
-        query = f"SELECT * FROM todos WHERE {project_filter} {completed_tasks_filter} {completed_tasks_order}"
-        todos = []
+        query = f"SELECT * FROM tasks WHERE {project_filter} {completed_tasks_filter} {completed_tasks_order}"
+        tasks = []
         for record in self.cursor.execute(query).fetchall():
-            todos.append(self.record_to_todo(record))
-        todos.reverse()
-        return todos
+            tasks.append(self.record_to_task(record))
+        tasks.reverse()
+        return tasks
 
     def delete(self, _id) -> None:
-        self.cursor.execute(f"DELETE FROM todos WHERE id = {_id}")
+        self.cursor.execute(f"DELETE FROM tasks WHERE id = {_id}")
         self.connection.commit()
 
-    def update(self, todo: Todo) -> None:
+    def update(self, task: Task) -> None:
         self.cursor.execute(
-            f"UPDATE todos SET name = '{todo.name}', done = {todo.done}, project = {todo.project}, times = '{todo.times}' WHERE id = {todo.id}"
+            f"UPDATE tasks SET name = '{task.name}', done = {task.done}, project = {task.project}, times = '{task.times}' WHERE id = {task.id}"
         )
         self.connection.commit()
 
-    def add(self, name, project_id="NULL") -> Todo:
+    def add(self, name, project_id="NULL") -> Task:
         self.cursor.execute(
-            f"INSERT INTO todos(name, done, project, times) VALUES ('{name}', 0, {project_id}, '')"
+            f"INSERT INTO tasks(name, done, project, times) VALUES ('{name}', 0, {project_id}, '')"
         )
         self.connection.commit()
 
-        return Todo(self.cursor.lastrowid, name, False, project_id, "")
+        return Task(self.cursor.lastrowid, name, False, project_id, "")
 

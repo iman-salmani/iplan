@@ -5,19 +5,19 @@ from time import sleep
 from datetime import datetime
 from threading import Thread
 
-from iplan.database.database import TodosData, Todo, ProjectsData
+from iplan.database.database import TasksData, Task, ProjectsData
 from iplan.views.page_header import PageHeader
-from iplan.views.page_item import TodoRow
+from iplan.views.page_item import TaskRow
 
 # Initialize Database connection
-todos_data = TodosData()
+tasks_data = TasksData()
 projects_data = ProjectsData()
 
 @Gtk.Template(resource_path='/ir/imansalmani/iplan/ui/page.ui')
 class Page(Gtk.Box):
     __gtype_name__ = "Page"
     show_completed_tasks: bool = False
-    todos_list: Gtk.ListBox = Gtk.Template.Child()
+    tasks_list: Gtk.ListBox = Gtk.Template.Child()
 
     def __init__(self) -> None:
         super().__init__()
@@ -32,7 +32,7 @@ class Page(Gtk.Box):
         #drop_target.connect("enter", lambda *args: print("enter", *args))
         #drop_target.connect("leave", lambda *args: print("leave", *args))
         #drop_target.connect("motion", lambda *args: print("motion", *args))
-        #self.todos_list.add_controller(drop_target)
+        #self.tasks_list.add_controller(drop_target)
 
         self.connect("map", lambda *args: self.install_actions())
 
@@ -46,8 +46,8 @@ class Page(Gtk.Box):
             lambda *args: self.open_project()
         )
 
-        actions["new_todo"].connect("activate", lambda *args: self.new())
-        actions["refresh_todos"].connect("activate", lambda *args: self.refresh_todos())
+        actions["new_task"].connect("activate", lambda *args: self.new())
+        actions["refresh_tasks"].connect("activate", lambda *args: self.refresh_tasks())
 
         actions["toggle_completed_tasks"].connect(
             "change-state",
@@ -59,9 +59,9 @@ class Page(Gtk.Box):
         self.activate_action("win.open_project")
 
     def new(self):
-        todo = todos_data.add("", project_id=self.props.root.project.id)
-        todo_ui = TodoRow(todo, new=True)
-        self.todos_list.prepend(todo_ui)
+        task = tasks_data.add("", project_id=self.props.root.project.id)
+        task_ui = TaskRow(task, new=True)
+        self.tasks_list.prepend(task_ui)
 
     def open_project(self):
         self.timer_running = False
@@ -73,25 +73,25 @@ class Page(Gtk.Box):
         self.clear()
         self.fetch()
 
-    def refresh_todos(self):
+    def refresh_tasks(self):
         self.clear()
         self.fetch()
 
     # UI
     def fetch(self):
-        todos = todos_data.all(
+        tasks = tasks_data.all(
             show_completed_tasks=self.show_completed_tasks,
             project=self.props.root.project
         )
-        for todo in todos:
-            todo_ui = TodoRow(todo)
-            self.todos_list.append(todo_ui)
+        for task in tasks:
+            task_ui = TaskRow(task)
+            self.tasks_list.append(task_ui)
 
     def clear(self):
         while True:
-            row = self.todos_list.get_first_child()
+            row = self.tasks_list.get_first_child()
             if row:
-                self.todos_list.remove(row)
+                self.tasks_list.remove(row)
             else:
                 break
 

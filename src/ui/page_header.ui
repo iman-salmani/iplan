@@ -78,13 +78,13 @@
         </style>
       </object>
     </child><!-- End Project Name Apply Button -->
-    <child><!-- New Todo Button -->
-      <object class="GtkButton" id="new_todo_button">
+    <child><!-- New Task Button -->
+      <object class="GtkButton" id="new_task_button">
         <property name="icon-name">list-add-symbolic</property>
         <property name="has_frame">false</property>
-        <property name="action-name">win.new_todo</property>
+        <property name="action-name">win.new_task</property>
       </object>
-    </child><!-- End New Todo Button -->
+    </child><!-- End New Task Button -->
     <child><!-- Project Options Button -->
       <object class="GtkMenuButton">
         <property name="icon_name">view-more-symbolic</property>

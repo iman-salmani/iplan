@@ -5,14 +5,14 @@ from time import sleep
 from datetime import datetime
 from threading import Thread
 
-from iplan.database.database import TodosData, Todo
+from iplan.database.database import TasksData, Task
 
-todos_data = TodosData()
+tasks_data = TasksData()
 
 
 @Gtk.Template(resource_path='/ir/imansalmani/iplan/ui/page_item.ui')
-class TodoRow(Gtk.ListBoxRow):
-    __gtype_name__ = "TodoRow"
+class TaskRow(Gtk.ListBoxRow):
+    __gtype_name__ = "TaskRow"
     timer_running: bool = None
     check_button: Gtk.CheckButton = Gtk.Template.Child()
     name_entry: Gtk.Entry = Gtk.Template.Child()
@@ -22,57 +22,57 @@ class TodoRow(Gtk.ListBoxRow):
     timer: Gtk.Button = Gtk.Template.Child()
     timer_content: Adw.ButtonContent = Gtk.Template.Child()
     delete_button: Gtk.Button = Gtk.Template.Child()
-    todo: Todo
+    task: Task
 
-    def __init__(self, todo, new=False):
+    def __init__(self, task, new=False):
         super().__init__()
-        self.todo = todo
+        self.task = task
 
-        self.check_button.set_active(self.todo.done)
+        self.check_button.set_active(self.task.done)
         self.check_button.connect(
             "toggled",
             lambda sender: self.clicked_check_button(
-                Todo(
-                    self.todo.id,
-                    self.todo.name,
+                Task(
+                    self.task.id,
+                    self.task.name,
                     self.check_button.get_active(),
-                    self.todo.project,
-                    self.todo.times,
+                    self.task.project,
+                    self.task.times,
                 )
             ),
         )
 
         self.name_entry.set_visible(new)
-        self.name_entry_buffer.set_text(todo.name, -1)
+        self.name_entry_buffer.set_text(task.name, -1)
         self.name_entry_buffer.connect(
             "inserted-text", lambda *args: self.inserted_text(self.name_entry_buffer.get_text())
         )
         self.name_entry.connect(
             "activate",
-            lambda sender: self.toggle_todo_entry("entry")
+            lambda sender: self.toggle_task_entry("entry")
         )
 
         self.name_button.set_visible(not new)
         self.name_button.connect(
             "clicked",
-            lambda sender: self.toggle_todo_entry("button")
+            lambda sender: self.toggle_task_entry("button")
         )
-        self.name_button_label.set_text(todo.name)
+        self.name_button_label.set_text(task.name)
 
         self.timer.connect(
             "clicked",
-            lambda sender: self.toggle_timer(self.timer, self.timer.get_child(), self.todo),
+            lambda sender: self.toggle_timer(self.timer, self.timer.get_child(), self.task),
         )
-        duration = todo.get_duration()
+        duration = task.get_duration()
         if duration:
-            self.timer_content.set_label(todo.duration_to_text(duration))
+            self.timer_content.set_label(task.duration_to_text(duration))
 
-        last_time = todo.get_last_time()
+        last_time = task.get_last_time()
         if last_time:
             if not last_time[1]:
-                self.toggle_timer(self.timer, self.timer_content, self.todo, last_time=True)
+                self.toggle_timer(self.timer, self.timer_content, self.task, last_time=True)
 
-        self.delete_button.connect("clicked", lambda sender: self.delete(self.todo.id, self))
+        self.delete_button.connect("clicked", lambda sender: self.delete(self.task.id, self))
 
     #def prepare_drag(self, drag_source, x, y):
     #    file = self.get_file()
@@ -88,7 +88,7 @@ class TodoRow(Gtk.ListBoxRow):
     #    print("drag-begin", drag_source, drag)
 
     # Actions
-    def toggle_todo_entry(self, sender):
+    def toggle_task_entry(self, sender):
         if sender == "button":
             self.name_button.set_visible(False)
             self.name_entry.set_visible(True)
@@ -98,31 +98,31 @@ class TodoRow(Gtk.ListBoxRow):
             self.name_button.set_visible(True)
             self.name_button.get_child().set_text(self.name_entry_buffer.get_text())
 
-    def delete(self, _id, todoWidget):
-        todos_data.delete(_id)
-        self.get_parent().remove(todoWidget)
+    def delete(self, _id, taskWidget):
+        tasks_data.delete(_id)
+        self.get_parent().remove(taskWidget)
 
-    def open_todo(self):
+    def open_task(self):
         window = self.get_root()
-        modal = TodoModal(self.todo)
+        modal = TaskModal(self.task)
         modal.set_transient_for(window)
         modal.present()
 
     def inserted_text(self, text):
-        self.todo.name = text
-        todos_data.update(self.todo)
+        self.task.name = text
+        tasks_data.update(self.task)
 
-    def clicked_check_button(self, todo):
-        todos_data.update(todo)
-        self.activate_action("win.refresh_todos")
+    def clicked_check_button(self, task):
+        tasks_data.update(task)
+        self.activate_action("win.refresh_tasks")
 
-    def toggle_timer(self, button, content, todo, last_time=False):
+    def toggle_timer(self, button, content, task, last_time=False):
         if button.has_css_class("flat"):
             button.remove_css_class("flat")
             button.add_css_class("destructive-action")
 
             self.timer_running = True
-            thread = Thread(target=self.start_timer, args=(content, todo, last_time))
+            thread = Thread(target=self.start_timer, args=(content, task, last_time))
             thread.daemon = True
             thread.start()
         else:
@@ -132,39 +132,39 @@ class TodoRow(Gtk.ListBoxRow):
             button.remove_css_class("destructive-action")
 
     # UI
-    def start_timer(self, content, todo: Todo, last_time):
-        todos_data = TodosData()  # for new thread
+    def start_timer(self, content, task: Task, last_time):
+        tasks_data = TasksData()  # for new thread
         diffrence = None
         if last_time:
-            lt = todo.get_last_time()
+            lt = task.get_last_time()
             start = datetime.fromtimestamp(lt[0])
             now = datetime.now()
             diffrence = now - start
 
         else:
             start = datetime.now()
-            todo.times = todo.times + f"{start.timestamp()},0;"
-            todos_data.update(todo)
+            task.times = task.times + f"{start.timestamp()},0;"
+            tasks_data.update(task)
 
         while self.timer_running:
             now = datetime.now()
             diffrence = now - start
             text = ""
             GLib.idle_add(
-                lambda: content.set_label(todo.duration_to_text(diffrence.seconds))
+                lambda: content.set_label(task.duration_to_text(diffrence.seconds))
             )
             sleep(0.1)
 
-        todo.times = todo.times[0:-2] + str(diffrence.seconds) + ";"
-        content.set_label(todo.get_duration_text())
-        todos_data.update(todo)
+        task.times = task.times[0:-2] + str(diffrence.seconds) + ";"
+        content.set_label(task.get_duration_text())
+        tasks_data.update(task)
         self.activate_action("win.refresh_project_duration")
 
 
-class TodoModal(Adw.Window):
-    __gtype_name__ = "TodoModal"
+class TaskModal(Adw.Window):
+    __gtype_name__ = "TaskModal"
 
-    def __init__(self, todo: Todo):
+    def __init__(self, task: Task):
         super().__init__()
         self.set_modal(True)
         self.set_size_request(480, 480)
@@ -178,7 +178,7 @@ class TodoModal(Adw.Window):
         header.set_title_widget(Gtk.Label())
         content.append(header)
 
-        title = Gtk.Label.new(todo.name)
+        title = Gtk.Label.new(task.name)
         title.add_css_class("title-1")
         content.append(title)
 

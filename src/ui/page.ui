@@ -10,8 +10,8 @@
       <object class="GtkScrolledWindow">
         <property name="vexpand">true</property>
         <property name="hexpand">true</property>
-        <child><!-- Todo List -->
-          <object class="GtkListBox" id="todos_list">
+        <child><!-- Task List -->
+          <object class="GtkListBox" id="tasks_list">
             <property name="valign">start</property>
             <property name="selection_mode">none</property>
             <property name="margin-top">24</property>
@@ -22,7 +22,7 @@
               <class name="boxed-list"/>
             </style>
           </object>
-        </child><!-- End Todo List -->
+        </child><!-- End Task List -->
       </object>
     </child><!-- End Scrolled Window -->
   </template>

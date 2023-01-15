@@ -2,7 +2,7 @@
 <interface>
   <requires lib="gtk" version="4.0"/>
   <requires lib="Adw" version="1.0"/>
-  <template class="TodoRow" parent="GtkListBoxRow">
+  <template class="TaskRow" parent="GtkListBoxRow">
     <child><!-- Box -->
       <object class="GtkBox">
         <property name="orientation">horizontal</property>
