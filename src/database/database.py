@@ -9,7 +9,6 @@ class Database:
     path = os.path.join(os.getenv("HOME"), ".var/app/ir.imansalmani.iplan/data/database.db")
 
     def __init__(self) -> None:
-        print(os.getenv("XDG_DATA_HOME"))
         if os.path.isfile(self.path):
             self.connect()
         else:
@@ -250,4 +249,5 @@ class TasksData(Database):
         self.connection.commit()
 
         return Task(self.cursor.lastrowid, name, False, project_id, "")
+
 
