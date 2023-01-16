@@ -38,7 +38,7 @@ class PageHeader(Gtk.Box):
 
         actions["open_project"].connect(
             "activate",
-            lambda *args: self.open_project()
+            lambda *args: self.open_project(args[1])
         )
 
         actions["refresh_project_duration"].connect(
@@ -97,9 +97,13 @@ class PageHeader(Gtk.Box):
             if date != dates[-1]:
                 self.project_duration_records.append(Gtk.Separator())
 
-    def open_project(self):
+    def open_project(self, new):
         self.project_name_entry.get_buffer().set_text(self.props.root.project.name, -1)
         self.project_name_button_label.set_text(self.props.root.project.name)
+
+        if new:
+            self.change_status("edit")
+            self.project_name_entry.grab_focus()
 
         self.refresh_project_duration()
 
@@ -123,7 +127,7 @@ class PageHeader(Gtk.Box):
 
         if state:
             self.props.root.project = projects_data.first()
-            self.activate_action("win.open_project")
+            self.activate_action("win.open_project", GLib.Variant("b", False))
             self.project_options_popover.popdown()
 
     @Gtk.Template.Callback()
@@ -142,7 +146,7 @@ class PageHeader(Gtk.Box):
             projects_data.delete(self.props.root.project.id)
             self.activate_action("win.update_project")
             self.props.root.project = projects_data.first()
-            self.activate_action("win.open_project")
+            self.activate_action("win.open_project", GLib.Variant("b", False))
 
     # UI Functions
     def clear(self, box):

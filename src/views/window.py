@@ -40,8 +40,7 @@ class IplanWindow(Adw.ApplicationWindow):
 
         # Global actions
         self.create_action("update_project")
-        self.create_action("new_project")
-        self.create_action("open_project")
+        self.create_action("open_project", param=GLib.VariantType("b")) # param is new_project
         # callbacks using window project attribute like self.props.root.project
         self.create_action("refresh_project_duration")
         self.create_action("new_task")

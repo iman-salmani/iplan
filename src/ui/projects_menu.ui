@@ -16,7 +16,7 @@
       <object class="GtkButton">
         <property name="icon-name">tab-new-symbolic</property>
         <property name="has-frame">false</property>
-        <property name="action-name">win.new_project</property>
+        <signal name="clicked" handler="new_project"/>
       </object>
     </child>
   </template>

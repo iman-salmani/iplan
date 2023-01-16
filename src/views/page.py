@@ -56,7 +56,7 @@ class Page(Gtk.Box):
 
         # open first project
         self.props.root.project = projects_data.first()
-        self.activate_action("win.open_project")
+        self.activate_action("win.open_project", GLib.Variant("b", False))
 
     def new(self):
         task = tasks_data.add("", project_id=self.props.root.project.id)
