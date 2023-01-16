@@ -3,7 +3,6 @@
   <requires lib="gtk" version="4.0"/>
   <requires lib="Adw" version="1.0"/>
   <template class="ProjectDeleteDialog" parent="AdwMessageDialog">
-    <property name="heading" translatable="yes">Delete Project?</property>
     <property name="body" translatable="yes">Project and tasks will be permanently lost.</property>
     <property name="default-response">delete</property>
     <property name="close-response">cancel</property>

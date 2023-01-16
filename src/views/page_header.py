@@ -134,7 +134,7 @@ class PageHeader(Gtk.Box):
     def open_project_delete_dialog(self, sender):
         self.project_options_popover.popdown()
         window = self.get_root()
-        dialog = ProjectDeleteDialog()
+        dialog = ProjectDeleteDialog(self.props.root.project)
         dialog.set_transient_for(window)
         dialog.set_modal(True)
         dialog.set_destroy_with_parent(True)
@@ -179,4 +179,9 @@ class PageHeader(Gtk.Box):
 @Gtk.Template(resource_path="/ir/imansalmani/iplan/ui/project_delete_dialog.ui")
 class ProjectDeleteDialog(Adw.MessageDialog):
     __gtype_name__ = "ProjectDeleteDialog"
+
+    def __init__(self, project: Project):
+        super().__init__()
+
+        self.set_heading(f"Delete {project.name} Project?")
 
