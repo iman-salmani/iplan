@@ -70,6 +70,7 @@ class Page(Gtk.Box):
 
         task_ui = TaskRow(task, new=True)
         self.tasks_list.prepend(task_ui)
+        task_ui.name_entry.grab_focus()
 
     def open_project(self):
         self.timer_running = False
