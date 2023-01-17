@@ -83,7 +83,6 @@ class IplanWindow(Adw.ApplicationWindow):
         if state == None:
             action = Gio.SimpleAction.new(name, param)
         else:
-            # TODO: check param required
             action = Gio.SimpleAction.new_stateful(name, param, state)
 
         self.add_action(action)
