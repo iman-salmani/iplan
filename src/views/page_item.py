@@ -14,7 +14,7 @@ tasks_data = TasksData()
 class TaskRow(Gtk.ListBoxRow):
     __gtype_name__ = "TaskRow"
     timer_running: bool = None
-    check_button: Gtk.CheckButton = Gtk.Template.Child()
+    checkbox: Gtk.CheckButton = Gtk.Template.Child()
     name_entry: Gtk.Entry = Gtk.Template.Child()
     name_entry_buffer: Gtk.EntryBuffer = Gtk.Template.Child()
     name_button: Gtk.Button = Gtk.Template.Child()
@@ -28,19 +28,7 @@ class TaskRow(Gtk.ListBoxRow):
         super().__init__()
         self.task = task
 
-        self.check_button.set_active(self.task.done)
-        self.check_button.connect(
-            "toggled",
-            lambda sender: self.clicked_check_button(
-                Task(
-                    self.task.id,
-                    self.task.name,
-                    self.check_button.get_active(),
-                    self.task.project,
-                    self.task.times,
-                )
-            ),
-        )
+        self.checkbox.set_active(self.task.done)
 
         self.name_entry.set_visible(new)
         self.name_entry_buffer.set_text(task.name, -1)
@@ -74,18 +62,18 @@ class TaskRow(Gtk.ListBoxRow):
 
         self.delete_button.connect("clicked", lambda sender: self.delete(self.task.id, self))
 
-    #def prepare_drag(self, drag_source, x, y):
-    #    file = self.get_file()
-    #    pixbuf = self.get_pixbuf()
-    #    print("prepare", drag_source, x, y)
-    #
-    #    content_provider = Gdk.ContentProvider.new_union()
-    #    return content_provider
+    def prepare_drag(self, drag_source, x, y):
+        file = self.get_file()
+        pixbuf = self.get_pixbuf()
+        print("prepare", drag_source, x, y)
 
-    #def drag_begin(self, drag_source, drag):
-    #    paintable = Gtk.WidgetPaintable.new(self)
-    #    drag_source.set_icon(paintable, 0, 0)
-    #    print("drag-begin", drag_source, drag)
+        content_provider = Gdk.ContentProvider.new_union()
+        return content_provider
+
+    def drag_begin(self, drag_source, drag):
+        paintable = Gtk.WidgetPaintable.new(self)
+        drag_source.set_icon(paintable, 0, 0)
+        print("drag-begin", drag_source, drag)
 
     # Actions
     def toggle_task_entry(self, sender):
@@ -112,8 +100,15 @@ class TaskRow(Gtk.ListBoxRow):
         self.task.name = text
         tasks_data.update(self.task)
 
-    def clicked_check_button(self, task):
-        tasks_data.update(task)
+    @Gtk.Template.Callback()
+    def toggled_checkbox(self, sender):
+        tasks_data.update(Task(
+            self.task.id,
+            self.task.name,
+            self.checkbox.get_active(),
+            self.task.project,
+            self.task.times,
+        ))
         self.activate_action("win.refresh_tasks")
 
     def toggle_timer(self, button, content, task, last_time=False):

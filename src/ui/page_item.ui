@@ -14,8 +14,9 @@
           <class name="row"/>
         </style>
         <child><!-- Check Button -->
-          <object class="GtkCheckButton" id="check_button">
+          <object class="GtkCheckButton" id="checkbox">
             <property name="valign">center</property>
+            <signal name="toggled" handler="toggled_checkbox"/>
           </object>
         </child><!-- End Check Button -->
         <child><!-- Name Entry -->
