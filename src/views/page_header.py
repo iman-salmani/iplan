@@ -104,6 +104,8 @@ class PageHeader(Gtk.Box):
         if new:
             self.change_status("edit")
             self.project_name_entry.grab_focus()
+        else:
+            self.change_status("show")
 
         self.refresh_project_duration()
 
