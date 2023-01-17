@@ -86,6 +86,7 @@ class TaskRow(Gtk.ListBoxRow):
 
     @Gtk.Template.Callback()
     def toggled_checkbox(self, sender):
+        self.task.done = not self.task.done
         tasks_data.update(self.task)
         self.activate_action("win.refresh_tasks")
 
