@@ -33,9 +33,10 @@ class IplanApplication(Adw.Application):
     def __init__(self):
         super().__init__(application_id='ir.imansalmani.iplan',
                          flags=Gio.ApplicationFlags.FLAGS_NONE)
-        self.create_action('quit', lambda *args: self.quit(), ['<primary>q'])
-        self.create_action('about', self.on_about_action)
-        self.create_action('preferences', self.on_preferences_action)
+        self.create_action('quit', lambda *args: self.quit(), ['<Ctrl>q'])
+        self.create_action('about', self.on_about)
+        self.create_action('shortcuts', self.on_shortcuts, ['<Ctrl>question'])
+        self.create_action('preferences', self.on_preferences, ['<Ctrl>comma'])
 
     def do_activate(self):
         """Called when the application is activated.
@@ -48,7 +49,7 @@ class IplanApplication(Adw.Application):
             win = IplanWindow(application=self)
         win.present()
 
-    def on_about_action(self, widget, _):
+    def on_about(self, widget, _):
         """Callback for the app.about action."""
         about = Adw.AboutWindow(transient_for=self.props.active_window,
                                 application_name='iplan',
@@ -59,7 +60,12 @@ class IplanApplication(Adw.Application):
                                 copyright='© 2023 Iman Salmani')
         about.present()
 
-    def on_preferences_action(self, widget, _):
+    def on_shortcuts(self, widget, _):
+        shortcuts_window = ShortcutsWindow()
+        shortcuts_window.set_transient_for(self.props.active_window)
+        shortcuts_window.present()
+
+    def on_preferences(self, widget, _):
         """Callback for the app.preferences action."""
         print('app.preferences action activated')
 
@@ -78,6 +84,10 @@ class IplanApplication(Adw.Application):
         if shortcuts:
             self.set_accels_for_action(f"app.{name}", shortcuts)
 
+
+@Gtk.Template(resource_path="/ir/imansalmani/iplan/ui/shortcuts_window.ui")
+class ShortcutsWindow(Gtk.ShortcutsWindow):
+    __gtype_name__ = "ShortcutsWindow"
 
 def main(version):
     """The application's entry point."""
