@@ -242,9 +242,7 @@ class TasksData(Database):
         )
         self.connection.commit()
 
-    def add(self, name, project_id: int) -> Task:
-        position = len(self.cursor.execute(f"SELECT position FROM tasks WHERE project = {project_id}").fetchall())
-        print("new position", position)
+    def add(self, name, project_id: int, position: int) -> Task:
         self.cursor.execute(
             f"INSERT INTO tasks(name, done, project, times, position) VALUES ('{name}', 0, {project_id}, '', {position})"
         )

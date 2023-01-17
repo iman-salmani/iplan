@@ -57,7 +57,17 @@ class Page(Gtk.Box):
         self.activate_action("win.open_project", GLib.Variant("b", False))
 
     def new(self):
-        task = tasks_data.add("", project_id=self.props.root.project.id)
+        position = 0
+        first_task = self.tasks_list.get_first_child()
+        if first_task:
+            position = first_task.task.position + 1
+
+        task = tasks_data.add(
+            "",
+            project_id=self.props.root.project.id,
+            position=position
+        )
+
         task_ui = TaskRow(task, new=True)
         self.tasks_list.prepend(task_ui)
 
