@@ -43,7 +43,7 @@ class IplanWindow(Adw.ApplicationWindow):
         self.create_action("open_project", param=GLib.VariantType("b")) # param is new_project
         # callbacks using window project attribute like self.props.root.project
         self.create_action("refresh_project_duration")
-        self.create_action("new_task")
+        self.create_action("new_task", shortcuts=["<Ctrl>n"])
         self.create_action("refresh_tasks")
         self.create_action(
             "toggle_completed_tasks",
@@ -66,7 +66,12 @@ class IplanWindow(Adw.ApplicationWindow):
         page = Page()
         root.append(page)
 
-    def create_action(self, name, param:GLib.VariantType=None, state=None, shortcuts=None):
+    def create_action(
+            self,
+            name,
+            param: GLib.VariantType=None,
+            state=None,
+            shortcuts: list[str]=None):
         """Add an window action.
 
         Args:
@@ -88,6 +93,6 @@ class IplanWindow(Adw.ApplicationWindow):
         self.add_action(action)
 
         if shortcuts:
-            self.set_accels_for_action(f"app.{name}", shortcuts)
+            self.props.application.set_accels_for_action(f"win.{name}", shortcuts)
 
         self.actions[name] = action
