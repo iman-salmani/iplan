@@ -39,6 +39,7 @@ class IplanWindow(Adw.ApplicationWindow):
         self.set_content(root)
 
         # Global actions
+        self.create_action("search", shortcuts=["<Ctrl>f"])
         self.create_action("update_project")
         self.create_action("open_project", param=GLib.VariantType("b")) # param is new_project
         # callbacks using window project attribute like self.props.root.project

@@ -26,6 +26,7 @@ class ProjectsMenu(Gtk.Box):
     # Actions
     def install_actions(self):
         actions = self.props.root.actions
+        actions["search"].connect("activate", lambda *args: self.menu_button.popup())
         actions["update_project"].connect("activate", lambda *args: self.refresh_projects())
         actions["open_project"].connect("activate", lambda *args: self.open_project())
 
