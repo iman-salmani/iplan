@@ -20,8 +20,9 @@ class Database:
                 "id"	  INTEGER NOT NULL,
                 "name"	  TEXT NOT NULL,
                 "done"	  INTEGER NOT NULL,
-                "project" INTEGER,
+                "project" INTEGER NOT NULL,
                 "times"   TEXT NOT NULL,
+                "position"   INTEGER NOT NULL DEFAULT 0,
                 PRIMARY KEY("id" AUTOINCREMENT)
             );"""
             )
@@ -165,6 +166,7 @@ class Task:
     done: bool
     project: Optional[int]
     times: str
+    position: int
 
     def get_last_time(self) -> Optional[list[float, int]]:
         if self.times:
@@ -210,6 +212,7 @@ class TasksData(Database):
             done=record[2],
             project=record[3],
             times=record[4],
+            position=record[5]
         )
 
     def all(self, show_completed_tasks=False, project=None) -> list[Task]:
@@ -219,17 +222,13 @@ class TasksData(Database):
             project_filter = f"project = {project.id}"
 
         completed_tasks_filter = ""
-        completed_tasks_order = ""
-        if show_completed_tasks == True:
-            completed_tasks_order = "ORDER BY done DESC"
-        else:
-            completed_tasks_filter = f"AND done = {show_completed_tasks} "
+        if show_completed_tasks == False:
+            completed_tasks_filter = f"AND done = {False} "
 
-        query = f"SELECT * FROM tasks WHERE {project_filter} {completed_tasks_filter} {completed_tasks_order}"
+        query = f"SELECT * FROM tasks WHERE {project_filter} {completed_tasks_filter}"
         tasks = []
         for record in self.cursor.execute(query).fetchall():
             tasks.append(self.record_to_task(record))
-        tasks.reverse()
         return tasks
 
     def delete(self, _id) -> None:
@@ -238,16 +237,18 @@ class TasksData(Database):
 
     def update(self, task: Task) -> None:
         self.cursor.execute(
-            f"UPDATE tasks SET name = '{task.name}', done = {task.done}, project = {task.project}, times = '{task.times}' WHERE id = {task.id}"
+            f"UPDATE tasks SET name = '{task.name}', done = {task.done}, project = {task.project}, times = '{task.times}', position = {task.position} WHERE id = {task.id}"
         )
         self.connection.commit()
 
-    def add(self, name, project_id="NULL") -> Task:
+    def add(self, name, project_id: int) -> Task:
+        position = len(self.cursor.execute(f"SELECT position FROM tasks WHERE project = {project_id}").fetchall())
+        print("new position", position)
         self.cursor.execute(
-            f"INSERT INTO tasks(name, done, project, times) VALUES ('{name}', 0, {project_id}, '')"
+            f"INSERT INTO tasks(name, done, project, times, position) VALUES ('{name}', 0, {project_id}, '', {position})"
         )
         self.connection.commit()
 
-        return Task(self.cursor.lastrowid, name, False, project_id, "")
+        return Task(self.cursor.lastrowid, name, False, project_id, "", position)
 
 

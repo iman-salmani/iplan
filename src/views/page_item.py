@@ -57,19 +57,6 @@ class TaskRow(Gtk.ListBoxRow):
             if not last_time[1]:
                 self.toggle_timer(last_time=True)
 
-    def prepare_drag(self, drag_source, x, y):
-        file = self.get_file()
-        pixbuf = self.get_pixbuf()
-        print("prepare", drag_source, x, y)
-
-        content_provider = Gdk.ContentProvider.new_union()
-        return content_provider
-
-    def drag_begin(self, drag_source, drag):
-        paintable = Gtk.WidgetPaintable.new(self)
-        drag_source.set_icon(paintable, 0, 0)
-        print("drag-begin", drag_source, drag)
-
     # Actions
     def toggle_task_entry(self, sender):
         if sender == "button":
@@ -108,7 +95,7 @@ class TaskRow(Gtk.ListBoxRow):
             self.timer.add_css_class("destructive-action")
 
             self.timer_running = True
-            thread = Thread(target=self.start_timer, args=(last_time))
+            thread = Thread(target=self.start_timer, args=(last_time, ))
             thread.daemon = True
             thread.start()
         else:
@@ -118,6 +105,27 @@ class TaskRow(Gtk.ListBoxRow):
             self.timer.remove_css_class("destructive-action")
 
     # UI
+    @Gtk.Template.Callback()
+    def on_drag_prepare(self, drag_source: Gtk.DragSource,
+            x: float, y: float) -> Gdk.ContentProvider:
+        return Gdk.ContentProvider.new_for_value(self)
+
+    @Gtk.Template.Callback()
+    def on_drag_begin(
+            self, drag_source: Gtk.DragSource,
+            drag: Gdk.Drag) -> None:
+        allocation = self.get_allocation()
+        drag_widget = Gtk.ListBox()
+        drag_widget.set_size_request(allocation.width, allocation.height)
+
+        drag_row = TaskRow(self.task)
+        drag_widget.append(drag_row)
+        drag_widget.drag_highlight_row(drag_row)
+
+        drag_icon = Gtk.DragIcon.get_for_drag(drag)
+        drag_icon.props.child = drag_widget
+        drag.set_hotspot(0, 0)
+
     def start_timer(self, last_time):
         tasks_data = TasksData()  # for new thread
         diffrence = None

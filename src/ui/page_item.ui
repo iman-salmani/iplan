@@ -75,5 +75,13 @@
         </child><!-- End Delete Button -->
       </object>
     </child><!-- End Box -->
+    <child>
+      <object class="GtkDragSource" id="_drag_source">
+        <property name="actions">move</property>
+        <property name="propagation-phase">capture</property>
+        <signal name="prepare" handler="on_drag_prepare" swapped="no"/>
+        <signal name="drag-begin" handler="on_drag_begin" swapped="no"/>
+      </object>
+    </child>
   </template>
 </interface>

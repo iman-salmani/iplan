@@ -26,14 +26,12 @@ class Page(Gtk.Box):
         self.header = PageHeader()
         self.prepend(self.header)
 
-        ## TODO: add drag drop
-        #drop_target = Gtk.DropTarget()
-        #drop_target.connect("drop", lambda *args: print("drop", *args))
-        #drop_target.connect("enter", lambda *args: print("enter", *args))
-        #drop_target.connect("leave", lambda *args: print("leave", *args))
-        #drop_target.connect("motion", lambda *args: print("motion", *args))
-        #self.tasks_list.add_controller(drop_target)
+        drop_target = Gtk.DropTarget.new(TaskRow, Gdk.DragAction.MOVE)
+        drop_target.set_preload(True)
+        drop_target.connect("drop", self.on_drop)
+        self.tasks_list.add_controller(drop_target)
 
+        self.tasks_list.set_sort_func(self.sort)
         self.connect("map", lambda *args: self.install_actions())
 
 
@@ -78,6 +76,34 @@ class Page(Gtk.Box):
         self.fetch()
 
     # UI
+    def on_drop(
+            self,
+            target: Gtk.DropTarget,
+            source_widget: TaskRow,
+            x: float, y: float) -> bool:
+        target_widget: TaskRow = self.tasks_list.get_row_at_y(y)
+
+        source_position = source_widget.task.position
+        target_position = target_widget.task.position
+
+        if source_position == target_position:
+            return False
+
+        source_widget.task.position = target_position
+        tasks_data.update(source_widget.task)
+
+        target_widget.task.position = source_position
+        tasks_data.update(target_widget.task)
+
+        self.tasks_list.invalidate_sort()
+        return True
+
+    def sort(
+            self,
+            row1: Gtk.ListBoxRow,
+            row2: Gtk.ListBoxRow) -> int:
+        return row2.task.position - row1.task.position
+
     def fetch(self):
         tasks = tasks_data.all(
             show_completed_tasks=self.show_completed_tasks,
