@@ -32,9 +32,6 @@ class TaskRow(Gtk.ListBoxRow):
 
         self.name_entry.set_visible(new)
         self.name_entry_buffer.set_text(task.name, -1)
-        self.name_entry_buffer.connect(
-            "inserted-text", lambda *args: self.inserted_text(self.name_entry_buffer.get_text())
-        )
         self.name_entry.connect(
             "activate",
             lambda sender: self.toggle_task_entry("entry")
@@ -49,7 +46,7 @@ class TaskRow(Gtk.ListBoxRow):
 
         self.timer.connect(
             "clicked",
-            lambda sender: self.toggle_timer(self.timer, self.timer.get_child(), self.task),
+            lambda sender: self.toggle_timer(),
         )
         duration = task.get_duration()
         if duration:
@@ -58,9 +55,7 @@ class TaskRow(Gtk.ListBoxRow):
         last_time = task.get_last_time()
         if last_time:
             if not last_time[1]:
-                self.toggle_timer(self.timer, self.timer_content, self.task, last_time=True)
-
-        self.delete_button.connect("clicked", lambda sender: self.delete(self.task.id, self))
+                self.toggle_timer(last_time=True)
 
     def prepare_drag(self, drag_source, x, y):
         file = self.get_file()
@@ -86,9 +81,10 @@ class TaskRow(Gtk.ListBoxRow):
             self.name_button.set_visible(True)
             self.name_button.get_child().set_text(self.name_entry_buffer.get_text())
 
-    def delete(self, _id, taskWidget):
-        tasks_data.delete(_id)
-        self.get_parent().remove(taskWidget)
+    @Gtk.Template.Callback()
+    def delete(self, sender):
+        tasks_data.delete(self.task.id)
+        self.get_parent().remove(self)
 
     def open_task(self):
         window = self.get_root()
@@ -96,63 +92,58 @@ class TaskRow(Gtk.ListBoxRow):
         modal.set_transient_for(window)
         modal.present()
 
-    def inserted_text(self, text):
-        self.task.name = text
+    @Gtk.Template.Callback()
+    def change_task_name(self, buffer, cursor, text, length):
+        self.task.name = buffer.get_text()
         tasks_data.update(self.task)
 
     @Gtk.Template.Callback()
     def toggled_checkbox(self, sender):
-        tasks_data.update(Task(
-            self.task.id,
-            self.task.name,
-            self.checkbox.get_active(),
-            self.task.project,
-            self.task.times,
-        ))
+        tasks_data.update(self.task)
         self.activate_action("win.refresh_tasks")
 
-    def toggle_timer(self, button, content, task, last_time=False):
-        if button.has_css_class("flat"):
-            button.remove_css_class("flat")
-            button.add_css_class("destructive-action")
+    def toggle_timer(self, last_time=False):
+        if self.timer.has_css_class("flat"):
+            self.timer.remove_css_class("flat")
+            self.timer.add_css_class("destructive-action")
 
             self.timer_running = True
-            thread = Thread(target=self.start_timer, args=(content, task, last_time))
+            thread = Thread(target=self.start_timer, args=(last_time))
             thread.daemon = True
             thread.start()
         else:
             self.timer_running = False
 
-            button.add_css_class("flat")
-            button.remove_css_class("destructive-action")
+            self.timer.add_css_class("flat")
+            self.timer.remove_css_class("destructive-action")
 
     # UI
-    def start_timer(self, content, task: Task, last_time):
+    def start_timer(self, last_time):
         tasks_data = TasksData()  # for new thread
         diffrence = None
         if last_time:
-            lt = task.get_last_time()
+            lt = self.task.get_last_time()
             start = datetime.fromtimestamp(lt[0])
             now = datetime.now()
             diffrence = now - start
 
         else:
             start = datetime.now()
-            task.times = task.times + f"{start.timestamp()},0;"
-            tasks_data.update(task)
+            self.task.times += f"{start.timestamp()},0;"
+            tasks_data.update(self.task)
 
         while self.timer_running:
             now = datetime.now()
             diffrence = now - start
             text = ""
             GLib.idle_add(
-                lambda: content.set_label(task.duration_to_text(diffrence.seconds))
+                lambda: self.timer_content.set_label(self.task.duration_to_text(diffrence.seconds))
             )
             sleep(0.1)
 
-        task.times = task.times[0:-2] + str(diffrence.seconds) + ";"
-        content.set_label(task.get_duration_text())
-        tasks_data.update(task)
+        self.task.times = self.task.times[0:-2] + str(diffrence.seconds) + ";"
+        self.timer_content.set_label(self.task.get_duration_text())
+        tasks_data.update(self.task)
         self.activate_action("win.refresh_project_duration")
 
 
