@@ -12,14 +12,14 @@
             <child>
               <object class="GtkShortcutsShortcut">
                 <property name="title" translatable="yes" context="shortcut window">Search</property>
-                <property name="action-name">win.search</property>
+                <property name="action-name">app.search</property>
                 <property name="accelerator">Control_L+f</property>
               </object>
             </child>
             <child>
               <object class="GtkShortcutsShortcut">
                 <property name="title" translatable="yes" context="shortcut window">New Task</property>
-                <property name="action-name">win.new_task</property>
+                <property name="action-name">app.new_task</property>
                 <property name="accelerator">Control_L+n</property>
               </object>
             </child>

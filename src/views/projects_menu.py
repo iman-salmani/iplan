@@ -26,7 +26,7 @@ class ProjectsMenu(Gtk.Box):
 
     # Actions
     def install_actions(self):
-        actions = self.props.root.actions
+        actions = self.props.root.props.application.actions
         actions["search"].connect("activate", lambda *args: self.menu_button.popup())
         actions["update_project"].connect("activate", lambda *args: self.refresh_projects())
         actions["open_project"].connect("activate", lambda *args: self.open_project())
@@ -38,7 +38,7 @@ class ProjectsMenu(Gtk.Box):
         project = Project(id=project_id, name=name, archive=False)
         self.projects_list.append(SearchItem("project", project.name, project=project))
         self.props.root.project = project
-        self.activate_action("win.open_project", GLib.Variant.new_tuple(
+        self.activate_action("app.open_project", GLib.Variant.new_tuple(
             GLib.Variant("b", True),
             GLib.Variant("i", -1)
         ))
@@ -122,13 +122,13 @@ class SearchItem(Gtk.Button):
     def on_click(self, sender):
         if self._type == "project":
             self.props.root.project = self.project
-            self.activate_action("win.open_project", GLib.Variant.new_tuple(
+            self.activate_action("app.open_project", GLib.Variant.new_tuple(
                 GLib.Variant("b", False),
                 GLib.Variant("i", -1)
             ))
         elif self._type == "task":
             self.props.root.project = projects_data.get(self.task.project)
-            self.activate_action("win.open_project", GLib.Variant.new_tuple(
+            self.activate_action("app.open_project", GLib.Variant.new_tuple(
                 GLib.Variant("b", False),
                 GLib.Variant("i", self.task.id)
             ))

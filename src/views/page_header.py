@@ -34,7 +34,7 @@ class PageHeader(Gtk.Box):
 
     # Actions
     def install_actions(self):
-        actions = self.props.root.actions
+        actions = self.props.root.props.application.actions
 
         actions["open_project"].connect(
             "activate",
@@ -57,7 +57,7 @@ class PageHeader(Gtk.Box):
     def change_project_name(self, sender):
         self.props.root.project.name = self.project_name_entry.get_buffer().get_text()
         projects_data.update(self.props.root.project)
-        self.activate_action("win.update_project")
+        self.activate_action("app.update_project")
         self.project_name_button_label.set_text(self.props.root.project.name)
         self.change_status("show")
 
@@ -125,11 +125,11 @@ class PageHeader(Gtk.Box):
         state = sender.get_state()
         self.props.root.project.archive = state
         projects_data.update(self.props.root.project)
-        self.activate_action("win.update_project")
+        self.activate_action("app.update_project")
 
         if state:
             self.props.root.project = projects_data.first()
-            self.activate_action("win.open_project", GLib.Variant.new_tuple(
+            self.activate_action("app.open_project", GLib.Variant.new_tuple(
                 GLib.Variant("b", False),
                 GLib.Variant("i", -1)
             ))
@@ -149,9 +149,9 @@ class PageHeader(Gtk.Box):
     def delete_project(self, dialog, response):
         if response == "delete":
             projects_data.delete(self.props.root.project.id)
-            self.activate_action("win.update_project")
+            self.activate_action("app.update_project")
             self.props.root.project = projects_data.first()
-            self.activate_action("win.open_project", GLib.Variant.new_tuple(
+            self.activate_action("app.open_project", GLib.Variant.new_tuple(
                 GLib.Variant("b", False),
                 GLib.Variant("i", -1)
             ))

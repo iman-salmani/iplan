@@ -23,20 +23,51 @@ import gi
 gi.require_version('Gtk', '4.0')
 gi.require_version('Adw', '1')
 
-from gi.repository import Gtk, Gio, Adw
+from gi.repository import Gtk, Gio, GLib, Adw
 from iplan.views.window import IplanWindow
 
 
 class IplanApplication(Adw.Application):
     """The main application singleton class."""
+    actions = {}
 
     def __init__(self):
         super().__init__(application_id='ir.imansalmani.iplan',
                          flags=Gio.ApplicationFlags.FLAGS_NONE)
-        self.create_action('quit', lambda *args: self.quit(), ['<Ctrl>q'])
-        self.create_action('about', self.on_about)
-        self.create_action('shortcuts', self.on_shortcuts, ['<Ctrl>question'])
-        self.create_action('preferences', self.on_preferences, ['<Ctrl>comma'])
+        self.create_action(
+            'quit',
+            callback=lambda *args: self.quit(),
+            shortcuts=['<Ctrl>q']
+        )
+        self.create_action('about', callback=self.on_about)
+        self.create_action(
+            'shortcuts',
+            callback=self.on_shortcuts,
+            shortcuts=['<Ctrl>question']
+        )
+        self.create_action(
+            'preferences',
+            callback=self.on_preferences,
+            shortcuts=['<Ctrl>comma']
+        )
+        self.create_action("search", shortcuts=["<Ctrl>f"])
+        self.create_action("update_project")
+        self.create_action(
+            "open_project",
+            param=GLib.VariantType.new_tuple([
+                GLib.VariantType('b'),
+                GLib.VariantType('i')
+            ])  # (new, task.id)
+        )
+        # callbacks using window project attribute like self.props.root.project
+        self.create_action("refresh_project_duration")
+        self.create_action("new_task", shortcuts=["<Ctrl>n"])
+        self.create_action("refresh_tasks")
+        self.create_action(
+            "toggle_completed_tasks",
+            param=GLib.VariantType("b"),
+            state=GLib.Variant("b", False)
+        )
 
     def do_activate(self):
         """Called when the application is activated.
@@ -69,20 +100,42 @@ class IplanApplication(Adw.Application):
         """Callback for the app.preferences action."""
         print('app.preferences action activated')
 
-    def create_action(self, name, callback, shortcuts=None):
-        """Add an application action.
+    def create_action(
+            self,
+            name,
+            callback=None,
+            param: GLib.VariantType=None,
+            state=None,
+            shortcuts: list[str]=None):
+        """Add an window action.
 
         Args:
             name: the name of the action
             callback: the function to be called when the action is
               activated
+            param: parameter
+            state:
+                if not none create stateful action with
+                default state value equal to state argument.
+                param required for state
             shortcuts: an optional list of accelerators
+            note -> callback add by children
         """
-        action = Gio.SimpleAction.new(name, None)
-        action.connect("activate", callback)
+
+        if state == None:
+            action = Gio.SimpleAction.new(name, param)
+        else:
+            action = Gio.SimpleAction.new_stateful(name, param, state)
+
+        if callback:
+            action.connect("activate", callback)
+
         self.add_action(action)
+
         if shortcuts:
             self.set_accels_for_action(f"app.{name}", shortcuts)
+
+        self.actions[name] = action
 
 
 @Gtk.Template(resource_path="/ir/imansalmani/iplan/ui/shortcuts_window.ui")

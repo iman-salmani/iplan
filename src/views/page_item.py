@@ -88,7 +88,7 @@ class TaskRow(Gtk.ListBoxRow):
     def toggled_checkbox(self, sender):
         self.task.done = sender.get_active()
         tasks_data.update(self.task)
-        self.activate_action("win.refresh_tasks")
+        self.activate_action("app.refresh_tasks")
 
     def toggle_timer(self, last_time=False):
         if self.timer.has_css_class("flat"):
@@ -153,7 +153,7 @@ class TaskRow(Gtk.ListBoxRow):
         self.task.times = self.task.times[0:-2] + str(diffrence.seconds) + ";"
         self.timer_content.set_label(self.task.get_duration_text())
         tasks_data.update(self.task)
-        self.activate_action("win.refresh_project_duration")
+        self.activate_action("app.refresh_project_duration")
 
 
 class TaskModal(Adw.Window):

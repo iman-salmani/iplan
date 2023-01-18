@@ -26,7 +26,6 @@ from iplan.database.database import Project
 
 class IplanWindow(Adw.ApplicationWindow):
     __gtype_name__ = 'IplanWindow'
-    actions = {}
     project: Project = None
 
     def __init__(self, **kwargs):
@@ -37,26 +36,6 @@ class IplanWindow(Adw.ApplicationWindow):
         root = Gtk.Box()
         root.set_orientation(Gtk.Orientation.VERTICAL)
         self.set_content(root)
-
-        # Global actions
-        self.create_action("search", shortcuts=["<Ctrl>f"])
-        self.create_action("update_project")
-        self.create_action(
-            "open_project",
-            param=GLib.VariantType.new_tuple([
-                GLib.VariantType('b'),
-                GLib.VariantType('i')
-            ])  # (new, task.id)
-        )
-        # callbacks using window project attribute like self.props.root.project
-        self.create_action("refresh_project_duration")
-        self.create_action("new_task", shortcuts=["<Ctrl>n"])
-        self.create_action("refresh_tasks")
-        self.create_action(
-            "toggle_completed_tasks",
-            param=GLib.VariantType("b"),
-            state=GLib.Variant("b", False)
-        )
 
         # Header
         header = Adw.HeaderBar()
@@ -73,33 +52,3 @@ class IplanWindow(Adw.ApplicationWindow):
         page = Page()
         root.append(page)
 
-    def create_action(
-            self,
-            name,
-            param: GLib.VariantType=None,
-            state=None,
-            shortcuts: list[str]=None):
-        """Add an window action.
-
-        Args:
-            name: the name of the action
-            param: parameter
-            state:
-                if not none create stateful action with
-                default state value equal to state argument.
-                param required for state
-            shortcuts: an optional list of accelerators
-            note -> callback add by children
-        """
-
-        if state == None:
-            action = Gio.SimpleAction.new(name, param)
-        else:
-            action = Gio.SimpleAction.new_stateful(name, param, state)
-
-        self.add_action(action)
-
-        if shortcuts:
-            self.props.application.set_accels_for_action(f"win.{name}", shortcuts)
-
-        self.actions[name] = action

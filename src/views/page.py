@@ -35,7 +35,7 @@ class Page(Gtk.Box):
 
     # Actions
     def install_actions(self):
-        actions = self.props.root.actions
+        actions = self.props.root.props.application.actions
 
         actions["open_project"].connect(
             "activate",
@@ -52,7 +52,7 @@ class Page(Gtk.Box):
 
         # open first project
         self.props.root.project = projects_data.first()
-        self.activate_action("win.open_project", GLib.Variant.new_tuple(
+        self.activate_action("app.open_project", GLib.Variant.new_tuple(
             GLib.Variant("b", False),
             GLib.Variant("i", -1)
         ))
@@ -77,7 +77,7 @@ class Page(Gtk.Box):
         if task_id != -1:
             task = tasks_data.get(task_id)
             if task.done and not self.show_completed_tasks:
-                self.props.root.actions["toggle_completed_tasks"].change_state(
+                self.props.root.props.application.actions["toggle_completed_tasks"].change_state(
                     GLib.Variant('b', True)
                 )
 
