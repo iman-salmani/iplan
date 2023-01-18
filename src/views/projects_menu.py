@@ -64,6 +64,9 @@ class ProjectsMenu(Gtk.Box):
             result[1] = tasks_data.search(text)
         else:
             self.fetch()
+            self.no_results.set_visible(False)
+            self.projects_list.set_visible(True)
+            return
 
         if result == [[], []]:
             self.no_results.set_visible(True)
