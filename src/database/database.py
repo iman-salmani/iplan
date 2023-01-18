@@ -258,3 +258,10 @@ class TasksData(Database):
             tasks.append(self.record_to_task(row))
         return tasks
 
+    def get(self, task_id: int) -> Task:
+        return self.record_to_task(
+            self.cursor.execute(
+                f"SELECT * FROM tasks WHERE id = {task_id}"
+            ).fetchone()
+        )
+

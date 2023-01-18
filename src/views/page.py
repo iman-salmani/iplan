@@ -1,9 +1,7 @@
 import gi
 
 from gi.repository import Gtk, Adw, GLib, Pango, Gdk
-from time import sleep
 from datetime import datetime
-from threading import Thread
 
 from iplan.database.database import TasksData, Task, ProjectsData
 from iplan.views.page_header import PageHeader
@@ -41,7 +39,7 @@ class Page(Gtk.Box):
 
         actions["open_project"].connect(
             "activate",
-            lambda *args: self.open_project()
+            lambda *args: self.open_project(args[1][1])
         )
 
         actions["new_task"].connect("activate", lambda *args: self.new())
@@ -75,10 +73,26 @@ class Page(Gtk.Box):
         self.tasks_list.prepend(task_ui)
         task_ui.name_entry.grab_focus()
 
-    def open_project(self):
+    def open_project(self, task_id):
+        if task_id != -1:
+            task = tasks_data.get(task_id)
+            if task.done and not self.show_completed_tasks:
+                self.props.root.actions["toggle_completed_tasks"].change_state(
+                    GLib.Variant('b', True)
+                )
+
         self.timer_running = False
         self.clear()
         self.fetch()
+
+        if task_id != -1:
+            tasks_ui = list(self.tasks_list.observe_children())
+            searched_task_ui = None
+            for task_ui in tasks_ui:
+                if task_ui.task.id == task_id:
+                    searched_task_ui = task_ui
+                    break
+            GLib.idle_add(lambda *args: self.props.root.set_focus(searched_task_ui))
 
     def toggle_completed_tasks(self, state):
         self.show_completed_tasks = state
