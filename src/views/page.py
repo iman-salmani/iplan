@@ -16,6 +16,7 @@ class Page(Gtk.Box):
     __gtype_name__ = "Page"
     show_completed_tasks: bool = False
     tasks_list: Gtk.ListBox = Gtk.Template.Child()
+    scrolled_window: Gtk.ScrolledWindow = Gtk.Template.Child()
 
     def __init__(self) -> None:
         super().__init__()
@@ -27,6 +28,7 @@ class Page(Gtk.Box):
         drop_target = Gtk.DropTarget.new(TaskRow, Gdk.DragAction.MOVE)
         drop_target.set_preload(True)
         drop_target.connect("drop", self.on_drop)
+        drop_target.connect("motion", self.on_motion)
         self.tasks_list.add_controller(drop_target)
 
         self.tasks_list.set_sort_func(self.sort)
@@ -125,6 +127,27 @@ class Page(Gtk.Box):
 
         self.tasks_list.invalidate_sort()
         return True
+
+    def on_motion(self, target: Gtk.DropTarget, x, y):
+        target_task: TaskRow = self.tasks_list.get_row_at_y(y)
+        source_task: TaskRow = target.get_value()
+
+        if source_task == target_task:
+            return 0
+
+        scrolled_window_height = self.scrolled_window.get_size(Gtk.Orientation.VERTICAL)
+        tasks_list_height = self.tasks_list.get_size(Gtk.Orientation.VERTICAL)
+
+        if tasks_list_height > scrolled_window_height:
+            adjustment = self.scrolled_window.props.vadjustment
+            step = adjustment.get_step_increment() / 3
+            v_pos = adjustment.get_value()
+            if y - v_pos > 475:
+                adjustment.set_value(v_pos + step)
+            elif y - v_pos < 25:
+                adjustment.set_value(v_pos - step)
+
+        return Gdk.DragAction.MOVE
 
     def sort(
             self,
