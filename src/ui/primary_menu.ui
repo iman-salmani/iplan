@@ -5,6 +5,7 @@
   <template class="PrimaryMenu" parent="GtkMenuButton">
     <property name="icon-name">open-menu-symbolic</property>
     <property name="menu-model">primary_menu_model</property>
+    <property name="primary">true</property>
   </template>
   <!-- Primary Menu Model -->
   <menu id='primary_menu_model'>
