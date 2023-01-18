@@ -38,7 +38,7 @@
             <property name="margin-end">6</property>
             <child>
               <object class="GtkSearchEntry">
-                <signal name="search-changed" handler="search_changed"/>
+                <signal name="search-changed" handler="on_search_entry_change"/>
               </object>
             </child>
             <child>

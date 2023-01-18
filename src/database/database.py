@@ -6,8 +6,8 @@ from datetime import datetime, date
 from gi.repository import GLib
 
 class Database:
-    path = os.path.join(GLib.get_user_data_dir(), "database.db")
-    # path = "/home/iman/.cache/ir.imansalmani.iplan/database.db"
+    #path = os.path.join(GLib.get_user_data_dir(), "database.db")
+    path = "/home/iman/.cache/ir.imansalmani.iplan/database.db"
 
     def __init__(self) -> None:
         if os.path.isfile(self.path):
@@ -250,4 +250,11 @@ class TasksData(Database):
 
         return Task(self.cursor.lastrowid, name, False, project_id, "", position)
 
+    def search(self, text) -> list[Task]:
+        query = f"SELECT * FROM tasks WHERE name LIKE '%{text}%'"
+        result = self.cursor.execute(query).fetchall()
+        tasks = []
+        for row in result:
+            tasks.append(self.record_to_task(row))
+        return tasks
 

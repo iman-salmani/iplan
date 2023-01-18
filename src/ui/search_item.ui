@@ -2,9 +2,9 @@
 <interface>
   <requires lib="gtk" version="4.0"/>
   <requires lib="Adw" version="1.0"/>
-  <template class="ProjectsMenuItem" parent="GtkButton">
+  <template class="SearchItem" parent="GtkButton">
     <property name="hexpand">true</property>
-    <signal name="clicked" handler="open_project"/>
+    <signal name="clicked" handler="on_click"/>
     <style>
       <class name="flat"/>
     </style>

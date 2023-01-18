@@ -38,7 +38,7 @@ class PageHeader(Gtk.Box):
 
         actions["open_project"].connect(
             "activate",
-            lambda *args: self.open_project(args[1])
+            lambda *args: self.open_project(args[1][0])
         )
 
         actions["refresh_project_duration"].connect(
@@ -129,7 +129,10 @@ class PageHeader(Gtk.Box):
 
         if state:
             self.props.root.project = projects_data.first()
-            self.activate_action("win.open_project", GLib.Variant("b", False))
+            self.activate_action("win.open_project", GLib.Variant.new_tuple(
+                GLib.Variant("b", False),
+                GLib.Variant("i", -1)
+            ))
             self.project_options_popover.popdown()
 
     @Gtk.Template.Callback()
@@ -148,7 +151,10 @@ class PageHeader(Gtk.Box):
             projects_data.delete(self.props.root.project.id)
             self.activate_action("win.update_project")
             self.props.root.project = projects_data.first()
-            self.activate_action("win.open_project", GLib.Variant("b", False))
+            self.activate_action("win.open_project", GLib.Variant.new_tuple(
+                GLib.Variant("b", False),
+                GLib.Variant("i", -1)
+            ))
 
     # UI Functions
     def clear(self, box):
