@@ -22,19 +22,11 @@ class SearchBar(Gtk.Box):
         # add actions
         self.connect("map", lambda *args: self.install_actions())
 
-        self.fetch()
-
     # Actions
     def install_actions(self):
         actions = self.props.root.props.application.actions
         actions["search"].connect("activate", lambda *args: self.menu_button.popup())
-        actions["update_project"].connect("activate", lambda *args: self.refresh_projects())
         actions["open_project"].connect("activate", lambda *args: self.open_project())
-
-    def refresh_projects(self):
-        self.menu_button.set_label(self.props.root.project.name)
-        self.clear()
-        self.fetch()
 
     def open_project(self):
         self.menu_button.set_label(self.props.root.project.name)
@@ -51,7 +43,7 @@ class SearchBar(Gtk.Box):
             result[0] = projects_data.search(text, archive=self.archive_status)
             result[1] = tasks_data.search(text)
         else:
-            self.fetch()
+            self.clear()
             self.no_results.set_visible(False)
             self.projects_list.set_visible(True)
             return
@@ -70,12 +62,12 @@ class SearchBar(Gtk.Box):
                 self.projects_list.append(
                     SearchItem("task", task.name, task=task))
 
-    @Gtk.Template.Callback()
-    def toggle_archive(self, sender):
-        sender.set_has_frame(not sender.get_has_frame())
-        self.archive_status = not self.archive_status
+    #@Gtk.Template.Callback()
+    #def toggle_archive(self, sender):
+    #    sender.set_has_frame(not sender.get_has_frame())
+    #    self.archive_status = not self.archive_status
 
-        self.refresh_projects()
+        #self.clear()
 
     # UI
     def clear(self):

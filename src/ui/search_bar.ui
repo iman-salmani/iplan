@@ -34,13 +34,13 @@
                 <signal name="search-changed" handler="on_search_entry_change"/>
               </object>
             </child>
-            <child>
+            <!--<child>
               <object class="GtkButton">
                 <property name="icon_name">folder-open-symbolic</property>
                 <property name="has_frame">false</property>
                 <signal name="clicked" handler="toggle_archive"/>
               </object>
-            </child>
+            </child>-->
           </object>
         </child><!-- End Head -->
         <child>
