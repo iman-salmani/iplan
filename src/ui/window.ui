@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <requires lib="gtk" version="4.0"/>
+  <requires lib="Adw" version="1.0"/>
+  <template class="IPlanWindow" parent="AdwApplicationWindow">
+    <property name="height-request">640</property>
+    <property name="content"><!-- Main -->
+      <object class="GtkBox" id="main">
+        <property name="orientation">vertical</property>
+        <!-- Header will add by python code -->
+        <child><!-- Header -->
+          <object class="AdwHeaderBar">
+            <child type="start">
+              <object class="GtkToggleButton" id="toggle_pane_button">
+                <property name="icon-name">sidebar-show-symbolic</property>
+                <property name="active">True</property>
+              </object>
+            </child>
+            <child type="start">
+              <object class="ProjectsMenu"></object>
+            </child>
+            <child type="end">
+              <object class="PrimaryMenu"></object>
+            </child>
+          </object>
+        </child><!-- End Header -->
+        <child><!-- Flap -->
+          <object class="AdwFlap" id="flap">
+            <property name="reveal-flap"
+            bind-source="toggle_pane_button"
+              bind-property="active"
+              bind-flags="sync-create|bidirectional"/>
+            <property name="flap"><!-- Utility Pane -->
+              <object class="GtkBox">
+                <property name="orientation">vertical</property>
+                <property name="width-request">320</property>
+              </object>
+            </property><!-- Utility Pane -->
+            <property name="separator"><!-- Separator -->
+              <object class="GtkSeparator"/>
+            </property><!-- End Separator -->
+            <property name="content"><!-- Page -->
+              <object class="Page"></object>
+            </property><!-- End Page -->
+          </object>
+        </child><!-- End Flap -->
+      </object>
+    </property><!-- Main -->
+  </template>
+</interface>
+

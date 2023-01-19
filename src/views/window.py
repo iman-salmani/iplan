@@ -24,31 +24,11 @@ from iplan.views.primary_menu import PrimaryMenu
 from iplan.views.projects_menu import ProjectsMenu
 from iplan.database.database import Project
 
-class IplanWindow(Adw.ApplicationWindow):
-    __gtype_name__ = 'IplanWindow'
+@Gtk.Template(resource_path="/ir/imansalmani/iplan/ui/window.ui")
+class IPlanWindow(Adw.ApplicationWindow):
+    __gtype_name__ = 'IPlanWindow'
     project: Project = None
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.set_size_request(640, 640)
-
-        # Root
-        root = Gtk.Box()
-        root.set_orientation(Gtk.Orientation.VERTICAL)
-        self.set_content(root)
-
-        # Header
-        header = Adw.HeaderBar()
-        header.set_show_start_title_buttons(True)
-        root.append(header)
-
-        projects_menu = ProjectsMenu()
-        header.pack_start(projects_menu)
-
-        primary_menu = PrimaryMenu()
-        header.pack_end(primary_menu)
-
-        # Page
-        page = Page()
-        root.append(page)
 

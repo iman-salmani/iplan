@@ -6,6 +6,7 @@
     <property name="vexpand">true</property>
     <property name="hexpand">true</property>
     <property name="orientation">vertical</property>
+    <property name="width-request">480</property>
     <child><!-- Scrolled Window -->
       <object class="GtkScrolledWindow" id="scrolled_window">
         <property name="vexpand">true</property>

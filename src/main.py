@@ -24,10 +24,10 @@ gi.require_version('Gtk', '4.0')
 gi.require_version('Adw', '1')
 
 from gi.repository import Gtk, Gio, GLib, Adw
-from iplan.views.window import IplanWindow
+from iplan.views.window import IPlanWindow
 
 
-class IplanApplication(Adw.Application):
+class IPlanApplication(Adw.Application):
     """The main application singleton class."""
     actions = {}
 
@@ -77,7 +77,7 @@ class IplanApplication(Adw.Application):
         """
         win = self.props.active_window
         if not win:
-            win = IplanWindow(application=self)
+            win = IPlanWindow(application=self)
         win.present()
 
     def on_about(self, widget, _):
@@ -144,5 +144,5 @@ class ShortcutsWindow(Gtk.ShortcutsWindow):
 
 def main(version):
     """The application's entry point."""
-    app = IplanApplication()
+    app = IPlanApplication()
     return app.run(sys.argv)
