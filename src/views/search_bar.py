@@ -31,18 +31,6 @@ class SearchBar(Gtk.Box):
         actions["update_project"].connect("activate", lambda *args: self.refresh_projects())
         actions["open_project"].connect("activate", lambda *args: self.open_project())
 
-    @Gtk.Template.Callback()
-    def new_project(self, sender):
-        name = "New Project"
-        project_id = projects_data.add(name)
-        project = Project(id=project_id, name=name, archive=False)
-        self.projects_list.append(SearchItem("project", project.name, project=project))
-        self.props.root.project = project
-        self.activate_action("app.open_project", GLib.Variant.new_tuple(
-            GLib.Variant("b", True),
-            GLib.Variant("i", -1)
-        ))
-
     def refresh_projects(self):
         self.menu_button.set_label(self.props.root.project.name)
         self.clear()

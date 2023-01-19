@@ -44,6 +44,7 @@
           <object class="GtkButton">
             <property name="icon-name">tab-new-symbolic</property>
             <property name="tooltip_text">New project</property>
+            <signal name="clicked" handler="new_project"/>
           </object>
           </child>
       </object>

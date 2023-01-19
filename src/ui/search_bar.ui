@@ -12,13 +12,6 @@
         </style>
       </object>
     </child>
-    <child>
-      <object class="GtkButton">
-        <property name="icon-name">tab-new-symbolic</property>
-        <property name="has-frame">false</property>
-        <signal name="clicked" handler="new_project"/>
-      </object>
-    </child>
   </template>
   <object class="GtkPopover" id="menu"><!-- Menu Popover -->
     <property name="halign">start</property>

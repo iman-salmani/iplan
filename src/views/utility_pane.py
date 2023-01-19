@@ -28,6 +28,18 @@ class UtilityPane(Gtk.Box):
         actions["open_project"].connect("activate", self.refresh)
 
     @Gtk.Template.Callback()
+    def new_project(self, sender):
+        name = "New Project"
+        project_id = projects_data.add(name)
+        project = Project(id=project_id, name=name, archive=False)
+        self.projects_list.append(UtilityPaneProjectsItem(project))
+        self.props.root.project = project
+        self.activate_action("app.open_project", GLib.Variant.new_tuple(
+            GLib.Variant("b", True),
+            GLib.Variant("i", -1)
+        ))
+
+    @Gtk.Template.Callback()
     def refresh(self, *args):
         self.clear()
         self.fetch()
