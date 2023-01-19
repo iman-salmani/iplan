@@ -19,6 +19,7 @@
 
 from gi.repository import Gtk, Adw, Gio, GLib
 
+from iplan.views.utility_pane import UtilityPane
 from iplan.views.page import Page
 from iplan.views.primary_menu import PrimaryMenu
 from iplan.views.projects_menu import ProjectsMenu

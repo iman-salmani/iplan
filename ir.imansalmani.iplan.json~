@@ -36,6 +36,8 @@
         }
     ],
     "build-options" : {
-        "env" : {        }
+        "env" : {
+            "test" : "2"
+        }
     }
 }

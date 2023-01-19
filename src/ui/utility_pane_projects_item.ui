@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <template class="UtilityPaneProjectsItem" parent="GtkButton">
+    <signal name="clicked" handler="open_project" />
+    <style>
+      <class name="flat"/>
+    </style>
+    <child>
+      <object class="GtkLabel" id="content">
+        <property name="halign">start</property>
+      </object>
+    </child>
+  </template>
+</interface>

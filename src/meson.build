@@ -32,12 +32,13 @@ iplan_sources = [
 ]
 
 views_sources = [
-  'views/projects_menu.py',
   'views/window.py',
+  'views/utility_pane.py',
+  'views/projects_menu.py',
+  'views/primary_menu.py',
   'views/page.py',
   'views/page_header.py',
   'views/page_item.py',
-  'views/primary_menu.py',
 ]
 
 install_data(iplan_sources, install_dir: moduledir)

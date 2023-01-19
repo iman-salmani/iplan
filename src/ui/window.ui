@@ -5,7 +5,7 @@
   <template class="IPlanWindow" parent="AdwApplicationWindow">
     <property name="height-request">640</property>
     <property name="content"><!-- Main -->
-      <object class="GtkBox" id="main">
+      <object class="GtkBox">
         <property name="orientation">vertical</property>
         <!-- Header will add by python code -->
         <child><!-- Header -->
@@ -25,16 +25,13 @@
           </object>
         </child><!-- End Header -->
         <child><!-- Flap -->
-          <object class="AdwFlap" id="flap">
+          <object class="AdwFlap">
             <property name="reveal-flap"
             bind-source="toggle_pane_button"
               bind-property="active"
               bind-flags="sync-create|bidirectional"/>
             <property name="flap"><!-- Utility Pane -->
-              <object class="GtkBox">
-                <property name="orientation">vertical</property>
-                <property name="width-request">320</property>
-              </object>
+              <object class="UtilityPane"></object>
             </property><!-- Utility Pane -->
             <property name="separator"><!-- Separator -->
               <object class="GtkSeparator"/>
