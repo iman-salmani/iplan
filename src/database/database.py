@@ -152,7 +152,7 @@ class ProjectsData(Database):
             return self.all(archive=True)[0]
         return all[0]
 
-    def search(self, text, archive) -> list[Project]:
+    def search(self, text, archive=False) -> list[Project]:
         all = self.all(archive)
 
         result = []
