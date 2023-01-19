@@ -2,7 +2,7 @@
 <interface>
   <requires lib="gtk" version="4.0"/>
   <requires lib="Adw" version="1.0"/>
-  <template class="ProjectsMenu" parent="GtkBox">
+  <template class="SearchBar" parent="GtkBox">
     <child>
       <object class="GtkMenuButton" id="menu_button">
         <property name="label">Projects</property>

@@ -11,12 +11,45 @@ projects_data = ProjectsData()
 class UtilityPane(Gtk.Box):
     __gtype_name__ = "UtilityPane"
     projects_list: Gtk.Box = Gtk.Template.Child()
+    archive_button: Gtk.ToggleButton = Gtk.Template.Child()
 
     def __init__(self):
         super().__init__()
+        self.connect("map", self.on_map)
 
-        for project in projects_data.all():
+    # Actions
+    def on_map(self, *args):
+        "insert projects and Install actions after widget mapped"
+
+        self.fetch()
+
+        actions = self.props.root.props.application.actions
+        actions["update_project"].connect("activate", self.refresh)
+        actions["open_project"].connect("activate", self.refresh)
+
+    @Gtk.Template.Callback()
+    def refresh(self, *args):
+        self.clear()
+        self.fetch()
+
+    # UI
+    def clear(self):
+        while True:
+            row = self.projects_list.get_first_child()
+            if row:
+                self.projects_list.remove(row)
+            else:
+                break
+
+    def fetch(self):
+        selected_project = self.props.root.project
+        for project in projects_data.all(archive=self.archive_button.get_active()):
             project_ui = UtilityPaneProjectsItem(project)
+
+            if project.id == selected_project.id:
+                project_ui.remove_css_class("flat")
+                project_ui.add_css_class("suggested-action")
+
             self.projects_list.append(project_ui)
 
 

@@ -33,9 +33,9 @@ iplan_sources = [
 
 views_sources = [
   'views/window.py',
-  'views/utility_pane.py',
-  'views/projects_menu.py',
+  'views/search_bar.py',
   'views/primary_menu.py',
+  'views/utility_pane.py',
   'views/page.py',
   'views/page_header.py',
   'views/page_item.py',

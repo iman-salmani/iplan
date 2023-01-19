@@ -33,8 +33,17 @@
           </object>
         </child>
         <child>
+          <object class="GtkToggleButton" id="archive_button">
+            <property name="icon_name">folder-open-symbolic</property>
+            <property name="active">false</property>
+            <property name="tooltip_text">Show archive projects</property>
+            <signal name="toggled" handler="refresh"></signal>
+          </object>
+        </child>
+        <child>
           <object class="GtkButton">
             <property name="icon-name">tab-new-symbolic</property>
+            <property name="tooltip_text">New project</property>
           </object>
           </child>
       </object>
@@ -42,6 +51,7 @@
     <child><!-- Projects List -->
       <object class="GtkBox" id="projects_list">
         <property name="orientation">vertical</property>
+        <property name="spacing">6</property>
       </object>
     </child><!-- Projects List -->
   </template>

@@ -17,7 +17,7 @@
               </object>
             </child>
             <child type="start">
-              <object class="ProjectsMenu"></object>
+              <object class="SearchBar"></object>
             </child>
             <child type="end">
               <object class="PrimaryMenu"></object>

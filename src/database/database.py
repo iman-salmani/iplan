@@ -112,8 +112,11 @@ class ProjectsData(Database):
 
     def all(self, archive=False) -> list[Project]:
         _filter = ""
-        if not archive:
+        if archive:
+            _filter = "ORDER BY archive ASC"
+        else:
             _filter = "WHERE archive = False"
+
 
         result = self.cursor.execute(f"SELECT * FROM projects {_filter}").fetchall()
 

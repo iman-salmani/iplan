@@ -7,9 +7,9 @@ from iplan.database.database import ProjectsData, Project, TasksData, Task
 projects_data = ProjectsData()
 tasks_data = TasksData()
 
-@Gtk.Template(resource_path='/ir/imansalmani/iplan/ui/projects_menu.ui')
-class ProjectsMenu(Gtk.Box):
-    __gtype_name__ = "ProjectsMenu"
+@Gtk.Template(resource_path='/ir/imansalmani/iplan/ui/search_bar.ui')
+class SearchBar(Gtk.Box):
+    __gtype_name__ = "SearchBar"
     menu = Gtk.Template.Child()
     menu_button = Gtk.Template.Child()
     no_results = Gtk.Template.Child()
