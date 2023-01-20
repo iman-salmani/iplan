@@ -5,8 +5,6 @@
   <template class="UtilityPane" parent="GtkBox">
     <property name="orientation">vertical</property>
     <property name="width-request">240</property>
-    <property name="margin-start">6</property>
-    <property name="margin-end">6</property>
     <property name="hexpand">False</property>
     <style>
       <class name="background"/>
@@ -19,6 +17,7 @@
         <child>
           <object class="GtkLabel">
             <property name="label">Projects</property>
+            <property name="margin-start">6</property>
             <style>
               <class name="heading"/>
             </style>
@@ -52,6 +51,8 @@
     <child><!-- Projects List -->
       <object class="GtkBox" id="projects_list">
         <property name="orientation">vertical</property>
+        <property name="margin-start">6</property>
+        <property name="margin-end">6</property>
         <property name="spacing">6</property>
       </object>
     </child><!-- Projects List -->
