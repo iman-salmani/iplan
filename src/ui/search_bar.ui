@@ -14,7 +14,7 @@
       <object class="GtkPopover" id="menu">
         <property name="halign">start</property>
         <property name="has-arrow">False</property>
-        <property name="autohide">False</property>
+        <property name="autohide">True</property>
         <style>
           <class name="menu"/>
         </style>

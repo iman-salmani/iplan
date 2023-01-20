@@ -16,6 +16,7 @@ class SearchBar(Gtk.Box):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.search_entry.set_key_capture_widget(self.menu)
         self.connect("map", lambda *args: self.install_actions())
 
     # Actions
@@ -37,6 +38,7 @@ class SearchBar(Gtk.Box):
 
         if result == [[], []]:
             self.menu.popdown()
+            self.search_entry.grab_focus()  # auto hide property getting focus of search entry
         else:
             self.menu.popup()
 
@@ -46,6 +48,9 @@ class SearchBar(Gtk.Box):
             for task in result[1]:
                 self.founded_items.append(
                     SearchItem("task", task.name, self.menu, task=task))
+
+            first_item = self.founded_items.get_first_child()
+            first_item.grab_focus() # because of search entry have key capture
 
     # UI
     def clear(self):
