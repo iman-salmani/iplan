@@ -29,6 +29,7 @@ from iplan.database.database import Project
 class IPlanWindow(Adw.ApplicationWindow):
     __gtype_name__ = 'IPlanWindow'
     project: Project = None
+    flap: Adw.Flap = Gtk.Template.Child()
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)

@@ -83,9 +83,14 @@ class UtilityPaneProjectsItem(Gtk.Button):
 
     @Gtk.Template.Callback()
     def open_project(self, sender):
-        self.props.root.project = self.project
+        window = self.props.root
+        window.project = self.project
         self.activate_action("app.open_project", GLib.Variant.new_tuple(
             GLib.Variant("b", False),
             GLib.Variant("i", -1)
         ))
+
+        window_width = window.get_size(Gtk.Orientation.HORIZONTAL)
+        if window_width < 720:
+            window.flap.set_reveal_flap(False)
 

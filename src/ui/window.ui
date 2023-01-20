@@ -25,9 +25,9 @@
           </object>
         </child><!-- End Header -->
         <child><!-- Flap -->
-          <object class="AdwFlap">
+          <object class="AdwFlap" id="flap">
             <property name="reveal-flap"
-            bind-source="toggle_pane_button"
+              bind-source="toggle_pane_button"
               bind-property="active"
               bind-flags="sync-create|bidirectional"/>
             <property name="flap"><!-- Utility Pane -->
