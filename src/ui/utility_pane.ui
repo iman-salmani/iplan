@@ -34,7 +34,7 @@
         </child>
         <child>
           <object class="GtkToggleButton" id="archive_button">
-            <property name="icon_name">folder-open-symbolic</property>
+            <property name="icon_name">shoe-box-symbolic</property>
             <property name="active">false</property>
             <property name="tooltip_text">Show archive projects</property>
             <signal name="toggled" handler="refresh"></signal>
