@@ -21,7 +21,7 @@ class UtilityPane(Gtk.Box):
     def on_map(self, *args):
         "insert projects and Install actions after widget mapped"
 
-        self.fetch()
+        self.refresh()
 
         actions = self.props.root.props.application.actions
         actions["update_project"].connect("activate", self.refresh)
