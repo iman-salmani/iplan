@@ -229,7 +229,7 @@ class TasksData(Database):
         if show_completed_tasks == False:
             completed_tasks_filter = f"AND done = {False} "
 
-        query = f"SELECT * FROM tasks WHERE {project_filter} {completed_tasks_filter}"
+        query = f"SELECT * FROM tasks WHERE {project_filter} {completed_tasks_filter} ORDER BY position ASC"
         tasks = []
         for record in self.cursor.execute(query).fetchall():
             tasks.append(self.record_to_task(record))
@@ -245,7 +245,12 @@ class TasksData(Database):
         )
         self.connection.commit()
 
-    def add(self, name, project_id: int, position: int) -> Task:
+    def add(self, name, project_id: int) -> Task:
+        position = self.cursor.execute(f"SELECT * FROM tasks WHERE project = {project_id} ORDER BY position DESC").fetchone()[5] + 1
+        # 👆️ explain:
+        # - get all tasks in project order by position big to low
+        # - fetch first one
+        # - add one to position
         self.cursor.execute(
             f"INSERT INTO tasks(name, done, project, times, position) VALUES ('{name}', 0, {project_id}, '', {position})"
         )

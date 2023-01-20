@@ -61,7 +61,6 @@ class TaskRow(Gtk.ListBoxRow):
                 if not last_time[1]:
                     self.toggle_timer(last_time=True)
 
-
     # Actions
     def toggle_task_entry(self, sender):
         if sender == "button":

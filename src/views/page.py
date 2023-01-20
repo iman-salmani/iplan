@@ -65,11 +65,7 @@ class Page(Gtk.Box):
         if first_task:
             position = first_task.task.position + 1
 
-        task = tasks_data.add(
-            "",
-            project_id=self.props.root.project.id,
-            position=position
-        )
+        task = tasks_data.add("",self.props.root.project.id)
 
         task_ui = TaskRow(task, new=True)
         self.tasks_list.prepend(task_ui)
