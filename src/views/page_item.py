@@ -44,18 +44,23 @@ class TaskRow(Gtk.ListBoxRow):
         )
         self.name_button_label.set_text(task.name)
 
-        self.timer.connect(
-            "clicked",
-            lambda sender: self.toggle_timer(),
-        )
         duration = task.get_duration()
         if duration:
             self.timer_content.set_label(task.duration_to_text(duration))
 
-        last_time = task.get_last_time()
-        if last_time:
-            if not last_time[1]:
-                self.toggle_timer(last_time=True)
+        if task.done:
+            self.timer.set_sensitive(False)
+        else:
+            self.timer.connect(
+                "clicked",
+                lambda sender: self.toggle_timer(),
+            )
+
+            last_time = task.get_last_time()
+            if last_time:
+                if not last_time[1]:
+                    self.toggle_timer(last_time=True)
+
 
     # Actions
     def toggle_task_entry(self, sender):
