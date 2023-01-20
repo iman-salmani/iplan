@@ -88,6 +88,8 @@ class TaskRow(Gtk.ListBoxRow):
     def toggled_checkbox(self, sender):
         self.task.done = sender.get_active()
         tasks_data.update(self.task)
+        if self.timer_running:
+            self.toggle_timer()
         self.activate_action("app.refresh_tasks")
 
     def toggle_timer(self, last_time=False):
