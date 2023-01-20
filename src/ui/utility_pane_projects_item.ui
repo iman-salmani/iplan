@@ -8,6 +8,7 @@
     <child>
       <object class="GtkLabel" id="content">
         <property name="halign">start</property>
+        <property name="use-markup">true</property>
       </object>
     </child>
   </template>

@@ -75,7 +75,11 @@ class UtilityPaneProjectsItem(Gtk.Button):
         super().__init__()
         self.project = project
 
-        self.content.set_label(self.project.name)
+        if project.archive:
+            self.content.set_label(f"<s>{self.project.name}</s>")
+        else:
+            self.content.set_label(self.project.name)
+
 
     @Gtk.Template.Callback()
     def open_project(self, sender):
