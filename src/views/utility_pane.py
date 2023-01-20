@@ -1,11 +1,12 @@
-from gi.repository import Gtk, Adw, Gio, GLib
+from gi.repository import Gtk, Adw, GLib, Gdk
 import os
 
-from iplan.database.database import ProjectsData, Project
+from iplan.database.database import ProjectsData, Project, TasksData, Task
+from iplan.views.page_item import TaskRow
 
 # Initialize Database connection
 projects_data = ProjectsData()
-
+tasks_data = TasksData()
 
 @Gtk.Template(resource_path="/ir/imansalmani/iplan/ui/utility_pane.ui")
 class UtilityPane(Gtk.Box):
@@ -80,6 +81,11 @@ class UtilityPaneProjectsItem(Gtk.Button):
         else:
             self.content.set_label(self.project.name)
 
+        drop_target = Gtk.DropTarget.new(TaskRow, Gdk.DragAction.MOVE)
+        drop_target.set_preload(True)
+        drop_target.connect("drop", self.on_drop)
+        drop_target.connect("motion", self.on_motion)
+        self.add_controller(drop_target)
 
     @Gtk.Template.Callback()
     def open_project(self, sender):
@@ -93,4 +99,20 @@ class UtilityPaneProjectsItem(Gtk.Button):
         window_width = window.get_size(Gtk.Orientation.HORIZONTAL)
         if window_width < 720:
             window.flap.set_reveal_flap(False)
+
+    def on_drop(
+            self,
+            target: Gtk.DropTarget,
+            source_widget: TaskRow,
+            x: float, y: float) -> bool:
+        source_widget.task.project = self.project.id
+        source_widget.task.position = tasks_data.new_position(self.project.id)
+        tasks_data.update(source_widget.task)
+        self.activate_action("app.refresh_tasks")
+
+    def on_motion(self, target: Gtk.DropTarget, x, y):
+        source_widget: TaskRow = target.get_value()
+        if source_widget.task.project == self.project.id:
+            return 0
+        return Gdk.DragAction.MOVE
 

@@ -125,10 +125,10 @@ class Page(Gtk.Box):
         return True
 
     def on_motion(self, target: Gtk.DropTarget, x, y):
-        target_task: TaskRow = self.tasks_list.get_row_at_y(y)
-        source_task: TaskRow = target.get_value()
+        target_widget: TaskRow = self.tasks_list.get_row_at_y(y)
+        source_widget: TaskRow = target.get_value()
 
-        if source_task == target_task:
+        if source_widget == target_widget:
             return 0
 
         scrolled_window_height = self.scrolled_window.get_size(Gtk.Orientation.VERTICAL)

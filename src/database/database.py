@@ -245,17 +245,20 @@ class TasksData(Database):
         )
         self.connection.commit()
 
+    def new_position(self, project_id):
+        """
+        - get all tasks in project order by position big to low
+        - fetch first one
+        - add one to position
+        """
+        return self.cursor.execute(f"SELECT * FROM tasks WHERE project = {project_id} ORDER BY position DESC").fetchone()[5] + 1
+
     def add(self, name, project_id: int) -> Task:
-        position = self.cursor.execute(f"SELECT * FROM tasks WHERE project = {project_id} ORDER BY position DESC").fetchone()[5] + 1
-        # 👆️ explain:
-        # - get all tasks in project order by position big to low
-        # - fetch first one
-        # - add one to position
+        position = self.new_position(project_id)
         self.cursor.execute(
             f"INSERT INTO tasks(name, done, project, times, position) VALUES ('{name}', 0, {project_id}, '', {position})"
         )
         self.connection.commit()
-
         return Task(self.cursor.lastrowid, name, False, project_id, "", position)
 
     def search(self, text) -> list[Task]:
