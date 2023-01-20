@@ -9,7 +9,7 @@
 <h4 align="center">Planner application with time tracking ability</h4>
 
 <div align="center">
-  <img src="https://user-images.githubusercontent.com/32843050/212471863-41026778-2cb7-44c3-981e-873c2e66aef8.png">
+  <img src="https://github.com/iman-salmani/iplan/blob/6fba81a5bc4384bb50b7659663ac34a72c13b262/data/screenshots/window.png">
 </div>
 
 ## Features
