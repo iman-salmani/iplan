@@ -2,43 +2,20 @@
 <interface>
   <requires lib="gtk" version="4.0"/>
   <requires lib="Adw" version="1.0"/>
-  <template class="PageHeader" parent="GtkBox">
+  <template class="ProjectHeader" parent="GtkBox">
     <property name="margin-top">15</property>
     <property name="margin-start">15</property>
     <property name="margin-end">24</property>
     <style>
       <class name="toolbar"/>
     </style>
-    <child><!-- Project Name Button -->
-      <object class="GtkButton" id="project_name_button">
-        <property name="halign">start</property>
-        <signal name="clicked" handler="click_edit_project_name"/>
-        <style>
-          <class name="flat"/>
-        </style>
-        <child><!-- Project Name Label -->
-          <object class="GtkLabel" id="project_name_button_label">
-            <style>
-              <class name="heading"/>
-            </style>
-          </object>
-        </child><!-- End Project Name Label -->
-      </object>
-    </child><!-- End Project Name Button -->
-    <child><!-- Project Name Entry -->
-      <object class="GtkEntry" id="project_name_entry">
-        <property name="margin-start">1</property>
-        <property name="hexpand">true</property>
-        <property name="visible">false</property>
-        <property name="buffer">
-          <object class="GtkEntryBuffer"></object>
-        </property>
-        <signal name="activate" handler="change_project_name"/>
+    <child><!-- Project Name Label -->
+      <object class="GtkLabel" id="project_name">
         <style>
           <class name="heading"/>
         </style>
       </object>
-    </child><!-- End Project Name Entry -->
+    </child><!-- End Project Name Label -->
     <child><!-- Project Duration button -->
       <object class="GtkMenuButton" id="project_duration_button">
         <property name="popover">project_duration_popover</property>
@@ -52,32 +29,6 @@
         </child>
       </object>
     </child><!-- End Project Duration button -->
-    <child>
-      <object class="GtkSeparator" id="separator">
-        <property name="hexpand">true</property>
-        <style>
-          <class name="spacer"/>
-        </style>
-      </object>
-    </child>
-    <child><!-- Project Name Edit Button -->
-      <object class="GtkButton" id="project_name_edit_button">
-        <property name="icon-name">document-edit-symbolic</property>
-        <property name="has_frame">false</property>
-        <signal name="clicked" handler="click_edit_project_name"/>
-      </object>
-    </child><!-- End Project Name Edit Button -->
-    <child><!-- Project Name Apply Button -->
-      <object class="GtkButton" id="project_name_apply_button">
-        <property name="icon-name">document-edit-symbolic</property>
-        <property name="visible">false</property>
-        <signal name="clicked" handler="change_project_name"/>
-        <style>
-          <class name="suggested-action"/>
-          <class name="circular"/>
-        </style>
-      </object>
-    </child><!-- End Project Name Apply Button -->
     <child><!-- New Task Button -->
       <object class="GtkButton" id="new_task_button">
         <property name="icon-name">list-add-symbolic</property>
@@ -189,3 +140,4 @@
   </object>
   <!-- End Project Options Popover -->
 </interface>
+

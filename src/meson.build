@@ -36,8 +36,8 @@ views_sources = [
   'views/search_bar.py',
   'views/primary_menu.py',
   'views/utility_pane.py',
-  'views/page.py',
-  'views/page_header.py',
+  'views/project_header.py',
+  'views/project_items.py',
   'views/page_item.py',
 ]
 

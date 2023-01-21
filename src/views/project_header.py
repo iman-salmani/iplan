@@ -9,20 +9,15 @@ from iplan.database.database import ProjectsData, Project
 projects_data = ProjectsData()
 
 
-@Gtk.Template(resource_path="/ir/imansalmani/iplan/ui/page_header.ui")
-class PageHeader(Gtk.Box):
-    __gtype_name__ = "PageHeader"
-    project_name_button: Gtk.Button = Gtk.Template.Child()
-    project_name_button_label: Gtk.Label = Gtk.Template.Child()
-    project_name_entry: Gtk.Entry = Gtk.Template.Child()
-    project_name_edit_button: Gtk.Button = Gtk.Template.Child()
-    project_name_apply_button: Gtk.Button = Gtk.Template.Child()
+@Gtk.Template(resource_path="/ir/imansalmani/iplan/ui/page/project_header.ui")
+class ProjectHeader(Gtk.Box):
+    __gtype_name__ = "ProjectHeader"
+    project_name: Gtk.Label = Gtk.Template.Child()
     project_duration_button: Gtk.Button = Gtk.Template.Child()
     project_duration_button_content: Adw.ButtonContent = Gtk.Template.Child()
     project_duration_records: Gtk.Box = Gtk.Template.Child()
     project_options_popover: Gtk.Popover = Gtk.Template.Child()
     new_task_button: Gtk.Button = Gtk.Template.Child()
-    separator: Gtk.Separator = Gtk.Template.Child()
     show_completed_tasks_switch: Gtk.Switch = Gtk.Template.Child()
     archive_project_switch: Gtk.Switch = Gtk.Template.Child()
     delete_project_button: Gtk.Button = Gtk.Template.Child()
@@ -52,14 +47,6 @@ class PageHeader(Gtk.Box):
                 GLib.Variant('b', args[1])
             )
         )
-
-    @Gtk.Template.Callback()
-    def change_project_name(self, sender):
-        self.props.root.props.application.project.name = self.project_name_entry.get_buffer().get_text()
-        projects_data.update(self.props.root.props.application.project)
-        self.activate_action("app.update_project")
-        self.project_name_button_label.set_text(self.props.root.props.application.project.name)
-        self.change_status("show")
 
     def refresh_project_duration(self):
         duration = self.props.root.props.application.project.get_duration()
@@ -98,14 +85,7 @@ class PageHeader(Gtk.Box):
                 self.project_duration_records.append(Gtk.Separator())
 
     def open_project(self, new):
-        self.project_name_entry.get_buffer().set_text(self.props.root.props.application.project.name, -1)
-        self.project_name_button_label.set_text(self.props.root.props.application.project.name)
-
-        if new:
-            self.change_status("edit")
-            self.project_name_entry.grab_focus()
-        else:
-            self.change_status("show")
+        self.project_name.set_text(self.props.root.props.application.project.name)
 
         self.refresh_project_duration()
 
@@ -114,12 +94,6 @@ class PageHeader(Gtk.Box):
         self.archive_project_switch.handler_unblock_by_func(self.toggle_archive_project)
 
         self.show_completed_tasks_switch.set_state(False)
-
-    @Gtk.Template.Callback()
-    def click_edit_project_name(self, sender):
-        self.change_status("edit")
-
-        self.project_name_entry.grab_focus_without_selecting()
 
     def toggle_archive_project(self, sender, param):
         state = sender.get_state()
@@ -163,24 +137,6 @@ class PageHeader(Gtk.Box):
             else:
                 break
 
-    def change_status(self, status):
-        if status == "edit":
-            self.project_name_button.set_visible(False)
-            self.project_name_edit_button.set_visible(False)
-            self.project_duration_button.set_visible(False)
-            self.separator.set_visible(False)
-
-            self.project_name_apply_button.set_visible(True)
-            self.project_name_entry.set_visible(True)
-        else:
-            self.project_name_entry.set_visible(False)
-            self.project_name_apply_button.set_visible(False)
-
-            self.project_name_button.set_visible(True)
-            self.project_duration_button.set_visible(True)
-            self.separator.set_visible(True)
-            self.project_name_edit_button.set_visible(True)
-
 
 @Gtk.Template(resource_path="/ir/imansalmani/iplan/ui/project_delete_dialog.ui")
 class ProjectDeleteDialog(Adw.MessageDialog):
@@ -188,4 +144,4 @@ class ProjectDeleteDialog(Adw.MessageDialog):
 
     def __init__(self):
         super().__init__()
-    
+

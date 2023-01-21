@@ -10,7 +10,7 @@ from iplan.database.database import TasksData, Task
 tasks_data = TasksData()
 
 
-@Gtk.Template(resource_path='/ir/imansalmani/iplan/ui/page_item.ui')
+@Gtk.Template(resource_path='/ir/imansalmani/iplan/ui/page/page_item.ui')
 class TaskRow(Gtk.ListBoxRow):
     __gtype_name__ = "TaskRow"
     timer_running: bool = None

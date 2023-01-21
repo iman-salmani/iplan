@@ -4,26 +4,21 @@ from gi.repository import Gtk, Adw, GLib, Pango, Gdk
 from datetime import datetime
 
 from iplan.database.database import TasksData, Task, ProjectsData
-from iplan.views.page_header import PageHeader
+from iplan.views.project_header import ProjectHeader
 from iplan.views.page_item import TaskRow
 
 # Initialize Database connection
 tasks_data = TasksData()
 projects_data = ProjectsData()
 
-@Gtk.Template(resource_path='/ir/imansalmani/iplan/ui/page.ui')
-class Page(Gtk.Box):
-    __gtype_name__ = "Page"
+@Gtk.Template(resource_path='/ir/imansalmani/iplan/ui/page/project_items.ui')
+class ProjectItems(Gtk.ScrolledWindow):
+    __gtype_name__ = "ProjectItems"
     show_completed_tasks: bool = False
     tasks_list: Gtk.ListBox = Gtk.Template.Child()
-    scrolled_window: Gtk.ScrolledWindow = Gtk.Template.Child()
 
     def __init__(self) -> None:
         super().__init__()
-
-        # Header
-        self.header = PageHeader()
-        self.prepend(self.header)
 
         drop_target = Gtk.DropTarget.new(TaskRow, Gdk.DragAction.MOVE)
         drop_target.set_preload(True)
@@ -33,7 +28,6 @@ class Page(Gtk.Box):
 
         self.tasks_list.set_sort_func(self.sort)
         self.connect("map", lambda *args: self.install_actions())
-
 
     # Actions
     def install_actions(self):
@@ -131,11 +125,11 @@ class Page(Gtk.Box):
         if source_widget == target_widget:
             return 0
 
-        scrolled_window_height = self.scrolled_window.get_size(Gtk.Orientation.VERTICAL)
+        height = self.get_size(Gtk.Orientation.VERTICAL)
         tasks_list_height = self.tasks_list.get_size(Gtk.Orientation.VERTICAL)
 
-        if tasks_list_height > scrolled_window_height:
-            adjustment = self.scrolled_window.props.vadjustment
+        if tasks_list_height > height:
+            adjustment = self.props.vadjustment
             step = adjustment.get_step_increment() / 3
             v_pos = adjustment.get_value()
             if y - v_pos > 475:

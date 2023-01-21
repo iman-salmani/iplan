@@ -20,7 +20,8 @@
 from gi.repository import Gtk, Adw, Gio, GLib
 
 from iplan.views.utility_pane import UtilityPane
-from iplan.views.page import Page
+from iplan.views.project_header import ProjectHeader
+from iplan.views.project_items import ProjectItems
 from iplan.views.primary_menu import PrimaryMenu
 from iplan.views.search_bar import SearchBar
 from iplan.database.database import Project

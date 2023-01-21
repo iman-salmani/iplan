@@ -4,48 +4,56 @@
   <requires lib="Adw" version="1.0"/>
   <template class="IPlanWindow" parent="AdwApplicationWindow">
     <property name="height-request">640</property>
-    <property name="content"><!-- Main -->
-      <object class="GtkBox">
-        <property name="orientation">vertical</property>
-        <!-- Header will add by python code -->
-        <child><!-- Header -->
-          <object class="AdwHeaderBar">
-            <child type="start">
-              <object class="GtkToggleButton" id="toggle_pane_button">
-                <property name="icon-name">sidebar-show-symbolic</property>
-                <property name="active">True</property>
-                <property name="visible"
-                          bind-source="flap"
-                          bind-property="folded"
-                          bind-flags="sync-create"/>
+    <property name="content"><!-- Flap -->
+      <object class="AdwFlap" id="flap">
+        <property name="reveal-flap"
+          bind-source="toggle_pane_button"
+          bind-property="active"
+          bind-flags="sync-create|bidirectional"/>
+        <property name="flap"><!-- Sidebar -->
+          <object class="UtilityPane"></object>
+        </property><!-- Sidebar -->
+        <property name="separator"><!-- Separator -->
+          <object class="GtkSeparator"/>
+        </property><!-- End Separator -->
+        <property name="content"><!-- Page -->
+          <object class="GtkBox">
+            <property name="orientation">vertical</property>
+            <child><!-- Header -->
+              <object class="AdwHeaderBar">
+                <property name="title-widget">
+                  <object class="GtkLabel"></object>
+                </property>
+                <style>
+                  <class name="flat"/>
+                </style>
+                <child type="start">
+                  <object class="GtkToggleButton" id="toggle_pane_button">
+                    <property name="icon-name">sidebar-show-symbolic</property>
+                    <property name="active">True</property>
+                    <property name="visible"
+                              bind-source="flap"
+                              bind-property="folded"
+                              bind-flags="sync-create"/>
+                  </object>
+                </child>
+                <child>
+                  <object class="ProjectHeader"></object>
+                </child>
+                <child type="end">
+                  <object class="PrimaryMenu"></object>
+                </child>
+                <child type="end">
+                  <object class="SearchBar"></object>
+                </child>
               </object>
-            </child>
-            <child type="start">
-              <object class="SearchBar"></object>
-            </child>
-            <child type="end">
-              <object class="PrimaryMenu"></object>
+            </child><!-- End Header -->
+            <child>
+              <object class="ProjectItems"></object>
             </child>
           </object>
-        </child><!-- End Header -->
-        <child><!-- Flap -->
-          <object class="AdwFlap" id="flap">
-            <property name="reveal-flap"
-              bind-source="toggle_pane_button"
-              bind-property="active"
-              bind-flags="sync-create|bidirectional"/>
-            <property name="flap"><!-- Utility Pane -->
-              <object class="UtilityPane"></object>
-            </property><!-- Utility Pane -->
-            <property name="separator"><!-- Separator -->
-              <object class="GtkSeparator"/>
-            </property><!-- End Separator -->
-            <property name="content"><!-- Page -->
-              <object class="Page"></object>
-            </property><!-- End Page -->
-          </object>
-        </child><!-- End Flap -->
+        </property><!-- End Page -->
       </object>
-    </property><!-- Main -->
+    </property><!-- End Flap -->
   </template>
 </interface>

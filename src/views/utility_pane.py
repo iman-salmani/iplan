@@ -8,7 +8,7 @@ from iplan.views.page_item import TaskRow
 projects_data = ProjectsData()
 tasks_data = TasksData()
 
-@Gtk.Template(resource_path="/ir/imansalmani/iplan/ui/utility_pane.ui")
+@Gtk.Template(resource_path="/ir/imansalmani/iplan/ui/sidebar/utility_pane.ui")
 class UtilityPane(Gtk.Box):
     __gtype_name__ = "UtilityPane"
     projects_list: Gtk.Box = Gtk.Template.Child()
@@ -66,7 +66,7 @@ class UtilityPane(Gtk.Box):
             self.projects_list.append(project_ui)
 
 
-@Gtk.Template(resource_path="/ir/imansalmani/iplan/ui/utility_pane_projects_item.ui")
+@Gtk.Template(resource_path="/ir/imansalmani/iplan/ui/sidebar/utility_pane_projects_item.ui")
 class UtilityPaneProjectsItem(Gtk.Button):
     __gtype_name__ = "UtilityPaneProjectsItem"
     project: Project = None
