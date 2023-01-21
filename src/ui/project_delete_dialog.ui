@@ -6,6 +6,8 @@
     <property name="body" translatable="yes">Project and tasks will be permanently lost.</property>
     <property name="default-response">delete</property>
     <property name="close-response">cancel</property>
+    <property name="modal">true</property>
+    <property name="destroy-with-parent">true</property>
     <responses>
       <response id="cancel" translatable="yes">_Cancel</response>
       <response id="delete" translatable="yes" appearance="destructive">_Delete</response>

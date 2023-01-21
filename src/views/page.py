@@ -53,7 +53,7 @@ class Page(Gtk.Box):
         )
 
         # open first project
-        self.props.root.project = projects_data.first()
+        self.props.root.props.application.project = projects_data.first()
         self.activate_action("app.open_project", GLib.Variant.new_tuple(
             GLib.Variant("b", False),
             GLib.Variant("i", -1)
@@ -65,7 +65,7 @@ class Page(Gtk.Box):
         if first_task:
             position = first_task.task.position + 1
 
-        task = tasks_data.add("",self.props.root.project.id)
+        task = tasks_data.add("",self.props.root.props.application.project.id)
 
         task_ui = TaskRow(task, new=True)
         self.tasks_list.prepend(task_ui)
@@ -154,7 +154,7 @@ class Page(Gtk.Box):
     def fetch(self):
         tasks = tasks_data.all(
             show_completed_tasks=self.show_completed_tasks,
-            project=self.props.root.project
+            project=self.props.root.props.application.project
         )
         for task in tasks:
             task_ui = TaskRow(task)

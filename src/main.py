@@ -30,6 +30,7 @@ from iplan.views.window import IPlanWindow
 class IPlanApplication(Adw.Application):
     """The main application singleton class."""
     actions = {}
+    project = None  # Active project accessible by all windows
 
     def __init__(self):
         super().__init__(application_id='ir.imansalmani.iplan',
@@ -59,7 +60,7 @@ class IPlanApplication(Adw.Application):
                 GLib.VariantType('i')
             ])  # (new, task.id)
         )
-        # callbacks using window project attribute like self.props.root.project
+        # callbacks using window project attribute like self.props.root.props.application.project
         self.create_action("refresh_project_duration")
         self.create_action("new_task", shortcuts=["<Ctrl>n"])
         self.create_action("refresh_tasks")

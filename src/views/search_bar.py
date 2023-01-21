@@ -83,13 +83,13 @@ class SearchItem(Gtk.Button):
     def on_click(self, sender):
         self.menu.popdown()
         if self._type == "project":
-            self.props.root.project = self.project
+            self.props.root.props.application.project = self.project
             self.activate_action("app.open_project", GLib.Variant.new_tuple(
                 GLib.Variant("b", False),
                 GLib.Variant("i", -1)
             ))
         elif self._type == "task":
-            self.props.root.project = projects_data.get(self.task.project)
+            self.props.root.props.application.project = projects_data.get(self.task.project)
             self.activate_action("app.open_project", GLib.Variant.new_tuple(
                 GLib.Variant("b", False),
                 GLib.Variant("i", self.task.id)

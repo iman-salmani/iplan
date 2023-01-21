@@ -34,7 +34,7 @@ class UtilityPane(Gtk.Box):
         project_id = projects_data.add(name)
         project = Project(id=project_id, name=name, archive=False)
         self.projects_list.append(UtilityPaneProjectsItem(project))
-        self.props.root.project = project
+        self.props.root.props.application.project = project
         self.activate_action("app.open_project", GLib.Variant.new_tuple(
             GLib.Variant("b", True),
             GLib.Variant("i", -1)
@@ -55,7 +55,7 @@ class UtilityPane(Gtk.Box):
                 break
 
     def fetch(self):
-        selected_project = self.props.root.project
+        selected_project = self.props.root.props.application.project
         for project in projects_data.all(archive=self.archive_button.get_active()):
             project_ui = UtilityPaneProjectsItem(project)
 
@@ -90,7 +90,7 @@ class UtilityPaneProjectsItem(Gtk.Button):
     @Gtk.Template.Callback()
     def open_project(self, sender):
         window = self.props.root
-        window.project = self.project
+        window.props.application.project = self.project
         self.activate_action("app.open_project", GLib.Variant.new_tuple(
             GLib.Variant("b", False),
             GLib.Variant("i", -1)
