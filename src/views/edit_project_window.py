@@ -63,3 +63,4 @@ class ProjectDeleteDialog(Adw.MessageDialog):
                 GLib.Variant("b", False),
                 GLib.Variant("i", -1)
             ))
+            self.get_transient_for().close()
