@@ -245,13 +245,11 @@ class TasksData(Database):
         )
         self.connection.commit()
 
-    def new_position(self, project_id):
-        """
-        - get all tasks in project order by position big to low
-        - fetch first one
-        - add one to position
-        """
-        return self.cursor.execute(f"SELECT * FROM tasks WHERE project = {project_id} ORDER BY position DESC").fetchone()[5] + 1
+    def new_position(self, project_id) -> int:
+        first_row = self.cursor.execute(f"SELECT * FROM tasks WHERE project = {project_id} ORDER BY position DESC").fetchone()
+        if not first_row:
+            return 0
+        return first_row[5] + 1
 
     def add(self, name, project_id: int) -> Task:
         position = self.new_position(project_id)
