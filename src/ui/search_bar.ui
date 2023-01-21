@@ -6,7 +6,7 @@
     <child><!-- Search Entry -->
       <object class="GtkSearchEntry" id="search_entry">
         <property name="placeholder-text">Search</property>
-        <property name="max-width-chars">14</property>
+        <property name="max-width-chars">18</property>
         <signal name="search-changed" handler="on_search_entry_change"/>
       </object>
     </child><!-- End Search Entry -->
