@@ -61,7 +61,7 @@ class UtilityPane(Gtk.Box):
 
             if project.id == selected_project.id:
                 project_ui.remove_css_class("flat")
-                project_ui.add_css_class("suggested-action")
+                project_ui.add_css_class("raised")
 
             self.projects_list.append(project_ui)
 
