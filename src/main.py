@@ -62,6 +62,7 @@ class IPlanApplication(Adw.Application):
         )
         # callbacks using window project attribute like self.props.root.props.application.project
         self.create_action("refresh_project_duration")
+        self.create_action("edit_project")
         self.create_action("new_task", shortcuts=["<Ctrl>n"])
         self.create_action("refresh_tasks")
         self.create_action(
@@ -142,6 +143,7 @@ class IPlanApplication(Adw.Application):
 @Gtk.Template(resource_path="/ir/imansalmani/iplan/ui/shortcuts_window.ui")
 class ShortcutsWindow(Gtk.ShortcutsWindow):
     __gtype_name__ = "ShortcutsWindow"
+
 
 def main(version):
     """The application's entry point."""

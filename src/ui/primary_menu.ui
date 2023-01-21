@@ -11,7 +11,8 @@
   <menu id='primary_menu_model'>
     <section>
       <item>
-        <attribute name="label" translatable="yes">_Edit _Project</attribute>
+        <attribute name='label' translatable='yes'>_Edit _Project</attribute>
+        <attribute name='action'>app.edit_project</attribute>
       </item>
     </section>
     <section>

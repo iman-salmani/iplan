@@ -7,6 +7,7 @@
     <file preprocess="xml-stripblanks">ui/page/project_header.ui</file>
     <file preprocess="xml-stripblanks">ui/page/project_items.ui</file>
     <file preprocess="xml-stripblanks">ui/page/page_item.ui</file>
+    <file preprocess="xml-stripblanks">ui/page/edit_project_window.ui</file>
     <file preprocess="xml-stripblanks">ui/search_bar.ui</file>
     <file preprocess="xml-stripblanks">ui/search_item.ui</file>
     <file preprocess="xml-stripblanks">ui/project_delete_dialog.ui</file>

@@ -38,6 +38,7 @@ views_sources = [
   'views/utility_pane.py',
   'views/project_header.py',
   'views/project_items.py',
+  'views/edit_project_window.py',
   'views/page_item.py',
 ]
 
