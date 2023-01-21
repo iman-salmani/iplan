@@ -3,14 +3,9 @@
   <requires lib="gtk" version="4.0"/>
   <requires lib="Adw" version="1.0"/>
   <template class="ProjectHeader" parent="GtkBox">
-    <property name="margin-top">15</property>
-    <property name="margin-start">15</property>
-    <property name="margin-end">24</property>
-    <style>
-      <class name="toolbar"/>
-    </style>
     <child><!-- Project Name Label -->
       <object class="GtkLabel" id="project_name">
+        <property name="margin-start">18</property>
         <style>
           <class name="heading"/>
         </style>
@@ -19,6 +14,7 @@
     <child><!-- Project Duration button -->
       <object class="GtkMenuButton" id="project_duration_button">
         <property name="popover">project_duration_popover</property>
+        <property name="margin-start">12</property>
         <style>
           <class name="flat"/>
         </style>
