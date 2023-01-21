@@ -3,6 +3,7 @@
   <requires lib="gtk" version="4.0"/>
   <requires lib="Adw" version="1.0"/>
   <template class="EditProjectWindow" parent="AdwWindow">
+    <property name="width-request">320</property>
     <property name="modal">true</property>
     <property name="destroy-with-parent">true</property>
     <property name="content"><!-- Content -->
