@@ -17,9 +17,6 @@ class ProjectHeader(Gtk.Box):
     project_duration_button: Gtk.Button = Gtk.Template.Child()
     project_duration_button_content: Adw.ButtonContent = Gtk.Template.Child()
     project_duration_records: Gtk.Box = Gtk.Template.Child()
-    project_options_popover: Gtk.Popover = Gtk.Template.Child()
-    new_task_button: Gtk.Button = Gtk.Template.Child()
-    show_completed_tasks_switch: Gtk.Switch = Gtk.Template.Child()
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -49,13 +46,6 @@ class ProjectHeader(Gtk.Box):
         actions["edit_project"].connect(
             "activate",
             self.present_edit_project_window
-        )
-
-        self.show_completed_tasks_switch.connect(
-            "state-set",
-            lambda *args: actions["toggle_completed_tasks"].change_state(
-                GLib.Variant('b', args[1])
-            )
         )
 
     def present_edit_project_window(self, *args):
@@ -104,8 +94,6 @@ class ProjectHeader(Gtk.Box):
         self.project_name.set_text(self.props.root.props.application.project.name)
 
         self.refresh_project_duration()
-
-        self.show_completed_tasks_switch.set_state(False)
 
     # UI Functions
     def clear(self, box):

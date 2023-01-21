@@ -11,10 +11,12 @@ from iplan.views.page_item import TaskRow
 tasks_data = TasksData()
 projects_data = ProjectsData()
 
-@Gtk.Template(resource_path='/ir/imansalmani/iplan/ui/page/project_items.ui')
-class ProjectItems(Gtk.ScrolledWindow):
-    __gtype_name__ = "ProjectItems"
+@Gtk.Template(resource_path='/ir/imansalmani/iplan/ui/page/project_list_items.ui')
+class ProjectListItems(Gtk.Box):
+    __gtype_name__ = "ProjectListItems"
     show_completed_tasks: bool = False
+    show_completed_tasks_switch: Gtk.Switch = Gtk.Template.Child()
+    scrolled_window: Gtk.ScrolledWindow = Gtk.Template.Child()
     tasks_list: Gtk.ListBox = Gtk.Template.Child()
 
     def __init__(self) -> None:
@@ -22,15 +24,15 @@ class ProjectItems(Gtk.ScrolledWindow):
 
         drop_target = Gtk.DropTarget.new(TaskRow, Gdk.DragAction.MOVE)
         drop_target.set_preload(True)
-        drop_target.connect("drop", self.on_drop)
-        drop_target.connect("motion", self.on_motion)
+        drop_target.connect("drop", self.on_dropped)
+        drop_target.connect("motion", self.on_motioned)
         self.tasks_list.add_controller(drop_target)
 
         self.tasks_list.set_sort_func(self.sort)
-        self.connect("map", lambda *args: self.install_actions())
+        self.connect("map", self.on_mapped)
 
     # Actions
-    def install_actions(self):
+    def on_mapped(self, *args):
         actions = self.props.root.props.application.actions
 
         actions["open_project"].connect(
@@ -38,12 +40,19 @@ class ProjectItems(Gtk.ScrolledWindow):
             lambda *args: self.open_project(args[1][1])
         )
 
-        actions["new_task"].connect("activate", lambda *args: self.new())
-        actions["refresh_tasks"].connect("activate", lambda *args: self.refresh_tasks())
+        actions["new_task"].connect("activate", self.new)
+        actions["refresh_tasks"].connect("activate", self.refresh_tasks)
 
         actions["toggle_completed_tasks"].connect(
             "change-state",
             lambda *args: self.toggle_completed_tasks(bool(args[1]))
+        )
+
+        self.show_completed_tasks_switch.connect(
+            "state-set",
+            lambda *args: actions["toggle_completed_tasks"].change_state(
+                GLib.Variant('b', args[1])
+            )
         )
 
         # open first project
@@ -53,7 +62,7 @@ class ProjectItems(Gtk.ScrolledWindow):
             GLib.Variant("i", -1)
         ))
 
-    def new(self):
+    def new(self, *args):
         position = 0
         first_task = self.tasks_list.get_first_child()
         if first_task:
@@ -77,6 +86,8 @@ class ProjectItems(Gtk.ScrolledWindow):
         self.clear()
         self.fetch()
 
+        self.show_completed_tasks_switch.set_state(False)
+
         if task_id != -1:
             tasks_ui = list(self.tasks_list.observe_children())
             searched_task_ui = None
@@ -91,12 +102,12 @@ class ProjectItems(Gtk.ScrolledWindow):
         self.clear()
         self.fetch()
 
-    def refresh_tasks(self):
+    def refresh_tasks(self, *args):
         self.clear()
         self.fetch()
 
     # UI
-    def on_drop(
+    def on_dropped(
             self,
             target: Gtk.DropTarget,
             source_widget: TaskRow,
@@ -118,18 +129,18 @@ class ProjectItems(Gtk.ScrolledWindow):
         self.tasks_list.invalidate_sort()
         return True
 
-    def on_motion(self, target: Gtk.DropTarget, x, y):
+    def on_motioned(self, target: Gtk.DropTarget, x, y):
         target_widget: TaskRow = self.tasks_list.get_row_at_y(y)
         source_widget: TaskRow = target.get_value()
 
         if source_widget == target_widget:
             return 0
 
-        height = self.get_size(Gtk.Orientation.VERTICAL)
+        scrolled_window_height = self.scrolled_window.get_size(Gtk.Orientation.VERTICAL)
         tasks_list_height = self.tasks_list.get_size(Gtk.Orientation.VERTICAL)
 
-        if tasks_list_height > height:
-            adjustment = self.props.vadjustment
+        if tasks_list_height > scrolled_window_height:
+            adjustment = self.scrolled_window.props.vadjustment
             step = adjustment.get_step_increment() / 3
             v_pos = adjustment.get_value()
             if y - v_pos > 475:

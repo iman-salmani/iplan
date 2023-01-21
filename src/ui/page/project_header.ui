@@ -29,20 +29,6 @@
         </child>
       </object>
     </child><!-- End Project Duration button -->
-    <child><!-- New Task Button -->
-      <object class="GtkButton" id="new_task_button">
-        <property name="icon-name">list-add-symbolic</property>
-        <property name="has_frame">false</property>
-        <property name="action-name">app.new_task</property>
-      </object>
-    </child><!-- End New Task Button -->
-    <child><!-- Project Options Button -->
-      <object class="GtkMenuButton">
-        <property name="icon_name">view-more-symbolic</property>
-        <property name="has_frame">false</property>
-        <property name="popover">project_options_popover</property>
-      </object>
-    </child><!-- End Project Options Button -->
   </template>
   <!-- Project duration Popover -->
   <object class="GtkPopover" id="project_duration_popover">
@@ -53,39 +39,5 @@
     </child>
   </object>
   <!-- End Project duration Popover -->
-  <!-- Project Options Popover -->
-  <object class="GtkPopover" id="project_options_popover">
-    <property name="halign">end</property>
-    <property name="valign">start</property>
-    <property name="has_arrow">false</property>
-    <!-- offset 0,6 -->
-    <child>
-      <object class="GtkBox"><!-- Project Options -->
-        <property name="orientation">vertical</property>
-        <child><!-- Toggle Show Completed Tasks -->
-          <object class="GtkBox">
-            <property name="margin-start">6</property>
-            <property name="margin-end">6</property>
-            <property name="margin-top">6</property>
-            <property name="margin-bottom">6</property>
-            <child>
-              <object class="GtkLabel">
-                <property name="label">Completed tasks</property>
-                <property name="hexpand">true</property>
-                <property name="halign">start</property>
-              </object>
-            </child>
-            <child>
-              <object class="GtkSwitch" id="show_completed_tasks_switch">
-                <property name="margin-start">24</property>
-                <property name="valign">center</property>
-              </object>
-            </child>
-          </object>
-        </child><!-- End Toggle Show Completed Tasks -->
-      </object><!-- End Project Options -->
-    </child>
-  </object>
-  <!-- End Project Options Popover -->
 </interface>
 

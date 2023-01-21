@@ -49,7 +49,7 @@
               </object>
             </child><!-- End Header -->
             <child>
-              <object class="ProjectItems"></object>
+              <object class="ProjectListItems"></object>
             </child>
           </object>
         </property><!-- End Page -->
