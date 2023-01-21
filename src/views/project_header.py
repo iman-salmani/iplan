@@ -34,6 +34,13 @@ class ProjectHeader(Gtk.Box):
             lambda *args: self.open_project(args[1][0])
         )
 
+        actions["update_project"].connect(
+            "activate",
+            lambda *args: self.project_name.set_text(
+                self.props.root.props.application.project.name
+            )
+        )
+
         actions["refresh_project_duration"].connect(
             "activate",
             lambda *args: self.refresh_project_duration()
