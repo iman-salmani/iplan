@@ -66,7 +66,7 @@ class ProjectListTask(Gtk.ListBoxRow):
     @Gtk.Template.Callback()
     def delete(self, *args):
         delete_task(self.task._id)
-        #self.get_parent().remove(self)
+        self.get_parent().remove(self)
 
     def open_task(self):
         window = self.get_root()
@@ -91,7 +91,7 @@ class ProjectListTask(Gtk.ListBoxRow):
 
         # remove show completed tasks is off
         _list = self.get_parent().get_parent().get_parent().get_parent()
-        if not _list.show_completed_tasks_switch.get_active():
+        if not _list.show_completed_tasks:
             self.get_parent().remove(self)
 
     def toggle_timer(self, last_time=False):
