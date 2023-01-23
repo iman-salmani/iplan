@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <requires lib="gtk" version="4.0"/>
+  <requires lib="Adw" version="1.0"/>
+  <template class="ProjectList" parent="GtkBox">
+    <property name="orientation">vertical</property>
+    <property name="width-request">480</property>
+    <child><!-- Header -->
+      <object class="GtkBox">
+        <property name="margin-start">12</property>
+        <property name="margin-end">12</property>
+        <child><!-- Name Button -->
+          <object class="GtkButton" id="name_button">
+            <property name="has-frame">false</property>
+            <property name="margin-start">4</property>
+            <property name="hexpand">true</property>
+            <property name="halign">start</property>
+            <signal name="clicked" handler="on_name_toggled"/>
+          </object>
+        </child><!-- End Name Button -->
+        <child><!-- Name Entry -->
+          <object class="GtkEntry" id="name_entry">
+            <property name="margin-start">12</property>
+            <property name="margin-end">12</property>
+            <property name="hexpand">true</property>
+            <property name="visible"
+              bind-source="name_button"
+              bind-property="visible"
+              bind-flags="invert-boolean">false</property>
+            <signal name="activate" handler="on_name_toggled"/>
+            <attributes>
+              <attribute name="weight" value="PANGO_WEIGHT_BOLD"/>
+            </attributes>
+          </object>
+        </child><!-- End Name Entry -->
+        <child><!-- New Task Button -->
+          <object class="GtkButton" id="new_task_button">
+            <property name="icon-name">list-add-symbolic</property>
+            <property name="has_frame">false</property>
+            <signal name="clicked" handler="on_new_task_button_clicked"/>
+          </object>
+        </child><!-- End New Task Button -->
+        <child><!-- Project Options Button -->
+          <object class="GtkMenuButton" id="options_button">
+            <property name="icon_name">view-more-symbolic</property>
+            <property name="has_frame">false</property>
+            <property name="popover">options_popover</property>
+          </object>
+        </child><!-- End Project Options Button -->
+      </object>
+    </child><!-- End Header -->
+    <child><!-- Scrolled Window -->
+      <object class="GtkScrolledWindow" id="scrolled_window">
+        <property name="vexpand">true</property>
+        <property name="hexpand">true</property>
+        <property name="margin-top">9</property>
+        <property name="margin-bottom">9</property>
+        <child><!-- Task List -->
+          <object class="GtkListBox" id="tasks_box">
+            <property name="valign">start</property>
+            <property name="selection_mode">none</property>
+            <property name="margin-top">3</property>
+            <property name="margin-bottom">3</property>
+            <property name="margin-start">12</property>
+            <property name="margin-end">12</property>
+            <style>
+              <class name="boxed-list"/>
+            </style>
+          </object>
+        </child><!-- End Task List -->
+      </object>
+    </child><!-- Scrolled Window -->
+  </template>
+  <!-- Options Popover -->
+  <object class="GtkPopover" id="options_popover">
+    <child>
+      <object class="GtkBox">
+        <property name="orientation">vertical</property>
+        <property name="spacing">6</property>
+        <child><!-- Toggle Completed Tasks -->
+          <object class="GtkToggleButton">
+            <signal name="clicked" handler="on_completed_tasks_button_toggled"/>
+            <style>
+              <class name="flat"/>
+            </style>
+            <child>
+              <object class="GtkBox">
+                <property name="spacing">6</property>
+                <child>
+                  <object class="GtkImage">
+                    <property name="icon-name">object-select-symbolic</property>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkLabel">
+                    <property name="label">Show completed tasks</property>
+                    <attributes>
+                      <attribute name="weight" value="PANGO_WEIGHT_NORMAL"/>
+                    </attributes>
+                  </object>
+                </child>
+              </object>
+            </child>
+          </object>
+        </child><!-- End Toggle Completed Tasks -->
+        <child>
+          <object class="GtkSeparator"/>
+        </child>
+        <child><!-- Delete List -->
+          <object class="GtkButton">
+            <signal name="clicked" handler="on_delete_button_clicked"/>
+            <style>
+              <class name="flat"/>
+            </style>
+            <child>
+              <object class="GtkBox">
+                <property name="spacing">6</property>
+                <child>
+                  <object class="GtkImage">
+                    <property name="icon-name">user-trash-symbolic</property>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkLabel">
+                    <property name="label">Delete list</property>
+                    <attributes>
+                      <attribute name="weight" value="PANGO_WEIGHT_NORMAL"/>
+                    </attributes>
+                  </object>
+                </child>
+              </object>
+            </child>
+          </object>
+        </child><!-- End Delete List -->
+      </object>
+    </child>
+  </object>
+  <!-- Options Popover -->
+</interface>

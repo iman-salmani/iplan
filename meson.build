@@ -10,7 +10,7 @@ gnome = import('gnome')
 
 
 subdir('data')
-subdir('src')
+subdir('iplan')
 subdir('po')
 
 gnome.post_install(

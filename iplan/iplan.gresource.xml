@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gresources>
+  <gresource prefix="/ir/imansalmani/iplan">
+    <file preprocess="xml-stripblanks">ui/window.ui</file>
+    <file preprocess="xml-stripblanks">ui/shortcuts_window.ui</file>
+    <file preprocess="xml-stripblanks">ui/primary_menu.ui</file>
+
+    <file preprocess="xml-stripblanks">ui/sidebar/sidebar.ui</file>
+    <file preprocess="xml-stripblanks">ui/sidebar/sidebar_projects.ui</file>
+    <file preprocess="xml-stripblanks">ui/sidebar/sidebar_project.ui</file>
+
+    <file preprocess="xml-stripblanks">ui/project/project_header.ui</file>
+    <file preprocess="xml-stripblanks">ui/project/project_lists.ui</file>
+    <file preprocess="xml-stripblanks">ui/project/project_list.ui</file>
+    <file preprocess="xml-stripblanks">ui/project/project_list_task.ui</file>
+    <file preprocess="xml-stripblanks">ui/project/project_edit_window.ui</file>
+    <file preprocess="xml-stripblanks">ui/project/project_delete_dialog.ui</file>
+
+    <file preprocess="xml-stripblanks">ui/search_bar/search_bar.ui</file>
+    <file preprocess="xml-stripblanks">ui/search_bar/search_result.ui</file>
+  </gresource>
+</gresources>

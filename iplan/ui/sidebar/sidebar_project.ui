@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <template class="SidebarProject" parent="GtkButton">
+    <signal name="clicked" handler="open_project" />
+    <style>
+      <class name="flat"/>
+    </style>
+    <child>
+      <object class="GtkLabel" id="content">
+        <property name="halign">start</property>
+        <property name="use-markup">true</property>
+      </object>
+    </child>
+  </template>
+</interface>

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <requires lib="gtk" version="4.0"/>
+  <requires lib="Adw" version="1.0"/>
+  <template class="ProjectListTask" parent="GtkListBoxRow">
+    <child><!-- Box -->
+      <object class="GtkBox">
+        <property name="orientation">horizontal</property>
+        <property name="margin-start">12</property>
+        <property name="margin-end">12</property>
+        <property name="margin-top">12</property>
+        <property name="margin-bottom">12</property>
+        <style>
+          <class name="row"/>
+        </style>
+        <child><!-- Check Button -->
+          <object class="GtkCheckButton" id="checkbox">
+            <property name="valign">center</property>
+            <signal name="toggled" handler="toggled_checkbox"/>
+          </object>
+        </child><!-- End Check Button -->
+        <child><!-- Name Button -->
+          <object class="GtkButton" id="name_button">
+            <property name="has-frame">false</property>
+            <property name="margin-start">11</property>
+            <signal name="clicked" handler="on_name_toggled"/>
+            <child>
+              <object class="GtkLabel">
+                <property name="ellipsize">end</property>
+                <attributes>
+                  <attribute name="weight" value="PANGO_WEIGHT_NORMAL"/>
+                </attributes>
+              </object>
+            </child>
+          </object>
+        </child><!-- End Name Button -->
+        <child><!-- Name Entry -->
+          <object class="GtkEntry" id="name_entry">
+            <property name="margin-start">12</property>
+            <property name="margin-end">12</property>
+            <property name="hexpand">true</property>
+            <property name="visible"
+              bind-source="name_button"
+              bind-property="visible"
+              bind-flags="invert-boolean">false</property>
+            <signal name="activate" handler="on_name_toggled"/>
+          </object>
+        </child><!-- End Name Entry -->
+        <child>
+          <object class="GtkSeparator">
+            <property name="hexpand">true</property>
+            <style>
+              <class name="spacer"/>
+            </style>
+          </object>
+        </child>
+        <child><!-- Timer -->
+          <object class="GtkButton" id="timer">
+            <property name="valign">center</property>
+            <style>
+              <class name="flat"/>
+            </style>
+            <child>
+              <object class="AdwButtonContent" id="timer_content">
+                <property name="icon-name">preferences-system-time-symbolic</property>
+              </object>
+            </child>
+          </object>
+        </child><!-- End Timer -->
+        <child><!-- Delete Button -->
+          <object class="GtkButton" id="delete_button">
+            <property name="icon-name">user-trash-symbolic</property>
+            <property name="valign">center</property>
+            <signal name="clicked" handler="delete"/>
+            <style>
+              <class name="flat"/>
+            </style>
+          </object>
+        </child><!-- End Delete Button -->
+      </object>
+    </child><!-- End Box -->
+    <child><!-- Drag Source -->
+      <object class="GtkDragSource">
+        <property name="actions">move</property>
+        <property name="propagation-phase">capture</property>
+        <signal name="prepare" handler="on_drag_prepare" swapped="no"/>
+        <signal name="drag-begin" handler="on_drag_begin" swapped="no"/>
+      </object>
+    </child><!-- End Drag Source -->
+  </template>
+</interface>
