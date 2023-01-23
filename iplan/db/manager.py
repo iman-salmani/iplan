@@ -48,7 +48,7 @@ def create_tables() -> None:
         "done"	  INTEGER NOT NULL DEFAULT 0,
         "project" INTEGER NOT NULL,
         "list" INTEGER NOT NULL,
-        "times"   TEXT NOT NULL DEFAULT '',
+        "duration"   TEXT NOT NULL DEFAULT '',
         "position"   INTEGER NOT NULL,
         PRIMARY KEY("id" AUTOINCREMENT)
         );

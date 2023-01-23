@@ -46,7 +46,7 @@ def update_task(task: Task) -> None:
         done = {task.done},
         project = {task.project},
         list = {task._list},
-        times = '{task.times}',
+        duration = '{task.duration}',
         position = {task.position}
         WHERE id = {task._id}"""
     )

@@ -142,7 +142,7 @@ class ProjectListTask(Gtk.ListBoxRow):
 
         else:
             start = datetime.now()
-            self.task.times += f"{start.timestamp()},0;"
+            self.task.duration += f"{start.timestamp()},0;"
             update_task(self.task)
 
         while self.timer_running:
@@ -154,7 +154,7 @@ class ProjectListTask(Gtk.ListBoxRow):
             )
             sleep(0.1)
 
-        self.task.times = self.task.times[0:-2] + str(diffrence.seconds) + ";"
+        self.task.duration = self.task.duration[0:-2] + str(diffrence.seconds) + ";"
         self.timer_content.set_label(self.task.get_duration_text())
         update_task(self.task)
         self.activate_action("app.refresh_project_duration")

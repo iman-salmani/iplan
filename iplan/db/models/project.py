@@ -29,7 +29,7 @@ class Project:
 
         tasks = read_tasks(project_id=self._id, completed_tasks=True)
         for task in tasks:
-            for time in task.times.split(";")[0:-1]:
+            for time in task.duration.split(";")[0:-1]:
                 _datetime = float(time.split(",")[0])
                 _date = datetime.fromtimestamp(_datetime).date()
                 duration = int(time.split(",")[1])
