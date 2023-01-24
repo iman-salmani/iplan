@@ -13,5 +13,6 @@
 </div>
 
 ## Features
-* Grouping tasks with Projects
+* grouping tasks with project and list
 * Timer for tasks
+* Move tasks by drag and drop
