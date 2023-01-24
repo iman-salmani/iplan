@@ -2,7 +2,7 @@ from gi.repository import Gtk, Adw, GLib, Gdk
 import os
 
 from iplan.db.models.project import Project
-from iplan.db.operations.project import create_project, read_projects
+from iplan.db.operations.project import create_project, read_projects, read_project
 from iplan.db.operations.list import create_list
 from iplan.views.sidebar.sidebar_project import SidebarProject
 
@@ -56,10 +56,19 @@ class SidebarProjects(Gtk.Box):
 
     def fetch(self) -> None:
         selected_project: Project = self.props.root.props.application.project
+        selected_project_row = None
+
         for project in read_projects(self.archive_button.get_active()):
             project_ui = SidebarProject(project)
             if project._id == selected_project._id:
-                project_ui.remove_css_class("flat")
-                project_ui.add_css_class("raised")
+                selected_project_row = project_ui
             self.projects_list.append(project_ui)
+
+        if not selected_project_row:    # because archived
+            project = read_project(selected_project._id)
+            selected_project_row = SidebarProject(project)
+            self.projects_list.append(selected_project_row)
+
+        selected_project_row.remove_css_class("flat")
+        selected_project_row.add_css_class("raised")
 
