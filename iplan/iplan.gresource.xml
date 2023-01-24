@@ -13,6 +13,7 @@
     <file preprocess="xml-stripblanks">ui/project/project_lists.ui</file>
     <file preprocess="xml-stripblanks">ui/project/project_list.ui</file>
     <file preprocess="xml-stripblanks">ui/project/project_list_task.ui</file>
+    <file preprocess="xml-stripblanks">ui/project/project_list_delete_dialog.ui</file>
     <file preprocess="xml-stripblanks">ui/project/project_edit_window.ui</file>
     <file preprocess="xml-stripblanks">ui/project/project_delete_dialog.ui</file>
 

@@ -36,6 +36,7 @@ views_project_sources = [
   'views/project/project_lists.py',
   'views/project/project_list.py',
   'views/project/project_list_task.py',
+  'views/project/project_list_delete_dialog.py',
   'views/project/project_edit_window.py',
   'views/project/project_delete_dialog.py',
 ]
