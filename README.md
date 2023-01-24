@@ -9,9 +9,10 @@
 <h4 align="center">Planner application with time tracking ability</h4>
 
 <div align="center">
-  <img src="https://github.com/iman-salmani/iplan/blob/6fba81a5bc4384bb50b7659663ac34a72c13b262/data/screenshots/window.png">
+  <img src="https://github.com/iman-salmani/iplan/blob/6d21677b84a767376a96b71079f7610dfe6f838c/data/screenshots/window.png">
 </div>
 
 ## Features
-* Grouping tasks with Projects
+* grouping tasks with project and list
 * Timer for tasks
+* Move tasks by drag and drop
