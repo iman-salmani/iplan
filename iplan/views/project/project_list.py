@@ -4,12 +4,13 @@ from gi.repository import Gtk, GLib, Gdk, Gio, GObject
 
 from iplan.db.operations.project import read_projects
 from iplan.db.models.list import List
-from iplan.db.operations.list import update_list, delete_list
+from iplan.db.operations.list import update_list
 from iplan.db.models.task import Task
 from iplan.db.operations.task import create_task, read_tasks, read_task, update_task, find_new_task_position
 
 from iplan.views.project.project_header import ProjectHeader
 from iplan.views.project.project_list_task import ProjectListTask
+from iplan.views.project.project_list_delete_dialog import ProjectListDeleteDialog
 
 
 @Gtk.Template(resource_path='/ir/imansalmani/iplan/ui/project/project_list.ui')
@@ -92,8 +93,9 @@ class ProjectList(Gtk.Box):
     @Gtk.Template.Callback()
     def on_delete_button_clicked(self, *args):
         self.options_button.popdown()
-        delete_list(self._list._id)
-        self.get_parent().remove(self)
+        dialog = ProjectListDeleteDialog(self)
+        dialog.set_transient_for(self.get_root())
+        dialog.present()
 
     def refresh_tasks(self, *args):
         self.clear()
