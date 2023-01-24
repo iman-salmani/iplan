@@ -40,21 +40,21 @@ class SidebarProject(Gtk.Button):
     def on_dropped(
             self,
             target: Gtk.DropTarget,
-            source_widget: ProjectListTask,
+            source_task_row: ProjectListTask,
             x: float, y: float) -> bool:
-        source_widget.task.project = self.project._id
-        source_widget.task._list = list(read_lists(self.project._id))[0]._id
+        source_task_row.task.project = self.project._id
+        source_task_row.task._list = list(read_lists(self.project._id))[0]._id
         # TODO: open project and to prefered list
         # do this after change list drop system for create space for new task intead of replace
         # show completed tasks if source task done
-        source_widget.task.position = find_new_task_position(source_widget.task._list)
-        update_task(source_widget.task)
-        # TODO: remove just dropped task
-        self.activate_action("app.refresh_tasks")
+        source_task_row.task.position = find_new_task_position(source_task_row.task._list)
+        source_task_row.get_parent().remove(source_task_row)
+        update_task(source_task_row.task, move_position=True)
+        return True
 
     def on_motioned(self, target: Gtk.DropTarget, x, y):
-        source_widget: ProjectListTask = target.get_value()
-        if source_widget.task.project == self.project._id:
+        source_task_row: ProjectListTask = target.get_value()
+        if source_task_row.task.project == self.project._id:
             return 0
         return Gdk.DragAction.MOVE
 

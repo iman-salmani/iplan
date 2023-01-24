@@ -1,9 +1,9 @@
 import gi
-
 from gi.repository import Gtk, Adw, GLib, Gdk
 from time import sleep
 from datetime import datetime
 from threading import Thread
+import copy
 
 from iplan.db.models.task import Task
 from iplan.db.operations.task import update_task, delete_task
@@ -20,12 +20,11 @@ class ProjectListTask(Gtk.ListBoxRow):
     timer_content: Adw.ButtonContent = Gtk.Template.Child()
     delete_button: Gtk.Button = Gtk.Template.Child()
     task: Task
-    done: bool
+    moving_out: bool = False    # when drag!
 
     def __init__(self, task, new=False):
         super().__init__()
         self.task = task
-        self.done = self.task.done
 
         self.checkbox.set_active(self.task.done)
         self.name_button.set_visible(not new)
@@ -120,17 +119,31 @@ class ProjectListTask(Gtk.ListBoxRow):
     def on_drag_begin(
             self, drag_source: Gtk.DragSource,
             drag: Gdk.Drag) -> None:
-        allocation = self.get_allocation()
-        drag_widget = Gtk.ListBox()
-        drag_widget.set_size_request(allocation.width, allocation.height)
+        #allocation = self.get_allocation()
+        #drag_widget = Gtk.ListBox()
+        #drag_widget.set_size_request(240, allocation.height)
 
-        drag_row = ProjectListTask(self.task)
-        drag_widget.append(drag_row)
-        drag_widget.drag_highlight_row(drag_row)
+        #drag_row = ProjectListTask(self.task)
+        #drag_row.delete_button.set_visible(False)
+        #drag_row.timer.set_visible(False)
+        #drag_widget.append(drag_row)
+        #drag_widget.drag_highlight_row(drag_row)
+        #drag_row.set_size_request(240, 64)
 
         drag_icon = Gtk.DragIcon.get_for_drag(drag)
-        drag_icon.props.child = drag_widget
+        drag_icon.props.child = Gtk.Label()
         drag.set_hotspot(0, 0)
+
+    @Gtk.Template.Callback()
+    def on_drag_cancel(
+            self,
+            drag_source: Gtk.DragSource,
+            drag: Gdk.Drag,
+            reason):
+        # its probably canceled
+        self.moving_out = False
+        self.get_parent().invalidate_filter()
+        return False
 
     def start_timer(self, last_time):
         diffrence = None

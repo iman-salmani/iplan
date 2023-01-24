@@ -5,7 +5,8 @@ from gi.repository import Gtk, GLib, Gdk, Gio, GObject
 from iplan.db.operations.project import read_projects
 from iplan.db.models.list import List
 from iplan.db.operations.list import update_list, delete_list
-from iplan.db.operations.task import create_task, read_tasks, update_task
+from iplan.db.models.task import Task
+from iplan.db.operations.task import create_task, read_tasks, read_task, update_task, find_new_task_position
 
 from iplan.views.project.project_header import ProjectHeader
 from iplan.views.project.project_list_task import ProjectListTask
@@ -29,13 +30,15 @@ class ProjectList(Gtk.Box):
         self.name_entry.get_buffer().set_text(self._list.name, -1)
 
         drop_target = Gtk.DropTarget.new(ProjectListTask, Gdk.DragAction.MOVE)
-        drop_target.set_gtypes([ProjectListTask])
         drop_target.set_preload(True)
         drop_target.connect("drop", self.on_dropped)
         drop_target.connect("motion", self.on_motioned)
+        drop_target.connect("leave", self.on_leaved)
+        drop_target.connect("enter", self.on_entered)
         self.tasks_box.add_controller(drop_target)
 
         self.tasks_box.set_sort_func(self.sort)
+        self.tasks_box.set_filter_func(self._filter)
         self.connect("map", self.on_mapped)
         self.connect("unmap", self.on_unmapped)
 
@@ -97,40 +100,51 @@ class ProjectList(Gtk.Box):
         self.fetch()
 
     # UI
-    def on_dropped(
-            self,
-            target: Gtk.DropTarget,
-            source_widget: ProjectListTask,
-            x: float, y: float) -> bool:
-        target_widget: ProjectListTask = self.tasks_box.get_row_at_y(y)
-
-        source_position = source_widget.task.position
-        target_position = target_widget.task.position
-        source_list = source_widget.task._list
-        target_list = target_widget.task._list
-
-        if source_position == target_position:
-            return False
-
-        source_widget.task._list = target_list
-        source_widget.task.position = target_position
-        update_task(source_widget.task)
-
-        target_widget.task._list = source_list
-        target_widget.task.position = source_position
-        update_task(target_widget.task)
-
-        # self.tasks_box.invalidate_sort()
-        self.activate_action("app.refresh_tasks")
+    def on_dropped(self, target: Gtk.DropTarget, source_row, x, y):
+        # source_row moved by motion signal so it should drop on itself
+        self.tasks_box.drag_unhighlight_row()
+        task_in_db = read_task(source_row.task._id)
+        if task_in_db != source_row.task:
+            update_task(source_row.task, move_position=True)
         return True
 
     def on_motioned(self, target: Gtk.DropTarget, x, y):
-        target_widget: ProjectListTask = self.tasks_box.get_row_at_y(y)
-        source_widget: ProjectListTask = target.get_value()
+        source_row: ProjectListTask = target.get_value()
+        target_row: ProjectListTask = self.tasks_box.get_row_at_y(y)
 
-        if source_widget == target_widget:
+        # None check
+        if not source_row or not target_row:
             return 0
 
+        # Move shadow_row
+        if source_row != target_row:
+            # index is reverse of position
+            shadow_i = source_row.get_index()
+            target_i = target_row.get_index()
+            target_p = target_row.task.position
+            if shadow_i == target_i - 1:
+                source_row.task.position -= 1
+                target_row.task.position +=1
+            elif shadow_i < target_i:
+                for i in range(shadow_i+1, target_i+1):
+                    row = self.tasks_box.get_row_at_index(i)
+                    row.task.position += 1
+                source_row.task.position = target_p
+            elif shadow_i == target_i + 1:
+                source_row.task.position += 1
+                target_row.task.position -=1
+            elif shadow_i > target_i:
+                for i in range(target_i, shadow_i):
+                    row = self.tasks_box.get_row_at_index(i)
+                    row.task.position -= 1
+                source_row.task.position = target_p
+
+            # Should use invalidate_sort() insteed of changed() for Refresh hightlight shape
+            self.tasks_box.invalidate_sort()
+            self.tasks_box.drag_unhighlight_row()
+            self.tasks_box.drag_highlight_row(source_row)
+
+        # Scroll when mouse near top nad bottom edges
         scrolled_window_height = self.scrolled_window.get_size(Gtk.Orientation.VERTICAL)
         tasks_box_height = self.tasks_box.get_size(Gtk.Orientation.VERTICAL)
 
@@ -145,11 +159,35 @@ class ProjectList(Gtk.Box):
 
         return Gdk.DragAction.MOVE
 
+    def on_leaved(self, target: Gtk.DropTarget):
+        source_row: ProjectListTask = target.get_value()
+        if source_row:
+            source_row.moving_out = True
+            self.tasks_box.invalidate_filter()
+
+    def on_entered(self, target: Gtk.DropTarget, x, y):
+        source_row: ProjectListTask = target.get_value()
+        source_row.moving_out = False
+
+        if source_row.task._list == self._list._id:
+            self.tasks_box.invalidate_filter()
+        else:
+            source_row.task._list = self._list._id
+            source_row.task.position = find_new_task_position(source_row.task._list)
+            source_row.get_parent().remove(source_row)
+            self.tasks_box.prepend(source_row)
+            self.tasks_box.drag_highlight_row(source_row)
+
+        return Gdk.DragAction.MOVE
+
     def sort(
             self,
             row1: Gtk.ListBoxRow,
             row2: Gtk.ListBoxRow) -> int:
         return row2.task.position - row1.task.position
+
+    def _filter(self, row: Gtk.ListBoxRow) -> bool:
+        return not row.moving_out
 
     def fetch(self):
         tasks = read_tasks(
@@ -159,7 +197,6 @@ class ProjectList(Gtk.Box):
         )
         for task in tasks:
             self.tasks_box.append(ProjectListTask(task))
-        # TODO: check for empty
 
     def clear(self):
         while True:

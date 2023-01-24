@@ -42,6 +42,7 @@ def update_list(_list: List) -> None:
 def delete_list(list_id: int) -> None:
     connection, cursor = connect_database()
     cursor.execute(f"DELETE FROM lists WHERE id = {list_id}")
+    cursor.execute(f"DELETE FROM tasks WHERE list = {list_id}")
     connection.commit()
 
 def find_new_list_position(project_id) -> int:

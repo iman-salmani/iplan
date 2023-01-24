@@ -38,16 +38,63 @@ def read_task(task_id: int) -> Task:
         ).fetchone()
     )
 
-def update_task(task: Task) -> None:
+def update_task(task: Task, move_position=False) -> None:
     connection, cursor = connect_database()
+    position_statement = ''
+
+    if move_position:
+        position_statement = f", position = {task.position}"
+        old_task = read_task(task._id)
+
+        increase_position_tasks = []
+        decrease_position_tasks = []
+
+        if old_task._list != task._list:
+            # Decrease tasks position in previous list
+            decrease_position_tasks = cursor.execute(f"""SELECT * FROM tasks WHERE
+                position > {old_task.position} AND
+                list = {old_task._list}""").fetchall()
+
+            # Increase tasks position in target list
+            increase_position_tasks = cursor.execute(f"""SELECT * FROM tasks WHERE
+                position >= {task.position} AND
+                list = {task._list}""").fetchall()
+
+        else:
+            if old_task.position < task.position:
+                decrease_position_tasks = cursor.execute(f"""SELECT * FROM tasks WHERE
+                    position > {old_task.position} AND
+                    position <= {task.position} AND
+                    list = {task._list}
+                    """).fetchall()
+            elif old_task.position > task.position:
+                increase_position_tasks = cursor.execute(f"""SELECT * FROM tasks WHERE
+                    position >= {task.position} AND
+                    position < {old_task.position} AND
+                    list = {task._list}""").fetchall()
+
+        for record in increase_position_tasks:
+            cursor.execute(
+                f"""UPDATE tasks SET
+                position = {record[6]+1}
+                WHERE id = {record[0]}"""
+            )
+
+        for record in decrease_position_tasks:
+            cursor.execute(
+                f"""UPDATE tasks SET
+                position = {record[6]-1}
+                WHERE id = {record[0]}"""
+            )
+
     cursor.execute(
         f"""UPDATE tasks SET
         name = '{task.name}',
         done = {task.done},
         project = {task.project},
         list = {task._list},
-        duration = '{task.duration}',
-        position = {task.position}
+        duration = '{task.duration}'
+        {position_statement}
         WHERE id = {task._id}"""
     )
     connection.commit()
