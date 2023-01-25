@@ -8,7 +8,7 @@ from iplan.views.project.project_list_task import ProjectListTask
 
 
 @Gtk.Template(resource_path="/ir/imansalmani/iplan/ui/sidebar/sidebar_project.ui")
-class SidebarProject(Gtk.Button):
+class SidebarProject(Gtk.ListBoxRow):
     __gtype_name__ = "SidebarProject"
     project: Project = None
     content: Gtk.Label = Gtk.Template.Child()
@@ -27,15 +27,6 @@ class SidebarProject(Gtk.Button):
         drop_target.connect("drop", self.on_dropped)
         drop_target.connect("motion", self.on_motioned)
         self.add_controller(drop_target)
-
-    @Gtk.Template.Callback()
-    def open_project(self, *args):
-        window: Adw.Window = self.props.root
-        window.props.application.project = self.project
-        self.activate_action("app.open_project", GLib.Variant("i", -1))
-
-        if window.get_size(Gtk.Orientation.HORIZONTAL) < 720:
-            window.flap.set_reveal_flap(False)
 
     def on_dropped(
             self,

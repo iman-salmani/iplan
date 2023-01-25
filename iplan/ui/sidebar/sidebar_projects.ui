@@ -44,11 +44,15 @@
       </object>
     </child><!-- End Projects Header -->
     <child><!-- Projects List -->
-      <object class="GtkBox" id="projects_list">
-        <property name="orientation">vertical</property>
+      <object class="GtkListBox" id="projects_box">
         <property name="margin-start">6</property>
         <property name="margin-end">6</property>
-        <property name="spacing">6</property>
+        <property name="selection-mode">browse</property>
+        <property name="activate-on-single-click">true</property>
+        <signal name="row-activated" handler="on_row_activated"/>
+        <style>
+          <class name="navigation-sidebar"/>
+        </style>
       </object>
     </child><!-- Projects List -->
   </template>
