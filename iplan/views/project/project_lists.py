@@ -69,20 +69,7 @@ class ProjectLists(Gtk.ScrolledWindow):
 
             self.lists_box.append(list_ui)
 
-            # TODO: move this specific action not open project
             if target_task:
                 if _list._id == target_task._list:
-                    if target_task.done:
-                        if list_ui.filter_done_tasks != False:  # function have None condition
-                            list_ui.show_done_tasks_toggle_button.set_active(True)
-
-                    tasks_ui = list_ui.tasks_box.observe_children()
-                    target_task_ui = None
-                    for task_ui in tasks_ui:
-                        if type(task_ui) == ProjectListTask:    # get rid of placeholder widget
-                            if task_ui.task._id == target_task._id:
-                                target_task_ui = task_ui
-                                break
-
-                    GLib.idle_add(lambda *args: self.props.root.set_focus(target_task_ui))
+                    list_ui.focus_on_task(target_task)
 

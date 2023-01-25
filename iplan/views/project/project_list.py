@@ -79,7 +79,6 @@ class ProjectList(Gtk.Box):
 
     @Gtk.Template.Callback()
     def on_show_done_tasks_button_toggled(self, *args):
-        print(1)
         self.options_button.popdown()
         if self.filter_done_tasks == None:
             self.filter_done_tasks = False
@@ -96,6 +95,17 @@ class ProjectList(Gtk.Box):
         dialog.present()
 
     # UI
+    def focus_on_task(self, target_task: Task):
+        if target_task.done and self.filter_done_tasks != False:    # property have None condition
+            self.show_done_tasks_toggle_button.set_active(True)
+
+        top_position = self.tasks_box.get_first_child().task.position
+        target_task_row = self.tasks_box.get_row_at_index(
+            top_position - target_task.position
+        )
+        GLib.idle_add(lambda *args: self.props.root.set_focus(target_task_row))
+
+
     def on_dropped(self, target: Gtk.DropTarget, source_row, x, y):
         # source_row moved by motion signal so it should drop on itself
         self.tasks_box.drag_unhighlight_row()
