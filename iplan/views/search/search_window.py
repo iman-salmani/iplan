@@ -19,20 +19,24 @@ class SearchWindow(Gtk.Window):
         controller.connect("key-pressed", self.on_key_pressed)
         self.search_entry.add_controller(controller)
         self.search_entry.connect("activate", self.on_search_entry_activated)
-        self.search_results.connect("row-activated", self.on_result_clicked)
+        self.search_results.connect("row-activated", self.on_result_activated)
 
     def on_search_entry_activated(self, *args):
         selected_row = self.search_results.get_selected_row()
         first_row = self.search_results.get_first_child()
+
+        if type(first_row) != SearchResult:
+            return
+
         if selected_row:
-            self.on_result_clicked(self.search_results, selected_row)
+            self.on_result_activated(self.search_results, selected_row)
         elif first_row:
-            self.on_result_clicked(self.search_results, first_row)
+            self.on_result_activated(self.search_results, first_row)
 
     def on_key_pressed(self, controller, keyval, keycode, state):
         key = Gdk.keyval_name(keyval)
         first_child = self.search_results.get_first_child()
-        if not first_child:
+        if type(first_child) != SearchResult:
             return
 
         arrows = [65364, 65362] # Down, Up
@@ -50,7 +54,8 @@ class SearchWindow(Gtk.Window):
             else:
                 self.search_results.select_row(first_child)
 
-    def on_result_clicked(self, list_box, row):
+    @Gtk.Template.Callback()
+    def on_result_activated(self, list_box, row):
         if row._type == "project":
             self.get_application().project = row.project
             self.activate_action("app.open_project", GLib.Variant("i", -1))
@@ -61,6 +66,7 @@ class SearchWindow(Gtk.Window):
                 "app.open_project",
                 GLib.Variant("i", row.task._id)
             )
+        self.get_application().actions["open-searched"].activate()
         self.close()
 
     @Gtk.Template.Callback()

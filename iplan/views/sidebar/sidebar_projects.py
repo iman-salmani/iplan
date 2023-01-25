@@ -27,7 +27,11 @@ class SidebarProjects(Gtk.Box):
         actions = self.props.root.props.application.actions
         actions["update_project"].connect("activate", self.refresh)
         # TODO: update only changed project
-        actions["open_project"].connect("activate", self.on_project_opened)
+        #actions["open_project"].connect("activate", self.on_project_opened)
+        self.props.root.props.application.create_action(
+            "open-searched",
+            callback=self.on_searched_project_opened
+            )
         # TODO: raise style for selected project instead of get projects again from database
 
     @Gtk.Template.Callback()
@@ -54,7 +58,8 @@ class SidebarProjects(Gtk.Box):
         self.clear()
         self.fetch()
 
-    def on_project_opened(self, *args):
+    def on_searched_project_opened(self, *args):
+        print("open searched")
         project = self.props.root.props.application.project
         target_row = None
         for row in self.projects_box.observe_children():

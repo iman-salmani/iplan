@@ -100,7 +100,8 @@ class IPlanApplication(Adw.Application):
             callback=None,
             param: GLib.VariantType=None,
             state=None,
-            shortcuts: list[str]=None):
+            shortcuts: list[str]=None,
+            prefix="app"):
         """Add an window action.
 
         Args:
@@ -127,7 +128,7 @@ class IPlanApplication(Adw.Application):
         self.add_action(action)
 
         if shortcuts:
-            self.set_accels_for_action(f"app.{name}", shortcuts)
+            self.set_accels_for_action(f"{prefix}.{name}", shortcuts)
 
         self.actions[name] = action
 
