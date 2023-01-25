@@ -27,7 +27,7 @@ class SidebarProjects(Gtk.Box):
         actions = self.props.root.props.application.actions
         actions["update_project"].connect("activate", self.refresh)
         # TODO: update only changed project
-        actions["open_project"].connect("activate", self.refresh)
+        actions["open_project"].connect("activate", self.on_project_opened)
         # TODO: raise style for selected project instead of get projects again from database
 
     @Gtk.Template.Callback()
@@ -54,6 +54,17 @@ class SidebarProjects(Gtk.Box):
         self.clear()
         self.fetch()
 
+    def on_project_opened(self, *args):
+        project = self.props.root.props.application.project
+        target_row = None
+        for row in self.projects_box.observe_children():
+            if row.project._id == project._id:
+                target_row = row
+                break
+        self.projects_box.select_row(target_row)
+        if project.archive and not self.archive_button.get_active():
+            archive_button.toggled()
+
     @Gtk.Template.Callback()
     def on_archive_button_toggled(self, *args) -> None:
         self.projects_box.invalidate_filter()
@@ -76,13 +87,13 @@ class SidebarProjects(Gtk.Box):
 
     def fetch(self) -> None:
         selected_project: Project = self.props.root.props.application.project
-        selected_project_row = None
+        target_row = None
 
         for project in read_projects(archive=True):
             project_ui = SidebarProject(project)
             if project._id == selected_project._id:
-                selected_project_row = project_ui
+                target_row = project_ui
             self.projects_box.append(project_ui)
 
-        self.projects_box.select_row(selected_project_row)
+        self.projects_box.select_row(target_row)
 
