@@ -17,10 +17,10 @@ class SidebarProject(Gtk.ListBoxRow):
         super().__init__()
         self.project = project
 
+        self.content.set_label(self.project.name)
+
         if project.archive:
-            self.content.set_label(f"<s>{self.project.name}</s>")
-        else:
-            self.content.set_label(self.project.name)
+            self.content.add_css_class("dim-label")
 
         drop_target = Gtk.DropTarget.new(ProjectListTask, Gdk.DragAction.MOVE)
         drop_target.set_preload(True)

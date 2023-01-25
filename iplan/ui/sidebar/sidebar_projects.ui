@@ -31,7 +31,7 @@
             <property name="icon_name">shoe-box-symbolic</property>
             <property name="active">false</property>
             <property name="tooltip_text">Show archive projects</property>
-            <signal name="toggled" handler="refresh"></signal>
+            <signal name="toggled" handler="on_archive_button_toggled"></signal>
           </object>
         </child>
         <child>
