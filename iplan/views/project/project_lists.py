@@ -1,4 +1,3 @@
-from threading import Thread
 import gi
 from gi.repository import Gtk, GLib, Gio
 
@@ -70,7 +69,5 @@ class ProjectLists(Gtk.ScrolledWindow):
 
             if target_task:
                 if _list._id == target_task._list:
-                    thread = Thread(target=lambda *args: list_ui.focus_on_task(target_task))
-                    thread.daemon = True
-                    thread.start()
+                    list_ui.focus_on_task(target_task)
 

@@ -1,4 +1,3 @@
-from time import sleep
 import gi
 from gi.repository import Gtk, GLib, Gdk, Gio, GObject
 
@@ -106,16 +105,8 @@ class ProjectList(Gtk.Box):
                 if row.task._id == target_task._id:
                     target_task_row = row
 
-        while True:
-            if not self.get_root().get_application().get_active_window().get_modal():
-                GLib.idle_add(
-                    lambda *args: self.get_root().set_focus(target_task_row)
-                )
-                self.tasks_box.drag_highlight_row(target_task_row)
-                sleep(0.6)
-                self.tasks_box.drag_unhighlight_row()
-                break
-            sleep(0.1)
+        GLib.idle_add(lambda *args: self.get_root().set_focus(target_task_row))
+        self.tasks_box.drag_highlight_row(target_task_row)
 
     def on_dropped(self, target: Gtk.DropTarget, source_row, x, y):
         # source_row moved by motion signal so it should drop on itself
