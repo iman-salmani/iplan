@@ -58,7 +58,7 @@
         <child><!-- Task List -->
           <object class="GtkListBox" id="tasks_box">
             <property name="valign">start</property>
-            <property name="selection_mode">none</property>
+            <property name="selection_mode">browse</property>
             <property name="margin-top">3</property>
             <property name="margin-bottom">3</property>
             <property name="margin-start">12</property>
