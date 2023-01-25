@@ -46,6 +46,9 @@ class SidebarProjects(Gtk.Box):
         window.props.application.project = row.project
         self.activate_action("app.open_project", GLib.Variant("i", -1))
 
+        if not self.archive_button.get_active():    # filter archived projects again maybe be previous choice.
+            self.projects_box.invalidate_filter()
+
         if window.get_size(Gtk.Orientation.HORIZONTAL) < 720:
             window.flap.set_reveal_flap(False)
 
@@ -73,7 +76,7 @@ class SidebarProjects(Gtk.Box):
                 break
         self.projects_box.select_row(target_row)
         if project.archive and not self.archive_button.get_active():
-            archive_button.toggled()
+            self.archive_button.toggled()
 
     @Gtk.Template.Callback()
     def on_archive_button_toggled(self, *args) -> None:

@@ -57,6 +57,9 @@ class SearchWindow(Gtk.Window):
 
     @Gtk.Template.Callback()
     def on_result_activated(self, list_box, row):
+        if not self.get_application():
+            return
+
         if row._type == "project":
             self.get_application().project = row.project
             self.activate_action("app.open_project", GLib.Variant("i", -1))
