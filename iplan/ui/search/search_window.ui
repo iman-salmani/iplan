@@ -13,9 +13,15 @@
           <object class="GtkSearchEntry" id="search_entry">
             <property name="hexpand">true</property>
             <property name="placeholder-text">Search</property>
-            <signal name="search-changed" handler="on_search_entry_changed"/>
+            <signal name="search-changed" handler="search"/>
           </object>
         </property>
+        <child type="start">
+          <object class="GtkToggleButton" id="done_toggle_button">
+            <property name="icon-name">object-select-symbolic</property>
+            <signal name="toggled" handler="search"/>
+          </object>
+        </child>
       </object>
     </property>
     <child>

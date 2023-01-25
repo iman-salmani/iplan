@@ -105,8 +105,11 @@ def delete_task(task_id: int) -> None:
     cursor.execute(f"DELETE FROM tasks WHERE id = {task_id}")
     connection.commit()
 
-def search_tasks(text: str) -> Mapping[Task, list]:
-    query = f"SELECT * FROM tasks WHERE name LIKE '%{text}%'"
+def search_tasks(text: str, done) -> Mapping[Task, list]:
+    _filter = 'AND done = false'
+    if done:
+        _filter = ''
+    query = f"SELECT * FROM tasks WHERE name LIKE '%{text}%' {_filter}"
     connection, cursor = connect_database()
     records = cursor.execute(query).fetchall()
     return map(Task.new_from_record, records)

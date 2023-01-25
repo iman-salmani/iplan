@@ -11,6 +11,7 @@ class SearchWindow(Gtk.Window):
     search_entry = Gtk.Template.Child()
     search_results = Gtk.Template.Child()
     search_results_placeholder = Gtk.Template.Child()
+    done_toggle_button = Gtk.Template.Child()
 
     def __init__(self):
         super().__init__()
@@ -70,17 +71,17 @@ class SearchWindow(Gtk.Window):
         self.close()
 
     @Gtk.Template.Callback()
-    def on_search_entry_changed(self, sender):
+    def search(self, *args):
         self.clear()
 
-        text = sender.get_text().lower()
+        text = self.search_entry.get_text().lower()
         if not text.strip():
             return
 
         for project in search_projects(text):
             self.search_results.append(
                 SearchResult("project", project.name, project=project))
-        for task in search_tasks(text):
+        for task in search_tasks(text, done=self.done_toggle_button.get_active()):
             self.search_results.append(
                 SearchResult("task", task.name, task=task))
 
