@@ -88,8 +88,8 @@
         <property name="orientation">vertical</property>
         <property name="spacing">6</property>
         <child><!-- Toggle Completed Tasks -->
-          <object class="GtkToggleButton">
-            <signal name="clicked" handler="on_completed_tasks_button_toggled"/>
+          <object class="GtkToggleButton" id="show_done_tasks_toggle_button">
+            <signal name="toggled" handler="on_show_done_tasks_button_toggled"/>
             <style>
               <class name="flat"/>
             </style>

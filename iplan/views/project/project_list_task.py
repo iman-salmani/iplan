@@ -88,9 +88,9 @@ class ProjectListTask(Gtk.ListBoxRow):
         if self.timer_running:
             self.toggle_timer()
 
-        # remove show completed tasks is off
+        # remove if done tasks filter is on
         _list = self.get_parent().get_parent().get_parent().get_parent()
-        if not _list.show_completed_tasks:
+        if _list.filter_done_tasks != False:    # have none condition
             self.get_parent().remove(self)
 
     def toggle_timer(self, last_time=False):

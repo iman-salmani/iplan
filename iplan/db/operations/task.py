@@ -15,15 +15,16 @@ def create_task(name: str, project_id: int, list_id: int) -> Task:
 
 def read_tasks(
         project_id: int,
-        list_id: int= None,
-        completed_tasks: bool=False
+        list_id: int = None,
+        done_tasks: bool = None
         ) -> Mapping[Task, list]:
+    """if done_tasks be None it return both"""
 
     _filter = f"project = {project_id}"
     if list_id != None:
         _filter += f" AND list = {list_id}"
-    if completed_tasks == False:
-        _filter += f" AND done = {False}"
+    if type(done_tasks) == bool:
+        _filter += f" AND done = {done_tasks}"
     query = f"SELECT * FROM tasks WHERE {_filter} ORDER BY position ASC"
 
     connection, cursor = connect_database()

@@ -18,7 +18,7 @@ class Project:
         )
 
     def get_duration(self):
-        tasks = read_tasks(project_id=self._id, completed_tasks=True)
+        tasks = read_tasks(project_id=self._id)
         duration = 0
         for task in tasks:
             duration += task.get_duration()
@@ -27,7 +27,7 @@ class Project:
     def get_duration_table(self) -> dict[date, int]:
         table = {}
 
-        tasks = read_tasks(project_id=self._id, completed_tasks=True)
+        tasks = read_tasks(project_id=self._id)
         for task in tasks:
             for time in task.duration.split(";")[0:-1]:
                 _datetime = float(time.split(",")[0])

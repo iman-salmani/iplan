@@ -16,12 +16,13 @@ from iplan.views.project.project_list_delete_dialog import ProjectListDeleteDial
 @Gtk.Template(resource_path='/ir/imansalmani/iplan/ui/project/project_list.ui')
 class ProjectList(Gtk.Box):
     __gtype_name__ = "ProjectList"
-    show_completed_tasks: bool = False
+    filter_done_tasks: bool = None  # None means tasks_box dont have done tasks for filter
     scrolled_window: Gtk.ScrolledWindow = Gtk.Template.Child()
     tasks_box: Gtk.ListBox = Gtk.Template.Child()
     name_button: Gtk.Button = Gtk.Template.Child()
     name_entry: Gtk.Entry = Gtk.Template.Child()
     options_button: Gtk.MenuButton = Gtk.Template.Child()
+    show_done_tasks_toggle_button: Gtk.ToggleButton = Gtk.Template.Child()
     _list: List
 
     def __init__(self, _list: List) -> None:
@@ -41,7 +42,6 @@ class ProjectList(Gtk.Box):
         self.tasks_box.set_sort_func(self.sort)
         self.tasks_box.set_filter_func(self._filter)
         self.connect("map", self.on_mapped)
-        self.connect("unmap", self.on_unmapped)
 
     # Actions
     def on_mapped(self, *args):
@@ -50,12 +50,7 @@ class ProjectList(Gtk.Box):
         # TODO: use handler and use action in ProjectLists and find focused list
         #actions["new_task"].connect("activate", self.on_new_button_clicked)
         # TODO: split this to specific functions
-        actions["refresh_tasks"].connect("activate", self.refresh_tasks)
-        self.fetch()
-
-    def on_unmapped(self, *args):
-        actions = self.props.root.props.application.actions
-        actions["refresh_tasks"].disconnect_by_func(self.refresh_tasks)
+        self.fetch(done_tasks=False)
 
     @Gtk.Template.Callback()
     def on_name_toggled(self, *args):
@@ -83,12 +78,15 @@ class ProjectList(Gtk.Box):
         task_ui.name_entry.grab_focus()
 
     @Gtk.Template.Callback()
-    def on_completed_tasks_button_toggled(self, toggle_button):
-        # TODO: remove only done tasks or verse
+    def on_show_done_tasks_button_toggled(self, *args):
+        print(1)
         self.options_button.popdown()
-        self.show_completed_tasks = toggle_button.get_active()
-        self.clear()
-        self.fetch()
+        if self.filter_done_tasks == None:
+            self.filter_done_tasks = False
+            self.fetch(done_tasks=not self.filter_done_tasks)
+        else:
+            self.filter_done_tasks = not self.filter_done_tasks
+            self.tasks_box.invalidate_filter()
 
     @Gtk.Template.Callback()
     def on_delete_button_clicked(self, *args):
@@ -96,10 +94,6 @@ class ProjectList(Gtk.Box):
         dialog = ProjectListDeleteDialog(self)
         dialog.set_transient_for(self.get_root())
         dialog.present()
-
-    def refresh_tasks(self, *args):
-        self.clear()
-        self.fetch()
 
     # UI
     def on_dropped(self, target: Gtk.DropTarget, source_row, x, y):
@@ -189,22 +183,16 @@ class ProjectList(Gtk.Box):
         return row2.task.position - row1.task.position
 
     def _filter(self, row: Gtk.ListBoxRow) -> bool:
+        if self.filter_done_tasks:
+            return not row.task.done
         return not row.moving_out
 
-    def fetch(self):
+    def fetch(self, done_tasks):
         tasks = read_tasks(
             project_id=self.props.root.props.application.project._id,
             list_id=self._list._id,
-            completed_tasks=self.show_completed_tasks
+            done_tasks=done_tasks
         )
         for task in tasks:
             self.tasks_box.append(ProjectListTask(task))
-
-    def clear(self):
-        while True:
-            row = self.tasks_box.get_first_child()
-            if row:
-                self.tasks_box.remove(row)
-            else:
-                break
 

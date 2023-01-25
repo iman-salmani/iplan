@@ -7,6 +7,7 @@ from iplan.db.operations.list import create_list, read_lists
 from iplan.db.models.task import Task
 from iplan.db.operations.task import read_task
 from iplan.views.project.project_list import ProjectList
+from iplan.views.project.project_list_task import ProjectListTask
 
 @Gtk.Template(resource_path="/ir/imansalmani/iplan/ui/project/project_lists.ui")
 class ProjectLists(Gtk.ScrolledWindow):
@@ -72,14 +73,16 @@ class ProjectLists(Gtk.ScrolledWindow):
             if target_task:
                 if _list._id == target_task._list:
                     if target_task.done:
-                        list_ui.show_completed_tasks_switch.set_active(True)
+                        if list_ui.filter_done_tasks != False:  # function have None condition
+                            list_ui.show_done_tasks_toggle_button.set_active(True)
 
                     tasks_ui = list_ui.tasks_box.observe_children()
                     target_task_ui = None
                     for task_ui in tasks_ui:
-                        if task_ui.task._id == target_task._id:
-                            target_task_ui = task_ui
-                            break
+                        if type(task_ui) == ProjectListTask:    # get rid of placeholder widget
+                            if task_ui.task._id == target_task._id:
+                                target_task_ui = task_ui
+                                break
 
                     GLib.idle_add(lambda *args: self.props.root.set_focus(target_task_ui))
 
