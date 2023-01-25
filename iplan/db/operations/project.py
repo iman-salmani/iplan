@@ -40,6 +40,7 @@ def update_project(project: Project) -> None:
 def delete_project(project_id: int) -> None:
     connection, cursor = connect_database()
     cursor.execute(f"DELETE FROM projects WHERE id = {project_id}")
+    cursor.execute(f"DELETE FROM lists WHERE project = {project_id}")
     cursor.execute(f"DELETE FROM tasks WHERE project = {project_id}")
     connection.commit()
 

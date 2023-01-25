@@ -45,7 +45,10 @@
                   <object class="PrimaryMenu"/>
                 </child>
                 <child type="end">
-                  <object class="SearchBar"/>
+                  <object class="GtkButton">
+                    <property name="icon-name">system-search-symbolic</property>
+                    <property name="action-name">app.search</property>
+                  </object>
                 </child>
               </object>
             </child><!-- End Header -->

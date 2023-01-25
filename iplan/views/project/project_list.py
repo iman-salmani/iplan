@@ -1,5 +1,5 @@
+from time import sleep
 import gi
-
 from gi.repository import Gtk, GLib, Gdk, Gio, GObject
 
 from iplan.db.operations.project import read_projects
@@ -96,15 +96,26 @@ class ProjectList(Gtk.Box):
 
     # UI
     def focus_on_task(self, target_task: Task):
-        if target_task.done and self.filter_done_tasks != False:    # property have None condition
+        if target_task.done and self.filter_done_tasks != False:
+            # property have None condition
             self.show_done_tasks_toggle_button.set_active(True)
 
-        top_position = self.tasks_box.get_first_child().task.position
-        target_task_row = self.tasks_box.get_row_at_index(
-            top_position - target_task.position
-        )
-        GLib.idle_add(lambda *args: self.props.root.set_focus(target_task_row))
+        target_task_row = None
+        for row in self.tasks_box.observe_children():
+            if type(row) == ProjectListTask:    # get rid of placeholder
+                if row.task._id == target_task._id:
+                    target_task_row = row
 
+        while True:
+            if not self.get_root().get_application().get_active_window().get_modal():
+                GLib.idle_add(
+                    lambda *args: self.get_root().set_focus(target_task_row)
+                )
+                self.tasks_box.drag_highlight_row(target_task_row)
+                sleep(0.6)
+                self.tasks_box.drag_unhighlight_row()
+                break
+            sleep(0.1)
 
     def on_dropped(self, target: Gtk.DropTarget, source_row, x, y):
         # source_row moved by motion signal so it should drop on itself

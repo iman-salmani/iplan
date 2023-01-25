@@ -17,7 +17,7 @@
     <file preprocess="xml-stripblanks">ui/project/project_edit_window.ui</file>
     <file preprocess="xml-stripblanks">ui/project/project_delete_dialog.ui</file>
 
-    <file preprocess="xml-stripblanks">ui/search_bar/search_bar.ui</file>
-    <file preprocess="xml-stripblanks">ui/search_bar/search_result.ui</file>
+    <file preprocess="xml-stripblanks">ui/search/search_window.ui</file>
+    <file preprocess="xml-stripblanks">ui/search/search_result.ui</file>
   </gresource>
 </gresources>

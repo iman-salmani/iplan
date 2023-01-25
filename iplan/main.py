@@ -7,7 +7,7 @@ from gi.repository import Gtk, Gio, GLib, Adw
 from iplan.db.manager import check_database
 from iplan.db.models.project import Project
 from iplan.views.window import IPlanWindow
-
+from iplan.views.search.search_window import SearchWindow
 
 class IPlanApplication(Adw.Application):
     """The main application singleton class."""
@@ -36,7 +36,8 @@ class IPlanApplication(Adw.Application):
             callback=self.on_preferences,
             shortcuts=['<Ctrl>comma']
         )
-        self.create_action("search", shortcuts=["<Ctrl>f"])
+        self.create_action("search", callback=self.on_search, shortcuts=["<Ctrl>f"])
+        self.create_action("close_modal", callback=self.close_modal, shortcuts=["Escape"])
         self.create_action("update_project")
         self.create_action(
             "open_project",
@@ -78,6 +79,20 @@ class IPlanApplication(Adw.Application):
     def on_preferences(self, widget, _):
         """Callback for the app.preferences action."""
         print('app.preferences action activated')
+
+    def on_search(self, widget, _):
+        active_window = self.props.active_window
+        if type(active_window) == IPlanWindow:
+            window = SearchWindow()
+            window.set_transient_for(self.props.active_window)
+            window.set_application(self)
+            window.present()
+        elif type(active_window) == SearchWindow:
+            active_window.close()
+
+    def close_modal(self, widget, _):
+        if type(self.props.active_window) != IPlanWindow:
+            self.props.active_window.close()
 
     def create_action(
             self,

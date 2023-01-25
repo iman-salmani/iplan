@@ -1,5 +1,5 @@
+from threading import Thread
 import gi
-
 from gi.repository import Gtk, GLib, Gio
 
 from iplan.db.operations.project import read_projects
@@ -43,7 +43,6 @@ class ProjectLists(Gtk.ScrolledWindow):
         self.lists_box.append(ProjectList(_list))
 
     def open_project(self, action: Gio.SimpleAction, param: GLib.Variant):
-        # TODO: do unpack on other instances
         task_id = param.unpack()
 
         self.clear()
@@ -71,5 +70,7 @@ class ProjectLists(Gtk.ScrolledWindow):
 
             if target_task:
                 if _list._id == target_task._list:
-                    list_ui.focus_on_task(target_task)
+                    thread = Thread(target=lambda *args: list_ui.focus_on_task(target_task))
+                    thread.daemon = True
+                    thread.start()
 

@@ -3,7 +3,6 @@ from gi.repository import Gtk, Adw
 from iplan.views.sidebar.sidebar import Sidebar
 from iplan.views.project.project_header import ProjectHeader
 from iplan.views.project.project_lists import ProjectLists
-from iplan.views.search_bar.search_bar import SearchBar
 
 
 @Gtk.Template(resource_path="/ir/imansalmani/iplan/ui/window.ui")

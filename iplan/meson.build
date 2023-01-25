@@ -41,9 +41,9 @@ views_project_sources = [
   'views/project/project_delete_dialog.py',
 ]
 
-views_search_bar_sources = [
-  'views/search_bar/search_bar.py',
-  'views/search_bar/search_result.py',
+views_search_sources = [
+  'views/search/search_window.py',
+  'views/search/search_result.py',
 ]
 
 db_models_sources = [
@@ -63,7 +63,7 @@ install_data('main.py', install_dir: moduledir)
 install_data('views/window.py', install_dir: join_paths(moduledir, 'views'))
 install_data(views_sidebar_sources, install_dir: join_paths(moduledir, 'views', 'sidebar'))
 install_data(views_project_sources, install_dir: join_paths(moduledir, 'views', 'project'))
-install_data(views_search_bar_sources, install_dir: join_paths(moduledir, 'views', 'search_bar'))
+install_data(views_search_sources, install_dir: join_paths(moduledir, 'views', 'search'))
 install_data('db/manager.py', install_dir: join_paths(moduledir, 'db'))
 install_data(db_models_sources, install_dir: join_paths(moduledir, 'db', 'models'))
 install_data(db_operations_sources, install_dir: join_paths(moduledir, 'db', 'operations'))
