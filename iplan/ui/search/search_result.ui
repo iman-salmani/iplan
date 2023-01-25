@@ -12,6 +12,12 @@
         <property name="margin-start">12</property>
         <property name="margin-end">12</property>
         <child>
+          <object class="GtkCheckButton" id="check_button">
+            <property name="margin-end">6</property>
+            <property name="sensitive">false</property>
+          </object>
+        </child>
+        <child>
           <object class="GtkLabel" id="name">
             <property name="halign">start</property>
             <property name="hexpand">true</property>
@@ -20,6 +26,7 @@
         </child>
         <child>
           <object class="GtkLabel" id="type_label">
+            <property name="margin-start">6</property>
             <style>
               <class name="dim-label"/>
             </style>

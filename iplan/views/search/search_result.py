@@ -7,6 +7,7 @@ class SearchResult(Gtk.ListBoxRow):
     __gtype_name__ = "SearchResult"
     name = Gtk.Template.Child()
     type_label = Gtk.Template.Child()
+    check_button = Gtk.Template.Child()
     _type = None
     project = None
     task = None
@@ -19,4 +20,8 @@ class SearchResult(Gtk.ListBoxRow):
 
         self.name.set_label(name)
         self.type_label.set_label(self._type)
+        if self._type == "project":
+            self.check_button.set_visible(False)
+        else:
+            self.check_button.set_active(self.task.done)
 
