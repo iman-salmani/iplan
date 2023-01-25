@@ -70,7 +70,7 @@ class SearchWindow(Gtk.Window):
                 "app.open_project",
                 GLib.Variant("i", row.task._id)
             )
-        self.get_application().actions["open-searched"].activate()
+        self.get_application().actions["projects-open-searched"].activate()
         self.close()
 
     @Gtk.Template.Callback()

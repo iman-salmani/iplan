@@ -35,7 +35,12 @@ class SidebarProjects(Gtk.Box):
         # TODO: update only changed project
         #actions["open_project"].connect("activate", self.on_project_opened)
         self.props.root.props.application.create_action(
-            "open-searched",
+            "projects-deleted",
+            callback=self.on_project_deleted,
+            param=GLib.VariantType('i')     # position
+            )
+        self.props.root.props.application.create_action(
+            "projects-open-searched",
             callback=self.select_active_project
             )
         # TODO: raise style for selected project instead of get projects again from database
@@ -66,6 +71,14 @@ class SidebarProjects(Gtk.Box):
         # instead of all projects when archive button is active
         self.clear()
         self.fetch()
+
+    def on_project_deleted(self, action, value):
+        project_position = value.unpack()
+        top_position = self.projects_box.get_row_at_index(0).project.position
+        print(top_position)
+        print(project_position)
+        row = self.projects_box.get_row_at_index(top_position - project_position)
+        self.projects_box.remove(row)
 
     def select_active_project(self, *args):
         project = self.props.root.props.application.project

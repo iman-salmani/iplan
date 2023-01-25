@@ -19,7 +19,10 @@ class ProjectDeleteDialog(Adw.MessageDialog):
     def on_responsed(self, dialog, response):
         if response == "delete":
             delete_project(self.app.project._id)
-            self.activate_action("app.update_project")
+            self.app.activate_action(
+                "projects-deleted",
+                GLib.Variant("i", self.app.project.position)
+            )
 
             projects = read_projects()
             if not projects:
