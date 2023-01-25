@@ -20,9 +20,10 @@ def create_tables() -> None:
     cursor.execute(
         """
         CREATE TABLE "projects" (
-        "id"	  INTEGER NOT NULL,
-        "name"	  TEXT NOT NULL,
-        "archive" INTEGER NOT NULL DEFAULT 0,
+        "id"	    INTEGER NOT NULL,
+        "name"	    TEXT NOT NULL,
+        "archive"   INTEGER NOT NULL DEFAULT 0,
+        "position"  INTEGER NOT NULL DEFAULT 0,
         PRIMARY KEY("id" AUTOINCREMENT)
         );
         """

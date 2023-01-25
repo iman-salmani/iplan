@@ -28,6 +28,30 @@ class SidebarProject(Gtk.ListBoxRow):
         drop_target.connect("motion", self.on_motioned)
         self.add_controller(drop_target)
 
+    @Gtk.Template.Callback()
+    def on_drag_prepare(self, drag_source: Gtk.DragSource,
+            x: float, y: float) -> Gdk.ContentProvider:
+        return Gdk.ContentProvider.new_for_value(self)
+
+    @Gtk.Template.Callback()
+    def on_drag_begin(
+            self, drag_source: Gtk.DragSource,
+            drag: Gdk.Drag) -> None:
+        self.get_parent().select_row(self)
+        drag_icon = Gtk.DragIcon.get_for_drag(drag)
+        drag_icon.props.child = Gtk.Label()
+        drag.set_hotspot(0, 0)
+
+    @Gtk.Template.Callback()
+    def on_drag_cancel(
+            self,
+            drag_source: Gtk.DragSource,
+            drag: Gdk.Drag,
+            reason):
+        # its probably canceled
+        self.get_parent().get_parent().select_active_project()
+        return False
+
     def on_dropped(
             self,
             target: Gtk.DropTarget,
