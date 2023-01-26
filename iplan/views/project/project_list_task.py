@@ -84,7 +84,7 @@ class ProjectListTask(Gtk.ListBoxRow):
         active = sender.get_active()
 
         if self.task.done == active:
-            # this happens when show completed tasks switch is on
+            # this happens in fetch done tasks
             return
 
         self.task.done = active
@@ -94,10 +94,21 @@ class ProjectListTask(Gtk.ListBoxRow):
         if self.timer_running:
             self.toggle_timer()
 
-        # remove if done tasks filter is on
-        _list = self.get_parent().get_parent().get_parent().get_parent()
-        if _list.filter_done_tasks != False:    # have none condition
-            self.get_parent().remove(self)
+        if active:
+            # prevent from scrollup after filter or remove row
+            upper_task = self.get_parent().get_row_at_index(self.get_index() - 1)
+
+            # filter or remove row if done tasks filter is not False
+            _list = self.get_parent().get_parent().get_parent().get_parent()
+            # because when is None ProjectList do not fetched done tasks
+            if _list.filter_done_tasks == None:
+                if upper_task:
+                    self.get_root().set_focus(upper_task)
+                self.get_parent().remove(self)
+            elif _list.filter_done_tasks == True:
+                if upper_task:
+                    self.get_root().set_focus(upper_task)
+                self.changed()
 
     def toggle_timer(self, last_time=False):
         if self.timer.has_css_class("flat"):
