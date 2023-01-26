@@ -128,11 +128,11 @@ def search_tasks(text: str, done) -> Mapping[Task, list]:
 
 def find_new_task_position(list_id: int) -> int:
     connection, cursor = connect_database()
-    first_record = cursor.execute(
-        f"""SELECT * FROM tasks WHERE
+    last_position = cursor.execute(
+        f"""SELECT position FROM tasks WHERE
         list = {list_id} ORDER BY position DESC"""
     ).fetchone()
-    if not first_record:
+    if not last_position:
         return 0
-    return first_record[6] + 1
+    return last_position[0] + 1
 
