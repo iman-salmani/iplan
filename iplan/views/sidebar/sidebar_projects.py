@@ -75,8 +75,6 @@ class SidebarProjects(Gtk.Box):
     def on_project_deleted(self, action, value):
         project_position = value.unpack()
         top_position = self.projects_box.get_row_at_index(0).project.position
-        print(top_position)
-        print(project_position)
         row = self.projects_box.get_row_at_index(top_position - project_position)
         self.projects_box.remove(row)
 

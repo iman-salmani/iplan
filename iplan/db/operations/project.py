@@ -68,11 +68,23 @@ def update_project(project: Project, move_position=False) -> None:
     )
     connection.commit()
 
-def delete_project(project_id: int) -> None:
+def delete_project(project: Project) -> None:
     connection, cursor = connect_database()
-    cursor.execute(f"DELETE FROM projects WHERE id = {project_id}")
-    cursor.execute(f"DELETE FROM lists WHERE project = {project_id}")
-    cursor.execute(f"DELETE FROM tasks WHERE project = {project_id}")
+    cursor.execute(f"DELETE FROM projects WHERE id = {project._id}")
+    cursor.execute(f"DELETE FROM lists WHERE project = {project._id}")
+    cursor.execute(f"DELETE FROM tasks WHERE project = {project._id}")
+
+    # decrease upper projects position
+    upper_projects = cursor.execute(
+        f"SELECT * FROM projects WHERE position > {project.position}"
+        ).fetchall()
+    for record in upper_projects:
+            cursor.execute(
+                f"""UPDATE projects SET
+                position = {record[3]-1}
+                WHERE id = {record[0]}"""
+            )
+
     connection.commit()
 
 def search_projects(text: str, archive=False) -> Mapping[Project, list]:

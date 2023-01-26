@@ -18,7 +18,7 @@ class ProjectDeleteDialog(Adw.MessageDialog):
     @Gtk.Template.Callback()
     def on_responsed(self, dialog, response):
         if response == "delete":
-            delete_project(self.app.project._id)
+            delete_project(self.app.project)
             self.app.activate_action(
                 "projects-deleted",
                 GLib.Variant("i", self.app.project.position)
