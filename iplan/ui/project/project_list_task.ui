@@ -43,7 +43,9 @@
               bind-source="name_button"
               bind-property="visible"
               bind-flags="invert-boolean">false</property>
+            <property name="secondary-icon-name">window-close-symbolic</property>
             <signal name="activate" handler="on_name_toggled"/>
+            <signal name="icon-press" handler="on_name_entry_canceled"/>
           </object>
         </child><!-- End Name Entry -->
         <child>

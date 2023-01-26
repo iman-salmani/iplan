@@ -30,6 +30,9 @@ class ProjectListTask(Gtk.ListBoxRow):
         self.name_button.set_visible(not new)
         self.name_button.get_child().set_text(self.task.name)
         self.name_entry.get_buffer().set_text(self.task.name, -1)
+        entry_controller = Gtk.EventControllerKey()
+        entry_controller.connect("key-released", self.on_name_entry_key_released)
+        self.name_entry.add_controller(entry_controller)
 
         duration = task.get_duration()
         if duration:
@@ -58,6 +61,15 @@ class ProjectListTask(Gtk.ListBoxRow):
             update_task(self.task)
         else:
             self.name_entry.grab_focus_without_selecting()
+
+    @Gtk.Template.Callback()
+    def on_name_entry_canceled(self, *args):
+        self.name_button.set_visible(not self.name_button.get_visible())
+        self.name_entry.get_buffer().set_text(self.task.name, -1)
+
+    def on_name_entry_key_released(self, controller, keyval, keycode, state):
+        if keycode == 9:    # Escape
+            self.on_name_entry_canceled()
 
     @Gtk.Template.Callback()
     def delete(self, *args):
@@ -215,4 +227,5 @@ class TaskModal(Adw.Window):
         title = Gtk.Label.new(task.name)
         title.add_css_class("title-1")
         content.append(title)
+
 
