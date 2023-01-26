@@ -50,10 +50,16 @@
                     <property name="action-name">app.search</property>
                   </object>
                 </child>
+                <child type="end">
+                  <object class="GtkButton" id="project_lists_layout_button">
+                    <property name="icon-name">list-symbolic</property>
+                    <property name="action-name">app.toggle-project-lists-layout</property>
+                  </object>
+                </child>
               </object>
             </child><!-- End Header -->
             <child>
-              <object class="ProjectLists"/>
+              <object class="ProjectLists" id="project_lists"/>
             </child>
           </object>
         </property><!-- End Content -->

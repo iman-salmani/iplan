@@ -3,6 +3,7 @@
   <requires lib="gtk" version="4.0"/>
   <requires lib="Adw" version="1.0"/>
   <template class="ProjectList" parent="GtkBox">
+    <property name="vexpand">true</property>
     <property name="orientation">vertical</property>
     <property name="width-request">480</property>
     <child><!-- Header -->
@@ -49,35 +50,34 @@
         </child><!-- End Project Options Button -->
       </object>
     </child><!-- End Header -->
-    <child><!-- Scrolled Window -->
+    <child><!-- Task List -->
+      <object class="GtkListBox" id="tasks_box">
+        <property name="valign">start</property>
+        <property name="selection_mode">browse</property>
+        <property name="margin-top">3</property>
+        <property name="margin-bottom">3</property>
+        <property name="margin-start">12</property>
+        <property name="margin-end">12</property>
+        <style>
+          <class name="boxed-list"/>
+        </style>
+        <child type="placeholder">
+          <object class="GtkLabel">
+            <property name="margin-top">22</property>
+            <property name="margin-bottom">22</property>
+            <property name="label">Nothing to do 🤔️</property>
+            <style>
+              <class name="heading"/>
+            </style>
+          </object>
+        </child>
+      </object>
+    </child><!-- End Task List -->
+    <child><!-- Scrolled Window - its for horizontal layout-->
       <object class="GtkScrolledWindow" id="scrolled_window">
         <property name="vexpand">true</property>
         <property name="hexpand">true</property>
-        <property name="margin-top">9</property>
-        <property name="margin-bottom">9</property>
-        <child><!-- Task List -->
-          <object class="GtkListBox" id="tasks_box">
-            <property name="valign">start</property>
-            <property name="selection_mode">browse</property>
-            <property name="margin-top">3</property>
-            <property name="margin-bottom">3</property>
-            <property name="margin-start">12</property>
-            <property name="margin-end">12</property>
-            <style>
-              <class name="boxed-list"/>
-            </style>
-            <child type="placeholder">
-              <object class="GtkLabel">
-                <property name="margin-top">22</property>
-                <property name="margin-bottom">22</property>
-                <property name="label">Nothing to do 🤔️</property>
-                <style>
-                  <class name="heading"/>
-                </style>
-              </object>
-            </child>
-          </object>
-        </child><!-- End Task List -->
+        <property name="visible">false</property>
       </object>
     </child><!-- Scrolled Window -->
   </template>

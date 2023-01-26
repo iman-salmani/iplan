@@ -8,7 +8,10 @@ from iplan.views.project.project_lists import ProjectLists
 @Gtk.Template(resource_path="/ir/imansalmani/iplan/ui/window.ui")
 class IPlanWindow(Adw.ApplicationWindow):
     __gtype_name__ = 'IPlanWindow'
-    flap: Adw.Flap = Gtk.Template.Child()    # used by children
+    # used by children
+    flap: Adw.Flap = Gtk.Template.Child()
+    project_lists_layout_button: Gtk.Button = Gtk.Template.Child()
+    project_lists: ProjectLists = Gtk.Template.Child()
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)

@@ -38,6 +38,12 @@ class ProjectList(Gtk.Box):
         drop_target.connect("enter", self.on_entered)
         self.tasks_box.add_controller(drop_target)
 
+        scroll_controller = Gtk.EventControllerScroll.new(
+            Gtk.EventControllerScrollFlags.VERTICAL
+        )   # a little tricky. controller send scroll signal even if shift pressed
+        scroll_controller.connect("scroll", self.on_scroll)
+        self.scrolled_window.add_controller(scroll_controller)
+
         self.tasks_box.set_sort_func(self.sort)
         self.tasks_box.set_filter_func(self._filter)
         self.connect("map", self.on_mapped)
@@ -46,10 +52,19 @@ class ProjectList(Gtk.Box):
     def on_mapped(self, *args):
         self.disconnect_by_func(self.on_mapped)
         actions = self.props.root.props.application.actions
+
         # TODO: use handler and use action in ProjectLists and find focused list
         #actions["new_task"].connect("activate", self.on_new_button_clicked)
         # TODO: split this to specific functions
         self.fetch(done_tasks=False)
+
+    def on_scroll(self, controller, dx, dy):
+        project_lists = self.get_root().project_lists
+        view_port = project_lists.get_first_child()
+        if project_lists.shift_modifier:
+            adjustment = view_port.props.hadjustment
+            step = adjustment.get_step_increment()
+            adjustment.set_value(adjustment.get_value() + (step * dy))
 
     @Gtk.Template.Callback()
     def on_name_toggled(self, *args):
