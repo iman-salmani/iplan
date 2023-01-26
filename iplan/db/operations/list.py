@@ -8,7 +8,7 @@ def create_list(name: str, project_id: int) -> List:
     connection, cursor = connect_database()
     cursor.execute(
         f"""INSERT INTO lists(name, project, position)
-        VALUES ('{name}', {project_id}, {position})"""
+        VALUES ('{name.replace("'", "''")}', {project_id}, {position})"""
     )
     connection.commit()
     return read_list(cursor.lastrowid)
@@ -32,7 +32,7 @@ def update_list(_list: List) -> None:
     connection, cursor = connect_database()
     cursor.execute(
         f"""UPDATE lists SET
-        name = '{_list.name}',
+        name = '{_list.name.replace("'", "''")}',
         project = {_list.project},
         position = {_list.position}
         WHERE id = {_list._id}"""

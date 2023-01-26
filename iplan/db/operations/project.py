@@ -6,6 +6,7 @@ from iplan.db.models.project import Project
 def create_project(name: str) -> Project:
     index = find_new_project_index()
     connection, cursor = connect_database()
+    name = name.replace("'", "''")
     cursor.execute(f"INSERT INTO projects(name, i) VALUES ('{name}', {index})")
     connection.commit()
     return read_project(cursor.lastrowid)
@@ -61,7 +62,7 @@ def update_project(project: Project, move_index=False) -> None:
 
     cursor.execute(
         f"""UPDATE projects SET
-        name = '{project.name}',
+        name = '{project.name.replace("'", "''")}',
         archive = {project.archive}
         {index_statement}
         WHERE id = {project._id}"""

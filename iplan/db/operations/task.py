@@ -8,7 +8,7 @@ def create_task(name: str, project_id: int, list_id: int) -> Task:
     connection, cursor = connect_database()
     cursor.execute(
         f"""INSERT INTO tasks(name, project, list, position)
-        VALUES ('{name}', {project_id}, {list_id}, {position})"""
+        VALUES ('{name.replace("'", "''")}', {project_id}, {list_id}, {position})"""
     )
     connection.commit()
     return read_task(cursor.lastrowid)
@@ -90,7 +90,7 @@ def update_task(task: Task, move_position=False) -> None:
 
     cursor.execute(
         f"""UPDATE tasks SET
-        name = '{task.name}',
+        name = '{task.name.replace("'", "''")}',
         done = {task.done},
         project = {task.project},
         list = {task._list},
