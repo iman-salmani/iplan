@@ -39,7 +39,10 @@ class ProjectLists(Gtk.ScrolledWindow):
             "New List",
             self.props.root.props.application.project._id
         )
-        self.lists_box.append(ProjectList(_list))
+        list_ui = ProjectList(_list)
+        self.lists_box.append(list_ui)
+        list_ui.name_button.set_visible(False)  # name entry visiblity have binding to this
+        GLib.idle_add(lambda *args: self.get_root().set_focus(list_ui.name_entry))
 
     def open_project(self, action: Gio.SimpleAction, param: GLib.Variant):
         task_id = param.unpack()

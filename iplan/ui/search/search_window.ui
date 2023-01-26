@@ -9,6 +9,9 @@
     <property name="destroy-with-parent">true</property>
     <property name="titlebar">
       <object class="AdwHeaderBar">
+        <style>
+          <class name="flat"/>
+        </style>
         <property name="title-widget">
           <object class="GtkSearchEntry" id="search_entry">
             <property name="hexpand">true</property>
