@@ -73,4 +73,10 @@ class ProjectLists(Gtk.ScrolledWindow):
             if target_task:
                 if _list._id == target_task._list:
                     list_ui.focus_on_task(target_task)
+        if not target_task:
+            first_list = self.lists_box.get_first_child()
+            if first_list:
+                first_row = first_list.tasks_box.get_first_child()
+                if first_row:
+                    GLib.idle_add(lambda *args: self.get_root().set_focus(first_row))
 
