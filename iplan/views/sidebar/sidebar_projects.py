@@ -74,9 +74,15 @@ class SidebarProjects(Gtk.Box):
 
     def on_project_deleted(self, action, value):
         project_position = value.unpack()
+
         top_position = self.projects_box.get_row_at_index(0).project.position
-        row = self.projects_box.get_row_at_index(top_position - project_position)
-        self.projects_box.remove(row)
+        deleted_project_row_i = top_position - project_position
+        deleted_project_row = self.projects_box.get_row_at_index(deleted_project_row_i)
+        self.projects_box.remove(deleted_project_row)
+
+        # decrease upper projects position
+        for i in range(0, deleted_project_row_i):
+            self.projects_box.get_row_at_index(i).project.position -= 1
 
     def select_active_project(self, *args):
         project = self.props.root.props.application.project
