@@ -36,31 +36,26 @@ def update_project(project: Project, move_position=False) -> None:
         position_statement = f", position = {project.position}"
         old_project = read_project(project._id)
 
-        increase_position_projects = []
-        decrease_position_projects = []
+        projects_between = []
+        step = 0
+        range_condition = []    # start after or before old position to new position
 
         if old_project.position < project.position:
-            decrease_position_projects = cursor.execute(f"""SELECT * FROM projects WHERE
-                position > {old_project.position} AND
-                position <= {project.position}
-                """).fetchall()
+            range_condition = [">", "<="]
+            step = -1
         elif old_project.position > project.position:
-            increase_position_projects = cursor.execute(f"""SELECT * FROM projects WHERE
-                position >= {project.position} AND
-                position < {old_project.position}
-                """).fetchall()
+            range_condition = ["<", ">="]
+            step = +1
 
-        for record in increase_position_projects:
+        projects_between = cursor.execute(f"""SELECT * FROM projects WHERE
+            position {range_condition[0]} {old_project.position} AND
+            position {range_condition[1]} {project.position}
+            """).fetchall()
+
+        for record in projects_between:
             cursor.execute(
                 f"""UPDATE projects SET
-                position = {record[3]+1}
-                WHERE id = {record[0]}"""
-            )
-
-        for record in decrease_position_projects:
-            cursor.execute(
-                f"""UPDATE projects SET
-                position = {record[3]-1}
+                position = {record[3]+step}
                 WHERE id = {record[0]}"""
             )
 
