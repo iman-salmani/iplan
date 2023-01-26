@@ -67,6 +67,10 @@ class ProjectListTask(Gtk.ListBoxRow):
         delete_task(self.task)
         deleted_task_i = self.get_index()
         tasks_box = self.get_parent()
+        # prevent from scroll up after remove row
+        upper_task = tasks_box.get_row_at_index(self.get_index() - 1)
+        if upper_task:
+            self.get_root().set_focus(upper_task)
         tasks_box.remove(self)
 
         # decrease upper tasks position
@@ -95,7 +99,7 @@ class ProjectListTask(Gtk.ListBoxRow):
             self.toggle_timer()
 
         if active:
-            # prevent from scrollup after filter or remove row
+            # prevent from scroll up after filter or remove row
             upper_task = self.get_parent().get_row_at_index(self.get_index() - 1)
 
             # filter or remove row if done tasks filter is not False
