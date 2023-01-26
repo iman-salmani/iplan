@@ -1,7 +1,7 @@
 <img align="left" style="vertical-align: middle" src="data/icons/hicolor/256x256/apps/ir.imansalmani.iplan.png" alt="IPlan" width="128">
 
 # IPlan
-Planner application with time tracking ability
+Your plan for improve personal life and workflow
 
 <div align="center">
   <img src="https://github.com/iman-salmani/iplan/blob/6d21677b84a767376a96b71079f7610dfe6f838c/data/screenshots/window.png">
