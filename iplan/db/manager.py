@@ -2,8 +2,10 @@ import sqlite3
 import os
 from gi.repository import GLib
 
+
 PATH = os.path.join(GLib.get_user_data_dir(), "data.db")
-# PATH = os.path.join(GLib.get_user_cache_dir(), "data.db")
+if "INSIDE_GNOME_BUILDER" in os.environ:
+    PATH = os.path.join(GLib.get_user_cache_dir(), "data.db")
 
 def check_database() -> None:
     if not os.path.isfile(PATH):
