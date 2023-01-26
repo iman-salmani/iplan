@@ -114,6 +114,7 @@ class ProjectList(Gtk.Box):
         task_in_db = read_task(source_row.task._id)
         if task_in_db != source_row.task:
             update_task(source_row.task, move_position=True)
+        self.get_root().set_focus(source_row)
         return True
 
     def on_motioned(self, target: Gtk.DropTarget, x, y):
