@@ -9,14 +9,14 @@ class Project:
     _id: int
     name: str
     archive: bool
-    position: int
+    index: int
 
     def new_from_record(record: list):
         return Project(
             _id=record[0],
             name=record[1],
             archive=record[2],
-            position=record[3]
+            index=record[3]
         )
 
     def get_duration(self):

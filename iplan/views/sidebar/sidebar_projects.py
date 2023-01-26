@@ -37,7 +37,7 @@ class SidebarProjects(Gtk.Box):
         self.props.root.props.application.create_action(
             "projects-deleted",
             callback=self.on_project_deleted,
-            param=GLib.VariantType('i')     # position
+            param=GLib.VariantType('i')     # index
             )
         self.props.root.props.application.create_action(
             "projects-open-searched",
@@ -73,16 +73,14 @@ class SidebarProjects(Gtk.Box):
         self.fetch()
 
     def on_project_deleted(self, action, value):
-        project_position = value.unpack()
+        project_index = value.unpack()
+        target_row = self.projects_box.get_row_at_index(project_index)
+        last_index = self.projects_box.get_last_child().get_index()
 
-        top_position = self.projects_box.get_row_at_index(0).project.position
-        deleted_project_row_i = top_position - project_position
-        deleted_project_row = self.projects_box.get_row_at_index(deleted_project_row_i)
-        self.projects_box.remove(deleted_project_row)
-
-        # decrease upper projects position
-        for i in range(0, deleted_project_row_i):
-            self.projects_box.get_row_at_index(i).project.position -= 1
+        for i in range(project_index+1, last_index+1):
+            row = self.projects_box.get_row_at_index(i)
+            row.project.index -= 1
+        self.projects_box.remove(target_row)
 
     def select_active_project(self, *args):
         project = self.props.root.props.application.project
@@ -104,7 +102,7 @@ class SidebarProjects(Gtk.Box):
         # source_row moved by motion signal so it should drop on itself
         project_in_db = read_project(source_row.project._id)
         if project_in_db != source_row.project:
-            update_project(source_row.project, move_position=True)
+            update_project(source_row.project, move_index=True)
         self.select_active_project()
         return True
 
@@ -118,26 +116,25 @@ class SidebarProjects(Gtk.Box):
 
         # Move shadow_row
         if source_row != target_row:
-            # index is reverse of position
-            shadow_i = source_row.get_index()
+            source_i = source_row.get_index()
             target_i = target_row.get_index()
-            target_p = target_row.project.position
-            if shadow_i == target_i - 1:
-                source_row.project.position -= 1
-                target_row.project.position +=1
-            elif shadow_i < target_i:
-                for i in range(shadow_i+1, target_i+1):
+            target_index = target_row.project.index
+            if source_i == target_i + 1:
+                source_row.project.index -= 1
+                target_row.project.index +=1
+            elif source_i < target_i:
+                for i in range(source_i+1, target_i+1):
                     row = self.projects_box.get_row_at_index(i)
-                    row.project.position += 1
-                source_row.project.position = target_p
-            elif shadow_i == target_i + 1:
-                source_row.project.position += 1
-                target_row.project.position -=1
-            elif shadow_i > target_i:
-                for i in range(target_i, shadow_i):
+                    row.project.index -= 1
+                source_row.project.index = target_index
+            elif source_i == target_i - 1:
+                source_row.project.index += 1
+                target_row.project.index -=1
+            elif source_i > target_i:
+                for i in range(target_i, source_i):
                     row = self.projects_box.get_row_at_index(i)
-                    row.project.position -= 1
-                source_row.project.position = target_p
+                    row.project.index += 1
+                source_row.project.index = target_index
 
             self.projects_box.invalidate_sort()
 
@@ -151,7 +148,7 @@ class SidebarProjects(Gtk.Box):
         return not row.project.archive
 
     def sort(self, row1, row2) -> int:
-        return row2.project.position - row1.project.position
+        return row1.project.index - row2.project.index
 
     def clear(self) -> None:
         while True:

@@ -21,7 +21,7 @@ class ProjectDeleteDialog(Adw.MessageDialog):
             delete_project(self.app.project)
             self.app.activate_action(
                 "projects-deleted",
-                GLib.Variant("i", self.app.project.position)
+                GLib.Variant("i", self.app.project.index)
             )
 
             projects = read_projects()
