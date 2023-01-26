@@ -8,7 +8,7 @@ Your plan for improve personal life and workflow
 </div>
 
 ## Features
-* grouping tasks with project and list
+* Grouping tasks with project and list
 * Timer for tasks
 * Global search
 * Move tasks by drag and drop
