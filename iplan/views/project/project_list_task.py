@@ -64,7 +64,7 @@ class ProjectListTask(Gtk.ListBoxRow):
 
     @Gtk.Template.Callback()
     def delete(self, *args):
-        delete_task(self.task._id)
+        delete_task(self.task)
         self.get_parent().remove(self)
 
     def open_task(self):

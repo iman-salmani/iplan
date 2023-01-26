@@ -100,9 +100,21 @@ def update_task(task: Task, move_position=False) -> None:
     )
     connection.commit()
 
-def delete_task(task_id: int) -> None:
+def delete_task(task: Task) -> None:
     connection, cursor = connect_database()
-    cursor.execute(f"DELETE FROM tasks WHERE id = {task_id}")
+    cursor.execute(f"DELETE FROM tasks WHERE id = {task._id}")
+
+    # decrease upper tasks position
+    upper_tasks = cursor.execute(
+        f"SELECT * FROM tasks WHERE position > {task.position}"
+        ).fetchall()
+    for record in upper_tasks:
+            cursor.execute(
+                f"""UPDATE tasks SET
+                position = {record[6]-1}
+                WHERE id = {record[0]}"""
+            )
+
     connection.commit()
 
 def search_tasks(text: str, done) -> Mapping[Task, list]:
