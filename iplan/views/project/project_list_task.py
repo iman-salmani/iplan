@@ -38,10 +38,7 @@ class ProjectListTask(Gtk.ListBoxRow):
         if task.done:
             self.timer.set_sensitive(False)
         else:
-            self.timer.connect(
-                "clicked",
-                lambda sender: self.toggle_timer(),
-            )
+            self.timer.connect("clicked", self.toggle_timer)
 
             last_time = task.get_last_time()
             if last_time:
@@ -94,11 +91,12 @@ class ProjectListTask(Gtk.ListBoxRow):
         self.task.done = active
         update_task(self.task)
 
-        # stop timer
-        if self.timer_running:
-            self.toggle_timer()
-
         if active:
+            # stop timer and disconnect handler
+            if self.timer_running:
+                self.toggle_timer()
+            self.timer.disconnect_by_func(self.toggle_timer)
+
             # prevent from scroll up after filter or remove row
             upper_task = self.get_parent().get_row_at_index(self.get_index() - 1)
 
@@ -113,8 +111,11 @@ class ProjectListTask(Gtk.ListBoxRow):
                 if upper_task:
                     self.get_root().set_focus(upper_task)
                 self.changed()
+        else:
+            self.timer.set_sensitive(True)
+            self.timer.connect("clicked", self.toggle_timer)
 
-    def toggle_timer(self, last_time=False):
+    def toggle_timer(self, *args, last_time=False):
         if self.timer.has_css_class("flat"):
             self.timer.remove_css_class("flat")
             self.timer.add_css_class("destructive-action")
