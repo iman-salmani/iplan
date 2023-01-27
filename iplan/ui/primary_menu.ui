@@ -11,11 +11,11 @@
   <menu id='primary_menu_model'>
     <section>
       <item>
-        <attribute name='label' translatable='yes'>_New _List</attribute>
+        <attribute name='label' translatable='yes'>_New List</attribute>
         <attribute name='action'>app.new_list</attribute>
       </item>
       <item>
-        <attribute name='label' translatable='yes'>_Edit _Project</attribute>
+        <attribute name='label' translatable='yes'>_Edit Project</attribute>
         <attribute name='action'>app.edit_project</attribute>
       </item>
     </section>
@@ -25,7 +25,7 @@
         <attribute name='action'>app.preferences</attribute>
       </item>
       <item>
-        <attribute name='label' translatable='yes'>_Keyboard _Shortcuts</attribute>
+        <attribute name='label' translatable='yes'>_Keyboard Shortcuts</attribute>
         <attribute name='action'>app.shortcuts</attribute>
       </item>
       <item>
