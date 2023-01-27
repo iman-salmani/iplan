@@ -34,7 +34,7 @@
         </child>
         <child>
           <object class="GtkLabel">
-            <property name="label">for adding new a list</property>
+            <property name="label">for adding a new list</property>
             <property name="margin-start">6</property>
           </object>
         </child>
