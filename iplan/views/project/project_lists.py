@@ -37,7 +37,6 @@ class ProjectLists(Gtk.ScrolledWindow):
             self.open_project
         )
         actions["new_list"].connect("activate", self.on_new_list)
-        actions["toggle-project-lists-layout"].connect("activate", self.toggle_project_lists_layout)
 
         # open first project
         projects = read_projects()
@@ -54,21 +53,16 @@ class ProjectLists(Gtk.ScrolledWindow):
         if keycode == 50:
             self.shift_modifier = False
 
-    def toggle_project_lists_layout(self, *args):
-        layout_button = self.get_root().project_lists_layout_button
-        if layout_button.get_icon_name() == "list-symbolic":
-            layout_button.set_icon_name("view-columns-symbolic")
+    def set_layout(self, layout):
+        if layout == "horizontal":
             self.lists_box.set_orientation(Gtk.Orientation.HORIZONTAL)
-            self.lists_box.set_margin_bottom(0)
             for _list in self.lists_box.observe_children():
                 _list.tasks_box.unparent()
                 _list.scrolled_window.set_child(_list.tasks_box)
                 _list.scrolled_window.set_visible(True)
             self.get_root().add_controller(self.shift_controller)
         else:
-            layout_button.set_icon_name("list-symbolic")
             self.lists_box.set_orientation(Gtk.Orientation.VERTICAL)
-            self.lists_box.set_margin_bottom(6)
             for _list in self.lists_box.observe_children():
                 _list.scrolled_window.set_visible(False)
                 _list.tasks_box.unparent()

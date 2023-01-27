@@ -48,7 +48,6 @@ class IPlanApplication(Adw.Application):
         self.create_action("refresh_project_duration")
         self.create_action("edit_project")
         self.create_action("new_task", shortcuts=["<Ctrl>n"])
-        self.create_action("toggle-project-lists-layout")
 
     def do_activate(self):
         """Called when the application is activated.
