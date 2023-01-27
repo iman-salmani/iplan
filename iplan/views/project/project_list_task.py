@@ -29,6 +29,7 @@ class ProjectListTask(Gtk.ListBoxRow):
         self.checkbox.set_active(self.task.done)
         self.name_button.set_visible(not new)
         self.name_button.get_child().set_text(self.task.name)
+        self.name_button.set_tooltip_text(self.task.name)
         self.name_entry.get_buffer().set_text(self.task.name, -1)
         entry_controller = Gtk.EventControllerKey()
         entry_controller.connect("key-released", self.on_name_entry_key_released)
@@ -58,6 +59,7 @@ class ProjectListTask(Gtk.ListBoxRow):
         if name_button_visible:
             self.task.name = self.name_entry.get_buffer().get_text()
             self.name_button.get_child().set_text(self.task.name)
+            self.name_button.set_tooltip_text(self.task.name)
             update_task(self.task)
         else:
             self.name_entry.grab_focus_without_selecting()
@@ -230,5 +232,6 @@ class TaskModal(Adw.Window):
         title = Gtk.Label.new(task.name)
         title.add_css_class("title-1")
         content.append(title)
+
 
 
