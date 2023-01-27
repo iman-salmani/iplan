@@ -114,7 +114,7 @@ class ProjectListTask(Gtk.ListBoxRow):
 
             # filter or remove row if done tasks filter is not False
             project_list = self.get_parent().get_parent()
-            if self.get_root().layout_button.get_icon_name() == "view-columns-symbolic":
+            if project_list.__gtype_name__ != "ProjectList":
                 # in board view tasks_box have scrolled_window parent
                 project_list = project_list.get_parent().get_parent()
             # because when is None ProjectList do not fetched done tasks
