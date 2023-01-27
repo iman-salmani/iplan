@@ -19,5 +19,9 @@ class ProjectListDeleteDialog(Adw.MessageDialog):
     def on_responsed(self, dialog, response):
         if response == "delete":
             delete_list(self.project_list._list._id)
-            self.project_list.get_parent().remove(self.project_list)
+            lists_box = self.project_list.get_parent()
+            project_lists = lists_box.get_root().project_lists
+            lists_box.remove(self.project_list)
+            if not lists_box.get_first_child():
+                lists_box.append(project_lists.placeholder)
 

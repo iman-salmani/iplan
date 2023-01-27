@@ -1,5 +1,5 @@
 import gi
-from gi.repository import Gtk, GLib, Gio
+from gi.repository import Gtk, GLib, Gio, Adw
 
 from iplan.db.operations.project import read_projects
 from iplan.db.operations.list import create_list, read_lists
@@ -12,6 +12,7 @@ from iplan.views.project.project_list_task import ProjectListTask
 class ProjectLists(Gtk.ScrolledWindow):
     __gtype_name__ = "ProjectLists"
     lists_box: Gtk.Box = Gtk.Template.Child()
+    placeholder = Gtk.Template.Child()
     shift_modifier = False
     shift_controller = None
 
@@ -55,7 +56,6 @@ class ProjectLists(Gtk.ScrolledWindow):
 
     def toggle_project_lists_layout(self, *args):
         layout_button = self.get_root().project_lists_layout_button
-        # scroll_policy = Gtk.PolicyType.NEVER
         if layout_button.get_icon_name() == "list-symbolic":
             layout_button.set_icon_name("view-columns-symbolic")
             self.lists_box.set_orientation(Gtk.Orientation.HORIZONTAL)
@@ -81,6 +81,8 @@ class ProjectLists(Gtk.ScrolledWindow):
             self.props.root.props.application.project._id
         )
         list_ui = ProjectList(_list)
+        if self.placeholder.get_parent():
+            self.lists_box.remove(self.placeholder)
         self.lists_box.append(list_ui)
         list_ui.name_button.set_visible(False)  # name entry visiblity have binding to this
         GLib.idle_add(lambda *args: self.get_root().set_focus(list_ui.name_entry))
@@ -114,6 +116,11 @@ class ProjectLists(Gtk.ScrolledWindow):
             if target_task:
                 if _list._id == target_task._list:
                     list_ui.focus_on_task(target_task)
+
+        if not self.lists_box.get_first_child():
+            self.lists_box.append(self.placeholder)
+            return
+
         if not target_task:
             first_list = self.lists_box.get_first_child()
             if first_list:
