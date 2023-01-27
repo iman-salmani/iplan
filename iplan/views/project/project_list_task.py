@@ -113,13 +113,16 @@ class ProjectListTask(Gtk.ListBoxRow):
             upper_task = self.get_parent().get_row_at_index(self.get_index() - 1)
 
             # filter or remove row if done tasks filter is not False
-            _list = self.get_parent().get_parent().get_parent().get_parent()
+            project_list = self.get_parent().get_parent()
+            if self.get_root().project_lists_layout_button.get_icon_name() == "view-columns-symbolic":
+                # in board view tasks_box have scrolled_window parent
+                project_list = project_list.get_parent().get_parent()
             # because when is None ProjectList do not fetched done tasks
-            if _list.filter_done_tasks == None:
+            if project_list.filter_done_tasks == None:
                 if upper_task:
                     self.get_root().set_focus(upper_task)
                 self.get_parent().remove(self)
-            elif _list.filter_done_tasks == True:
+            elif project_list.filter_done_tasks == True:
                 if upper_task:
                     self.get_root().set_focus(upper_task)
                 self.changed()

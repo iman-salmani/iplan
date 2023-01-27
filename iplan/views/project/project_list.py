@@ -15,13 +15,13 @@ from iplan.views.project.project_list_delete_dialog import ProjectListDeleteDial
 @Gtk.Template(resource_path='/ir/imansalmani/iplan/ui/project/project_list.ui')
 class ProjectList(Gtk.Box):
     __gtype_name__ = "ProjectList"
-    filter_done_tasks: bool = None  # None means tasks_box dont have done tasks for filter
     scrolled_window: Gtk.ScrolledWindow = Gtk.Template.Child()
     tasks_box: Gtk.ListBox = Gtk.Template.Child()
     name_button: Gtk.Button = Gtk.Template.Child()
     name_entry: Gtk.Entry = Gtk.Template.Child()
     options_button: Gtk.MenuButton = Gtk.Template.Child()
     show_done_tasks_toggle_button: Gtk.ToggleButton = Gtk.Template.Child()
+    filter_done_tasks: bool = None  # None means tasks_box dont have done tasks for filter
     _list: List
 
     def __init__(self, _list: List) -> None:
