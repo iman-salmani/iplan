@@ -17,6 +17,7 @@
     <property name="description"></property>
     <property name="icon-name">tab-new-symbolic</property>
     <property name="vexpand">true</property>
+    <property name="hexpand">true</property>
     <child>
       <object class="GtkBox">
         <property name="halign">center</property>
