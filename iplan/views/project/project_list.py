@@ -180,7 +180,7 @@ class ProjectList(Gtk.Box):
         return Gdk.DragAction.MOVE
 
     # tasks_box functions
-    def focus_on_task(self, target_task: Task):
+    def focus_on_task(self, target_task):
         if target_task.done:
             self.show_done_tasks_toggle_button.set_active(True)
 

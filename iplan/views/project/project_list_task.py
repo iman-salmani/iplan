@@ -3,7 +3,6 @@ from gi.repository import Gtk, Adw, GLib, Gdk
 from time import sleep
 from datetime import datetime
 from threading import Thread
-import copy
 
 from iplan.db.models.task import Task
 from iplan.db.operations.task import update_task, delete_task

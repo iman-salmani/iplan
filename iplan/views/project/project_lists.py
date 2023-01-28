@@ -1,12 +1,10 @@
 import gi
-from gi.repository import Gtk, GLib, Gio, Adw
+from gi.repository import Gtk, GLib, Gio
 
 from iplan.db.operations.project import read_projects
 from iplan.db.operations.list import create_list, read_lists
-from iplan.db.models.task import Task
 from iplan.db.operations.task import read_task
 from iplan.views.project.project_list import ProjectList
-from iplan.views.project.project_list_task import ProjectListTask
 
 @Gtk.Template(resource_path="/ir/imansalmani/iplan/ui/project/project_lists.ui")
 class ProjectLists(Gtk.ScrolledWindow):
@@ -104,7 +102,7 @@ class ProjectLists(Gtk.ScrolledWindow):
             else:
                 break
 
-    def fetch(self, target_task: Task=None):
+    def fetch(self, target_task=None):
         lists = read_lists(self.props.root.props.application.project._id)
         for _list in lists:
             list_ui = ProjectList(_list)
