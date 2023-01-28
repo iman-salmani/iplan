@@ -1,13 +1,10 @@
 import gi
-from gi.repository import Gtk, GLib, Gdk, Gio, GObject
+from gi.repository import Gtk, GLib, Gdk
 
-from iplan.db.operations.project import read_projects
 from iplan.db.models.list import List
 from iplan.db.operations.list import update_list
-from iplan.db.models.task import Task
 from iplan.db.operations.task import create_task, read_tasks, read_task, update_task, find_new_task_position
 
-from iplan.views.project.project_header import ProjectHeader
 from iplan.views.project.project_list_task import ProjectListTask
 from iplan.views.project.project_list_delete_dialog import ProjectListDeleteDialog
 
