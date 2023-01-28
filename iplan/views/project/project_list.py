@@ -211,6 +211,8 @@ class ProjectList(Gtk.Box):
         return row2.task.position - row1.task.position
 
     def _filter(self, row: Gtk.ListBoxRow) -> bool:
+        if row.task.suspended:
+            return False
         if self.filter_done_tasks:
             return not row.task.done
         return not row.moving_out

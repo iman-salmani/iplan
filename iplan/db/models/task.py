@@ -10,6 +10,7 @@ class Task:
     _list: int
     duration: str
     position: int
+    suspended: bool
 
     def new_from_record(record: list):
         return Task(
@@ -19,7 +20,8 @@ class Task:
             project=record[3],
             _list=record[4],
             duration=record[5],
-            position=record[6]
+            position=record[6],
+            suspended=record[7]
         )
 
     def get_last_time(self) -> list[float, int] | None:

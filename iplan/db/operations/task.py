@@ -44,7 +44,7 @@ def update_task(task: Task, move_position=False) -> None:
     position_statement = ''
 
     if move_position:
-        position_statement = f", position = {task.position}"
+        position_statement = f"position = {task.position},"
         old_task = read_task(task._id)
 
         increase_position_tasks = []
@@ -90,13 +90,14 @@ def update_task(task: Task, move_position=False) -> None:
 
     cursor.execute(
         f"""UPDATE tasks SET
-        name = '{task.name.replace("'", "''")}',
-        done = {task.done},
-        project = {task.project},
-        list = {task._list},
-        duration = '{task.duration}'
+        name =      '{task.name.replace("'", "''")}',
+        done =       {task.done},
+        project =    {task.project},
+        list =       {task._list},
+        duration =  '{task.duration}',
         {position_statement}
-        WHERE id = {task._id}"""
+        suspended =  {task.suspended}
+        WHERE id =   {task._id}"""
     )
     connection.commit()
 

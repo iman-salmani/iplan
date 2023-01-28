@@ -70,10 +70,10 @@
           </object>
         </child><!-- End Timer -->
         <child><!-- Delete Button -->
-          <object class="GtkButton" id="delete_button">
+          <object class="GtkButton">
             <property name="icon-name">user-trash-symbolic</property>
             <property name="valign">center</property>
-            <signal name="clicked" handler="delete"/>
+            <signal name="clicked" handler="delete_button_clicked_cb"/>
             <style>
               <class name="flat"/>
             </style>

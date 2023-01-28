@@ -12,6 +12,7 @@ class IPlanWindow(Adw.ApplicationWindow):
     flap: Adw.Flap = Gtk.Template.Child()
     layout_button: Gtk.Button = Gtk.Template.Child()
     project_lists: ProjectLists = Gtk.Template.Child()
+    toast_overlay = Gtk.Template.Child()
     settings = None
 
     def __init__(self, **kwargs):

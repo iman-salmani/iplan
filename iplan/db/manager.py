@@ -23,9 +23,9 @@ def create_tables() -> None:
         """
         CREATE TABLE "projects" (
         "id"	    INTEGER NOT NULL,
-        "name"	    TEXT NOT NULL,
+        "name"	    TEXT    NOT NULL,
         "archive"   INTEGER NOT NULL DEFAULT 0,
-        "i"  INTEGER NOT NULL DEFAULT 0,
+        "i"         INTEGER NOT NULL DEFAULT 0,
         PRIMARY KEY("id" AUTOINCREMENT)
         );
         """
@@ -35,7 +35,7 @@ def create_tables() -> None:
         """
         CREATE TABLE "lists" (
         "id"        INTEGER NOT NULL,
-        "name"      TEXT NOT NULL,
+        "name"      TEXT    NOT NULL,
         "project"   INTEGER NOT NULL,
         "position"  INTEGER NOT NULL,
         PRIMARY KEY("id" AUTOINCREMENT)
@@ -46,13 +46,14 @@ def create_tables() -> None:
     cursor.execute(
         """
         CREATE TABLE "tasks" (
-        "id"	  INTEGER NOT NULL,
-        "name"	  TEXT NOT NULL,
-        "done"	  INTEGER NOT NULL DEFAULT 0,
-        "project" INTEGER NOT NULL,
-        "list" INTEGER NOT NULL,
-        "duration"   TEXT NOT NULL DEFAULT '',
+        "id"	     INTEGER NOT NULL,
+        "name"	     TEXT    NOT NULL,
+        "done"	     INTEGER NOT NULL DEFAULT False,
+        "project"    INTEGER NOT NULL,
+        "list"       INTEGER NOT NULL,
+        "duration"   TEXT    NOT NULL DEFAULT '',
         "position"   INTEGER NOT NULL,
+        "suspended"  INTEGER NOT NULL DEFAULT False,
         PRIMARY KEY("id" AUTOINCREMENT)
         );
         """

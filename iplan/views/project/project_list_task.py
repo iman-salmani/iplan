@@ -18,9 +18,8 @@ class ProjectListTask(Gtk.ListBoxRow):
     name_button: Gtk.Button = Gtk.Template.Child()
     timer: Gtk.Button = Gtk.Template.Child()
     timer_content: Adw.ButtonContent = Gtk.Template.Child()
-    delete_button: Gtk.Button = Gtk.Template.Child()
     task: Task
-    moving_out: bool = False    # when drag!
+    moving_out = False  # when drag!
 
     def __init__(self, task, new=False):
         super().__init__()
@@ -74,19 +73,44 @@ class ProjectListTask(Gtk.ListBoxRow):
             self.on_name_entry_canceled()
 
     @Gtk.Template.Callback()
-    def delete(self, *args):
-        delete_task(self.task)
-        deleted_task_i = self.get_index()
-        tasks_box = self.get_parent()
-        # prevent from scroll up after remove row
-        upper_task = tasks_box.get_row_at_index(self.get_index() - 1)
+    def delete_button_clicked_cb(self, *args):
+        toast_name = self.task.name
+        if len(toast_name) > 10:
+            toast_name = f"{toast_name[0, 9]}..."
+        toast = Adw.Toast.new(f'"{toast_name}" deleted')
+        toast.set_button_label("Undo")
+        toast.connect("button-clicked", self.delete_toast_button_clicked_cb)
+        toast.connect("dismissed", self.delete_toast_dismissed_cb)
+        self.get_root().toast_overlay.add_toast(toast)
+        self.task.suspended = True
+        update_task(self.task)
+        # prevent from scroll up after suspend row
+        upper_task = self.get_parent().get_row_at_index(self.get_index() - 1)
         if upper_task:
             self.get_root().set_focus(upper_task)
-        tasks_box.remove(self)
+        self.changed()
 
+    def delete_toast_button_clicked_cb(self, *args):    # Undo button
+        self.task.suspended = False
+        update_task(self.task)
+
+        window = self.get_root()
+        if window:   # This happens after open another project
+            self.changed()
+            window.set_focus(self)
+
+    def delete_toast_dismissed_cb(self, *args):
+        if not self.task.suspended: # checking Undo button
+            return
+
+        delete_task(self.task)
+        tasks_box = self.get_parent()
+        # TODO: tasks_box should removed after open another project
+        # this should have None check after fixing memory leak
         # decrease upper tasks position
-        for i in range(0, deleted_task_i):
+        for i in range(0, self.get_index()):
             tasks_box.get_row_at_index(i).task.position -= 1
+        tasks_box.remove(self)
 
     def open_task(self):
         window = self.get_root()

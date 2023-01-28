@@ -59,7 +59,11 @@
               </object>
             </child><!-- End Header -->
             <child>
-              <object class="ProjectLists" id="project_lists"/>
+              <object class="AdwToastOverlay" id="toast_overlay">
+                <child>
+                  <object class="ProjectLists" id="project_lists"/>
+                </child>
+              </object>
             </child>
           </object>
         </property><!-- End Content -->
