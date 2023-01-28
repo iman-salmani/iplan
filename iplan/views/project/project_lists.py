@@ -23,9 +23,8 @@ class ProjectLists(Gtk.ScrolledWindow):
     def on_mapped(self, *args):
         self.disconnect_by_func(self.on_mapped)
         actions = self.props.root.props.application.actions
-        actions["open_project"].connect("activate", self.open_project)
-        # actions["new_list"].connect("activate", self.on_new_list)
-        self.get_root().install_action("win.new", None, self.on_new_list)
+        actions["open_project"].connect("activate", self.project_open_cb)
+        actions["new_list"].connect("activate", self.list_new_cb)
 
         # open first project
         projects = read_projects()
@@ -73,7 +72,7 @@ class ProjectLists(Gtk.ScrolledWindow):
             self.shift_modifier = False
 
     # New
-    def on_new_list(self, *args):
+    def list_new_cb(self, *args):
         _list = create_list(
             "New List",
             self.props.root.props.application.project._id
@@ -86,7 +85,7 @@ class ProjectLists(Gtk.ScrolledWindow):
         GLib.idle_add(lambda *args: self.get_root().set_focus(list_ui.name_entry))
 
     # Open
-    def open_project(self, action: Gio.SimpleAction, param: GLib.Variant):
+    def project_open_cb(self, action: Gio.SimpleAction, param: GLib.Variant):
         task_id = param.unpack()
 
         while True:
