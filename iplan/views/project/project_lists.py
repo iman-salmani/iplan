@@ -87,6 +87,14 @@ class ProjectLists(Gtk.ScrolledWindow):
     def open_project(self, action: Gio.SimpleAction, param: GLib.Variant):
         task_id = param.unpack()
 
+        while True:
+            child = self.lists_box.get_first_child()
+            if not child:
+                break
+            child.clear()
+            self.lists_box.remove(child)
+            del child
+
         if task_id != -1:
             self.fetch(read_task(task_id))
         else:
