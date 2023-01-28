@@ -20,6 +20,7 @@ class ProjectList(Gtk.Box):
     options_button: Gtk.MenuButton = Gtk.Template.Child()
     show_done_tasks_toggle_button: Gtk.ToggleButton = Gtk.Template.Child()
     contain_done_tasks = False
+    scroll_controller = None
 
     def __init__(self, _list: List) -> None:
         super().__init__()
@@ -35,12 +36,6 @@ class ProjectList(Gtk.Box):
         drop_target.connect("enter", self.drop_target_enter_cb)
         self.tasks_box.add_controller(drop_target)
 
-        scroll_controller = Gtk.EventControllerScroll.new(
-            Gtk.EventControllerScrollFlags.VERTICAL
-        )   # a little tricky. controller send scroll signal even if shift pressed
-        scroll_controller.connect("scroll", self.on_scroll)
-        self.scrolled_window.add_controller(scroll_controller)
-
         self.tasks_box.set_sort_func(self.tasks_box_sort)
         self.tasks_box.set_filter_func(self.tasks_box_filter)
 
@@ -48,7 +43,15 @@ class ProjectList(Gtk.Box):
             self.tasks_box.append(ProjectListTask(task))
 
     # Scroll
-    def on_scroll(self, controller, dx, dy):
+    def set_scroll_controller(self):
+        self.scroll_controller = Gtk.EventControllerScroll.new(
+            Gtk.EventControllerScrollFlags.VERTICAL
+        )   # a little tricky. controller send scroll signal even if shift pressed
+        self.scroll_controller.connect("scroll", self.scroll_controller_scroll_cb)
+        self.scrolled_window.add_controller(self.scroll_controller)
+
+    def scroll_controller_scroll_cb(self, controller, dx, dy):
+        # Horizontal scroll project lists scrolled window if shift pressed
         project_lists = self.get_root().project_lists
         view_port = project_lists.get_first_child()
         if project_lists.shift_modifier:

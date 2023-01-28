@@ -11,29 +11,19 @@ class ProjectLists(Gtk.ScrolledWindow):
     __gtype_name__ = "ProjectLists"
     lists_box: Gtk.Box = Gtk.Template.Child()
     placeholder = Gtk.Template.Child()
+    # For horizontal scroll
     shift_modifier = False
     shift_controller = None
 
     def __init__(self):
         super().__init__()
-
-        # listen to shift press
-        # used for hscroll
-        # TODO: add if horizontal layout
-        self.shift_controller = Gtk.EventControllerKey()
-        self.shift_controller.connect("key-pressed", self.on_key_pressed)
-        self.shift_controller.connect("key-released", self.on_key_released)
-
         self.connect("map", self.on_mapped)
 
     # Actions
     def on_mapped(self, *args):
         self.disconnect_by_func(self.on_mapped)
         actions = self.props.root.props.application.actions
-        actions["open_project"].connect(
-            "activate",
-            self.open_project
-        )
+        actions["open_project"].connect("activate", self.open_project)
         actions["new_list"].connect("activate", self.on_new_list)
 
         # open first project
@@ -43,34 +33,44 @@ class ProjectLists(Gtk.ScrolledWindow):
         self.props.root.props.application.project = list(projects)[0]
         self.activate_action("app.open_project", GLib.Variant("i", -1))
 
-    def on_key_pressed(self, controller, keyval, keycode, state):
-        if keycode == 50:
-            self.shift_modifier = True
-
-    def on_key_released(self, controller, keyval, keycode, state):
-        if keycode == 50:
-            self.shift_modifier = False
-
+    # Layout
     def set_layout(self, layout):
+        empty = type(self.lists_box.get_first_child()) != ProjectList # Checking placeholder
         if layout == "horizontal":
             self.lists_box.set_orientation(Gtk.Orientation.HORIZONTAL)
             for _list in self.lists_box.observe_children():
-                if type(_list) != ProjectList:    # Checking placeholder
+                if empty:
                     break
                 _list.tasks_box.unparent()
                 _list.scrolled_window.set_child(_list.tasks_box)
                 _list.scrolled_window.set_visible(True)
+                _list.set_scroll_controller()
+            self.shift_controller = Gtk.EventControllerKey()
+            self.shift_controller.connect("key-pressed", self.shift_controller_key_pressed_cb)
+            self.shift_controller.connect("key-released", self.shift_controller_key_released_cb)
             self.get_root().add_controller(self.shift_controller)
         else:
             self.lists_box.set_orientation(Gtk.Orientation.VERTICAL)
             for _list in self.lists_box.observe_children():
-                if type(_list) != ProjectList:    # Checking placeholder
+                if empty:
                     break
-                _list.scrolled_window.set_visible(False)
                 _list.tasks_box.unparent()
                 _list.append(_list.tasks_box)
+                _list.scrolled_window.set_visible(False)
+                if _list.scroll_controller:
+                    _list.scrolled_window.remove_controller(_list.scroll_controller)
+                    _list.scroll_controller = None
             self.get_root().remove_controller(self.shift_controller)
 
+    def shift_controller_key_pressed_cb(self, controller, keyval, keycode, state):
+        if keycode == 50:
+            self.shift_modifier = True
+
+    def shift_controller_key_released_cb(self, controller, keyval, keycode, state):
+        if keycode == 50:
+            self.shift_modifier = False
+
+    # New
     def on_new_list(self, *args):
         _list = create_list(
             "New List",
@@ -83,25 +83,21 @@ class ProjectLists(Gtk.ScrolledWindow):
         list_ui.name_button.set_visible(False)  # name entry visiblity have binding to this
         GLib.idle_add(lambda *args: self.get_root().set_focus(list_ui.name_entry))
 
+    # Open
     def open_project(self, action: Gio.SimpleAction, param: GLib.Variant):
         task_id = param.unpack()
-
-        self.clear()
 
         if task_id != -1:
             self.fetch(read_task(task_id))
         else:
             self.fetch()
 
-    # UI
-    def clear(self):
-        while True:
-            row = self.lists_box.get_first_child()
-            if row:
-                self.lists_box.remove(row)
-            else:
-                break
+        if self.get_root().layout_button.get_icon_name() == "list-symbolic":
+            self.set_layout("vertical")
+        else:
+            self.set_layout("horizontal")
 
+    # UI
     def fetch(self, target_task=None):
         lists = read_lists(self.props.root.props.application.project._id)
         for _list in lists:

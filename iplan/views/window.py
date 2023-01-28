@@ -21,7 +21,6 @@ class IPlanWindow(Adw.ApplicationWindow):
         self.settings = Gio.Settings(schema_id="ir.imansalmani.iplan.State")
         if self.settings.get_value("list-layout").unpack() == 1:
             self.layout_button.set_icon_name("view-columns-symbolic")
-            self.project_lists.set_layout("horizontal")
 
     @Gtk.Template.Callback()
     def layout_button_clicked(self, *args):
