@@ -12,12 +12,26 @@
       </object>
     </child>
   </template>
-  <object class="AdwStatusPage" id="placeholder">
-    <property name="title">Project don't have list</property>
-    <property name="description"></property>
-    <property name="icon-name">tab-new-symbolic</property>
+  <object class="GtkBox" id="placeholder">
+    <property name="orientation">vertical</property>
     <property name="vexpand">true</property>
+    <property name="valign">center</property>
     <property name="hexpand">true</property>
+    <property name="spacing">12</property>
+    <child>
+      <object class="GtkImage">
+        <property name="icon-name">tab-new-symbolic</property>
+        <property name="icon-size">large</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkLabel">
+        <property name="label">Project don't have list</property>
+        <style>
+          <class name="title-2"/>
+        </style>
+      </object>
+    </child>
     <child>
       <object class="GtkBox">
         <property name="halign">center</property>
@@ -34,10 +48,22 @@
         </child>
         <child>
           <object class="GtkLabel">
-            <property name="label">for adding a new list</property>
+            <property name="label">for adding a new list or following button</property>
+            <property name="hexpand">true</property>
             <property name="margin-start">6</property>
           </object>
         </child>
+      </object>
+    </child>
+    <child>
+      <object class="GtkButton">
+        <property name="label">New list</property>
+        <property name="action-name">app.new_list</property>
+        <property name="halign">center</property>
+        <property name="margin-top">12</property>
+        <style>
+          <class name="pill"/>
+        </style>
       </object>
     </child>
   </object>

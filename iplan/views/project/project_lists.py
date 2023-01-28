@@ -57,7 +57,7 @@ class ProjectLists(Gtk.ScrolledWindow):
         if layout == "horizontal":
             self.lists_box.set_orientation(Gtk.Orientation.HORIZONTAL)
             for _list in self.lists_box.observe_children():
-                if type(_list) == Adw.StatusPage:    # Checking placeholder
+                if type(_list) != ProjectList:    # Checking placeholder
                     break
                 _list.tasks_box.unparent()
                 _list.scrolled_window.set_child(_list.tasks_box)
@@ -66,7 +66,7 @@ class ProjectLists(Gtk.ScrolledWindow):
         else:
             self.lists_box.set_orientation(Gtk.Orientation.VERTICAL)
             for _list in self.lists_box.observe_children():
-                if type(_list) == Adw.StatusPage:    # Checking placeholder
+                if type(_list) != ProjectList:    # Checking placeholder
                     break
                 _list.scrolled_window.set_visible(False)
                 _list.tasks_box.unparent()
