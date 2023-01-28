@@ -11,19 +11,20 @@
         <property name="margin-top">12</property>
         <property name="margin-bottom">12</property>
         <style>
-          <class name="row"/>
+          <class name="toolbar"/>
         </style>
         <child><!-- Check Button -->
           <object class="GtkCheckButton" id="checkbox">
-            <property name="valign">center</property>
-            <signal name="toggled" handler="toggled_checkbox"/>
+            <signal name="toggled" handler="done_check_button_toggled_cb"/>
           </object>
         </child><!-- End Check Button -->
         <child><!-- Name Button -->
           <object class="GtkButton" id="name_button">
-            <property name="has-frame">false</property>
             <property name="margin-start">11</property>
-            <signal name="clicked" handler="on_name_toggled"/>
+            <signal name="clicked" handler="name_button_clicked_cb"/>
+            <style>
+              <class name="flat"/>
+            </style>
             <child>
               <object class="GtkLabel">
                 <property name="ellipsize">end</property>
@@ -44,8 +45,8 @@
               bind-property="visible"
               bind-flags="invert-boolean">false</property>
             <property name="secondary-icon-name">window-close-symbolic</property>
-            <signal name="activate" handler="on_name_toggled"/>
-            <signal name="icon-press" handler="on_name_entry_canceled"/>
+            <signal name="activate" handler="name_entry_activate_cb"/>
+            <signal name="icon-press" handler="name_entry_icon_press_cb"/>
           </object>
         </child><!-- End Name Entry -->
         <child>
@@ -57,11 +58,7 @@
           </object>
         </child>
         <child><!-- Timer -->
-          <object class="GtkButton" id="timer">
-            <property name="valign">center</property>
-            <style>
-              <class name="flat"/>
-            </style>
+          <object class="GtkToggleButton" id="timer">
             <child>
               <object class="AdwButtonContent" id="timer_content">
                 <property name="icon-name">preferences-system-time-symbolic</property>
@@ -72,11 +69,7 @@
         <child><!-- Delete Button -->
           <object class="GtkButton">
             <property name="icon-name">user-trash-symbolic</property>
-            <property name="valign">center</property>
             <signal name="clicked" handler="delete_button_clicked_cb"/>
-            <style>
-              <class name="flat"/>
-            </style>
           </object>
         </child><!-- End Delete Button -->
       </object>
@@ -85,9 +78,9 @@
       <object class="GtkDragSource">
         <property name="actions">move</property>
         <property name="propagation-phase">capture</property>
-        <signal name="prepare" handler="on_drag_prepare" swapped="no"/>
-        <signal name="drag-begin" handler="on_drag_begin" swapped="no"/>
-        <signal name="drag-cancel" handler="on_drag_cancel"/>
+        <signal name="prepare" handler="drag_prepare_cb" swapped="no"/>
+        <signal name="drag-begin" handler="drag_begin_cb" swapped="no"/>
+        <signal name="drag-cancel" handler="drag_cancel_cb"/>
       </object>
     </child><!-- End Drag Source -->
   </template>
