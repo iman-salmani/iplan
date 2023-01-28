@@ -12,7 +12,7 @@
     <section>
       <item>
         <attribute name='label' translatable='yes'>_New List</attribute>
-        <attribute name='action'>app.new_list</attribute>
+        <attribute name='action'>win.new</attribute>
       </item>
       <item>
         <attribute name='label' translatable='yes'>_Edit Project</attribute>

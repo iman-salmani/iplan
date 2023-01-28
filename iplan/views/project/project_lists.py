@@ -24,7 +24,8 @@ class ProjectLists(Gtk.ScrolledWindow):
         self.disconnect_by_func(self.on_mapped)
         actions = self.props.root.props.application.actions
         actions["open_project"].connect("activate", self.open_project)
-        actions["new_list"].connect("activate", self.on_new_list)
+        # actions["new_list"].connect("activate", self.on_new_list)
+        self.get_root().install_action("win.new", None, self.on_new_list)
 
         # open first project
         projects = read_projects()
@@ -60,7 +61,8 @@ class ProjectLists(Gtk.ScrolledWindow):
                 if _list.scroll_controller:
                     _list.scrolled_window.remove_controller(_list.scroll_controller)
                     _list.scroll_controller = None
-            self.get_root().remove_controller(self.shift_controller)
+            if self.shift_controller:
+                self.get_root().remove_controller(self.shift_controller)
 
     def shift_controller_key_pressed_cb(self, controller, keyval, keycode, state):
         if keycode == 50:
@@ -91,7 +93,6 @@ class ProjectLists(Gtk.ScrolledWindow):
             child = self.lists_box.get_first_child()
             if not child:
                 break
-            child.clear()
             self.lists_box.remove(child)
             del child
 
