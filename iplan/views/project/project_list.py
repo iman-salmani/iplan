@@ -15,14 +15,14 @@ from iplan.views.project.project_list_delete_dialog import ProjectListDeleteDial
 @Gtk.Template(resource_path='/ir/imansalmani/iplan/ui/project/project_list.ui')
 class ProjectList(Gtk.Box):
     __gtype_name__ = "ProjectList"
+    _list: List
     scrolled_window: Gtk.ScrolledWindow = Gtk.Template.Child()
     tasks_box: Gtk.ListBox = Gtk.Template.Child()
     name_button: Gtk.Button = Gtk.Template.Child()
     name_entry: Gtk.Entry = Gtk.Template.Child()
     options_button: Gtk.MenuButton = Gtk.Template.Child()
     show_done_tasks_toggle_button: Gtk.ToggleButton = Gtk.Template.Child()
-    filter_done_tasks: bool = None  # None means tasks_box dont have done tasks for filter
-    _list: List
+    contain_done_tasks = False
 
     def __init__(self, _list: List) -> None:
         super().__init__()
@@ -32,10 +32,10 @@ class ProjectList(Gtk.Box):
 
         drop_target = Gtk.DropTarget.new(ProjectListTask, Gdk.DragAction.MOVE)
         drop_target.set_preload(True)
-        drop_target.connect("drop", self.on_dropped)
-        drop_target.connect("motion", self.on_motioned)
-        drop_target.connect("leave", self.on_leaved)
-        drop_target.connect("enter", self.on_entered)
+        drop_target.connect("drop", self.drop_target_drop_cb)
+        drop_target.connect("motion", self.drop_target_motion_cb)
+        drop_target.connect("leave", self.drop_target_leave_cb)
+        drop_target.connect("enter", self.drop_target_enter_cb)
         self.tasks_box.add_controller(drop_target)
 
         scroll_controller = Gtk.EventControllerScroll.new(
@@ -44,20 +44,13 @@ class ProjectList(Gtk.Box):
         scroll_controller.connect("scroll", self.on_scroll)
         self.scrolled_window.add_controller(scroll_controller)
 
-        self.tasks_box.set_sort_func(self.sort)
-        self.tasks_box.set_filter_func(self._filter)
-        self.connect("map", self.on_mapped)
+        self.tasks_box.set_sort_func(self.tasks_box_sort)
+        self.tasks_box.set_filter_func(self.tasks_box_filter)
 
-    # Actions
-    def on_mapped(self, *args):
-        self.disconnect_by_func(self.on_mapped)
-        actions = self.props.root.props.application.actions
+        for task in read_tasks(self._list.project, self._list._id, False):
+            self.tasks_box.append(ProjectListTask(task))
 
-        # TODO: use handler and use action in ProjectLists and find focused list
-        #actions["new_task"].connect("activate", self.on_new_button_clicked)
-        # TODO: split this to specific functions
-        self.fetch(done_tasks=False)
-
+    # Scroll
     def on_scroll(self, controller, dx, dy):
         project_lists = self.get_root().project_lists
         view_port = project_lists.get_first_child()
@@ -66,64 +59,49 @@ class ProjectList(Gtk.Box):
             step = adjustment.get_step_increment()
             adjustment.set_value(adjustment.get_value() + (step * dy))
 
+    # Name
     @Gtk.Template.Callback()
-    def on_name_toggled(self, *args):
-        # used by both name entry and name button
-        # name_entry have binding to name button visibility
-        name_button_visible = not self.name_button.get_visible()
-        self.name_button.set_visible(name_button_visible)
-        if name_button_visible:
-            self._list.name = self.name_entry.get_buffer().get_text()
-            self.name_button.set_label(self._list.name)
-            update_list(self._list)
-        else:
-            self.name_entry.grab_focus_without_selecting()
+    def name_button_clicked_cb(self, *args):
+        self.name_button.set_visible(False)   # Entry visible param binded to this
+        self.name_entry.grab_focus_without_selecting()
 
     @Gtk.Template.Callback()
-    def on_new_task_button_clicked(self, *args):
-        task = create_task(
-            "",
-            project_id=self.props.root.props.application.project._id,
-            list_id=self._list._id
-        )
+    def name_entry_activate_cb(self, *args):
+        self.name_button.set_visible(True)   # Entry visible param binded to this
+        self._list.name = self.name_entry.get_buffer().get_text()
+        self.name_button.set_label(self._list.name)
+        update_list(self._list)
 
-        task_ui = ProjectListTask(task, new=True)
+    # New
+    @Gtk.Template.Callback()
+    def new_button_clicked_cb(self, *args):
+        task = create_task("", self._list.project, self._list._id)
+        task_ui = ProjectListTask(task)
         self.tasks_box.prepend(task_ui)
+        task_ui.name_button.set_visible(False)
         task_ui.name_entry.grab_focus()
 
+    # Show done tasks
     @Gtk.Template.Callback()
-    def on_show_done_tasks_button_toggled(self, *args):
+    def show_done_tasks_toggle_button_toggled_cb(self, *args):
         self.options_button.popdown()
-        if self.filter_done_tasks == None:
-            self.filter_done_tasks = False
-            self.fetch(done_tasks=not self.filter_done_tasks)
+        if not self.contain_done_tasks:
+            self.contain_done_tasks = True
+            for task in read_tasks(self._list.project, self._list._id, True):
+                self.tasks_box.append(ProjectListTask(task))
         else:
-            self.filter_done_tasks = not self.filter_done_tasks
             self.tasks_box.invalidate_filter()
 
+    # Delete
     @Gtk.Template.Callback()
-    def on_delete_button_clicked(self, *args):
+    def delete_button_clicked_cb(self, *args):
         self.options_button.popdown()
         dialog = ProjectListDeleteDialog(self)
         dialog.set_transient_for(self.get_root())
         dialog.present()
 
-    # UI
-    def focus_on_task(self, target_task: Task):
-        if target_task.done and self.filter_done_tasks != False:
-            # property have None condition
-            self.show_done_tasks_toggle_button.set_active(True)
-
-        target_task_row = None
-        for row in self.tasks_box.observe_children():
-            if type(row) == ProjectListTask:    # get rid of placeholder
-                if row.task._id == target_task._id:
-                    target_task_row = row
-
-        GLib.idle_add(lambda *args: self.get_root().set_focus(target_task_row))
-        self.tasks_box.select_row(target_task_row)
-
-    def on_dropped(self, target: Gtk.DropTarget, source_row, x, y):
+    # Drop
+    def drop_target_drop_cb(self, target: Gtk.DropTarget, source_row, x, y):
         # source_row moved by motion signal so it should drop on itself
         self.tasks_box.drag_unhighlight_row()
         task_in_db = read_task(source_row.task._id)
@@ -132,7 +110,7 @@ class ProjectList(Gtk.Box):
         self.get_root().set_focus(source_row)
         return True
 
-    def on_motioned(self, target: Gtk.DropTarget, x, y):
+    def drop_target_motion_cb(self, target: Gtk.DropTarget, x, y):
         source_row: ProjectListTask = target.get_value()
         target_row: ProjectListTask = self.tasks_box.get_row_at_y(y)
 
@@ -140,25 +118,25 @@ class ProjectList(Gtk.Box):
         if not source_row or not target_row:
             return 0
 
-        # Move shadow_row
+        # Move
         if source_row != target_row:
             # index is reverse of position
-            shadow_i = source_row.get_index()
+            source_i = source_row.get_index()
             target_i = target_row.get_index()
             target_p = target_row.task.position
-            if shadow_i == target_i - 1:
+            if source_i == target_i - 1:
                 source_row.task.position -= 1
                 target_row.task.position +=1
-            elif shadow_i < target_i:
-                for i in range(shadow_i+1, target_i+1):
+            elif source_i < target_i:
+                for i in range(source_i+1, target_i+1):
                     row = self.tasks_box.get_row_at_index(i)
                     row.task.position += 1
                 source_row.task.position = target_p
-            elif shadow_i == target_i + 1:
+            elif source_i == target_i + 1:
                 source_row.task.position += 1
                 target_row.task.position -=1
-            elif shadow_i > target_i:
-                for i in range(target_i, shadow_i):
+            elif source_i > target_i:
+                for i in range(target_i, source_i):
                     row = self.tasks_box.get_row_at_index(i)
                     row.task.position -= 1
                 source_row.task.position = target_p
@@ -183,13 +161,13 @@ class ProjectList(Gtk.Box):
 
         return Gdk.DragAction.MOVE
 
-    def on_leaved(self, target: Gtk.DropTarget):
+    def drop_target_leave_cb(self, target: Gtk.DropTarget):
         source_row: ProjectListTask = target.get_value()
         if source_row:
             source_row.moving_out = True
             self.tasks_box.invalidate_filter()
 
-    def on_entered(self, target: Gtk.DropTarget, x, y):
+    def drop_target_enter_cb(self, target: Gtk.DropTarget, x, y):
         source_row: ProjectListTask = target.get_value()
         source_row.moving_out = False
 
@@ -204,25 +182,28 @@ class ProjectList(Gtk.Box):
 
         return Gdk.DragAction.MOVE
 
-    def sort(
-            self,
-            row1: Gtk.ListBoxRow,
-            row2: Gtk.ListBoxRow) -> int:
+    # tasks_box functions
+    def focus_on_task(self, target_task: Task):
+        if target_task.done:
+            self.show_done_tasks_toggle_button.set_active(True)
+
+        first_row = self.tasks_box.get_row_at_index(0)
+        target_task_i = first_row.task.position - target_task.position
+        target_task_row = self.tasks_box.get_row_at_index(target_task_i)
+        GLib.idle_add(lambda *args: self.get_root().set_focus(target_task_row))
+
+    def tasks_box_sort(self, row1: Gtk.ListBoxRow, row2: Gtk.ListBoxRow) -> int:
         return row2.task.position - row1.task.position
 
-    def _filter(self, row: Gtk.ListBoxRow) -> bool:
+    def tasks_box_filter(self, row: Gtk.ListBoxRow) -> bool:
         if row.task.suspended:
             return False
-        if self.filter_done_tasks:
+        if not self.show_done_tasks_toggle_button.get_active():
             return not row.task.done
         return not row.moving_out
 
     def fetch(self, done_tasks):
-        tasks = read_tasks(
-            project_id=self.props.root.props.application.project._id,
-            list_id=self._list._id,
-            done_tasks=done_tasks
-        )
+        tasks = read_tasks(self._list.project, self._list._id, done_tasks)
         for task in tasks:
             self.tasks_box.append(ProjectListTask(task))
 

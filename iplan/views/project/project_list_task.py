@@ -21,12 +21,11 @@ class ProjectListTask(Gtk.ListBoxRow):
     timer_continue_previous = False
     moving_out = False  # When drag
 
-    def __init__(self, task, new=False):
+    def __init__(self, task):
         super().__init__()
         self.task = task
 
         self.checkbox.set_active(self.task.done)
-        self.name_button.set_visible(not new)
         self.name_button.get_child().set_text(self.task.name)
         self.name_button.set_tooltip_text(self.task.name)
         self.name_entry.get_buffer().set_text(self.task.name, -1)
@@ -54,17 +53,17 @@ class ProjectListTask(Gtk.ListBoxRow):
 
     # Name
     @Gtk.Template.Callback()
+    def name_button_clicked_cb(self, *args):
+        self.name_button.set_visible(False) # Entry visible param binded to this
+        self.name_entry.grab_focus_without_selecting()
+
+    @Gtk.Template.Callback()
     def name_entry_activate_cb(self, *args):
         self.name_button.set_visible(True)  # Entry visible param binded to this
         self.task.name = self.name_entry.get_buffer().get_text()
         self.name_button.get_child().set_text(self.task.name)
         self.name_button.set_tooltip_text(self.task.name)
         update_task(self.task)
-
-    @Gtk.Template.Callback()
-    def name_button_clicked_cb(self, *args):
-        self.name_button.set_visible(False) # Entry visible param binded to this
-        self.name_entry.grab_focus_without_selecting()
 
     @Gtk.Template.Callback()
     def name_entry_icon_press_cb(self, *args):  # Cancel name editing
@@ -148,12 +147,12 @@ class ProjectListTask(Gtk.ListBoxRow):
             if project_list.__gtype_name__ != "ProjectList":
                 # in board view tasks_box have scrolled_window parent
                 project_list = project_list.get_parent().get_parent()
-            if project_list.filter_done_tasks == None:
-                # Because when is None ProjectList do not fetched done tasks
+
+            if not project_list.contain_done_tasks:
                 if upper_task:
                     self.get_root().set_focus(upper_task)
                 self.get_parent().remove(self)
-            elif project_list.filter_done_tasks == True:
+            elif not project_list.show_done_tasks_toggle_button.get_active():
                 if upper_task:
                     self.get_root().set_focus(upper_task)
                 self.changed()

@@ -21,7 +21,7 @@ class ProjectLists(Gtk.ScrolledWindow):
 
         # listen to shift press
         # used for hscroll
-        # add if board layout
+        # TODO: add if horizontal layout
         self.shift_controller = Gtk.EventControllerKey()
         self.shift_controller.connect("key-pressed", self.on_key_pressed)
         self.shift_controller.connect("key-released", self.on_key_released)
