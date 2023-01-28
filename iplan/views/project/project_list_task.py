@@ -76,7 +76,7 @@ class ProjectListTask(Gtk.ListBoxRow):
     def delete_button_clicked_cb(self, *args):
         toast_name = self.task.name
         if len(toast_name) > 10:
-            toast_name = f"{toast_name[0, 9]}..."
+            toast_name = f"{toast_name[0:9]}..."
         toast = Adw.Toast.new(f'"{toast_name}" deleted')
         toast.set_button_label("Undo")
         toast.connect("button-clicked", self.delete_toast_button_clicked_cb)
