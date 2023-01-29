@@ -56,7 +56,7 @@ class ProjectLists(Gtk.ScrolledWindow):
         if keycode == 50:
             self.shift_modifier = False
 
-    # New
+    # New - connected to list.new action
     def list_new_cb(self):
         _list = create_list(
             "New List",
@@ -69,7 +69,7 @@ class ProjectLists(Gtk.ScrolledWindow):
         list_ui.name_button.set_visible(False)  # name entry visiblity have binding to this
         GLib.idle_add(lambda *args: self.get_root().set_focus(list_ui.name_entry))
 
-    # Open - used by project_open_cb in window
+    # Open - used by project_open_cb and search_task_activate_cb in window
     def open_project(self, target_task_id=False):
         while True:
             child = self.lists_box.get_first_child()
@@ -83,12 +83,6 @@ class ProjectLists(Gtk.ScrolledWindow):
         else:
             self.fetch()
 
-        if self.get_root().layout_button.get_icon_name() == "list-symbolic":
-            self.set_layout("vertical")
-        else:
-            self.set_layout("horizontal")
-
-    # UI
     def fetch(self, target_task=None):
         lists = read_lists(self.props.root.props.application.project._id)
         for _list in lists:

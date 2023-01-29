@@ -27,17 +27,19 @@ class IPlanWindow(Adw.ApplicationWindow):
 
         super().__init__(**kwargs)
 
-        # Setttings
-        self.settings = Gio.Settings(schema_id="ir.imansalmani.iplan.State")
-        if self.settings.get_value("list-layout").unpack() == 1:
-            self.layout_button.set_icon_name("view-columns-symbolic")
-
         # Open first project
         projects = read_projects()
         if not projects:
            self.get_application().project = list(read_projects(archive=True))[0]
         self.get_application().project = list(projects)[0]
         self.activate_action("project.open")
+
+        # Setttings
+        # TODO: move this up when set layout per project implemented
+        self.settings = Gio.Settings(schema_id="ir.imansalmani.iplan.State")
+        if self.settings.get_value("list-layout").unpack() == 1:
+            self.layout_button.set_icon_name("view-columns-symbolic")
+            self.project_lists.set_layout("horizontal")
 
     def project_open_cb(self, *args):
         self.project_header.open_project()
