@@ -16,14 +16,19 @@ class IPlanWindow(Adw.ApplicationWindow):
     settings = None
 
     def __init__(self, **kwargs):
+        self.install_action("list.new", None, lambda *args: self.project_lists.list_new_cb())
+
         super().__init__(**kwargs)
 
         self.settings = Gio.Settings(schema_id="ir.imansalmani.iplan.State")
         if self.settings.get_value("list-layout").unpack() == 1:
             self.layout_button.set_icon_name("view-columns-symbolic")
 
+    # def list_new_cb(self, *args):
+    #     self..new_list()
+
     @Gtk.Template.Callback()
-    def layout_button_clicked(self, *args):
+    def layout_button_clicked_cb(self, *args):
         if self.layout_button.get_icon_name() == "list-symbolic":
             self.layout_button.set_icon_name("view-columns-symbolic")
             self.project_lists.set_layout("horizontal")

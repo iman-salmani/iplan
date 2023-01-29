@@ -24,7 +24,6 @@ class ProjectLists(Gtk.ScrolledWindow):
         self.disconnect_by_func(self.on_mapped)
         actions = self.props.root.props.application.actions
         actions["open_project"].connect("activate", self.project_open_cb)
-        actions["new_list"].connect("activate", self.list_new_cb)
 
         # open first project
         projects = read_projects()
@@ -72,7 +71,7 @@ class ProjectLists(Gtk.ScrolledWindow):
             self.shift_modifier = False
 
     # New
-    def list_new_cb(self, *args):
+    def list_new_cb(self):
         _list = create_list(
             "New List",
             self.props.root.props.application.project._id
