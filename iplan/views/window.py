@@ -1,5 +1,6 @@
 from gi.repository import Gtk, Adw, Gio, GLib
 
+from iplan.db.operations.project import read_projects
 from iplan.views.sidebar.sidebar import Sidebar
 from iplan.views.project.project_header import ProjectHeader
 from iplan.views.project.project_lists import ProjectLists
@@ -18,15 +19,25 @@ class IPlanWindow(Adw.ApplicationWindow):
     settings = None
 
     def __init__(self, **kwargs):
+        # Install actions
+        # Actions should installed before super().__init__
         self.install_action("list.new", None, lambda *args: self.project_lists.list_new_cb())
         self.install_action("project.open", None, self.project_open_cb)
         self.install_action("search.task-activate", 'i', self.search_task_activate_cb)
 
         super().__init__(**kwargs)
 
+        # Setttings
         self.settings = Gio.Settings(schema_id="ir.imansalmani.iplan.State")
         if self.settings.get_value("list-layout").unpack() == 1:
             self.layout_button.set_icon_name("view-columns-symbolic")
+
+        # Open first project
+        projects = read_projects()
+        if not projects:
+           self.get_application().project = list(read_projects(archive=True))[0]
+        self.get_application().project = list(projects)[0]
+        self.activate_action("project.open")
 
     def project_open_cb(self, *args):
         self.project_header.open_project()

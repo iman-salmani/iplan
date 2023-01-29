@@ -17,17 +17,6 @@ class ProjectLists(Gtk.ScrolledWindow):
 
     def __init__(self):
         super().__init__()
-        self.connect("map", self.on_mapped)
-
-    # Actions
-    def on_mapped(self, *args):
-        self.disconnect_by_func(self.on_mapped)
-        # open first project
-        projects = read_projects()
-        if not projects:
-           self.props.root.props.application.project = list(read_projects(archive=True))[0]
-        self.props.root.props.application.project = list(projects)[0]
-        self.activate_action("project.open")
 
     # Layout
     def set_layout(self, layout):
