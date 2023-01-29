@@ -39,7 +39,6 @@ class IPlanApplication(Adw.Application):
         self.create_action("search", callback=self.on_search, shortcuts=["<Ctrl>f"])
         self.create_action("close_modal", callback=self.close_modal, shortcuts=["Escape"])
         self.create_action("update_project")
-        self.create_action("new_list")
         # callbacks using application project attribute like self.props.root.props.application.project
         self.create_action("refresh_project_duration")
         self.create_action("edit_project")

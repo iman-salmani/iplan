@@ -4,7 +4,7 @@ from iplan.db.operations.project import read_projects
 from iplan.views.sidebar.sidebar import Sidebar
 from iplan.views.project.project_header import ProjectHeader
 from iplan.views.project.project_lists import ProjectLists
-
+from iplan.views.project.project_edit_window import ProjectEditWindow
 
 @Gtk.Template(resource_path="/ir/imansalmani/iplan/ui/window.ui")
 class IPlanWindow(Adw.ApplicationWindow):
@@ -21,9 +21,23 @@ class IPlanWindow(Adw.ApplicationWindow):
     def __init__(self, **kwargs):
         # Install actions
         # Actions should installed before super().__init__
-        self.install_action("list.new", None, lambda *args: self.project_lists.list_new_cb())
+        self.install_action(
+            "list.new",
+            None,
+            lambda *args: self.project_lists.list_new_cb()
+        )
         self.install_action("project.open", None, self.project_open_cb)
-        self.install_action("search.task-activate", 'i', self.search_task_activate_cb)
+        self.install_action("project.edit", None, self.project_edit_cb)
+        self.install_action(
+            "project.delete",
+            'i',
+            lambda *args: self.sidebar.projects_section.project_delete_cb(*args)
+        )
+        self.install_action(
+            "search.task-activate",
+            'i',
+            self.search_task_activate_cb
+        )
 
         super().__init__(**kwargs)
 
@@ -44,7 +58,11 @@ class IPlanWindow(Adw.ApplicationWindow):
     def project_open_cb(self, *args):
         self.project_header.open_project()
         self.project_lists.open_project()
-        self.sidebar.projects_section.select_active_project()
+
+    def project_edit_cb(self, *args):
+        window = ProjectEditWindow(self.get_application())
+        window.set_transient_for(self)
+        window.present()
 
     def search_task_activate_cb(self, window, action_name, value):
         task_id = value.unpack()

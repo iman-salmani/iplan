@@ -6,29 +6,31 @@ from iplan.db.operations.project import delete_project, read_projects
 @Gtk.Template(resource_path="/ir/imansalmani/iplan/ui/project/project_delete_dialog.ui")
 class ProjectDeleteDialog(Adw.MessageDialog):
     __gtype_name__ = "ProjectDeleteDialog"
-    app = None
+    application = None
 
-    def __init__(self, app):
+    def __init__(self, application):
         super().__init__()
-        self.app = app
+        self.application = application
         self.set_heading(
-            f'Delete "{self.app.project.name}" Project?'
+            f'Delete "{application.project.name}" Project?'
         )
 
     @Gtk.Template.Callback()
-    def on_responsed(self, dialog, response):
+    def response_cb(self, dialog, response):
         if response == "delete":
-            delete_project(self.app.project)
-            self.app.activate_action(
-                "projects-deleted",
-                GLib.Variant("i", self.app.project.index)
+            delete_project(self.application.project)
+            window = self.get_toplevels()[0]
+            window.activate_action(
+                "project.delete",
+                GLib.Variant("i", self.application.project.index)
             )
 
+            #TODO: move this to window?
             projects = read_projects()
             if not projects:
-               self.app.project = read_projects(archive=True)[0]
-            self.app.project = list(projects)[0]
+               self.application.project = read_projects(archive=True)[0]
+            self.application.project = list(projects)[0]
+            window.activate_action("project.open")
 
-            self.get_toplevels()[0].activate_action("project.open")
             self.get_transient_for().close()
 

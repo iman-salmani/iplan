@@ -1,8 +1,6 @@
 import gi
 from gi.repository import Gtk, Adw
 
-from iplan.views.project.project_edit_window import ProjectEditWindow
-
 
 @Gtk.Template(resource_path="/ir/imansalmani/iplan/ui/project/project_header.ui")
 class ProjectHeader(Gtk.Box):
@@ -34,21 +32,10 @@ class ProjectHeader(Gtk.Box):
             self.refresh_project_duration
         )
 
-        actions["edit_project"].connect(
-            "activate",
-            self.present_edit_project_window
-        )
-
     # Open - used by project_open_cb in window
     def open_project(self):
         self.project_name.set_text(self.props.root.props.application.project.name)
         self.refresh_project_duration()
-
-    def present_edit_project_window(self, *args):
-        window = ProjectEditWindow()
-        window.set_application(self.props.root.get_application())
-        window.set_transient_for(self.get_root())
-        window.present()
 
     def refresh_project_duration(self, *args):
         duration = self.props.root.props.application.project.get_duration()

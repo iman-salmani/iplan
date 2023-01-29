@@ -115,7 +115,7 @@ class ProjectList(Gtk.Box):
         if project_lists.shift_modifier:
             adjustment = view_port.props.hadjustment
             step = adjustment.get_step_increment()
-            adjustment.set_value(adjustment.get_value() + (step * dy)))
+            adjustment.set_value(adjustment.get_value() + (step * dy))
 
     # Drop
     def drop_target_drop_cb(self, target: Gtk.DropTarget, source_row, x, y):

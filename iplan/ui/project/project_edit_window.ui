@@ -31,10 +31,10 @@
             <property name="margin-start">12</property>
             <property name="margin-end">12</property>
             <child><!-- Name -->
-              <object class="AdwEntryRow" id="name">
+              <object class="AdwEntryRow" id="name_entry_row">
                 <property name="title">Name</property>
                 <property name="show-apply-button">true</property>
-                <signal name="apply" handler="on_name_applied"/>
+                <signal name="apply" handler="name_entry_row_apply_cb"/>
               </object>
             </child><!-- End Name -->
           </object>
@@ -48,11 +48,11 @@
             <child><!-- Archive -->
               <object class="AdwActionRow">
                 <property name="title">Archive</property>
-                <property name="activatable-widget">archive</property>
+                <property name="activatable-widget">archive_switch</property>
                 <child type="suffix">
-                  <object class="GtkSwitch" id="archive">
+                  <object class="GtkSwitch" id="archive_switch">
                     <property name="valign">center</property>
-                    <signal name="state-set" handler="on_archive_state_seted"/>
+                    <signal name="state-set" handler="archive_switch_state_set_cb"/>
                   </object>
                 </child>
               </object>
@@ -60,12 +60,12 @@
             <child><!-- Delete -->
               <object class="AdwActionRow" >
                 <property name="title">Delete</property>
-                <property name="activatable-widget">delete</property>
+                <property name="activatable-widget">delete_button</property>
                 <child type="suffix">
-                  <object class="GtkButton" id="delete">
+                  <object class="GtkButton" id="delete_button">
                     <property name="valign">center</property>
                     <property name="icon-name">user-trash-symbolic</property>
-                    <signal name="clicked" handler="on_delete_clicked"/>
+                    <signal name="clicked" handler="delete_button_clicked_cb"/>
                     <style>
                       <class name="flat"/>
                     </style>

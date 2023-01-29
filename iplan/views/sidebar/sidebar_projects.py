@@ -33,15 +33,6 @@ class SidebarProjects(Gtk.Box):
         actions = self.props.root.props.application.actions
         actions["update_project"].connect("activate", self.refresh)
         # TODO: update only changed project
-        self.props.root.props.application.create_action(
-            "projects-deleted",
-            callback=self.on_project_deleted,
-            param=GLib.VariantType('i')     # index
-            )
-        #self.props.root.props.application.create_action(
-        #    "projects-open-searched",
-        #    callback=self.select_active_project
-        #    )
         # TODO: raise style for selected project instead of get projects again from database
 
     @Gtk.Template.Callback()
@@ -71,7 +62,8 @@ class SidebarProjects(Gtk.Box):
         self.clear()
         self.fetch()
 
-    def on_project_deleted(self, action, value):
+    # Delete project row - used by project.delete action in window
+    def project_delete_cb(self, window, action_name, value):
         project_index = value.unpack()
         target_row = self.projects_box.get_row_at_index(project_index)
         last_index = self.projects_box.get_last_child().get_index()

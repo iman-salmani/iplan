@@ -16,7 +16,7 @@
       </item>
       <item>
         <attribute name='label' translatable='yes'>_Edit Project</attribute>
-        <attribute name='action'>app.edit_project</attribute>
+        <attribute name='action'>project.edit</attribute>
       </item>
     </section>
     <section>
