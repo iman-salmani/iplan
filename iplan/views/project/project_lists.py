@@ -27,7 +27,7 @@ class ProjectLists(Gtk.ScrolledWindow):
         if not projects:
            self.props.root.props.application.project = list(read_projects(archive=True))[0]
         self.props.root.props.application.project = list(projects)[0]
-        self.activate_action("project.open", GLib.Variant("i", -1))
+        self.activate_action("project.open")
 
     # Layout
     def set_layout(self, layout):
@@ -81,7 +81,7 @@ class ProjectLists(Gtk.ScrolledWindow):
         GLib.idle_add(lambda *args: self.get_root().set_focus(list_ui.name_entry))
 
     # Open - used by project_open_cb in window
-    def open_project(self, target_task_id):
+    def open_project(self, target_task_id=False):
         while True:
             child = self.lists_box.get_first_child()
             if not child:
@@ -89,7 +89,7 @@ class ProjectLists(Gtk.ScrolledWindow):
             self.lists_box.remove(child)
             del child
 
-        if target_task_id != -1:
+        if target_task_id:
             self.fetch(read_task(target_task_id))
         else:
             self.fetch()

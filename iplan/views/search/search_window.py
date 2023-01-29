@@ -62,12 +62,12 @@ class SearchWindow(Gtk.Window):
 
         if row._type == "project":
             self.get_application().project = row.project
-            self.get_toplevels()[0].activate_action("project.open", GLib.Variant("i", -1))
+            self.get_toplevels()[0].activate_action("project.open")
         elif row._type == "task":
             self.get_application().project = \
                 read_project(row.task.project)
             self.get_toplevels()[0].activate_action(
-                "project.open",
+                "search.task-activate",
                 GLib.Variant("i", row.task._id)
             )
         #self.get_application().actions["projects-open-searched"].activate()

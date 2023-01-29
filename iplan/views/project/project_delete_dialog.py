@@ -29,6 +29,6 @@ class ProjectDeleteDialog(Adw.MessageDialog):
                self.app.project = read_projects(archive=True)[0]
             self.app.project = list(projects)[0]
 
-            self.get_toplevels()[0].activate_action("project.open", GLib.Variant("i", -1))
+            self.get_toplevels()[0].activate_action("project.open")
             self.get_transient_for().close()
 

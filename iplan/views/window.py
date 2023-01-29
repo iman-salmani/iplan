@@ -19,7 +19,8 @@ class IPlanWindow(Adw.ApplicationWindow):
 
     def __init__(self, **kwargs):
         self.install_action("list.new", None, lambda *args: self.project_lists.list_new_cb())
-        self.install_action("project.open", 'i', self.project_open_cb)
+        self.install_action("project.open", None, self.project_open_cb)
+        self.install_action("search.task-activate", 'i', self.search_task_activate_cb)
 
         super().__init__(**kwargs)
 
@@ -27,10 +28,15 @@ class IPlanWindow(Adw.ApplicationWindow):
         if self.settings.get_value("list-layout").unpack() == 1:
             self.layout_button.set_icon_name("view-columns-symbolic")
 
-    def project_open_cb(self, window, action_name, value):
-        target_task_id = value.unpack()
+    def project_open_cb(self, *args):
         self.project_header.open_project()
-        self.project_lists.open_project(target_task_id)
+        self.project_lists.open_project()
+        self.sidebar.projects_section.select_active_project()
+
+    def search_task_activate_cb(self, window, action_name, value):
+        task_id = value.unpack()
+        self.project_header.open_project()
+        self.project_lists.open_project(task_id)
         self.sidebar.projects_section.select_active_project()
 
     @Gtk.Template.Callback()

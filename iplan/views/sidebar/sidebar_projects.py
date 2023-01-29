@@ -48,7 +48,7 @@ class SidebarProjects(Gtk.Box):
     def on_row_activated(self, list_box, row):
         window: Adw.Window = self.props.root
         window.props.application.project = row.project
-        self.activate_action("project.open", GLib.Variant("i", -1))
+        self.activate_action("project.open")
 
         if not self.archive_button.get_active():    # filter archived projects again maybe be previous choice.
             self.projects_box.invalidate_filter()
@@ -63,7 +63,7 @@ class SidebarProjects(Gtk.Box):
         create_list("Tasks", project._id)
         self.projects_box.append(SidebarProject(project))
         self.props.root.props.application.project = project
-        self.activate_action("project.open", GLib.Variant("i", -1))
+        self.activate_action("project.open")
 
     def refresh(self, *args) -> None:
         # TODO: get only archived from database
