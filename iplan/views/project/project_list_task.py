@@ -180,8 +180,7 @@ class ProjectListTask(Gtk.ListBoxRow):
         self.task.duration = self.task.duration[0:-2] + str(diffrence.seconds) + ";"
         self.timer_content.set_label(self.task.get_duration_text())
         update_task(self.task)
-        # TODO: change this
-        self.activate_action("app.refresh_project_duration")
+        self.activate_action("project.update")
 
     # Drag
     @Gtk.Template.Callback()

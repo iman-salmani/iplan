@@ -21,17 +21,18 @@ class IPlanWindow(Adw.ApplicationWindow):
     def __init__(self, **kwargs):
         # Install actions
         # Actions should installed before super().__init__
-        self.install_action(
-            "list.new",
-            None,
-            lambda *args: self.project_lists.list_new_cb()
-        )
         self.install_action("project.open", None, self.project_open_cb)
         self.install_action("project.edit", None, self.project_edit_cb)
+        self.install_action("project.update", None, self.project_update_cb)
         self.install_action(
             "project.delete",
             'i',
             lambda *args: self.sidebar.projects_section.project_delete_cb(*args)
+        )
+        self.install_action(
+            "list.new",
+            None,
+            lambda *args: self.project_lists.list_new_cb()
         )
         self.install_action(
             "search.task-activate",
@@ -63,6 +64,10 @@ class IPlanWindow(Adw.ApplicationWindow):
         window = ProjectEditWindow(self.get_application())
         window.set_transient_for(self)
         window.present()
+
+    def project_update_cb(self, *args):
+        self.project_header.open_project()
+        self.sidebar.projects_section.refresh()
 
     def search_task_activate_cb(self, window, action_name, value):
         task_id = value.unpack()

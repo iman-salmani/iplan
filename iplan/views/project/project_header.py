@@ -5,49 +5,36 @@ from gi.repository import Gtk, Adw
 @Gtk.Template(resource_path="/ir/imansalmani/iplan/ui/project/project_header.ui")
 class ProjectHeader(Gtk.Box):
     __gtype_name__ = "ProjectHeader"
-    project_name: Gtk.Label = Gtk.Template.Child()
-    project_duration_button: Gtk.Button = Gtk.Template.Child()
-    project_duration_button_content: Adw.ButtonContent = Gtk.Template.Child()
-    project_duration_records: Gtk.Box = Gtk.Template.Child()
+    name_label: Gtk.Label = Gtk.Template.Child()
+    duration_button_content: Adw.ButtonContent = Gtk.Template.Child()
+    stat_box: Gtk.Box = Gtk.Template.Child()
 
     def __init__(self):
         super().__init__()
-        self.connect("map", self.on_mapped)
 
-    # Actions
-    def on_mapped(self, *args):
-        self.disconnect_by_func(self.on_mapped)
-        actions = self.props.root.props.application.actions
-
-        # TODO: think about mix update project and refresh duration
-        actions["update_project"].connect(
-            "activate",
-            lambda *args: self.project_name.set_text(
-                self.props.root.props.application.project.name
-            )
-        )
-
-        actions["refresh_project_duration"].connect(
-            "activate",
-            self.refresh_project_duration
-        )
-
-    # Open - used by project_open_cb in window
+    # Open - used by project_open_cb and project_update_cb in window
     def open_project(self):
-        self.project_name.set_text(self.props.root.props.application.project.name)
+        self.name_label.set_text(self.props.root.props.application.project.name)
         self.refresh_project_duration()
 
     def refresh_project_duration(self, *args):
         duration = self.props.root.props.application.project.get_duration()
         if duration:
-            self.project_duration_button_content.set_label(
+            self.duration_button_content.set_label(
                 self.props.root.props.application.project.duration_to_text(duration)
             )
         else:
-            self.project_duration_button_content.set_label("")
+            self.duration_button_content.set_label("")
 
         table = self.props.root.props.application.project.get_duration_table()
-        self.clear(self.project_duration_records)
+
+        while True:
+            row = self.stat_box.get_first_child()
+            if row:
+                self.stat_box.remove(row)
+            else:
+                break
+
         dates = list(table.keys())
         dates.sort()
         dates.reverse()
@@ -57,7 +44,7 @@ class ProjectHeader(Gtk.Box):
             box.set_margin_bottom(9)
             box.set_margin_start(9)
             box.set_margin_end(9)
-            self.project_duration_records.append(box)
+            self.stat_box.append(box)
 
             date_label = Gtk.Label()
             date_label.set_text(date.strftime("%d %b"))
@@ -71,14 +58,5 @@ class ProjectHeader(Gtk.Box):
             box.append(duration_label)
 
             if date != dates[-1]:
-                self.project_duration_records.append(Gtk.Separator())
-
-    # UI Functions
-    def clear(self, box):
-        while True:
-            row = box.get_first_child()
-            if row:
-                box.remove(row)
-            else:
-                break
+                self.stat_box.append(Gtk.Separator())
 

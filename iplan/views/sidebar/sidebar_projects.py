@@ -30,8 +30,8 @@ class SidebarProjects(Gtk.Box):
         self.disconnect_by_func(self.on_mapped)
         self.fetch()
 
-        actions = self.props.root.props.application.actions
-        actions["update_project"].connect("activate", self.refresh)
+        #actions = self.props.root.props.application.actions
+        #actions["update_project"].connect("activate", self.refresh)
         # TODO: update only changed project
         # TODO: raise style for selected project instead of get projects again from database
 
@@ -56,7 +56,7 @@ class SidebarProjects(Gtk.Box):
         self.props.root.props.application.project = project
         self.activate_action("project.open")
 
-    def refresh(self, *args) -> None:
+    def refresh(self, *args):
         # TODO: get only archived from database
         # instead of all projects when archive button is active
         self.clear()

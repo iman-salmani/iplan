@@ -4,7 +4,7 @@
   <requires lib="Adw" version="1.0"/>
   <template class="ProjectHeader" parent="GtkBox">
     <child><!-- Project Name Label -->
-      <object class="GtkLabel" id="project_name">
+      <object class="GtkLabel" id="name_label">
         <property name="margin-start">6</property>
         <style>
           <class name="heading"/>
@@ -12,14 +12,14 @@
       </object>
     </child><!-- End Project Name Label -->
     <child><!-- Project Duration button -->
-      <object class="GtkMenuButton" id="project_duration_button">
-        <property name="popover">project_duration_popover</property>
+      <object class="GtkMenuButton">
+        <property name="popover">duration_popover</property>
         <property name="margin-start">3</property>
         <style>
           <class name="flat"/>
         </style>
         <child>
-          <object class="AdwButtonContent" id="project_duration_button_content">
+          <object class="AdwButtonContent" id="duration_button_content">
             <property name="icon-name">preferences-system-time-symbolic</property>
           </object>
         </child>
@@ -27,9 +27,9 @@
     </child><!-- End Project Duration button -->
   </template>
   <!-- Project duration Popover -->
-  <object class="GtkPopover" id="project_duration_popover">
+  <object class="GtkPopover" id="duration_popover">
     <child>
-      <object class="GtkBox" id="project_duration_records">
+      <object class="GtkBox" id="stat_box">
         <property name="orientation">vertical</property>
       </object>
     </child>
