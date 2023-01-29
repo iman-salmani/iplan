@@ -67,7 +67,7 @@ class IPlanApplication(Adw.Application):
         about.present()
 
     def on_shortcuts(self, widget, _):
-        shortcuts_window = ShortcutsWindow()
+        shortcuts_window = ShortcutsWindow(application=self)
         shortcuts_window.set_transient_for(self.props.active_window)
         shortcuts_window.present()
 

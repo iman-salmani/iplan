@@ -16,13 +16,14 @@
           <object class="GtkSearchEntry" id="search_entry">
             <property name="hexpand">true</property>
             <property name="placeholder-text">Search</property>
-            <signal name="search-changed" handler="search"/>
+            <signal name="activate" handler="search_entry_activate_cb"/>
+            <signal name="search-changed" handler="search_entry_search_changed_cb"/>
           </object>
         </property>
         <child type="start">
-          <object class="GtkToggleButton" id="done_toggle_button">
+          <object class="GtkToggleButton" id="show_done_tasks_toggle_button">
             <property name="icon-name">object-select-symbolic</property>
-            <signal name="toggled" handler="search"/>
+            <signal name="toggled" handler="search_entry_search_changed_cb"/>
           </object>
         </child>
       </object>
@@ -43,7 +44,7 @@
                 <property name="margin-bottom">3</property>
                 <property name="margin-start">12</property>
                 <property name="margin-end">12</property>
-                <signal name="row-activated" handler="on_result_activated"/>
+                <signal name="row-activated" handler="search_results_row_activated_cb"/>
                 <style>
                   <class name="boxed-list"/>
                 </style>

@@ -12,13 +12,13 @@
         <property name="margin-start">12</property>
         <property name="margin-end">12</property>
         <child>
-          <object class="GtkCheckButton" id="check_button">
+          <object class="GtkCheckButton" id="done_check_button">
             <property name="margin-end">6</property>
             <property name="sensitive">false</property>
           </object>
         </child>
         <child>
-          <object class="GtkLabel" id="name">
+          <object class="GtkLabel" id="name_label">
             <property name="halign">start</property>
             <property name="hexpand">true</property>
             <property name="ellipsize">end</property>

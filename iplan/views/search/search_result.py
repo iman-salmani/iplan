@@ -5,9 +5,9 @@ from gi.repository import Gtk, Adw
 @Gtk.Template(resource_path='/ir/imansalmani/iplan/ui/search/search_result.ui')
 class SearchResult(Gtk.ListBoxRow):
     __gtype_name__ = "SearchResult"
-    name = Gtk.Template.Child()
+    name_label = Gtk.Template.Child()
     type_label = Gtk.Template.Child()
-    check_button = Gtk.Template.Child()
+    done_check_button = Gtk.Template.Child()
     _type = None
     project = None
     task = None
@@ -18,10 +18,10 @@ class SearchResult(Gtk.ListBoxRow):
         self.project = project
         self.task = task
 
-        self.name.set_label(name)
+        self.name_label.set_label(name)
         self.type_label.set_label(self._type)
         if self._type == "project":
-            self.check_button.set_visible(False)
+            self.done_check_button.set_visible(False)
         else:
-            self.check_button.set_active(self.task.done)
+            self.done_check_button.set_active(self.task.done)
 

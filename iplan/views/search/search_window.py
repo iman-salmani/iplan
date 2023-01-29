@@ -5,39 +5,40 @@ from iplan.db.operations.project import read_project, search_projects
 from iplan.db.operations.task import search_tasks
 from iplan.views.search.search_result import SearchResult
 
+
 @Gtk.Template(resource_path='/ir/imansalmani/iplan/ui/search/search_window.ui')
 class SearchWindow(Gtk.Window):
     __gtype_name__ = "SearchWindow"
     search_entry = Gtk.Template.Child()
     search_results = Gtk.Template.Child()
     search_results_placeholder = Gtk.Template.Child()
-    done_toggle_button = Gtk.Template.Child()
+    show_done_tasks_toggle_button = Gtk.Template.Child()
 
-    def __init__(self):
-        super().__init__()
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
         self.set_focus(self.search_entry)
-        controller = Gtk.EventControllerKey()
-        controller.connect("key-pressed", self.on_key_pressed)
-        self.search_entry.add_controller(controller)
-        self.search_entry.connect("activate", self.on_search_entry_activated)
-        self.search_results.connect("row-activated", self.on_result_activated)
+        search_entry_controller = Gtk.EventControllerKey()
+        search_entry_controller.connect("key-pressed", self.search_entry_controller_key_pressed_cb)
+        self.search_entry.add_controller(search_entry_controller)
 
-    def on_search_entry_activated(self, *args):
+    @Gtk.Template.Callback()
+    def search_entry_activate_cb(self, *args):
         selected_row = self.search_results.get_selected_row()
         first_row = self.search_results.get_first_child()
 
-        if type(first_row) != SearchResult:
+        if type(first_row) != SearchResult: # Check placeholder
             return
 
         if selected_row:
-            self.on_result_activated(self.search_results, selected_row)
+            self.search_results_row_activated_cb(self.search_results, selected_row)
         elif first_row:
-            self.on_result_activated(self.search_results, first_row)
+            self.search_results_row_activated_cb(self.search_results, first_row)
 
-    def on_key_pressed(self, controller, keyval, keycode, state):
+    def search_entry_controller_key_pressed_cb(self, controller, keyval, keycode, state):
         key = Gdk.keyval_name(keyval)
         first_child = self.search_results.get_first_child()
-        if type(first_child) != SearchResult:
+
+        if type(first_child) != SearchResult:   # Check placeholder
             return
 
         arrows = [65364, 65362] # Down, Up
@@ -56,10 +57,8 @@ class SearchWindow(Gtk.Window):
                 self.search_results.select_row(first_child)
 
     @Gtk.Template.Callback()
-    def on_result_activated(self, list_box, row):
-        if not self.get_application():
-            return
-
+    def search_results_row_activated_cb(self, list_box, row):
+        # Also used by search_entry_activate_cb
         if row._type == "project":
             self.get_application().project = row.project
             self.get_toplevels()[0].activate_action("project.open")
@@ -70,12 +69,17 @@ class SearchWindow(Gtk.Window):
                 "search.task-activate",
                 GLib.Variant("i", row.task._id)
             )
-        #self.get_application().actions["projects-open-searched"].activate()
         self.close()
 
     @Gtk.Template.Callback()
-    def search(self, *args):
-        self.clear()
+    def search_entry_search_changed_cb(self, *args):
+        # Also used by show_done_tasks_toggle_button toggled signal
+        while True:
+            row = self.search_results.get_first_child()
+            if row:
+                self.search_results.remove(row)
+            else:
+                break
 
         text = self.search_entry.get_text().lower()
         if not text.strip():
@@ -84,7 +88,7 @@ class SearchWindow(Gtk.Window):
         for project in search_projects(text):
             self.search_results.append(
                 SearchResult("project", project.name, project=project))
-        for task in search_tasks(text, done=self.done_toggle_button.get_active()):
+        for task in search_tasks(text, done=self.show_done_tasks_toggle_button.get_active()):
             self.search_results.append(
                 SearchResult("task", task.name, task=task))
 
@@ -92,13 +96,4 @@ class SearchWindow(Gtk.Window):
         if not first_item:
             self.search_entry.grab_focus()
             self.search_results.set_placeholder(self.search_results_placeholder)
-
-    # UI
-    def clear(self):
-        while True:
-            row = self.search_results.get_first_child()
-            if row:
-                self.search_results.remove(row)
-            else:
-                break
 
