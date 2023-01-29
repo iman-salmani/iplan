@@ -43,23 +43,6 @@ class ProjectList(Gtk.Box):
         for task in read_tasks(self._list.project, self._list._id, False):
             self.tasks_box.append(ProjectListTask(task))
 
-    # Scroll
-    def set_scroll_controller(self):
-        self.scroll_controller = Gtk.EventControllerScroll.new(
-            Gtk.EventControllerScrollFlags.VERTICAL
-        )   # a little tricky. controller send scroll signal even if shift pressed
-        self.scroll_controller.connect("scroll", self.scroll_controller_scroll_cb)
-        self.scrolled_window.add_controller(self.scroll_controller)
-
-    def scroll_controller_scroll_cb(self, controller, dx, dy):
-        # Horizontal scroll project lists scrolled window if shift pressed
-        project_lists = self.get_root().project_lists
-        view_port = project_lists.get_first_child()
-        if project_lists.shift_modifier:
-            adjustment = view_port.props.hadjustment
-            step = adjustment.get_step_increment()
-            adjustment.set_value(adjustment.get_value() + (step * dy))
-
     # Name
     @Gtk.Template.Callback()
     def name_button_clicked_cb(self, *args):
@@ -82,7 +65,15 @@ class ProjectList(Gtk.Box):
         task_ui.name_button.set_visible(False)
         task_ui.name_entry.grab_focus()
 
-    # Show done tasks
+    # Delete
+    @Gtk.Template.Callback()
+    def delete_button_clicked_cb(self, *args):
+        self.options_button.popdown()
+        dialog = ProjectListDeleteDialog(self)
+        dialog.set_transient_for(self.get_root())
+        dialog.present()
+
+    # Done tasks
     @Gtk.Template.Callback()
     def show_done_tasks_toggle_button_toggled_cb(self, *args):
         self.options_button.popdown()
@@ -93,15 +84,6 @@ class ProjectList(Gtk.Box):
         else:
             self.tasks_box.invalidate_filter()
 
-    # Delete
-    @Gtk.Template.Callback()
-    def delete_button_clicked_cb(self, *args):
-        self.options_button.popdown()
-        dialog = ProjectListDeleteDialog(self)
-        dialog.set_transient_for(self.get_root())
-        dialog.present()
-
-    # Task done
     def task_done_cb(self, project_list, action_name, value):
         "Remove or filter task row"
         index = value.unpack()
@@ -117,6 +99,23 @@ class ProjectList(Gtk.Box):
             if upper_row:
                 self.get_root().set_focus(upper_row)
             row.changed()
+
+    # Scroll - Related to project lists Layout section
+    def set_scroll_controller(self):
+        self.scroll_controller = Gtk.EventControllerScroll.new(
+            Gtk.EventControllerScrollFlags.VERTICAL
+        )   # a little tricky. controller send scroll signal even if shift pressed
+        self.scroll_controller.connect("scroll", self.scroll_controller_scroll_cb)
+        self.scrolled_window.add_controller(self.scroll_controller)
+
+    def scroll_controller_scroll_cb(self, controller, dx, dy):
+        # Horizontal scroll project lists scrolled window if shift pressed
+        project_lists = self.get_root().project_lists
+        view_port = project_lists.get_first_child()
+        if project_lists.shift_modifier:
+            adjustment = view_port.props.hadjustment
+            step = adjustment.get_step_increment()
+            adjustment.set_value(adjustment.get_value() + (step * dy)))
 
     # Drop
     def drop_target_drop_cb(self, target: Gtk.DropTarget, source_row, x, y):

@@ -1,7 +1,6 @@
 import gi
 from gi.repository import Gtk, GLib, Gio
 
-from iplan.db.operations.project import read_projects
 from iplan.db.operations.list import create_list, read_lists
 from iplan.db.operations.task import read_task
 from iplan.views.project.project_list import ProjectList
