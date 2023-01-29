@@ -20,12 +20,11 @@ class ProjectLists(Gtk.ScrolledWindow):
 
     # Layout
     def set_layout(self, layout):
-        empty = type(self.lists_box.get_first_child()) != ProjectList # Checking placeholder
         if layout == "horizontal":
             self.lists_box.set_orientation(Gtk.Orientation.HORIZONTAL)
+            if self.is_empty():
+                return
             for _list in self.lists_box.observe_children():
-                if empty:
-                    break
                 _list.tasks_box.unparent()
                 _list.scrolled_window.set_child(_list.tasks_box)
                 _list.scrolled_window.set_visible(True)
@@ -36,9 +35,9 @@ class ProjectLists(Gtk.ScrolledWindow):
             self.get_root().add_controller(self.shift_controller)
         else:
             self.lists_box.set_orientation(Gtk.Orientation.VERTICAL)
+            if self.is_empty():
+                return
             for _list in self.lists_box.observe_children():
-                if empty:
-                    break
                 _list.tasks_box.unparent()
                 _list.append(_list.tasks_box)
                 _list.scrolled_window.set_visible(False)
@@ -51,10 +50,24 @@ class ProjectLists(Gtk.ScrolledWindow):
     def shift_controller_key_pressed_cb(self, controller, keyval, keycode, state):
         if keycode == 50:
             self.shift_modifier = True
+            if self.is_empty():
+                return
+            for _list in self.lists_box.observe_children(): # disable vscrollbar when shift holded
+                _list.scrolled_window.get_vscrollbar().set_sensitive(False)
 
     def shift_controller_key_released_cb(self, controller, keyval, keycode, state):
         if keycode == 50:
             self.shift_modifier = False
+            if self.is_empty():
+                return
+            for _list in self.lists_box.observe_children():
+                _list.scrolled_window.get_vscrollbar().set_sensitive(True)
+
+    def is_empty(self) -> bool:
+        if type(self.lists_box.get_first_child()) != ProjectList:
+            # Checking placeholder
+            return True
+        return False
 
     # New - connected to list.new action
     def list_new_cb(self):
