@@ -43,11 +43,10 @@ class IPlanWindow(Adw.ApplicationWindow):
         super().__init__(**kwargs)
 
         # Open first project
-        projects = read_projects()
-        if not projects:
-           self.get_application().project = list(read_projects(archive=True))[0]
+        projects = read_projects(archive=True)
         self.get_application().project = list(projects)[0]
         self.activate_action("project.open")
+        self.sidebar.projects_section.select_active_project()
 
         # Setttings
         # TODO: move this up when set layout per project implemented
@@ -67,7 +66,7 @@ class IPlanWindow(Adw.ApplicationWindow):
 
     def project_update_cb(self, *args):
         self.project_header.open_project()
-        self.sidebar.projects_section.refresh()
+        self.sidebar.projects_section.update_project()
 
     def search_task_activate_cb(self, window, action_name, value):
         task_id = value.unpack()

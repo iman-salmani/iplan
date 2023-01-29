@@ -14,19 +14,19 @@ class ProjectEditWindow(Adw.Window):
         super().__init__(application=application)
         project = application.project
         self.name_entry_row.set_text(project.name)
-        self.archive_switch.set_active(project.archive)
+        self.archive_switch.set_active(project.archive) # Set before connect to handler
+        self.archive_switch.connect("state-set", self.archive_switch_state_set_cb)
 
     @Gtk.Template.Callback()
     def name_entry_row_apply_cb(self, *args):
         self.get_application().project.name = self.name_entry_row.get_text()
         update_project(self.get_application().project)
-        self.get_transient_for().activate_action("project.update")
+        self.get_toplevels()[0].activate_action("project.update")
 
-    @Gtk.Template.Callback()
     def archive_switch_state_set_cb(self, sender: Gtk.Switch, state: bool):
         self.get_application().project.archive = state
         update_project(self.get_application().project)
-        self.get_transient_for().activate_action("project.update")
+        self.get_toplevels()[0].activate_action("project.update")
 
     @Gtk.Template.Callback()
     def delete_button_clicked_cb(self, *args):
