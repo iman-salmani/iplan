@@ -21,8 +21,6 @@ class ProjectHeader(Gtk.Box):
         self.disconnect_by_func(self.on_mapped)
         actions = self.props.root.props.application.actions
 
-        actions["open_project"].connect("activate", self.open_project)
-
         # TODO: think about mix update project and refresh duration
         actions["update_project"].connect(
             "activate",
@@ -41,7 +39,8 @@ class ProjectHeader(Gtk.Box):
             self.present_edit_project_window
         )
 
-    def open_project(self, *args):
+    # Open - used by project_open_cb in window
+    def open_project(self):
         self.project_name.set_text(self.props.root.props.application.project.name)
         self.refresh_project_duration()
 

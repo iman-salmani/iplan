@@ -23,7 +23,7 @@
       </object>
     </child>
     <child>
-      <object class="SidebarProjects"/>
+      <object class="SidebarProjects" id="projects_section"/>
     </child>
   </template>
 </interface>

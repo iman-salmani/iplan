@@ -33,23 +33,22 @@ class SidebarProjects(Gtk.Box):
         actions = self.props.root.props.application.actions
         actions["update_project"].connect("activate", self.refresh)
         # TODO: update only changed project
-        #actions["open_project"].connect("activate", self.on_project_opened)
         self.props.root.props.application.create_action(
             "projects-deleted",
             callback=self.on_project_deleted,
             param=GLib.VariantType('i')     # index
             )
-        self.props.root.props.application.create_action(
-            "projects-open-searched",
-            callback=self.select_active_project
-            )
+        #self.props.root.props.application.create_action(
+        #    "projects-open-searched",
+        #    callback=self.select_active_project
+        #    )
         # TODO: raise style for selected project instead of get projects again from database
 
     @Gtk.Template.Callback()
     def on_row_activated(self, list_box, row):
         window: Adw.Window = self.props.root
         window.props.application.project = row.project
-        self.activate_action("app.open_project", GLib.Variant("i", -1))
+        self.activate_action("project.open", GLib.Variant("i", -1))
 
         if not self.archive_button.get_active():    # filter archived projects again maybe be previous choice.
             self.projects_box.invalidate_filter()
@@ -64,7 +63,7 @@ class SidebarProjects(Gtk.Box):
         create_list("Tasks", project._id)
         self.projects_box.append(SidebarProject(project))
         self.props.root.props.application.project = project
-        self.activate_action("app.open_project", GLib.Variant("i", -1))
+        self.activate_action("project.open", GLib.Variant("i", -1))
 
     def refresh(self, *args) -> None:
         # TODO: get only archived from database
@@ -82,7 +81,7 @@ class SidebarProjects(Gtk.Box):
             row.project.index -= 1
         self.projects_box.remove(target_row)
 
-    def select_active_project(self, *args):
+    def select_active_project(self):
         project = self.props.root.props.application.project
         target_row = None
         for row in self.projects_box.observe_children():

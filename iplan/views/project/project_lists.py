@@ -22,15 +22,12 @@ class ProjectLists(Gtk.ScrolledWindow):
     # Actions
     def on_mapped(self, *args):
         self.disconnect_by_func(self.on_mapped)
-        actions = self.props.root.props.application.actions
-        actions["open_project"].connect("activate", self.project_open_cb)
-
         # open first project
         projects = read_projects()
         if not projects:
            self.props.root.props.application.project = list(read_projects(archive=True))[0]
         self.props.root.props.application.project = list(projects)[0]
-        self.activate_action("app.open_project", GLib.Variant("i", -1))
+        self.activate_action("project.open", GLib.Variant("i", -1))
 
     # Layout
     def set_layout(self, layout):
@@ -83,10 +80,8 @@ class ProjectLists(Gtk.ScrolledWindow):
         list_ui.name_button.set_visible(False)  # name entry visiblity have binding to this
         GLib.idle_add(lambda *args: self.get_root().set_focus(list_ui.name_entry))
 
-    # Open
-    def project_open_cb(self, action: Gio.SimpleAction, param: GLib.Variant):
-        task_id = param.unpack()
-
+    # Open - used by project_open_cb in window
+    def open_project(self, target_task_id):
         while True:
             child = self.lists_box.get_first_child()
             if not child:
@@ -94,8 +89,8 @@ class ProjectLists(Gtk.ScrolledWindow):
             self.lists_box.remove(child)
             del child
 
-        if task_id != -1:
-            self.fetch(read_task(task_id))
+        if target_task_id != -1:
+            self.fetch(read_task(target_task_id))
         else:
             self.fetch()
 

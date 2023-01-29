@@ -12,7 +12,7 @@
           bind-property="active"
           bind-flags="sync-create|bidirectional"/>
         <property name="flap"><!-- Sidebar -->
-          <object class="Sidebar"></object>
+          <object class="Sidebar" id="sidebar"></object>
         </property><!-- Sidebar -->
         <property name="separator"><!-- Separator -->
           <object class="GtkSeparator"/>
@@ -39,7 +39,7 @@
                   </object>
                 </child>
                 <child>
-                  <object class="ProjectHeader"/>
+                  <object class="ProjectHeader" id="project_header"/>
                 </child>
                 <child type="end">
                   <object class="PrimaryMenu"/>
