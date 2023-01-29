@@ -23,6 +23,7 @@ class ProjectList(Gtk.Box):
     scroll_controller = None
 
     def __init__(self, _list: List) -> None:
+        self.install_action("task.done", 'i', self.task_done_cb)
         super().__init__()
         self._list = _list
         self.name_button.set_label(self._list.name)
@@ -99,6 +100,23 @@ class ProjectList(Gtk.Box):
         dialog = ProjectListDeleteDialog(self)
         dialog.set_transient_for(self.get_root())
         dialog.present()
+
+    # Task done
+    def task_done_cb(self, project_list, action_name, value):
+        "Remove or filter task row"
+        index = value.unpack()
+        # Filter or remove row if show done tasks is False
+        # prevent from scroll up after filter or remove row
+        upper_row = project_list.tasks_box.get_row_at_index(index - 1)
+        row = project_list.tasks_box.get_row_at_index(index)
+        if not self.contain_done_tasks:
+            if upper_row:
+                self.get_root().set_focus(upper_row)
+            project_list.tasks_box.remove(row)
+        elif not self.show_done_tasks_toggle_button.get_active():
+            if upper_row:
+                self.get_root().set_focus(upper_row)
+            row.changed()
 
     # Drop
     def drop_target_drop_cb(self, target: Gtk.DropTarget, source_row, x, y):

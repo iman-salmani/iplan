@@ -139,22 +139,8 @@ class ProjectListTask(Gtk.ListBoxRow):
                 self.timer.set_active(False)
             self.timer.disconnect_by_func(self.timer_toggle_button_toggled_cb)
 
-            # Filter or remove row if done tasks filter is not False and
-            # prevent from scroll up after filter or remove row
-            upper_task = self.get_parent().get_row_at_index(self.get_index() - 1)
-            project_list = self.get_parent().get_parent()
-            if project_list.__gtype_name__ != "ProjectList":
-                # in board view tasks_box have scrolled_window parent
-                project_list = project_list.get_parent().get_parent()
-
-            if not project_list.contain_done_tasks:
-                if upper_task:
-                    self.get_root().set_focus(upper_task)
-                self.get_parent().remove(self)
-            elif not project_list.show_done_tasks_toggle_button.get_active():
-                if upper_task:
-                    self.get_root().set_focus(upper_task)
-                self.changed()
+            # Remove or filter row
+            self.activate_action("task.done", GLib.Variant('i', self.get_index()))
         else:
             self.timer.set_sensitive(True)
             self.timer.connect("toggled", self.timer_toggle_button_toggled_cb)
