@@ -182,13 +182,23 @@ class ProjectList(Gtk.Box):
         source_row: ProjectListTask = target.get_value()
         if source_row:
             source_row.moving_out = True
+            for i in range(0, source_row.get_index()):
+                row = self.tasks_box.get_row_at_index(i)
+                row.task.position -= 1
             self.tasks_box.invalidate_filter()
 
     def drop_target_enter_cb(self, target: Gtk.DropTarget, x, y):
         source_row: ProjectListTask = target.get_value()
-        source_row.moving_out = False
+
+        if source_row.task._list == self._list._id and not source_row.moving_out:
+            # This happens when drag start inside list
+            return Gdk.DragAction.MOVE
 
         if source_row.task._list == self._list._id:
+            source_row.moving_out = False
+            for i in range(0, source_row.get_index()):
+                row = self.tasks_box.get_row_at_index(i)
+                row.task.position += 1
             self.tasks_box.invalidate_filter()
         else:
             source_row.task._list = self._list._id
