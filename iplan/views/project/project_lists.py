@@ -21,21 +21,26 @@ class ProjectLists(Gtk.ScrolledWindow):
     def set_layout(self, layout):
         if layout == "horizontal":
             self.lists_box.set_orientation(Gtk.Orientation.HORIZONTAL)
-            if self.is_empty():
-                return
-            for _list in self.lists_box.observe_children():
-                _list.tasks_box.unparent()
-                _list.scrolled_window.set_child(_list.tasks_box)
-                _list.scrolled_window.set_visible(True)
-                _list.set_scroll_controller()
             self.shift_controller = Gtk.EventControllerKey()
             self.shift_controller.connect("key-pressed", self.shift_controller_key_pressed_cb)
             self.shift_controller.connect("key-released", self.shift_controller_key_released_cb)
             self.get_root().add_controller(self.shift_controller)
         else:
             self.lists_box.set_orientation(Gtk.Orientation.VERTICAL)
-            if self.is_empty():
-                return
+            if self.shift_controller:
+                self.get_root().remove_controller(self.shift_controller)
+
+        if not self.is_empty():
+            self.update_lists_layout()
+
+    def update_lists_layout(self):
+        if self.lists_box.get_orientation() == Gtk.Orientation.HORIZONTAL:
+            for _list in self.lists_box.observe_children():
+                _list.tasks_box.unparent()
+                _list.scrolled_window.set_child(_list.tasks_box)
+                _list.scrolled_window.set_visible(True)
+                _list.set_scroll_controller()
+        else:
             for _list in self.lists_box.observe_children():
                 _list.tasks_box.unparent()
                 _list.append(_list.tasks_box)
@@ -43,8 +48,6 @@ class ProjectLists(Gtk.ScrolledWindow):
                 if _list.scroll_controller:
                     _list.scrolled_window.remove_controller(_list.scroll_controller)
                     _list.scroll_controller = None
-            if self.shift_controller:
-                self.get_root().remove_controller(self.shift_controller)
 
     def shift_controller_key_pressed_cb(self, controller, keyval, keycode, state):
         if keycode == 50:
@@ -94,6 +97,8 @@ class ProjectLists(Gtk.ScrolledWindow):
             self.fetch(read_task(target_task_id))
         else:
             self.fetch()
+
+        self.update_lists_layout()
 
     def fetch(self, target_task=None):
         lists = read_lists(self.props.root.props.application.project._id)
