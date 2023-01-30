@@ -33,6 +33,11 @@ class SidebarProjects(Gtk.Box):
     @Gtk.Template.Callback()
     def projects_box_row_activated_cb(self, list_box, row):
         window = self.props.root
+
+        # prevent from open again
+        if window.props.application.project._id == row.project._id:
+            return
+
         window.props.application.project = row.project
         self.activate_action("project.open")
 
@@ -56,11 +61,11 @@ class SidebarProjects(Gtk.Box):
     def update_project(self, *args):
         project = self.props.root.props.application.project
         row = self.projects_box.get_row_at_index(project.index)
-        row.content.set_label(project.name)
+        row.name_label.set_label(project.name)
         if project.archive:
-            row.content.add_css_class("dim-label")
+            row.name_label.add_css_class("dim-label")
         else:
-            row.content.remove_css_class("dim-label")
+            row.name_label.remove_css_class("dim-label")
         row.project = project
         row.changed()
 
