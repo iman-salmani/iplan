@@ -3,7 +3,6 @@
   <requires lib="gtk" version="4.0"/>
   <requires lib="Adw" version="1.0"/>
   <template class="ProjectList" parent="GtkBox">
-    <property name="vexpand">true</property>
     <property name="orientation">vertical</property>
     <property name="width-request">480</property>
     <child><!-- Header -->
