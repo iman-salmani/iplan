@@ -58,9 +58,9 @@
           </object>
         </child>
         <child><!-- Timer -->
-          <object class="GtkToggleButton" id="timer">
+          <object class="GtkToggleButton" id="timer_toggle_button">
             <child>
-              <object class="AdwButtonContent" id="timer_content">
+              <object class="AdwButtonContent" id="timer_button_content">
                 <property name="icon-name">preferences-system-time-symbolic</property>
               </object>
             </child>

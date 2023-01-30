@@ -15,9 +15,9 @@ class ProjectListTask(Gtk.ListBoxRow):
     checkbox: Gtk.CheckButton = Gtk.Template.Child()
     name_entry: Gtk.Entry = Gtk.Template.Child()
     name_button: Gtk.Button = Gtk.Template.Child()
-    timer: Gtk.Button = Gtk.Template.Child()
-    timer_content: Adw.ButtonContent = Gtk.Template.Child()
-    timer_continue_previous = False
+    timer_toggle_button: Gtk.Button = Gtk.Template.Child()
+    timer_button_content: Adw.ButtonContent = Gtk.Template.Child()
+    timer_value = 0
     moving_out = False  # When drag
 
     def __init__(self, task):
@@ -37,18 +37,20 @@ class ProjectListTask(Gtk.ListBoxRow):
 
         duration = task.get_duration()
         if duration:
-            self.timer_content.set_label(task.duration_to_text(duration))
+            self.timer_button_content.set_label(task.duration_to_text(duration))
 
         if task.done:
-            self.timer.set_sensitive(False)
+            self.timer_toggle_button.set_sensitive(False)
         else:
-            self.timer.connect("toggled", self.timer_toggle_button_toggled_cb)
+            self.timer_toggle_button.connect("toggled", self.timer_toggle_button_toggled_cb)
 
+            # starting timer if last duration not finished
             last_time = task.get_last_time()
             if last_time:
                 if not last_time[1]:
-                    self.timer_continue_previous = True
-                    self.timer.set_active(True)
+                    start = datetime.fromtimestamp(last_time[0])
+                    self.timer_value = datetime.now() - start
+                    self.timer_toggle_button.set_active(True)
 
     # Name
     @Gtk.Template.Callback()
@@ -135,50 +137,56 @@ class ProjectListTask(Gtk.ListBoxRow):
 
         if active:
             # Stop timer and disconnect handler
-            if self.timer.get_active():
-                self.timer.set_active(False)
-            self.timer.disconnect_by_func(self.timer_toggle_button_toggled_cb)
+            if self.timer_toggle_button.get_active():
+                self.timer_toggle_button.set_active(False)
+            self.timer_toggle_button.disconnect_by_func(self.timer_toggle_button_toggled_cb)
 
             # Remove or filter row
             self.activate_action("task.done", GLib.Variant('i', self.get_index()))
         else:
-            self.timer.set_sensitive(True)
-            self.timer.connect("toggled", self.timer_toggle_button_toggled_cb)
+            self.timer_toggle_button.set_sensitive(True)
+            self.timer_toggle_button.connect("toggled", self.timer_toggle_button_toggled_cb)
 
     # Timer
     def timer_toggle_button_toggled_cb(self, *args):
-        if self.timer.get_active():
-            self.timer.add_css_class("destructive-action")
+        """
+        - Start timer if is active.
+            timer daemon checking timer toggle button
+            active property every second and will stop if is False.
+        - Save duration if is not active
+        """
+        if self.timer_toggle_button.get_active():
+            self.timer_toggle_button.add_css_class("destructive-action")
             thread = Thread(target=self.start_timer)
             thread.daemon = True
             thread.start()
         else:
-            self.timer.remove_css_class("destructive-action")
+            self.timer_toggle_button.remove_css_class("destructive-action")
+            self.save_duration()
 
     def start_timer(self):
-        diffrence = None
-        if self.timer_continue_previous:
-            self.timer_continue_previous = False
-            lt = self.task.get_last_time()
-            start = datetime.fromtimestamp(lt[0])
-            now = datetime.now()
-            diffrence = now - start
-
+        # add duration record if task don't have unfinished timer
+        if self.timer_value:
+            start = datetime.fromtimestamp(self.task.get_last_time()[0])
         else:
             start = datetime.now()
             self.task.duration += f"{start.timestamp()},0;"
             update_task(self.task)
 
-        while self.timer.get_active():
+        while self.timer_toggle_button.get_active():
             now = datetime.now()
-            diffrence = now - start
+            self.timer_value = now - start
             GLib.idle_add(
-                lambda: self.timer_content.set_label(self.task.duration_to_text(diffrence.seconds))
+                lambda: self.timer_button_content.set_label(
+                    self.task.duration_to_text(self.timer_value.seconds)
+                )
             )
             sleep(0.1)
 
-        self.task.duration = self.task.duration[0:-2] + str(diffrence.seconds) + ";"
-        self.timer_content.set_label(self.task.get_duration_text())
+    def save_duration(self):
+        self.task.duration = self.task.duration[0:-2] + str(self.timer_value.seconds) + ";"
+        self.timer_button_content.set_label(self.task.get_duration_text())
+        self.timer_value = 0
         update_task(self.task)
         self.activate_action("project.update")
 
