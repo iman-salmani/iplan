@@ -11,7 +11,6 @@ from iplan.views.search.search_window import SearchWindow
 
 class IPlanApplication(Adw.Application):
     """The main application singleton class."""
-    actions = {}
     project: Project = None  # Active project accessible by all windows
 
     def __init__(self):
@@ -25,24 +24,27 @@ class IPlanApplication(Adw.Application):
             callback=lambda *args: self.quit(),
             shortcuts=['<Ctrl>q']
         )
-        self.create_action('about', callback=self.on_about)
+        self.create_action('about', callback=self.app_about_cb)
         self.create_action(
             'shortcuts',
-            callback=self.on_shortcuts,
+            callback=self.app_shortcuts_cb,
             shortcuts=['<Ctrl>question']
         )
         self.create_action(
             'preferences',
-            callback=self.on_preferences,
+            callback=self.app_preferences_cb,
             shortcuts=['<Ctrl>comma']
         )
-        self.create_action("search", callback=self.on_search, shortcuts=["<Ctrl>f"])
-        self.create_action("close_modal", callback=self.close_modal, shortcuts=["Escape"])
-        self.create_action("update_project")
-        # callbacks using application project attribute like self.props.root.props.application.project
-        self.create_action("refresh_project_duration")
-        self.create_action("edit_project")
-        self.create_action("new_task", shortcuts=["<Ctrl>n"])
+        self.create_action(
+            "search",
+            callback=self.app_search_cb,
+            shortcuts=["<Ctrl>f"]
+        )
+        self.create_action(
+            "modal-close",
+            callback=self.app_modal_close_cb,
+            shortcuts=["Escape"]
+        )
 
     def do_activate(self):
         """Called when the application is activated.
@@ -55,7 +57,7 @@ class IPlanApplication(Adw.Application):
             win = IPlanWindow(application=self)
         win.present()
 
-    def on_about(self, widget, _):
+    def app_about_cb(self, widget, _):
         """Callback for the app.about action."""
         about = Adw.AboutWindow(transient_for=self.props.active_window,
                                 application_name='iplan',
@@ -66,26 +68,29 @@ class IPlanApplication(Adw.Application):
                                 copyright='© 2023 Iman Salmani')
         about.present()
 
-    def on_shortcuts(self, widget, _):
-        shortcuts_window = ShortcutsWindow(application=self)
+    def app_shortcuts_cb(self, widget, _):
+        shortcuts_window = Gtk.Builder.new_from_resource(
+            "/ir/imansalmani/iplan/ui/shortcuts_window.ui"
+        ).get_object("shortcuts_window")
         shortcuts_window.set_transient_for(self.props.active_window)
         shortcuts_window.present()
 
-    def on_preferences(self, widget, _):
+    def app_preferences_cb(self, widget, _):
         """Callback for the app.preferences action."""
         print('app.preferences action activated')
 
-    def on_search(self, widget, _):
+    def app_search_cb(self, widget, _):
         active_window = self.props.active_window
         if type(active_window) == IPlanWindow:
-            window = SearchWindow()
-            window.set_transient_for(self.props.active_window)
-            window.set_application(self)
+            window = SearchWindow(
+                application=self,
+                transient_for=self.props.active_window
+            )
             window.present()
         elif type(active_window) == SearchWindow:
             active_window.close()
 
-    def close_modal(self, widget, _):
+    def app_modal_close_cb(self, widget, _):
         if type(self.props.active_window) != IPlanWindow:
             self.props.active_window.close()
 
@@ -124,13 +129,6 @@ class IPlanApplication(Adw.Application):
 
         if shortcuts:
             self.set_accels_for_action(f"{prefix}.{name}", shortcuts)
-
-        self.actions[name] = action
-
-
-@Gtk.Template(resource_path="/ir/imansalmani/iplan/ui/shortcuts_window.ui")
-class ShortcutsWindow(Gtk.ShortcutsWindow):
-    __gtype_name__ = "ShortcutsWindow"
 
 
 def main(version):

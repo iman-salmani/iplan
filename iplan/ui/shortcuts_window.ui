@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
-  <template class="ShortcutsWindow" parent="GtkShortcutsWindow">
+  <object class="GtkShortcutsWindow" id="shortcuts_window">
     <property name="modal">True</property>
     <child>
       <object class="GtkShortcutsSection">
@@ -63,5 +63,5 @@
         </child><!-- End Tasks -->
       </object>
     </child>
-  </template>
+  </object>
 </interface>
