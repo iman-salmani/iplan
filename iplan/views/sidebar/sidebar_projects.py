@@ -53,8 +53,10 @@ class SidebarProjects(Gtk.Box):
         name = "New Project"
         project = create_project(name)
         create_list("Tasks", project._id)
-        self.projects_box.append(SidebarProject(project))
         self.props.root.props.application.project = project
+        row = SidebarProject(project)
+        self.projects_box.append(row)
+        self.projects_box.select_row(row)
         self.activate_action("project.open")
 
     # Update - used by project.update action in window
