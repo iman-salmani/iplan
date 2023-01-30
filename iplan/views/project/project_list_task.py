@@ -206,7 +206,7 @@ class ProjectListTask(Gtk.ListBoxRow):
         #drag_widget.append(drag_row)
         #drag_widget.drag_highlight_row(drag_row)
         #drag_row.set_size_request(240, 64)
-
+        self.get_parent().drag_highlight_row(self)
         drag_icon = Gtk.DragIcon.get_for_drag(drag)
         drag_icon.props.child = Gtk.Label()
         drag.set_hotspot(0, 0)
@@ -219,6 +219,16 @@ class ProjectListTask(Gtk.ListBoxRow):
             reason):
         self.moving_out = False
         self.changed()
+        return False
+
+    @Gtk.Template.Callback()
+    def drag_end_cb(
+            self,
+            drag_source: Gtk.DragSource,
+            drag: Gdk.Drag,
+            delete_data):
+        if self.get_root():
+            self.get_root().sidebar.projects_section.select_active_project()
         return False
 
 

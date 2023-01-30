@@ -81,6 +81,7 @@
         <signal name="prepare" handler="drag_prepare_cb" swapped="no"/>
         <signal name="drag-begin" handler="drag_begin_cb" swapped="no"/>
         <signal name="drag-cancel" handler="drag_cancel_cb"/>
+        <signal name="drag-end" handler="drag_end_cb"/>
       </object>
     </child><!-- End Drag Source -->
   </template>

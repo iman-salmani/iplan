@@ -1,4 +1,4 @@
-from gi.repository import Gtk, Adw, GLib, Gdk
+from gi.repository import Gtk, Gdk
 import os
 
 from iplan.db.models.project import Project
@@ -32,7 +32,7 @@ class SidebarProjects(Gtk.Box):
     # Open
     @Gtk.Template.Callback()
     def projects_box_row_activated_cb(self, list_box, row):
-        window: Adw.Window = self.props.root
+        window = self.props.root
         window.props.application.project = row.project
         self.activate_action("project.open")
 
