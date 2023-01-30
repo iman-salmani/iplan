@@ -115,6 +115,10 @@ class ProjectListTask(Gtk.ListBoxRow):
         # Decrease upper tasks position
         for i in range(0, self.get_index()):
             tasks_box.get_row_at_index(i).task.position -= 1
+        # Prevent from scroll top in vertical mode
+        upper_task = tasks_box.get_row_at_index(self.get_index() - 1)
+        if upper_task:
+            self.get_root().set_focus(upper_task)
         tasks_box.remove(self)
 
     # Open
