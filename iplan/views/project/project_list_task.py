@@ -79,6 +79,7 @@ class ProjectListTask(Gtk.ListBoxRow):
     # Delete
     @Gtk.Template.Callback()
     def delete_button_clicked_cb(self, *args):
+        window = self.get_root()
         toast_name = self.task.name
         if len(toast_name) > 10:
             toast_name = f"{toast_name[0:9]}..."
@@ -86,13 +87,15 @@ class ProjectListTask(Gtk.ListBoxRow):
         toast.set_button_label("Undo")
         toast.connect("button-clicked", self.delete_toast_button_clicked_cb)
         toast.connect("dismissed", self.delete_toast_dismissed_cb)
-        self.get_root().toast_overlay.add_toast(toast)
+        window.toast_overlay.add_toast(toast)
         self.task.suspended = True
         update_task(self.task)
         # Prevent from scroll up after suspend row
         upper_task = self.get_parent().get_row_at_index(self.get_index() - 1)
         if upper_task:
-            self.get_root().set_focus(upper_task)
+            window.set_focus(upper_task)
+        else:
+            window.set_focus(self.get_parent().get_row_at_index(1))
         self.changed()
 
     def delete_toast_button_clicked_cb(self, *args):    # Undo button
@@ -264,4 +267,5 @@ class TaskModal(Adw.Window):
         title = Gtk.Label.new(task.name)
         title.add_css_class("title-1")
         content.append(title)
+
 
