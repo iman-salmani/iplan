@@ -1,5 +1,5 @@
 import gi
-from gi.repository import Gtk, GLib, Gio
+from gi.repository import Gtk, GLib, Gio, Gdk
 
 from iplan.db.operations.list import create_list, read_lists
 from iplan.db.operations.task import read_task

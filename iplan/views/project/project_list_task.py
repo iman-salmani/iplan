@@ -210,7 +210,7 @@ class ProjectListTask(Gtk.ListBoxRow):
     @Gtk.Template.Callback()
     def drag_begin_cb(
             self, drag_source: Gtk.DragSource,
-            drag: Gdk.Drag) -> None:
+            drag: Gdk.Drag):
         #allocation = self.get_allocation()
         #drag_widget = Gtk.ListBox()
         #drag_widget.set_size_request(240, allocation.height)

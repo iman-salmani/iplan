@@ -13,6 +13,7 @@ from iplan.views.project.project_list_delete_dialog import ProjectListDeleteDial
 class ProjectList(Gtk.Box):
     __gtype_name__ = "ProjectList"
     _list: List
+    header: Gtk.Box = Gtk.Template.Child()
     scrolled_window: Gtk.ScrolledWindow = Gtk.Template.Child()
     tasks_box: Gtk.ListBox = Gtk.Template.Child()
     name_button: Gtk.Button = Gtk.Template.Child()
@@ -29,13 +30,26 @@ class ProjectList(Gtk.Box):
         self.name_button.set_label(self._list.name)
         self.name_entry.get_buffer().set_text(self._list.name, -1)
 
-        drop_target = Gtk.DropTarget.new(ProjectListTask, Gdk.DragAction.MOVE)
-        drop_target.set_preload(True)
-        drop_target.connect("drop", self.drop_target_drop_cb)
-        drop_target.connect("motion", self.drop_target_motion_cb)
-        drop_target.connect("leave", self.drop_target_leave_cb)
-        drop_target.connect("enter", self.drop_target_enter_cb)
-        self.tasks_box.add_controller(drop_target)
+        drag_list_source = Gtk.DragSource()
+        drag_list_source.set_actions(Gdk.DragAction.MOVE)
+        drag_list_source.connect("prepare", self.drag_list_source_prepare_cb)
+        drag_list_source.connect(
+            "drag-begin", self.drag_list_source_drag_begin_cb)
+        self.header.add_controller(drag_list_source)
+
+        drop_list_target = Gtk.DropTarget.new(ProjectList, Gdk.DragAction.MOVE)
+        drop_list_target.set_preload(True)
+        drop_list_target.connect("drop", self.drop_list_target_drop_cb)
+        drop_list_target.connect("motion", self.drop_list_target_motion_cb)
+        self.add_controller(drop_list_target)
+
+        drop_task_target = Gtk.DropTarget.new(ProjectListTask, Gdk.DragAction.MOVE)
+        drop_task_target.set_preload(True)
+        drop_task_target.connect("drop", self.drop_task_target_drop_cb)
+        drop_task_target.connect("motion", self.drop_task_target_motion_cb)
+        drop_task_target.connect("leave", self.drop_task_target_leave_cb)
+        drop_task_target.connect("enter", self.drop_task_target_enter_cb)
+        self.tasks_box.add_controller(drop_task_target)
 
         self.tasks_box.set_sort_func(self.tasks_box_sort)
         self.tasks_box.set_filter_func(self.tasks_box_filter)
@@ -117,8 +131,39 @@ class ProjectList(Gtk.Box):
             step = adjustment.get_step_increment()
             adjustment.set_value(adjustment.get_value() + (step * dy))
 
-    # Drop
-    def drop_target_drop_cb(self, target: Gtk.DropTarget, source_row, x, y):
+    # Drag list source > header
+    def drag_list_source_prepare_cb(
+            self, drag_source: Gtk.DragSource, x, y) -> Gdk.ContentProvider:
+        if not self.name_entry.get_visible():
+            return Gdk.ContentProvider.new_for_value(self)
+
+    def drag_list_source_drag_begin_cb(
+            self, drag_source: Gtk.DragSource, drag: Gdk.Drag):
+        drag_icon = Gtk.DragIcon.get_for_drag(drag)
+        drag_icon.props.child = Gtk.Label()
+        drag.set_hotspot(0, 0)
+
+    # Drop list target > self
+    def drop_list_target_drop_cb(self, target: Gtk.DropTarget, source_row, x, y):
+        source_list = target.get_value()
+        source_index = source_list._list.index
+        source_list._list.index = self._list.index
+        self._list.index = source_index
+        update_list(source_list._list)
+        update_list(self._list)
+        if source_list._list.index > self._list.index:
+            self.get_parent().reorder_child_after(source_list, self)
+        else:
+            self.get_parent().reorder_child_after(self, source_list)
+        return True
+
+    def drop_list_target_motion_cb(self, target: Gtk.DropTarget, x, y):
+        if self == target.get_value():
+            return 0
+        return Gdk.DragAction.MOVE
+
+    # Drop task target > tasks_box
+    def drop_task_target_drop_cb(self, target: Gtk.DropTarget, source_row, x, y):
         # source_row moved by motion signal so it should drop on itself
         self.tasks_box.drag_unhighlight_row()
         task_in_db = read_task(source_row.task._id)
@@ -127,7 +172,7 @@ class ProjectList(Gtk.Box):
         self.get_root().set_focus(source_row)
         return True
 
-    def drop_target_motion_cb(self, target: Gtk.DropTarget, x, y):
+    def drop_task_target_motion_cb(self, target: Gtk.DropTarget, x, y):
         source_row: ProjectListTask = target.get_value()
         target_row: ProjectListTask = self.tasks_box.get_row_at_y(y)
 
@@ -178,7 +223,7 @@ class ProjectList(Gtk.Box):
 
         return Gdk.DragAction.MOVE
 
-    def drop_target_leave_cb(self, target: Gtk.DropTarget):
+    def drop_task_target_leave_cb(self, target: Gtk.DropTarget):
         source_row: ProjectListTask = target.get_value()
         if source_row:
             source_row.moving_out = True
@@ -187,7 +232,7 @@ class ProjectList(Gtk.Box):
                 row.task.position -= 1
             self.tasks_box.invalidate_filter()
 
-    def drop_target_enter_cb(self, target: Gtk.DropTarget, x, y):
+    def drop_task_target_enter_cb(self, target: Gtk.DropTarget, x, y):
         source_row: ProjectListTask = target.get_value()
 
         if source_row.task._list == self._list._id and not source_row.moving_out:

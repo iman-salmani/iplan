@@ -37,7 +37,7 @@ def create_tables() -> None:
         "id"        INTEGER NOT NULL,
         "name"      TEXT    NOT NULL,
         "project"   INTEGER NOT NULL,
-        "position"  INTEGER NOT NULL,
+        "i"         INTEGER NOT NULL DEFAULT 0,
         PRIMARY KEY("id" AUTOINCREMENT)
         );
         """
@@ -64,7 +64,7 @@ def create_tables() -> None:
     )
 
     cursor.execute(
-        f"INSERT INTO lists(name, project, position) VALUES ('Tasks', 1, 0)"
+        f"INSERT INTO lists(name, project) VALUES ('Tasks', 1)"
     )
 
     connection.commit()
