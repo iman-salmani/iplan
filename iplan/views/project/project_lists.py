@@ -86,6 +86,7 @@ class ProjectLists(Gtk.ScrolledWindow):
 
     # Open - used by project_open_cb and search_task_activate_cb in window
     def open_project(self, target_task_id=False):
+        # Clear
         while True:
             child = self.lists_box.get_first_child()
             if not child:
@@ -93,32 +94,32 @@ class ProjectLists(Gtk.ScrolledWindow):
             self.lists_box.remove(child)
             del child
 
-        if target_task_id:
-            self.fetch(read_task(target_task_id))
-        else:
-            self.fetch()
-
-        self.update_lists_layout()
-
-    def fetch(self, target_task=None):
+        # Fetch
         lists = read_lists(self.props.root.props.application.project._id)
         for _list in lists:
             list_ui = ProjectList(_list)
 
             self.lists_box.append(list_ui)
 
-            if target_task:
-                if _list._id == target_task._list:
-                    list_ui.focus_on_task(target_task)
-
+        # Placeholder if project dont have list
         if not self.lists_box.get_first_child():
             self.lists_box.append(self.placeholder)
             return
 
-        if not target_task:
+        self.update_lists_layout()
+
+        # Selcet target task
+        if target_task_id:
+            target_task = read_task(target_task_id)
+            for list_ui in self.lists_box.observe_children():
+                if list_ui._list._id == target_task._list:
+                    list_ui.focus_on_task(target_task)
+        else:
             first_list = self.lists_box.get_first_child()
             if first_list:
                 first_row = first_list.tasks_box.get_first_child()
                 if first_row:
-                    GLib.idle_add(lambda *args: self.get_root().set_focus(first_row))
+                    GLib.idle_add(
+                        lambda *args: self.get_root().set_focus(first_row)
+                    )
 
