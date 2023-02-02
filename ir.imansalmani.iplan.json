@@ -30,6 +30,7 @@
             "sources" : [
                 {
                     "type" : "git",
+                    "branch": "main",
                     "url" : "file:///home/iman/Projects/iplan"
                 }
             ]
