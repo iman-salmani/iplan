@@ -54,6 +54,14 @@ class IPlanWindow(Adw.ApplicationWindow):
         if self.settings.get_value("list-layout").unpack() == 1:
             self.layout_button.set_icon_name("view-columns-symbolic")
             self.project_lists.set_layout("horizontal")
+        self.settings.bind("width", self, "default-width",
+                           Gio.SettingsBindFlags.DEFAULT)
+        self.settings.bind("height", self, "default-height",
+                           Gio.SettingsBindFlags.DEFAULT)
+        self.settings.bind("is-maximized", self, "maximized",
+                           Gio.SettingsBindFlags.DEFAULT)
+        self.settings.bind("is-fullscreen", self, "fullscreened",
+                           Gio.SettingsBindFlags.DEFAULT)
 
     def project_open_cb(self, *args):
         self.project_header.open_project()

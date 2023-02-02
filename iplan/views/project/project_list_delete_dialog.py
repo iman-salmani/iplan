@@ -25,4 +25,3 @@ class ProjectListDeleteDialog(Adw.MessageDialog):
             if not lists_box.get_first_child():
                 lists_box.append(project_lists.placeholder)
 
-
