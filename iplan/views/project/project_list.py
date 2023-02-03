@@ -3,13 +3,19 @@ from gi.repository import Gtk, GLib, Gdk
 
 from iplan.db.models.list import List
 from iplan.db.operations.list import update_list
-from iplan.db.operations.task import create_task, read_tasks, read_task, update_task, find_new_task_position
+from iplan.db.operations.task import (
+    create_task,
+    read_tasks,
+    read_task,
+    update_task,
+    find_new_task_position,
+)
 
 from iplan.views.project.project_list_task import ProjectListTask
 from iplan.views.project.project_list_delete_dialog import ProjectListDeleteDialog
 
 
-@Gtk.Template(resource_path='/ir/imansalmani/iplan/ui/project/project_list.ui')
+@Gtk.Template(resource_path="/ir/imansalmani/iplan/ui/project/project_list.ui")
 class ProjectList(Gtk.Box):
     __gtype_name__ = "ProjectList"
     _list: List
@@ -24,7 +30,7 @@ class ProjectList(Gtk.Box):
     scroll_controller = None
 
     def __init__(self, _list: List) -> None:
-        self.install_action("task.done", 'i', self.task_done_cb)
+        self.install_action("task.done", "i", self.task_done_cb)
         super().__init__()
         self._list = _list
         self.name_button.set_label(self._list.name)
@@ -33,8 +39,7 @@ class ProjectList(Gtk.Box):
         drag_list_source = Gtk.DragSource()
         drag_list_source.set_actions(Gdk.DragAction.MOVE)
         drag_list_source.connect("prepare", self.drag_list_source_prepare_cb)
-        drag_list_source.connect(
-            "drag-begin", self.drag_list_source_drag_begin_cb)
+        drag_list_source.connect("drag-begin", self.drag_list_source_drag_begin_cb)
         self.header.add_controller(drag_list_source)
 
         drop_list_target = Gtk.DropTarget.new(ProjectList, Gdk.DragAction.MOVE)
@@ -60,12 +65,12 @@ class ProjectList(Gtk.Box):
     # Name
     @Gtk.Template.Callback()
     def name_button_clicked_cb(self, *args):
-        self.name_button.set_visible(False)   # Entry visible param binded to this
+        self.name_button.set_visible(False)  # Entry visible param binded to this
         self.name_entry.grab_focus_without_selecting()
 
     @Gtk.Template.Callback()
     def name_entry_activate_cb(self, *args):
-        self.name_button.set_visible(True)   # Entry visible param binded to this
+        self.name_button.set_visible(True)  # Entry visible param binded to this
         self._list.name = self.name_entry.get_buffer().get_text()
         self.name_button.set_label(self._list.name)
         update_list(self._list)
@@ -118,7 +123,7 @@ class ProjectList(Gtk.Box):
     def set_scroll_controller(self):
         self.scroll_controller = Gtk.EventControllerScroll.new(
             Gtk.EventControllerScrollFlags.VERTICAL
-        )   # a little tricky. controller send scroll signal even if shift pressed
+        )  # a little tricky. controller send scroll signal even if shift pressed
         self.scroll_controller.connect("scroll", self.scroll_controller_scroll_cb)
         self.scrolled_window.add_controller(self.scroll_controller)
 
@@ -133,12 +138,14 @@ class ProjectList(Gtk.Box):
 
     # Drag list source > header
     def drag_list_source_prepare_cb(
-            self, drag_source: Gtk.DragSource, x, y) -> Gdk.ContentProvider:
+        self, drag_source: Gtk.DragSource, x, y
+    ) -> Gdk.ContentProvider:
         if not self.name_entry.get_visible():
             return Gdk.ContentProvider.new_for_value(self)
 
     def drag_list_source_drag_begin_cb(
-            self, drag_source: Gtk.DragSource, drag: Gdk.Drag):
+        self, drag_source: Gtk.DragSource, drag: Gdk.Drag
+    ):
         drag_icon = Gtk.DragIcon.get_for_drag(drag)
         drag_icon.props.child = Gtk.Label()
         drag.set_hotspot(0, 0)
@@ -188,15 +195,15 @@ class ProjectList(Gtk.Box):
             target_p = target_row.task.position
             if source_i == target_i - 1:
                 source_row.task.position -= 1
-                target_row.task.position +=1
+                target_row.task.position += 1
             elif source_i < target_i:
-                for i in range(source_i+1, target_i+1):
+                for i in range(source_i + 1, target_i + 1):
                     row = self.tasks_box.get_row_at_index(i)
                     row.task.position += 1
                 source_row.task.position = target_p
             elif source_i == target_i + 1:
                 source_row.task.position += 1
-                target_row.task.position -=1
+                target_row.task.position -= 1
             elif source_i > target_i:
                 for i in range(target_i, source_i):
                     row = self.tasks_box.get_row_at_index(i)
@@ -278,4 +285,3 @@ class ProjectList(Gtk.Box):
         tasks = read_tasks(self._list.project, self._list._id, done_tasks)
         for task in tasks:
             self.tasks_box.append(ProjectListTask(task))
-

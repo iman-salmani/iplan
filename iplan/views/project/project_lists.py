@@ -5,6 +5,7 @@ from iplan.db.operations.list import create_list, read_lists
 from iplan.db.operations.task import read_task
 from iplan.views.project.project_list import ProjectList
 
+
 @Gtk.Template(resource_path="/ir/imansalmani/iplan/ui/project/project_lists.ui")
 class ProjectLists(Gtk.ScrolledWindow):
     __gtype_name__ = "ProjectLists"
@@ -22,8 +23,12 @@ class ProjectLists(Gtk.ScrolledWindow):
         if layout == "horizontal":
             self.lists_box.set_orientation(Gtk.Orientation.HORIZONTAL)
             self.shift_controller = Gtk.EventControllerKey()
-            self.shift_controller.connect("key-pressed", self.shift_controller_key_pressed_cb)
-            self.shift_controller.connect("key-released", self.shift_controller_key_released_cb)
+            self.shift_controller.connect(
+                "key-pressed", self.shift_controller_key_pressed_cb
+            )
+            self.shift_controller.connect(
+                "key-released", self.shift_controller_key_released_cb
+            )
             self.get_root().add_controller(self.shift_controller)
         else:
             self.lists_box.set_orientation(Gtk.Orientation.VERTICAL)
@@ -54,7 +59,11 @@ class ProjectLists(Gtk.ScrolledWindow):
             self.shift_modifier = True
             if self.is_empty():
                 return
-            for _list in self.lists_box.observe_children(): # disable vscrollbar when shift holded
+            for (
+                _list
+            ) in (
+                self.lists_box.observe_children()
+            ):  # disable vscrollbar when shift holded
                 _list.scrolled_window.get_vscrollbar().set_sensitive(False)
 
     def shift_controller_key_released_cb(self, controller, keyval, keycode, state):
@@ -73,15 +82,14 @@ class ProjectLists(Gtk.ScrolledWindow):
 
     # New - connected to list.new action
     def list_new_cb(self):
-        _list = create_list(
-            "New List",
-            self.props.root.props.application.project._id
-        )
+        _list = create_list("New List", self.props.root.props.application.project._id)
         list_ui = ProjectList(_list)
         if self.placeholder.get_parent():
             self.lists_box.remove(self.placeholder)
         self.lists_box.append(list_ui)
-        list_ui.name_button.set_visible(False)  # name entry visiblity have binding to this
+        list_ui.name_button.set_visible(
+            False
+        )  # name entry visiblity have binding to this
         GLib.idle_add(lambda *args: self.get_root().set_focus(list_ui.name_entry))
 
     # Open - used by project_open_cb and search_task_activate_cb in window
@@ -119,7 +127,4 @@ class ProjectLists(Gtk.ScrolledWindow):
             if first_list:
                 first_row = first_list.tasks_box.get_first_child()
                 if first_row:
-                    GLib.idle_add(
-                        lambda *args: self.get_root().set_focus(first_row)
-                    )
-
+                    GLib.idle_add(lambda *args: self.get_root().set_focus(first_row))

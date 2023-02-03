@@ -21,7 +21,7 @@ class Task:
             _list=record[4],
             duration=record[5],
             position=record[6],
-            suspended=record[7]
+            suspended=record[7],
         )
 
     def get_last_time(self) -> list[float, int] | None:
@@ -52,4 +52,3 @@ class Task:
             text = "{:d}:{:02d}".format(duration_minute, duration_second)
 
         return text
-

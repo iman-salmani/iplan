@@ -13,10 +13,7 @@ class Project:
 
     def new_from_record(record: list):
         return Project(
-            _id=record[0],
-            name=record[1],
-            archive=record[2],
-            index=record[3]
+            _id=record[0], name=record[1], archive=record[2], index=record[3]
         )
 
     def get_duration(self):
@@ -56,4 +53,3 @@ class Project:
             text = "{:d}:{:02d}".format(duration_minute, duration_second)
 
         return text
-

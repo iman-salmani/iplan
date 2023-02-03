@@ -6,9 +6,10 @@ from iplan.views.project.project_header import ProjectHeader
 from iplan.views.project.project_lists import ProjectLists
 from iplan.views.project.project_edit_window import ProjectEditWindow
 
+
 @Gtk.Template(resource_path="/ir/imansalmani/iplan/ui/window.ui")
 class IPlanWindow(Adw.ApplicationWindow):
-    __gtype_name__ = 'IPlanWindow'
+    __gtype_name__ = "IPlanWindow"
     # used by children
     flap: Adw.Flap = Gtk.Template.Child()
     layout_button: Gtk.Button = Gtk.Template.Child()
@@ -26,19 +27,13 @@ class IPlanWindow(Adw.ApplicationWindow):
         self.install_action("project.update", None, self.project_update_cb)
         self.install_action(
             "project.delete",
-            'i',
-            lambda *args: self.sidebar.projects_section.project_delete_cb(*args)
+            "i",
+            lambda *args: self.sidebar.projects_section.project_delete_cb(*args),
         )
         self.install_action(
-            "list.new",
-            None,
-            lambda *args: self.project_lists.list_new_cb()
+            "list.new", None, lambda *args: self.project_lists.list_new_cb()
         )
-        self.install_action(
-            "search.task-activate",
-            'i',
-            self.search_task_activate_cb
-        )
+        self.install_action("search.task-activate", "i", self.search_task_activate_cb)
 
         super().__init__(**kwargs)
 
@@ -54,14 +49,18 @@ class IPlanWindow(Adw.ApplicationWindow):
         if self.settings.get_value("list-layout").unpack() == 1:
             self.layout_button.set_icon_name("view-columns-symbolic")
             self.project_lists.set_layout("horizontal")
-        self.settings.bind("width", self, "default-width",
-                           Gio.SettingsBindFlags.DEFAULT)
-        self.settings.bind("height", self, "default-height",
-                           Gio.SettingsBindFlags.DEFAULT)
-        self.settings.bind("is-maximized", self, "maximized",
-                           Gio.SettingsBindFlags.DEFAULT)
-        self.settings.bind("is-fullscreen", self, "fullscreened",
-                           Gio.SettingsBindFlags.DEFAULT)
+        self.settings.bind(
+            "width", self, "default-width", Gio.SettingsBindFlags.DEFAULT
+        )
+        self.settings.bind(
+            "height", self, "default-height", Gio.SettingsBindFlags.DEFAULT
+        )
+        self.settings.bind(
+            "is-maximized", self, "maximized", Gio.SettingsBindFlags.DEFAULT
+        )
+        self.settings.bind(
+            "is-fullscreen", self, "fullscreened", Gio.SettingsBindFlags.DEFAULT
+        )
 
     def project_open_cb(self, *args):
         self.project_header.open_project()
@@ -87,14 +86,13 @@ class IPlanWindow(Adw.ApplicationWindow):
         if self.layout_button.get_icon_name() == "list-symbolic":
             self.layout_button.set_icon_name("view-columns-symbolic")
             self.project_lists.set_layout("horizontal")
-            self.settings.set_value("list-layout", GLib.Variant('i', 1))
+            self.settings.set_value("list-layout", GLib.Variant("i", 1))
         else:
             self.layout_button.set_icon_name("list-symbolic")
             self.project_lists.set_layout("vertical")
-            self.settings.set_value("list-layout", GLib.Variant('i', 0))
+            self.settings.set_value("list-layout", GLib.Variant("i", 0))
 
 
 @Gtk.Template(resource_path="/ir/imansalmani/iplan/ui/primary_menu.ui")
 class PrimaryMenu(Gtk.MenuButton):
     __gtype_name__ = "PrimaryMenu"
-

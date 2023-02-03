@@ -3,6 +3,7 @@ from typing import Mapping
 from iplan.db.manager import connect_database
 from iplan.db.models.project import Project
 
+
 def create_project(name: str) -> Project:
     index = find_new_project_index()
     connection, cursor = connect_database()
@@ -11,7 +12,8 @@ def create_project(name: str) -> Project:
     connection.commit()
     return read_project(cursor.lastrowid)
 
-def read_projects(archive: bool=False) -> Mapping[Project, list]:
+
+def read_projects(archive: bool = False) -> Mapping[Project, list]:
     _filter = "WHERE archive = False"
     if archive:
         _filter = "ORDER BY archive ASC"
@@ -21,17 +23,17 @@ def read_projects(archive: bool=False) -> Mapping[Project, list]:
     records = cursor.execute(query).fetchall()
     return map(Project.new_from_record, records)
 
+
 def read_project(project_id: int) -> Project:
     connection, cursor = connect_database()
     return Project.new_from_record(
-        cursor.execute(
-            f"SELECT * FROM projects WHERE id = {project_id}"
-        ).fetchone()
+        cursor.execute(f"SELECT * FROM projects WHERE id = {project_id}").fetchone()
     )
+
 
 def update_project(project: Project, move_index=False) -> None:
     connection, cursor = connect_database()
-    index_statement = ''
+    index_statement = ""
 
     if move_index:
         index_statement = f", i = {project.index}"
@@ -39,7 +41,7 @@ def update_project(project: Project, move_index=False) -> None:
 
         projects_between = []
         step = 0
-        range_condition = []    # start after or before old index to new index
+        range_condition = []  # start after or before old index to new index
 
         if old_project.index < project.index:
             range_condition = [">", "<="]
@@ -48,10 +50,12 @@ def update_project(project: Project, move_index=False) -> None:
             range_condition = ["<", ">="]
             step = +1
 
-        projects_between = cursor.execute(f"""SELECT * FROM projects WHERE
+        projects_between = cursor.execute(
+            f"""SELECT * FROM projects WHERE
             i {range_condition[0]} {old_project.index} AND
             i {range_condition[1]} {project.index}
-            """).fetchall()
+            """
+        ).fetchall()
 
         for record in projects_between:
             cursor.execute(
@@ -69,6 +73,7 @@ def update_project(project: Project, move_index=False) -> None:
     )
     connection.commit()
 
+
 def delete_project(project: Project) -> None:
     connection, cursor = connect_database()
     cursor.execute(f"DELETE FROM projects WHERE id = {project._id}")
@@ -78,15 +83,16 @@ def delete_project(project: Project) -> None:
     # decrease lower projects
     upper_projects = cursor.execute(
         f"SELECT * FROM projects WHERE i > {project.index}"
-        ).fetchall()
+    ).fetchall()
     for record in upper_projects:
-            cursor.execute(
-                f"""UPDATE projects SET
+        cursor.execute(
+            f"""UPDATE projects SET
                 i = {record[3]-1}
                 WHERE id = {record[0]}"""
-            )
+        )
 
     connection.commit()
+
 
 def search_projects(text: str, archive=False) -> Mapping[Project, list]:
     _filter = "AND archive = False"
@@ -98,10 +104,10 @@ def search_projects(text: str, archive=False) -> Mapping[Project, list]:
     records = cursor.execute(query).fetchall()
     return map(Project.new_from_record, records)
 
+
 def find_new_project_index() -> int:
     connection, cursor = connect_database()
     last_index = cursor.execute("SELECT i FROM projects ORDER BY i DESC").fetchone()
     if not last_index:
         return 0
     return last_index[0] + 1
-

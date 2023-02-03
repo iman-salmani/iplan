@@ -4,6 +4,7 @@ from gi.repository import Gtk, Adw
 from iplan.db.operations.project import update_project
 from iplan.views.project.project_delete_dialog import ProjectDeleteDialog
 
+
 @Gtk.Template(resource_path="/ir/imansalmani/iplan/ui/project/project_edit_window.ui")
 class ProjectEditWindow(Adw.Window):
     __gtype_name__ = "ProjectEditWindow"
@@ -14,7 +15,7 @@ class ProjectEditWindow(Adw.Window):
         super().__init__(application=application)
         project = application.project
         self.name_entry_row.set_text(project.name)
-        self.archive_switch.set_active(project.archive) # Set before connect to handler
+        self.archive_switch.set_active(project.archive)  # Set before connect to handler
         self.archive_switch.connect("state-set", self.archive_switch_state_set_cb)
 
     @Gtk.Template.Callback()
@@ -33,4 +34,3 @@ class ProjectEditWindow(Adw.Window):
         dialog = ProjectDeleteDialog(self.get_application())
         dialog.set_transient_for(self)
         dialog.present()
-

@@ -2,7 +2,7 @@ import gi
 from gi.repository import Gtk, Adw
 
 
-@Gtk.Template(resource_path='/ir/imansalmani/iplan/ui/search/search_result.ui')
+@Gtk.Template(resource_path="/ir/imansalmani/iplan/ui/search/search_result.ui")
 class SearchResult(Gtk.ListBoxRow):
     __gtype_name__ = "SearchResult"
     name_label = Gtk.Template.Child()
@@ -24,4 +24,3 @@ class SearchResult(Gtk.ListBoxRow):
             self.done_check_button.set_visible(False)
         else:
             self.done_check_button.set_active(self.task.done)
-

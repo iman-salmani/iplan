@@ -29,8 +29,9 @@ class SidebarProject(Gtk.ListBoxRow):
         self.add_controller(drop_task_target)
 
     @Gtk.Template.Callback()
-    def drag_prepare_cb(self, drag_source: Gtk.DragSource,
-            x: float, y: float) -> Gdk.ContentProvider:
+    def drag_prepare_cb(
+        self, drag_source: Gtk.DragSource, x: float, y: float
+    ) -> Gdk.ContentProvider:
         return Gdk.ContentProvider.new_for_value(self)
 
     @Gtk.Template.Callback()
@@ -42,17 +43,19 @@ class SidebarProject(Gtk.ListBoxRow):
 
     @Gtk.Template.Callback()
     def drag_cancel_cb(
-            self, drag_source: Gtk.DragSource,
-            drag: Gdk.Drag, reason) -> bool:
+        self, drag_source: Gtk.DragSource, drag: Gdk.Drag, reason
+    ) -> bool:
         self.get_parent().get_parent().select_active_project()
         return False
 
     def drop_task_target_drop_cb(
-            self, target: Gtk.DropTarget,
-            source_task_row: ProjectListTask, x, y) -> bool:
+        self, target: Gtk.DropTarget, source_task_row: ProjectListTask, x, y
+    ) -> bool:
         source_task_row.task.project = self.project._id
         source_task_row.task._list = list(read_lists(self.project._id))[0]._id
-        source_task_row.task.position = find_new_task_position(source_task_row.task._list)
+        source_task_row.task.position = find_new_task_position(
+            source_task_row.task._list
+        )
         source_task_row.get_parent().remove(source_task_row)
         update_task(source_task_row.task, move_position=True)
         self.get_parent().get_parent().select_active_project()
@@ -64,4 +67,3 @@ class SidebarProject(Gtk.ListBoxRow):
             return 0
         self.get_parent().select_row(self)
         return Gdk.DragAction.MOVE
-

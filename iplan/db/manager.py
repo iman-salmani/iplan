@@ -7,15 +7,18 @@ PATH = os.path.join(GLib.get_user_data_dir(), "data.db")
 if "INSIDE_GNOME_BUILDER" in os.environ:
     PATH = os.path.join(GLib.get_user_cache_dir(), "data.db")
 
+
 def check_database() -> None:
     if not os.path.isfile(PATH):
         create_tables()
+
 
 def connect_database() -> (sqlite3.Connection, sqlite3.Cursor):
     # TODO: test yield with try and except and finally
     connection = sqlite3.connect(PATH)
     cursor = connection.cursor()
     return connection, cursor
+
 
 def create_tables() -> None:
     connection, cursor = connect_database()
@@ -59,13 +62,8 @@ def create_tables() -> None:
         """
     )
 
-    cursor.execute(
-        f"INSERT INTO projects(name) VALUES ('Personal')"
-    )
+    cursor.execute(f"INSERT INTO projects(name) VALUES ('Personal')")
 
-    cursor.execute(
-        f"INSERT INTO lists(name, project) VALUES ('Tasks', 1)"
-    )
+    cursor.execute(f"INSERT INTO lists(name, project) VALUES ('Tasks', 1)")
 
     connection.commit()
-

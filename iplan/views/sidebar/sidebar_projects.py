@@ -2,7 +2,12 @@ from gi.repository import Gtk, Gdk
 import os
 
 from iplan.db.models.project import Project
-from iplan.db.operations.project import create_project, read_projects, read_project, update_project
+from iplan.db.operations.project import (
+    create_project,
+    read_projects,
+    read_project,
+    update_project,
+)
 from iplan.db.operations.list import create_list
 from iplan.views.sidebar.sidebar_project import SidebarProject
 
@@ -41,7 +46,9 @@ class SidebarProjects(Gtk.Box):
         window.props.application.project = row.project
         self.activate_action("project.open")
 
-        if not self.archive_toggle_button.get_active():    # filter archived projects again maybe be previous choice.
+        if (
+            not self.archive_toggle_button.get_active()
+        ):  # filter archived projects again maybe be previous choice.
             self.projects_box.invalidate_filter()
 
         if window.get_size(Gtk.Orientation.HORIZONTAL) < 720:
@@ -77,16 +84,16 @@ class SidebarProjects(Gtk.Box):
         target_row = self.projects_box.get_row_at_index(project_index)
         last_index = self.projects_box.get_last_child().get_index()
 
-        for i in range(project_index+1, last_index+1):
+        for i in range(project_index + 1, last_index + 1):
             row = self.projects_box.get_row_at_index(i)
             row.project.index -= 1
         self.projects_box.remove(target_row)
 
     def select_active_project(self):
         """Used by:
-            - drop_dropped_cb
-            - search_task_activate_cb in window
-            - window __init__
+        - drop_dropped_cb
+        - search_task_activate_cb in window
+        - window __init__
         """
         project = self.props.root.props.application.project
         row = self.projects_box.get_row_at_index(project.index)
@@ -122,15 +129,15 @@ class SidebarProjects(Gtk.Box):
             target_index = target_row.project.index
             if source_i == target_i + 1:
                 source_row.project.index -= 1
-                target_row.project.index +=1
+                target_row.project.index += 1
             elif source_i < target_i:
-                for i in range(source_i+1, target_i+1):
+                for i in range(source_i + 1, target_i + 1):
                     row = self.projects_box.get_row_at_index(i)
                     row.project.index -= 1
                 source_row.project.index = target_index
             elif source_i == target_i - 1:
                 source_row.project.index += 1
-                target_row.project.index -=1
+                target_row.project.index -= 1
             elif source_i > target_i:
                 for i in range(target_i, source_i):
                     row = self.projects_box.get_row_at_index(i)
@@ -151,4 +158,3 @@ class SidebarProjects(Gtk.Box):
 
     def projects_box_sort(self, row1, row2) -> int:
         return row1.project.index - row2.project.index
-

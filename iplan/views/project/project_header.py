@@ -54,9 +54,10 @@ class ProjectHeader(Gtk.Box):
             box.append(date_label)
 
             duration_label = Gtk.Label()
-            duration_label.set_text(self.props.root.props.application.project.duration_to_text(table[date]))
+            duration_label.set_text(
+                self.props.root.props.application.project.duration_to_text(table[date])
+            )
             box.append(duration_label)
 
             if date != dates[-1]:
                 self.stat_box.append(Gtk.Separator())
-

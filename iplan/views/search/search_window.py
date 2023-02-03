@@ -6,7 +6,7 @@ from iplan.db.operations.task import search_tasks
 from iplan.views.search.search_result import SearchResult
 
 
-@Gtk.Template(resource_path='/ir/imansalmani/iplan/ui/search/search_window.ui')
+@Gtk.Template(resource_path="/ir/imansalmani/iplan/ui/search/search_window.ui")
 class SearchWindow(Gtk.Window):
     __gtype_name__ = "SearchWindow"
     search_entry = Gtk.Template.Child()
@@ -18,7 +18,9 @@ class SearchWindow(Gtk.Window):
         super().__init__(**kwargs)
         self.set_focus(self.search_entry)
         search_entry_controller = Gtk.EventControllerKey()
-        search_entry_controller.connect("key-pressed", self.search_entry_controller_key_pressed_cb)
+        search_entry_controller.connect(
+            "key-pressed", self.search_entry_controller_key_pressed_cb
+        )
         self.search_entry.add_controller(search_entry_controller)
 
     @Gtk.Template.Callback()
@@ -26,7 +28,7 @@ class SearchWindow(Gtk.Window):
         selected_row = self.search_results.get_selected_row()
         first_row = self.search_results.get_first_child()
 
-        if type(first_row) != SearchResult: # Check placeholder
+        if type(first_row) != SearchResult:  # Check placeholder
             return
 
         if selected_row:
@@ -34,14 +36,16 @@ class SearchWindow(Gtk.Window):
         elif first_row:
             self.search_results_row_activated_cb(self.search_results, first_row)
 
-    def search_entry_controller_key_pressed_cb(self, controller, keyval, keycode, state):
+    def search_entry_controller_key_pressed_cb(
+        self, controller, keyval, keycode, state
+    ):
         key = Gdk.keyval_name(keyval)
         first_child = self.search_results.get_first_child()
 
-        if type(first_child) != SearchResult:   # Check placeholder
+        if type(first_child) != SearchResult:  # Check placeholder
             return
 
-        arrows = [65364, 65362] # Down, Up
+        arrows = [65364, 65362]  # Down, Up
         if keyval in arrows:
             move = 1
             if keyval == 65362:
@@ -63,11 +67,9 @@ class SearchWindow(Gtk.Window):
             self.get_application().project = row.project
             self.get_toplevels()[0].activate_action("project.open")
         elif row._type == "task":
-            self.get_application().project = \
-                read_project(row.task.project)
+            self.get_application().project = read_project(row.task.project)
             self.get_toplevels()[0].activate_action(
-                "search.task-activate",
-                GLib.Variant("i", row.task._id)
+                "search.task-activate", GLib.Variant("i", row.task._id)
             )
         self.close()
 
@@ -87,13 +89,14 @@ class SearchWindow(Gtk.Window):
 
         for project in search_projects(text):
             self.search_results.append(
-                SearchResult("project", project.name, project=project))
-        for task in search_tasks(text, done=self.show_done_tasks_toggle_button.get_active()):
-            self.search_results.append(
-                SearchResult("task", task.name, task=task))
+                SearchResult("project", project.name, project=project)
+            )
+        for task in search_tasks(
+            text, done=self.show_done_tasks_toggle_button.get_active()
+        ):
+            self.search_results.append(SearchResult("task", task.name, task=task))
 
         first_item = self.search_results.get_first_child()
         if not first_item:
             self.search_entry.grab_focus()
             self.search_results.set_placeholder(self.search_results_placeholder)
-
