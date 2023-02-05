@@ -13,9 +13,15 @@ Your plan for improve personal life and workflow
 * Global search
 * Arranging projects, lists and tasks by drag and drop
 
-## Installation
-### Build
-
+## Build
+### Gnome Builder
+  1. Clone the repo
+  ```sh
+  git clone https://github.com/iman-salmani/iplan.git
+  ```
+  2. Open project with Gnome Builder
+  3. Press the run button
+### Manuall
 1. Clone the repo and move to project directory
 ```sh
 git clone https://github.com/iman-salmani/iplan.git && cd iplan
@@ -32,6 +38,11 @@ git clone https://github.com/iman-salmani/iplan.git && cd iplan
   - Arch
   ```sh
   sudo pacman -S flatpak-builder
+  ```
+
+4. Install dependencies
+  ```sh
+  flatpak install runtime/org.gnome.Sdk/x86_64/43 runtime/org.gnome.Platform/x86_64/43
   ```
 
 3. Build and install with flatpak builder
