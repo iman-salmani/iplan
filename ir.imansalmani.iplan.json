@@ -3,6 +3,9 @@
     "runtime" : "org.gnome.Platform",
     "runtime-version" : "43",
     "sdk" : "org.gnome.Sdk",
+    "sdk-extensions" : [
+    	"org.freedesktop.Sdk.Extension.rust-stable"
+    ],
     "command" : "iplan",
     "finish-args" : [
         "--share=network",
@@ -23,20 +26,27 @@
         "*.a"
     ],
     "modules" : [
-        {
+    	{
             "name" : "iplan",
             "builddir" : true,
             "buildsystem" : "meson",
             "sources" : [
                 {
                     "type" : "git",
-                    "branch": "main",
+                    "branch": "rust",
                     "url" : "."
                 }
             ]
         }
     ],
     "build-options" : {
-        "env" : {        }
+    	"append-path" : "/usr/lib/sdk/rust-stable/bin",
+    	"build-args" : [
+    		"--share=network"
+    	],
+    	"env" : {
+    		"RUST_BACKTRACE" : "1",
+    		"RUST_LOG": "iplan=debug"
+    	}
     }
 }

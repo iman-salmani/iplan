@@ -12,7 +12,10 @@
           bind-property="active"
           bind-flags="sync-create|bidirectional"/>
         <property name="flap"><!-- Sidebar -->
-          <object class="Sidebar" id="sidebar"></object>
+          <object class="GtkLabel">
+            <property name="label">Sidebar</property>
+          </object>
+          <!-- <object class="Sidebar" id="sidebar"></object> -->
         </property><!-- Sidebar -->
         <property name="separator"><!-- Separator -->
           <object class="GtkSeparator"/>
@@ -38,12 +41,12 @@
                               bind-flags="sync-create"/>
                   </object>
                 </child>
-                <child>
-                  <object class="ProjectHeader" id="project_header"/>
-                </child>
-                <child type="end">
-                  <object class="PrimaryMenu"/>
-                </child>
+                <!-- <child> -->
+                <!--   <object class="ProjectHeader" id="project_header"/> -->
+                <!-- </child> -->
+                <!-- <child type="end"> -->
+                <!--   <object class="PrimaryMenu"/> -->
+                <!-- </child> -->
                 <child type="end">
                   <object class="GtkButton">
                     <property name="icon-name">system-search-symbolic</property>
@@ -53,7 +56,7 @@
                 <child type="end">
                   <object class="GtkButton" id="layout_button">
                     <property name="icon-name">list-symbolic</property>
-                    <signal name="clicked" handler="layout_button_clicked_cb"/>
+                    <!-- <signal name="clicked" handler="layout_button_clicked_cb"/> -->
                   </object>
                 </child>
               </object>
@@ -61,7 +64,10 @@
             <child>
               <object class="AdwToastOverlay" id="toast_overlay">
                 <child>
-                  <object class="ProjectLists" id="project_lists"/>
+                  <object class="GtkLabel">
+                    <property name="label">Projects list</property>
+                  </object>
+                  <!-- <object class="ProjectLists" id="project_lists"/> -->
                 </child>
               </object>
             </child>

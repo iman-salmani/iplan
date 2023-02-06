@@ -1,0 +1,13 @@
+[package]
+name = "iplan"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+gettext-rs = { version = "0.7", features = ["gettext-system"] }
+gtk = { version = "0.5", package = "gtk4" }
+
+[dependencies.adw]
+package = "libadwaita"
+version = "0.2"
+features = ["v1_2"]
