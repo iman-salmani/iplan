@@ -23,7 +23,7 @@ use adw::subclass::prelude::*;
 use gtk::{gio, glib};
 
 use crate::config::VERSION;
-use crate::IPlanWindow;
+use crate::views::IPlanWindow;
 
 mod imp {
     use super::*;
@@ -107,4 +107,5 @@ impl IPlanApplication {
         about.present();
     }
 }
+
 

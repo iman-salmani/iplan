@@ -20,10 +20,9 @@
 
 mod application;
 mod config;
-mod window;
+mod views;
 
 use self::application::IPlanApplication;
-use self::window::IPlanWindow;
 
 use config::{GETTEXT_PACKAGE, LOCALEDIR, PKGDATADIR};
 use gettextrs::{bind_textdomain_codeset, bindtextdomain, textdomain};
