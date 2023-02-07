@@ -93,7 +93,7 @@ impl IPlanApplication {
         let shortcuts_action = gio::ActionEntry::builder("shortcuts")
             .activate(move |app: &Self, _, _| app.show_shortcuts())
             .build();
-        self.add_action_entries([quit_action, about_action, shortcuts_window_action]).unwrap();
+        self.add_action_entries([quit_action, about_action, shortcuts_action]).unwrap();
     }
 
     fn show_shortcuts(&self) {
@@ -125,5 +125,4 @@ impl IPlanApplication {
         about.present();
     }
 }
-
 
