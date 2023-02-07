@@ -44,6 +44,7 @@ mod imp {
             let obj = self.instance();
             obj.setup_gactions();
             obj.set_accels_for_action("app.quit", &["<primary>q"]);
+            obj.set_accels_for_action("app.shortcuts", &["<primary>question"])
         }
     }
 
@@ -89,14 +90,31 @@ impl IPlanApplication {
         let about_action = gio::ActionEntry::builder("about")
             .activate(move |app: &Self, _, _| app.show_about())
             .build();
-        self.add_action_entries([quit_action, about_action]).unwrap();
+        let shortcuts_action = gio::ActionEntry::builder("shortcuts")
+            .activate(move |app: &Self, _, _| app.show_shortcuts())
+            .build();
+        self.add_action_entries([quit_action, about_action, shortcuts_window_action]).unwrap();
+    }
+
+    fn show_shortcuts(&self) {
+        let active_window = self.active_window().unwrap();
+        let shortcuts_window: Option<gtk::ShortcutsWindow> = gtk::Builder::from_resource(
+            "/ir/imansalmani/iplan/ui/shortcuts_window.ui"
+        ).object("shortcuts_window");
+        match shortcuts_window {
+            Some(shortcuts_window) => {
+                shortcuts_window.set_transient_for(Some(&active_window));
+                shortcuts_window.present();
+            },
+            None => {},
+        }
     }
 
     fn show_about(&self) {
         let window = self.active_window().unwrap();
         let about = adw::AboutWindow::builder()
             .transient_for(&window)
-            .application_name("iplan")
+            .application_name("IPlan")
             .application_icon("ir.imansalmani.iplan")
             .developer_name("Iman Salmani")
             .version(VERSION)
