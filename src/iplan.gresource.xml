@@ -3,7 +3,6 @@
   <gresource prefix="/ir/imansalmani/iplan">
     <file preprocess="xml-stripblanks">ui/window.ui</file>
     <file preprocess="xml-stripblanks">ui/shortcuts_window.ui</file>
-    <file preprocess="xml-stripblanks">ui/primary_menu.ui</file>
 
     <file preprocess="xml-stripblanks">ui/sidebar/sidebar.ui</file>
     <file preprocess="xml-stripblanks">ui/sidebar/sidebar_projects.ui</file>
