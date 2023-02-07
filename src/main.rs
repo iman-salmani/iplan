@@ -18,8 +18,9 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-mod application;
 mod config;
+mod db;
+mod application;
 mod views;
 
 use self::application::IPlanApplication;
@@ -40,6 +41,10 @@ fn main() {
     let resources = gio::Resource::load(PKGDATADIR.to_owned() + "/iplan.gresource")
         .expect("Could not load resources");
     gio::resources_register(&resources);
+
+    // Check database
+    db::check_database()
+        .expect("Database check failed");
 
     // Create a new GtkApplication. The application manages our main loop,
     // application windows, integration with the window manager/compositor, and
