@@ -31,14 +31,14 @@
             <property name="icon_name">shoe-box-symbolic</property>
             <property name="active">false</property>
             <property name="tooltip_text">Show archive projects</property>
-            <signal name="toggled" handler="archive_toggle_button_toggled_cb"></signal>
+            <signal name="toggled" handler="handle_archive_toggle_button_toggled" swapped="true"></signal>
           </object>
         </child>
         <child>
           <object class="GtkButton">
             <property name="icon-name">tab-new-symbolic</property>
             <property name="tooltip_text">New project</property>
-            <signal name="clicked" handler="new_button_clicked_cb"/>
+            <signal name="clicked" handler="handle_new_button_clicked" swapped="true"/>
           </object>
           </child>
       </object>
@@ -49,7 +49,7 @@
         <property name="margin-end">6</property>
         <property name="selection-mode">browse</property>
         <property name="activate-on-single-click">true</property>
-        <signal name="row-activated" handler="projects_box_row_activated_cb"/>
+        <signal name="row-activated" handler="handle_projects_box_row_activated" swapped="true"/>
         <style>
           <class name="navigation-sidebar"/>
         </style>

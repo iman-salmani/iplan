@@ -32,7 +32,6 @@ mod imp {
     pub struct IPlanWindow {
         pub settings: gio::Settings,
 
-        // Template widgets
         #[template_child]
         pub project_layout_button: TemplateChild<gtk::Button>,
     }

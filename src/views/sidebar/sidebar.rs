@@ -2,6 +2,8 @@ use gtk::prelude::*;
 use gtk::subclass::prelude::*;
 use gtk::glib;
 
+use crate::views::sidebar::SidebarProjects;
+
 mod imp {
     use super::*;
 
@@ -16,6 +18,7 @@ mod imp {
         type ParentType = gtk::Box;
 
         fn class_init(klass: &mut Self::Class) {
+            SidebarProjects::ensure_type();
             klass.bind_template();
         }
 
