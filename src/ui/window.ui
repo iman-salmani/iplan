@@ -12,10 +12,7 @@
           bind-property="active"
           bind-flags="sync-create|bidirectional"/>
         <property name="flap"><!-- Sidebar -->
-          <object class="GtkLabel">
-            <property name="label">Sidebar</property>
-          </object>
-          <!-- <object class="Sidebar" id="sidebar"></object> -->
+          <object class="Sidebar" id="sidebar"></object>
         </property><!-- Sidebar -->
         <property name="separator"><!-- Separator -->
           <object class="GtkSeparator"/>

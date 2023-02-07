@@ -22,6 +22,8 @@ use gtk::prelude::*;
 use adw::subclass::prelude::*;
 use gtk::{gio, glib};
 
+use crate::views::sidebar::Sidebar;
+
 mod imp {
     use super::*;
 
@@ -42,6 +44,7 @@ mod imp {
         type ParentType = adw::ApplicationWindow;
 
         fn class_init(klass: &mut Self::Class) {
+            Sidebar::ensure_type();
             klass.bind_template();
             klass.bind_template_instance_callbacks();
         }
