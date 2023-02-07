@@ -59,9 +59,9 @@
                   </object>
                 </child>
                 <child type="end">
-                  <object class="GtkButton" id="layout_button">
+                  <object class="GtkButton" id="project_layout_button">
                     <property name="icon-name">list-symbolic</property>
-                    <!-- <signal name="clicked" handler="layout_button_clicked_cb"/> -->
+                    <signal name="clicked" handler="handle_project_layout_button_clicked" swapped="true"/>
                   </object>
                 </child>
               </object>

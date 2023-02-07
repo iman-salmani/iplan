@@ -25,14 +25,14 @@ use gtk::{gio, glib};
 mod imp {
     use super::*;
 
-    #[derive(Debug, Default, gtk::CompositeTemplate)]
+    #[derive(gtk::CompositeTemplate)]
     #[template(resource = "/ir/imansalmani/iplan/ui/window.ui")]
     pub struct IPlanWindow {
+        pub settings: gio::Settings,
+
         // Template widgets
-        // #[template_child]
-        // pub header_bar: TemplateChild<gtk::HeaderBar>,
-        // #[template_child]
-        // pub label: TemplateChild<gtk::Label>,
+        #[template_child]
+        pub project_layout_button: TemplateChild<gtk::Button>,
     }
 
     #[glib::object_subclass]
@@ -43,10 +43,18 @@ mod imp {
 
         fn class_init(klass: &mut Self::Class) {
             klass.bind_template();
+            klass.bind_template_instance_callbacks();
         }
 
         fn instance_init(obj: &glib::subclass::InitializingObject<Self>) {
             obj.init_template();
+        }
+
+        fn new() -> Self {
+            Self {
+                settings: gio::Settings::new("ir.imansalmani.iplan.State"),
+                project_layout_button: TemplateChild::default(),
+            }
         }
     }
 
@@ -63,9 +71,39 @@ glib::wrapper! {
         @implements gio::ActionGroup, gio::ActionMap;
 }
 
+#[gtk::template_callbacks]
 impl IPlanWindow {
     pub fn new<P: glib::IsA<gtk::Application>>(application: &P) -> Self {
-        glib::Object::new(&[("application", application)])
+        let window = glib::Object::new::<IPlanWindow>(&[("application", application)]);
+
+        // Set project layout
+        let imp = window.imp();
+        if imp.settings.int("default-project-layout") ==  1 {
+            imp.project_layout_button.set_icon_name("view-columns-symbolic")
+        }
+
+        window
+    }
+
+    #[template_callback]
+    fn handle_project_layout_button_clicked(&self, button: gtk::Button) {
+        let imp = self.imp();
+        match button.icon_name() {
+            Some(icon_name) => {
+                if icon_name == "list-symbolic" {
+                    button.set_icon_name("view-columns-symbolic");
+                    imp.settings
+                        .set_int("default-project-layout", 1)
+                        .expect("Could not set setting.");
+                } else {
+                    button.set_icon_name("list-symbolic");
+                    imp.settings
+                        .set_int("default-project-layout", 0)
+                        .expect("Could not set setting.");
+                }
+            },
+            None => button.set_icon_name("list-symbolic")
+        }
     }
 }
 
