@@ -23,8 +23,8 @@ impl fmt::Display for List {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(
             f,
-            "List(id: {}, name: {}, project: {}, index: {})",
-            self.id, self.name, self.project, self.index
+            "List(id: {}, name: {}, project: {})",
+            self.id, self.name, self.project
         )
     }
 }
