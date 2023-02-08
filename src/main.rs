@@ -46,6 +46,35 @@ fn main() {
     db::check_database()
         .expect("Database check failed");
 
+    // Test create list
+    // let list = db::operations::create_list("INSERT';", 1)
+    //     .expect("Failed to create list");
+    // println!("{list}");
+
+    // Test read lists
+    // let lists = db::operations::read_lists(1)
+    //     .expect("Failed to read lists");
+    // if let Some(list) = lists.get(0) {
+    //     println!("{}", list);
+    // }
+
+    // Test read list
+    // let list = db::operations::read_list(8)
+    //     .expect("Failed to read list");
+    // println!("{list}");
+
+    // Test update list
+    // db::operations::update_list(db::models::List{
+    //         id: 8,
+    //         name: "New Name".to_string(),
+    //         project: 1,
+    //         index: 1
+    //     }).expect("Failed to update list");
+
+    // Test delete list
+    // db::operations::delete_list(9)
+    //     .expect("Failed to delete list");
+
     // Create a new GtkApplication. The application manages our main loop,
     // application windows, integration with the window manager/compositor, and
     // desktop features such as file opening and single-instance applications.

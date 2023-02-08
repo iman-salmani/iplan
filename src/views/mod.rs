@@ -1,4 +1,4 @@
 mod window;
 pub use window::IPlanWindow;
 
-mod sidebar;
+pub mod sidebar;

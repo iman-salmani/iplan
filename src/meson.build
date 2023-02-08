@@ -39,18 +39,32 @@ run_command(
 	check: true
 )
 
+# Rust options and env
 cargo_bin = find_program('cargo')
 cargo_opt = [ '--manifest-path', meson.project_source_root() / 'Cargo.toml' ]
 cargo_opt += [ '--target-dir', meson.project_build_root() / 'src' ]
 cargo_env = [ 'CARGO_HOME=' + meson.project_build_root() / 'cargo-home' ]
 
+# Test
+# cargo_test = custom_target(
+# 	'cargo-test',
+# 	build_by_default: true,
+# 	build_always_stale: true,
+# 	output: 'test.txt',
+# 	console: true,
+# 	command: [ cargo_bin, 'test', cargo_opt ],
+# 	env: cargo_env
+# )
+
+# Check buildtype
 if get_option('buildtype') == 'release'
-	cargo_options += [ '--release' ]
+	cargo_opt += [ '--release' ]
 	rust_target = 'release'
 else
 	rust_target = 'debug'
 endif
 
+# Build
 cargo_build = custom_target(
 	'cargo-build',
 	build_by_default: true,

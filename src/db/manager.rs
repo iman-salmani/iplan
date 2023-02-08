@@ -3,8 +3,9 @@ use std::path::PathBuf;
 use rusqlite::{Connection, Result};
 use gtk::glib;
 
-pub fn get_connection() -> Result<Connection> {
+pub fn get_connection() -> Connection {
     Connection::open(get_database_path())
+        .expect("Failed connect to database")
 }
 
 pub fn check_database() -> Result<()> {
