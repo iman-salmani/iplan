@@ -44,12 +44,12 @@ pub fn check_database() -> Result<()> {
             "CREATE TABLE tasks (
                 id	     INTEGER NOT NULL,
                 name	     TEXT    NOT NULL,
-                done	     INTEGER NOT NULL DEFAULT False,
+                done	     INTEGER NOT NULL DEFAULT 0,
                 project    INTEGER NOT NULL,
                 list       INTEGER NOT NULL,
                 duration   TEXT    NOT NULL DEFAULT '',
                 position   INTEGER NOT NULL,
-                suspended  INTEGER NOT NULL DEFAULT False,
+                suspended  INTEGER NOT NULL DEFAULT 0,
                 PRIMARY KEY(id AUTOINCREMENT)
             );",
             (),
