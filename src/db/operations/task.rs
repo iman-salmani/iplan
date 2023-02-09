@@ -69,13 +69,13 @@ pub fn update_task(task: Task) -> Result<()> {
                 WHERE position >= ?1 AND list = ?2",
                 (task.position, task.list)
             )?;
-        } else if old_task.position < task.position {
+        } else if task.position > old_task.position {
             conn.execute(
                 "UPDATE tasks SET position = position - 1
                 WHERE position > ?1 AND position <= ?2 AND list = ?3",
                 (old_task.position, task.position, task.list)
             )?;
-        } else if old_task.position > task.position {
+        } else if task.position < old_task.position {
             conn.execute(
                 "UPDATE tasks SET position = position + 1
                 WHERE position >= ?1 AND position < ?2 AND list = ?3",
@@ -99,8 +99,7 @@ pub fn delete_task(task_id: i64, list_id: i64, position: i64) -> Result<()> {
     conn.execute("DELETE FROM tasks WHERE id = ?", (task_id,))?;
     // Decrease upper tasks position
     conn.execute(
-        "UPDATE tasks SET position = position - 1
-        WHERE position > ?1 AND list = ?2",
+        "UPDATE tasks SET position = position - 1 WHERE position > ?1 AND list = ?2",
         (position, list_id)
     )?;
     Ok(())
