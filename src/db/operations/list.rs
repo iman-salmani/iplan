@@ -12,7 +12,7 @@ pub fn create_list(name: &str, project_id: i64) -> Result<List> {
     )?;
     Ok(List {
         id: conn.last_insert_rowid(),
-        name: name.to_string(),
+        name: String::from(name),
         project: project_id,
         index,
     })
@@ -46,17 +46,17 @@ pub fn update_list(list: List) -> Result<()> {
 
 pub fn delete_list(list_id: i64) -> Result<()> {
     let conn = get_connection();
-    // Following statements dont return result err when id not exists
+    // Notify: Not return error when id not exists
     conn.execute("DELETE FROM lists WHERE id = ?", (list_id,))?;
     conn.execute("DELETE FROM tasks WHERE list = ?", (list_id,))?;
     Ok(())
 }
 
-fn new_index(project_id: i64) -> u32 {
+fn new_index(project_id: i64) -> i64 {
     let conn = get_connection();
     let mut stmt = conn.prepare("SELECT i FROM lists WHERE project = ? ORDER BY i DESC")
         .expect("Failed to find new index");
-    let first_row = stmt.query_row([project_id], |row| row.get::<_, u32>(0));
+    let first_row = stmt.query_row([project_id], |row| row.get::<_, i64>(0));
     match first_row {
         Ok(first_row) => return first_row + 1,
         Err(_) => return 0,

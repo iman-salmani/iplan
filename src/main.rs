@@ -75,6 +75,42 @@ fn main() {
     // db::operations::delete_list(9)
     //     .expect("Failed to delete list");
 
+    // Test create task
+    // let task = db::operations::create_task("Test Task;", 1, 1)
+    //     .expect("Failed to create task");
+    // println!("{task}");
+
+    // Test read tasks
+    // let tasks = db::operations::read_tasks(1, None, Some(true))
+    //     .expect("Failed to read tasks");
+    // println!("{}", tasks.len());
+
+    // Test read task
+    // let task = db::operations::read_task(1)
+    //     .expect("Failed to read list");
+    // println!("{task}");
+
+    // Test update task
+    // db::operations::update_task(db::models::Task{
+    //     id: 2,
+    //     name: String::from("task 3"),
+    //     done: false,
+    //     project: 1,
+    //     list: 2,
+    //     duration: String::new(),
+    //     position: 0,
+    //     suspended: false,
+    // }).expect("Failed to update list");
+
+    // Test delete task
+    // db::operations::delete_task(3, 1, 1)
+    //     .expect("Failed to delete task");
+
+    // Test find tasks
+    // let tasks = db::operations::find_tasks(r"task 1_\%", false)
+    //     .expect("Failed to find tasks");
+    // println!("{}", tasks.len());
+
     // Create a new GtkApplication. The application manages our main loop,
     // application windows, integration with the window manager/compositor, and
     // desktop features such as file opening and single-instance applications.

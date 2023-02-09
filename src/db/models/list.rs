@@ -5,7 +5,7 @@ pub struct List {
     pub id: i64,
     pub name: String,
     pub project: i64,
-    pub index: u32,
+    pub index: i64,
 }
 
 impl List {
