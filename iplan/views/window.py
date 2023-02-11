@@ -43,7 +43,7 @@ class IPlanWindow(Adw.ApplicationWindow):
         self.activate_action("project.open")
         self.sidebar.projects_section.select_active_project()
 
-        # Setttings
+        # Settings
         # TODO: move this up when set layout per project implemented
         self.settings = Gio.Settings(schema_id="ir.imansalmani.iplan.State")
         if self.settings.get_value("list-layout").unpack() == 1:

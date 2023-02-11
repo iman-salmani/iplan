@@ -210,7 +210,7 @@ class ProjectList(Gtk.Box):
                     row.task.position -= 1
                 source_row.task.position = target_p
 
-            # Should use invalidate_sort() insteed of changed() for Refresh hightlight shape
+            # Should use invalidate_sort() insteed of changed() for Refresh highlight shape
             self.tasks_box.invalidate_sort()
             self.tasks_box.drag_unhighlight_row()
             self.tasks_box.drag_highlight_row(source_row)
