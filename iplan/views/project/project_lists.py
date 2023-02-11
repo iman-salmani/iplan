@@ -89,7 +89,7 @@ class ProjectLists(Gtk.ScrolledWindow):
         self.lists_box.append(list_ui)
         list_ui.name_button.set_visible(
             False
-        )  # name entry visiblity have binding to this
+        )  # name entry visibility have binding to this
         GLib.idle_add(lambda *args: self.get_root().set_focus(list_ui.name_entry))
 
     # Open - used by project_open_cb and search_task_activate_cb in window

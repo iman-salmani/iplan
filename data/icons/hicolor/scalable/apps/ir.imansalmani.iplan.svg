@@ -198,7 +198,7 @@
             inkscape:label="shadow" />
          <circle cx="64.000145" cy="236.00038" r="55.780613" id="circle3215"
             style="display:inline;opacity:1;fill:url(#linearGradient3437);fill-opacity:1;stroke:none;stroke-width:4.68712;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;marker-start:none;marker-mid:none;marker-end:none;paint-order:normal;enable-background:new"
-            inkscape:label="conainer" />
+            inkscape:label="container" />
          <g id="g2817"
             style="display:inline;fill:#1c71d8;stroke:#1c71d8;stroke-width:12;stroke-dasharray:none;filter:url(#filter1560);enable-background:new"
             transform="matrix(0.99999319,0,0,1.0000013,2.4135945,-2.1042481)" inkscape:label="check">

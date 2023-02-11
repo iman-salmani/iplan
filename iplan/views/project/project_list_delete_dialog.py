@@ -17,7 +17,7 @@ class ProjectListDeleteDialog(Adw.MessageDialog):
         self.set_heading(f'Delete "{self.project_list._list.name}" Project?')
 
     @Gtk.Template.Callback()
-    def on_responsed(self, dialog, response):
+    def on_responded(self, dialog, response):
         if response == "delete":
             delete_list(self.project_list._list._id)
             lists_box = self.project_list.get_parent()
