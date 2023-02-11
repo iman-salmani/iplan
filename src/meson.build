@@ -39,6 +39,9 @@ run_command(
 	check: true
 )
 
+# Run cargo fmt
+run_command('cargo', 'fmt')
+
 # Rust options and env
 cargo_bin = find_program('cargo')
 cargo_opt = [ '--manifest-path', meson.project_source_root() / 'Cargo.toml' ]
