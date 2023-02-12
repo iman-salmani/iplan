@@ -137,6 +137,25 @@ impl IPlanWindow {
         let search_actions = gio::SimpleActionGroup::new();
         window.insert_action_group("search", Some(&search_actions));
 
+        let action_search_window = gio::SimpleAction::new("window", None);
+        action_search_window.connect_activate(glib::clone!( @weak window => move |_, _| {
+            let active_window = window.application().unwrap().active_window().unwrap();
+            match active_window.widget_name().as_str() {
+                "IPlanWindow" => {
+                    // TODO: Present SearchWindow
+                },
+                "SearchWindow" => {
+                    active_window.close();
+                },
+                _ => {}
+            }
+        }));
+        search_actions.add_action(&action_search_window);
+        window
+            .application()
+            .unwrap()
+            .set_accels_for_action("search.window", &["<Ctrl>F"]);
+
         let action_search_task = gio::SimpleAction::new("task", Some(glib::VariantTy::INT64));
         action_search_task.connect_activate(|_, _property| {
             // TODO: project_header.open_project()
