@@ -12,6 +12,11 @@ gnome.compile_resources('iplan',
 # python = import('python')
 
 conf = configuration_data()
+if get_option('profile') == 'development'
+	conf.set_quoted('APPLICATION_ID', 'ir.imansalmani.iplan.devel')
+else
+	conf.set_quoted('APPLICATION_ID', 'ir.imansalmani.iplan')
+endif
 conf.set_quoted('VERSION', meson.project_version())
 conf.set_quoted('GETTEXT_PACKAGE', 'iplan')
 conf.set_quoted('LOCALEDIR', join_paths(get_option('prefix'), get_option('localedir')))

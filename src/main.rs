@@ -18,14 +18,14 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
+mod application;
 mod config;
 mod db;
-mod application;
 mod views;
 
 use self::application::IPlanApplication;
 
-use config::{GETTEXT_PACKAGE, LOCALEDIR, PKGDATADIR};
+use config::{APPLICATION_ID, GETTEXT_PACKAGE, LOCALEDIR, PKGDATADIR};
 use gettextrs::{bind_textdomain_codeset, bindtextdomain, textdomain};
 use gtk::gio;
 use gtk::prelude::*;
@@ -43,8 +43,7 @@ fn main() {
     gio::resources_register(&resources);
 
     // Check database
-    db::check_database()
-        .expect("Database check failed");
+    db::check_database().expect("Database check failed");
 
     // Test create list
     // let list = db::operations::create_list("INSERT';", 1)
@@ -146,7 +145,8 @@ fn main() {
     // Create a new GtkApplication. The application manages our main loop,
     // application windows, integration with the window manager/compositor, and
     // desktop features such as file opening and single-instance applications.
-    let app = IPlanApplication::new("ir.imansalmani.iplan", &gio::ApplicationFlags::empty());
+
+    let app = IPlanApplication::new(APPLICATION_ID, &gio::ApplicationFlags::empty());
 
     // Run the application. This function will block until the application
     // exits. Upon return, we have our exit code to return to the shell. (This
@@ -154,4 +154,3 @@ fn main() {
     // terminal.
     std::process::exit(app.run());
 }
-

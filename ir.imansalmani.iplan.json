@@ -26,6 +26,7 @@
   "modules": [
     {
       "name": "iplan",
+      "config-opts": ["-Dprofile=development"],
       "builddir": true,
       "buildsystem": "meson",
       "sources": [
