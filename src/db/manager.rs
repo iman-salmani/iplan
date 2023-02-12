@@ -1,17 +1,14 @@
 use gtk::glib;
 use rusqlite::{Connection, Result};
-use std::path::PathBuf;
-
-use crate::config::APPLICATION_ID;
 
 pub fn get_connection() -> Connection {
-    Connection::open(get_database_path()).expect("Failed connect to database")
+    Connection::open(glib::user_data_dir().join("data.db")).expect("Failed connect to database")
 }
 
 pub fn check_database() -> Result<()> {
     // Create database if not exists
 
-    let database_path = get_database_path();
+    let database_path = glib::user_data_dir().join("data.db");
 
     if !database_path.exists() {
         let conn = Connection::open(database_path)?;
@@ -54,13 +51,4 @@ pub fn check_database() -> Result<()> {
         )?;
     }
     Ok(())
-}
-
-fn get_database_path() -> PathBuf {
-    let dir_path = if APPLICATION_ID.find("devel").is_some() {
-        glib::user_cache_dir()
-    } else {
-        glib::user_data_dir()
-    };
-    dir_path.join("data.db")
 }
