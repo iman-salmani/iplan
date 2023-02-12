@@ -1,5 +1,5 @@
-use std::fmt;
 use rusqlite::{Result, Row};
+use std::fmt;
 
 pub struct List {
     pub id: i64,
@@ -28,4 +28,3 @@ impl fmt::Display for List {
         )
     }
 }
-

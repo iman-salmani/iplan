@@ -11,9 +11,9 @@
       <object class="GtkDragSource">
         <property name="actions">move</property>
         <property name="propagation-phase">capture</property>
-        <signal name="prepare" handler="drag_prepare_cb" swapped="no"/>
-        <signal name="drag-begin" handler="drag_begin_cb" swapped="no"/>
-        <signal name="drag-cancel" handler="drag_cancel_cb"/>
+        <signal name="prepare" handler="handle_drag_prepare" swapped="true"/>
+        <signal name="drag-begin" handler="handle_drag_begin" swapped="true"/>
+        <signal name="drag-cancel" handler="handle_drag_cancel" swapped="true"/>
       </object>
     </child><!-- End Drag Source -->
   </template>

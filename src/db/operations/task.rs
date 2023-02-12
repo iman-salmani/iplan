@@ -8,7 +8,7 @@ pub fn create_task(name: &str, project_id: i64, list_id: i64) -> Result<Task> {
     let conn = get_connection();
     conn.execute(
         "INSERT INTO tasks(name, project, list, position) VALUES (?1,?2,?3,?4)",
-        (name, project_id, list_id, position)
+        (name, project_id, list_id, position),
     )?;
     Ok(Task {
         id: conn.last_insert_rowid(),
@@ -22,7 +22,11 @@ pub fn create_task(name: &str, project_id: i64, list_id: i64) -> Result<Task> {
     })
 }
 
-pub fn read_tasks(project_id: i64, list_id: Option<i64>, done_tasks: Option<bool>) -> Result<Vec<Task>> {
+pub fn read_tasks(
+    project_id: i64,
+    list_id: Option<i64>,
+    done_tasks: Option<bool>,
+) -> Result<Vec<Task>> {
     let filters = &mut String::new();
     if let Some(list_id) = list_id {
         filters.push_str(&format!(" AND list = {list_id}"));
@@ -31,8 +35,9 @@ pub fn read_tasks(project_id: i64, list_id: Option<i64>, done_tasks: Option<bool
         filters.push_str(&format!(" AND done = {done_tasks}"));
     }
     let conn = get_connection();
-    let mut stmt = conn.prepare(
-        &format!("SELECT * FROM tasks WHERE project = ? {filters} ORDER BY position ASC"))?;
+    let mut stmt = conn.prepare(&format!(
+        "SELECT * FROM tasks WHERE project = ? {filters} ORDER BY position ASC"
+    ))?;
     let mut rows = stmt.query([project_id])?;
     let mut tasks = Vec::new();
     while let Some(row) = rows.next()? {
@@ -59,7 +64,7 @@ pub fn update_task(task: Task) -> Result<()> {
             conn.execute(
                 "UPDATE tasks SET position = position - 1
                 WHERE position > ?1 AND list = ?2",
-                (old_task.position, old_task.list)
+                (old_task.position, old_task.list),
             )?;
 
             // Increase tasks position in target list
@@ -67,28 +72,38 @@ pub fn update_task(task: Task) -> Result<()> {
             conn.execute(
                 "UPDATE tasks SET position = position + 1
                 WHERE position >= ?1 AND list = ?2",
-                (task.position, task.list)
+                (task.position, task.list),
             )?;
         } else if task.position > old_task.position {
             conn.execute(
                 "UPDATE tasks SET position = position - 1
                 WHERE position > ?1 AND position <= ?2 AND list = ?3",
-                (old_task.position, task.position, task.list)
+                (old_task.position, task.position, task.list),
             )?;
         } else if task.position < old_task.position {
             conn.execute(
                 "UPDATE tasks SET position = position + 1
                 WHERE position >= ?1 AND position < ?2 AND list = ?3",
-                (task.position, old_task.position, task.list)
+                (task.position, old_task.position, task.list),
             )?;
         }
     }
 
     conn.execute(
-        &format!("UPDATE tasks SET
+        &format!(
+            "UPDATE tasks SET
         name = ?1, done = ?2, project = ?3, list = ?4,
-        duration = ?5, {position_stmt} suspended = ?6 WHERE id = ?7"),
-        (task.name, task.done, task.project, task.list, task.duration, task.suspended, task.id)
+        duration = ?5, {position_stmt} suspended = ?6 WHERE id = ?7"
+        ),
+        (
+            task.name,
+            task.done,
+            task.project,
+            task.list,
+            task.duration,
+            task.suspended,
+            task.id,
+        ),
     )?;
     Ok(())
 }
@@ -100,7 +115,7 @@ pub fn delete_task(task_id: i64, list_id: i64, position: i64) -> Result<()> {
     // Decrease upper tasks position
     conn.execute(
         "UPDATE tasks SET position = position - 1 WHERE position > ?1 AND list = ?2",
-        (position, list_id)
+        (position, list_id),
     )?;
     Ok(())
 }
@@ -111,8 +126,9 @@ pub fn find_tasks(text: &str, done: bool) -> Result<Vec<Task>> {
     // TODO: do this whitout copy string
     let text = text.replace("%", r"\%").replace("_", r"\_");
     let conn = get_connection();
-    let mut stmt = conn.prepare(
-        &format!("SELECT * FROM tasks WHERE name LIKE ? ESCAPE '\\' {filters}"))?;
+    let mut stmt = conn.prepare(&format!(
+        "SELECT * FROM tasks WHERE name LIKE ? ESCAPE '\\' {filters}"
+    ))?;
     let mut rows = stmt.query([format!("%{text}%")])?;
     let mut tasks = Vec::new();
     while let Some(row) = rows.next()? {
@@ -123,7 +139,8 @@ pub fn find_tasks(text: &str, done: bool) -> Result<Vec<Task>> {
 
 fn new_position(list_id: i64) -> i64 {
     let conn = get_connection();
-    let mut stmt = conn.prepare("SELECT position FROM tasks WHERE list = ? ORDER BY position DESC")
+    let mut stmt = conn
+        .prepare("SELECT position FROM tasks WHERE list = ? ORDER BY position DESC")
         .expect("Failed to find new position");
     let first_row = stmt.query_row([list_id], |row| row.get::<_, i64>(0));
     match first_row {
@@ -131,4 +148,3 @@ fn new_position(list_id: i64) -> i64 {
         Err(_) => return 0,
     };
 }
-

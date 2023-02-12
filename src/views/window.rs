@@ -18,8 +18,8 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-use gtk::prelude::*;
 use adw::subclass::prelude::*;
+use gtk::prelude::*;
 use gtk::{gio, glib};
 
 use crate::views::sidebar::Sidebar;
@@ -80,8 +80,9 @@ impl IPlanWindow {
 
         // Set project layout
         let imp = window.imp();
-        if imp.settings.int("default-project-layout") ==  1 {
-            imp.project_layout_button.set_icon_name("view-columns-symbolic")
+        if imp.settings.int("default-project-layout") == 1 {
+            imp.project_layout_button
+                .set_icon_name("view-columns-symbolic")
         }
 
         window
@@ -103,9 +104,8 @@ impl IPlanWindow {
                         .set_int("default-project-layout", 0)
                         .expect("Could not set setting.");
                 }
-            },
-            None => button.set_icon_name("list-symbolic")
+            }
+            None => button.set_icon_name("list-symbolic"),
         }
     }
 }
-

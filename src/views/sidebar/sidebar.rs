@@ -1,6 +1,6 @@
+use gtk::glib;
 use gtk::prelude::*;
 use gtk::subclass::prelude::*;
-use gtk::glib;
 
 use crate::views::sidebar::SidebarProjects;
 
@@ -9,7 +9,10 @@ mod imp {
 
     #[derive(Default, gtk::CompositeTemplate)]
     #[template(resource = "/ir/imansalmani/iplan/ui/sidebar/sidebar.ui")]
-    pub struct Sidebar {}
+    pub struct Sidebar {
+        #[template_child]
+        pub projects_section: TemplateChild<SidebarProjects>,
+    }
 
     #[glib::object_subclass]
     impl ObjectSubclass for Sidebar {
@@ -18,7 +21,6 @@ mod imp {
         type ParentType = gtk::Box;
 
         fn class_init(klass: &mut Self::Class) {
-            SidebarProjects::ensure_type();
             klass.bind_template();
         }
 
@@ -43,4 +45,3 @@ impl Sidebar {
         glib::Object::new(&[])
     }
 }
-

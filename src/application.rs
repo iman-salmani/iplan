@@ -18,11 +18,11 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-use gtk::prelude::*;
 use adw::subclass::prelude::*;
+use gtk::prelude::*;
 use gtk::{gio, glib};
 
-use crate::config::VERSION;
+use crate::config::{APPLICATION_ID, VERSION};
 use crate::views::IPlanWindow;
 
 mod imp {
@@ -60,6 +60,9 @@ mod imp {
                 window
             } else {
                 let window = IPlanWindow::new(&*application);
+                if APPLICATION_ID == "ir.imansalmani.iplan.devel" {
+                    window.add_css_class("devel")
+                }
                 window.upcast()
             };
 
@@ -93,20 +96,21 @@ impl IPlanApplication {
         let shortcuts_action = gio::ActionEntry::builder("shortcuts")
             .activate(move |app: &Self, _, _| app.show_shortcuts())
             .build();
-        self.add_action_entries([quit_action, about_action, shortcuts_action]).unwrap();
+        self.add_action_entries([quit_action, about_action, shortcuts_action])
+            .unwrap();
     }
 
     fn show_shortcuts(&self) {
         let active_window = self.active_window().unwrap();
-        let shortcuts_window: Option<gtk::ShortcutsWindow> = gtk::Builder::from_resource(
-            "/ir/imansalmani/iplan/ui/shortcuts_window.ui"
-        ).object("shortcuts_window");
+        let shortcuts_window: Option<gtk::ShortcutsWindow> =
+            gtk::Builder::from_resource("/ir/imansalmani/iplan/ui/shortcuts_window.ui")
+                .object("shortcuts_window");
         match shortcuts_window {
             Some(shortcuts_window) => {
                 shortcuts_window.set_transient_for(Some(&active_window));
                 shortcuts_window.present();
-            },
-            None => {},
+            }
+            None => {}
         }
     }
 
@@ -125,4 +129,3 @@ impl IPlanApplication {
         about.present();
     }
 }
-

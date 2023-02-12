@@ -8,7 +8,7 @@ pub fn create_list(name: &str, project_id: i64) -> Result<List> {
     let conn = get_connection();
     conn.execute(
         "INSERT INTO lists(name, project, i) VALUES (?1, ?2, ?3)",
-        (name, project_id, index)
+        (name, project_id, index),
     )?;
     Ok(List {
         id: conn.last_insert_rowid(),
@@ -39,7 +39,7 @@ pub fn update_list(list: List) -> Result<()> {
     let conn = get_connection();
     conn.execute(
         "UPDATE lists SET name = ?1, project = ?2, i = ?3 WHERE id = ?4",
-        (list.name, list.project, list.index, list.id)
+        (list.name, list.project, list.index, list.id),
     )?;
     Ok(())
 }
@@ -54,7 +54,8 @@ pub fn delete_list(list_id: i64) -> Result<()> {
 
 fn new_index(project_id: i64) -> i64 {
     let conn = get_connection();
-    let mut stmt = conn.prepare("SELECT i FROM lists WHERE project = ? ORDER BY i DESC")
+    let mut stmt = conn
+        .prepare("SELECT i FROM lists WHERE project = ? ORDER BY i DESC")
         .expect("Failed to find new index");
     let first_row = stmt.query_row([project_id], |row| row.get::<_, i64>(0));
     match first_row {
@@ -62,4 +63,3 @@ fn new_index(project_id: i64) -> i64 {
         Err(_) => return 0,
     };
 }
-

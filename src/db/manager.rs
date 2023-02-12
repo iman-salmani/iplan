@@ -1,11 +1,11 @@
-use std::env;
-use std::path::PathBuf;
-use rusqlite::{Connection, Result};
 use gtk::glib;
+use rusqlite::{Connection, Result};
+use std::path::PathBuf;
+
+use crate::config::APPLICATION_ID;
 
 pub fn get_connection() -> Connection {
-    Connection::open(get_database_path())
-        .expect("Failed connect to database")
+    Connection::open(get_database_path()).expect("Failed connect to database")
 }
 
 pub fn check_database() -> Result<()> {
@@ -38,7 +38,10 @@ pub fn check_database() -> Result<()> {
             );",
             (),
         )?;
-        conn.execute("INSERT INTO lists(name, project, i) VALUES ('Tasks', 1, 0)", ())?;
+        conn.execute(
+            "INSERT INTO lists(name, project, i) VALUES ('Tasks', 1, 0)",
+            (),
+        )?;
 
         conn.execute(
             "CREATE TABLE tasks (
@@ -59,11 +62,10 @@ pub fn check_database() -> Result<()> {
 }
 
 fn get_database_path() -> PathBuf {
-    let dir_path = if env::var("INSIDE_GNOME_BUILDER").is_ok() {
+    let dir_path = if APPLICATION_ID.find("devel").is_some() {
         glib::user_cache_dir()
     } else {
         glib::user_data_dir()
     };
     dir_path.join("data.db")
 }
-
