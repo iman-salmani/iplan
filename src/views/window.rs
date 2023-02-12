@@ -77,13 +77,75 @@ glib::wrapper! {
 impl IPlanWindow {
     pub fn new<P: glib::IsA<gtk::Application>>(application: &P) -> Self {
         let window = glib::Object::new::<IPlanWindow>(&[("application", application)]);
-
-        // Set project layout
         let imp = window.imp();
+
+        // Settings
         if imp.settings.int("default-project-layout") == 1 {
             imp.project_layout_button
                 .set_icon_name("view-columns-symbolic")
         }
+        imp.settings.bind("width", &window, "default-width").build();
+        imp.settings
+            .bind("width", &window, "default-height")
+            .build();
+        imp.settings
+            .bind("is-maximized", &window, "maximized")
+            .build();
+        imp.settings
+            .bind("is-fullscreen", &window, "fullscreened")
+            .build();
+
+        // install Actions
+        let project_actions = gio::SimpleActionGroup::new();
+        window.insert_action_group("project", Some(&project_actions));
+
+        let action_project_open = gio::SimpleAction::new("open", None);
+        action_project_open.connect_activate(|_, _| {
+            // TODO: project_header.open_project()
+            // TODO: project_lists.open_project()
+        });
+        project_actions.add_action(&action_project_open);
+
+        let action_project_edit = gio::SimpleAction::new("edit", None);
+        action_project_edit.connect_activate(|_, _| {
+            // TODO: present ProjectEditWindow
+        });
+        project_actions.add_action(&action_project_edit);
+
+        let action_project_update = gio::SimpleAction::new("update", None);
+        action_project_update.connect_activate(|_, _| {
+            // TODO: project_header.open_project()
+            // TODO: sidebar.projects_section.update_project()
+        });
+        project_actions.add_action(&action_project_update);
+
+        let action_project_delete = gio::SimpleAction::new("delete", Some(glib::VariantTy::INT64));
+        action_project_delete.connect_activate(|_, _| {
+            // TODO: sidebar.projects_section.handle_project_delete()
+        });
+        project_actions.add_action(&action_project_delete);
+
+        let list_actions = gio::SimpleActionGroup::new();
+        window.insert_action_group("list", Some(&list_actions));
+
+        let action_list_new = gio::SimpleAction::new("new", None);
+        action_list_new.connect_activate(|_, _| {
+            // TODO: project_lists.handle_list_new()
+        });
+        list_actions.add_action(&action_list_new);
+
+        let search_actions = gio::SimpleActionGroup::new();
+        window.insert_action_group("search", Some(&search_actions));
+
+        let action_search_task = gio::SimpleAction::new("task", Some(glib::VariantTy::INT64));
+        action_search_task.connect_activate(|_, _property| {
+            // TODO: project_header.open_project()
+            // TODO: project_lists.open_project(task_id)
+            // TODO: sidebar.projects_section.select_active_project()
+        });
+        search_actions.add_action(&action_search_task);
+
+        // TODO: open first project
 
         window
     }
