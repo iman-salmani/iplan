@@ -26,7 +26,6 @@ pub fn check_database() -> Result<()> {
             );",
             (),
         )?;
-        conn.execute("INSERT INTO projects(name, i) VALUES ('Personal', 0)", ())?;
 
         conn.execute(
             "CREATE TABLE lists (
@@ -36,10 +35,6 @@ pub fn check_database() -> Result<()> {
                 i         INTEGER NOT NULL,
                 PRIMARY KEY(id AUTOINCREMENT)
             );",
-            (),
-        )?;
-        conn.execute(
-            "INSERT INTO lists(name, project, i) VALUES ('Tasks', 1, 0)",
             (),
         )?;
 

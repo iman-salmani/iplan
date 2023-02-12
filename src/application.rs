@@ -20,16 +20,21 @@
 
 use adw::subclass::prelude::*;
 use gtk::prelude::*;
-use gtk::{gio, glib};
+use gtk::{gio, glib, glib::once_cell::sync::Lazy};
+use std::cell::{Ref, RefCell};
 
 use crate::config::{APPLICATION_ID, VERSION};
+use crate::db::models::Project;
+use crate::db::operations::{create_list, create_project, read_projects};
 use crate::views::IPlanWindow;
 
 mod imp {
     use super::*;
 
     #[derive(Debug, Default)]
-    pub struct IPlanApplication {}
+    pub struct IPlanApplication {
+        pub project: RefCell<Project>,
+    }
 
     #[glib::object_subclass]
     impl ObjectSubclass for IPlanApplication {
@@ -45,6 +50,29 @@ mod imp {
             obj.setup_gactions();
             obj.set_accels_for_action("app.quit", &["<primary>q"]);
             obj.set_accels_for_action("app.shortcuts", &["<primary>question"])
+        }
+
+        fn properties() -> &'static [glib::ParamSpec] {
+            static PROPERTIES: Lazy<Vec<glib::ParamSpec>> =
+                Lazy::new(|| vec![glib::ParamSpecObject::builder::<Project>("project").build()]);
+            PROPERTIES.as_ref()
+        }
+
+        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
+            match pspec.name() {
+                "project" => {
+                    let value = value.get::<Project>().expect("value must be a Project");
+                    self.project.replace(value);
+                }
+                _ => unimplemented!(),
+            }
+        }
+
+        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+            match pspec.name() {
+                "project" => self.project.borrow().to_value(),
+                _ => unimplemented!(),
+            }
         }
     }
 
@@ -83,7 +111,23 @@ glib::wrapper! {
 
 impl IPlanApplication {
     pub fn new(application_id: &str, flags: &gio::ApplicationFlags) -> Self {
-        glib::Object::new(&[("application-id", &application_id), ("flags", flags)])
+        let projects = read_projects(true).expect("Failed to read projects");
+        let home_project = if let Some(project) = projects.get(0) {
+            project.clone()
+        } else {
+            let project = create_project("🙂 Personal").expect("Failed to create project");
+            create_list("Tasks", project.id()).expect("Failed to create list");
+            project
+        };
+        glib::Object::new(&[
+            ("application-id", &application_id),
+            ("flags", flags),
+            ("project", &home_project),
+        ])
+    }
+
+    pub fn project(&self) -> Ref<Project> {
+        self.imp().project.borrow()
     }
 
     fn setup_gactions(&self) {

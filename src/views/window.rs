@@ -164,7 +164,7 @@ impl IPlanWindow {
         });
         search_actions.add_action(&action_search_task);
 
-        // TODO: open first project
+        // TODO: open active project
 
         window
     }
