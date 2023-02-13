@@ -1,4 +1,4 @@
-use rusqlite::{Result, Row};
+use rusqlite::{Error, Result, Row};
 use std::fmt;
 
 pub struct Task {
@@ -26,6 +26,19 @@ impl Task {
         })
     }
 }
+
+// impl TryFrom<&Row<'_>> for Task {
+//     type Error = Error;
+
+//     fn try_from(row: &Row) -> Result<Self, Self::Error> {
+//         Ok(Task::new(
+//             row.get(0)?,
+//             row.get(1)?,
+//             row.get(2)?,
+//             row.get(3)?,
+//         ))
+//     }
+// }
 
 impl fmt::Display for Task {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {

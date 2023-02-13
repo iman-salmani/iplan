@@ -54,7 +54,7 @@ mod imp {
             }
         }
 
-        fn property(&self, id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
             match pspec.name() {
                 "id" => self.id.get().to_value(),
                 "name" => self.name.borrow().to_string().to_value(),
@@ -72,12 +72,12 @@ glib::wrapper! {
 
 impl Project {
     pub fn new(id: i64, name: String, archive: bool, index: i32) -> Self {
-        glib::Object::new::<Self>(&[
-            ("id", &id),
-            ("name", &name),
-            ("archive", &archive),
-            ("index", &index),
-        ])
+        glib::Object::builder()
+            .property("id", id)
+            .property("name", name)
+            .property("archive", archive)
+            .property("index", index)
+            .build()
     }
 
     pub fn id(&self) -> i64 {
