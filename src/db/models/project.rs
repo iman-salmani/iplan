@@ -81,19 +81,19 @@ impl Project {
     }
 
     pub fn id(&self) -> i64 {
-        self.imp().id.get()
+        self.property("id")
     }
 
     pub fn name(&self) -> String {
-        self.imp().name.borrow().to_string()
+        self.property("name")
     }
 
     pub fn archive(&self) -> bool {
-        self.imp().archive.get()
+        self.property("archive")
     }
 
     pub fn index(&self) -> i32 {
-        self.imp().index.get()
+        self.property("index")
     }
 }
 

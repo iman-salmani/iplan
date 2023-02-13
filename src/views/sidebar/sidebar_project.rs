@@ -85,8 +85,8 @@ impl SidebarProject {
         obj
     }
 
-    pub fn project(&self) -> Ref<Project> {
-        self.imp().project.borrow()
+    pub fn project(&self) -> Project {
+        self.property("project")
     }
 
     fn init_widgets(&self) {}

@@ -20,7 +20,7 @@
 
 use adw::subclass::prelude::*;
 use gtk::{gio, glib, glib::once_cell::sync::Lazy, prelude::*};
-use std::cell::{Ref, RefCell};
+use std::cell::RefCell;
 
 use crate::db::models::Project;
 use crate::db::operations::{create_list, create_project, read_projects};
@@ -28,8 +28,6 @@ use crate::views::project::ProjectHeader;
 use crate::views::sidebar::Sidebar;
 
 mod imp {
-    use std::borrow::Borrow;
-
     use super::*;
 
     #[derive(gtk::CompositeTemplate)]
@@ -56,7 +54,7 @@ mod imp {
             klass.bind_template_instance_callbacks();
             klass.install_action("project.open", None, move |win, _, _| {
                 let imp = win.imp();
-                imp.project_header.open_project(win.project().borrow());
+                imp.project_header.open_project(&win.project());
                 // TODO: project_lists.open_project()
             });
         }
@@ -222,8 +220,8 @@ impl IPlanWindow {
         window
     }
 
-    pub fn project(&self) -> Ref<Project> {
-        self.imp().project.borrow()
+    pub fn project(&self) -> Project {
+        self.property("project")
     }
 
     #[template_callback]

@@ -175,7 +175,7 @@ impl SidebarProjects {
         let project = row.project();
         let project_db = read_project(project.id()).expect("Failed to read project");
         if project_db.index() != project.index() {
-            update_project(project.as_ref()).expect("Failed to update project");
+            update_project(&project).expect("Failed to update project");
         }
         // TODO: select active project
         true
