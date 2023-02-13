@@ -75,13 +75,11 @@ fn main() {
     //     .expect("Failed to delete list");
 
     // Test create task
-    // let task = db::operations::create_task("Test Task;", 1, 1)
-    //     .expect("Failed to create task");
-    // println!("{task}");
+    // let task = db::operations::create_task("Test Task;", 1, 1).expect("Failed to create task");
+    // println!("{task:?}");
 
     // Test read tasks
-    // let tasks = db::operations::read_tasks(1, None, Some(true))
-    //     .expect("Failed to read tasks");
+    // let tasks = db::operations::read_tasks(1, None, None).expect("Failed to read tasks");
     // println!("{}", tasks.len());
 
     // Test read task
