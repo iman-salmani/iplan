@@ -1,6 +1,4 @@
-use gtk::glib;
-use gtk::prelude::*;
-use gtk::subclass::prelude::*;
+use gtk::{glib, prelude::*, subclass::prelude::*};
 
 use crate::views::sidebar::SidebarProjects;
 

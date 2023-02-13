@@ -49,7 +49,7 @@
         <property name="margin-end">6</property>
         <property name="selection-mode">browse</property>
         <property name="activate-on-single-click">true</property>
-        <signal name="row-activated" handler="handle_projects_box_row_activated"/>
+        <signal name="row-activated" handler="handle_projects_box_row_activated" swapped="true"/>
         <style>
           <class name="navigation-sidebar"/>
         </style>

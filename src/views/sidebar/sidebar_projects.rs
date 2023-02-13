@@ -5,8 +5,7 @@ use crate::db::models::Project;
 use crate::db::operations::{
     create_list, create_project, read_project, read_projects, update_project,
 };
-use crate::views::sidebar::SidebarProject;
-
+use crate::views::{sidebar::SidebarProject, IPlanWindow};
 mod imp {
     use super::*;
 
@@ -98,8 +97,19 @@ impl SidebarProjects {
     }
 
     #[template_callback]
-    fn handle_projects_box_row_activated(_projects_box: gtk::ListBox, _row: gtk::ListBoxRow) {
-        println!("Row activated");
+    fn handle_projects_box_row_activated(&self, row: gtk::ListBoxRow) {
+        let imp = self.imp();
+        let window = self.root().unwrap().downcast::<IPlanWindow>().unwrap();
+        let row = row.downcast::<SidebarProject>().unwrap();
+        if window.project().id() != row.project().id() {
+            window.set_property("project", row.project().to_value());
+            self.activate_action("project.open", None)
+                .expect("Failed to open project");
+            if !imp.archive_toggle_button.is_active() {
+                // filter again maybe previous choice is archived project
+                imp.projects_box.invalidate_filter()
+            }
+        }
     }
 
     #[template_callback]
@@ -118,7 +128,18 @@ impl SidebarProjects {
 
     // TODO: project_delete_row - used by project.delete action in window
 
-    // TODO: select_active_project
+    pub fn select_active_project(&self) {
+        let project_i = self
+            .root()
+            .unwrap()
+            .downcast::<IPlanWindow>()
+            .unwrap()
+            .project()
+            .index();
+        let projects_box = &self.imp().projects_box;
+        let row = projects_box.row_at_index(project_i).unwrap();
+        projects_box.select_row(Some(&row));
+    }
 
     #[template_callback]
     fn handle_archive_toggle_button_toggled(&self, _toggle_button: gtk::ToggleButton) {

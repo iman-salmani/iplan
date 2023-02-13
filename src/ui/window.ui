@@ -37,9 +37,9 @@
                   </object>
                 </child>
                 <!-- End Toggle Pane Button -->
-                <!-- <child> -->
-                <!--   <object class="ProjectHeader" id="project_header"/> -->
-                <!-- </child> -->
+                <child>
+                  <object class="ProjectHeader" id="project_header"/>
+                </child>
                 <!-- Primary Menu Button -->
                 <child type="end">
                   <object class="GtkMenuButton">
