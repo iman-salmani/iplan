@@ -1,5 +1,5 @@
 use gtk::{gdk, glib, glib::once_cell::sync::Lazy, prelude::*, subclass::prelude::*};
-use std::cell::{Ref, RefCell};
+use std::cell::RefCell;
 
 use crate::db::models::Project;
 

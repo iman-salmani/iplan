@@ -27,7 +27,7 @@ use self::application::IPlanApplication;
 
 use config::{APPLICATION_ID, GETTEXT_PACKAGE, LOCALEDIR, PKGDATADIR};
 use gettextrs::{bind_textdomain_codeset, bindtextdomain, textdomain};
-use gtk::{gio, glib, prelude::*};
+use gtk::{gio, prelude::*};
 
 fn main() {
     // Set up gettext translations
