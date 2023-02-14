@@ -27,8 +27,7 @@ use self::application::IPlanApplication;
 
 use config::{APPLICATION_ID, GETTEXT_PACKAGE, LOCALEDIR, PKGDATADIR};
 use gettextrs::{bind_textdomain_codeset, bindtextdomain, textdomain};
-use gtk::gio;
-use gtk::prelude::*;
+use gtk::{gio, glib, prelude::*};
 
 fn main() {
     // Set up gettext translations
@@ -139,6 +138,11 @@ fn main() {
     // let projects = db::operations::find_projects(r"2", false)
     //     .expect("Failed to find projects");
     // println!("{}", projects.len());
+
+    // Test timespan
+    // 1676361384.32708
+    // let time = glib::DateTime::from_unix_local(1676361384).unwrap();
+    // println!("{:?}, {}, {}", time.ymd(), time.hour(), time.second());
 
     // Create a new GtkApplication. The application manages our main loop,
     // application windows, integration with the window manager/compositor, and

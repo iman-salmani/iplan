@@ -2,6 +2,8 @@ use gtk::{glib, glib::once_cell::sync::Lazy, prelude::*, subclass::prelude::*};
 use rusqlite::{Error, Result, Row};
 use std::cell::{Cell, RefCell};
 
+use crate::db::operations::read_records;
+
 mod imp {
     use super::*;
 
@@ -12,7 +14,6 @@ mod imp {
         pub done: Cell<bool>,
         pub project: Cell<i64>,
         pub list: Cell<i64>,
-        pub duration: RefCell<String>,
         pub position: Cell<i32>,
         pub suspended: Cell<bool>,
     }
@@ -32,7 +33,6 @@ mod imp {
                     glib::ParamSpecBoolean::builder("done").build(),
                     glib::ParamSpecInt64::builder("project").build(),
                     glib::ParamSpecInt64::builder("list").build(),
-                    glib::ParamSpecString::builder("duration").build(),
                     glib::ParamSpecInt::builder("position").build(),
                     glib::ParamSpecBoolean::builder("suspended").build(),
                 ]
@@ -62,10 +62,6 @@ mod imp {
                     let value = value.get::<i64>().expect("Value must be a i64");
                     self.list.set(value);
                 }
-                "duration" => {
-                    let value = value.get::<String>().expect("Value must be a String");
-                    self.duration.replace(value);
-                }
                 "position" => {
                     let value = value.get::<i32>().expect("Value must be a i32");
                     self.position.set(value);
@@ -85,7 +81,6 @@ mod imp {
                 "done" => self.done.get().to_value(),
                 "project" => self.project.get().to_value(),
                 "list" => self.list.get().to_value(),
-                "duration" => self.duration.borrow().to_string().to_value(),
                 "position" => self.position.get().to_value(),
                 "suspended" => self.suspended.get().to_value(),
                 _ => unimplemented!(),
@@ -105,7 +100,6 @@ impl Task {
         done: bool,
         project: i64,
         list: i64,
-        duration: String,
         position: i32,
         suspended: bool,
     ) -> Self {
@@ -115,10 +109,31 @@ impl Task {
             .property("done", done)
             .property("project", project)
             .property("list", list)
-            .property("duration", duration)
             .property("position", position)
             .property("suspended", suspended)
             .build()
+    }
+
+    pub fn duration(&self) -> Option<i64> {
+        let mut total = 0;
+        for record in read_records(self.id(), false).expect("Faield to read records") {
+            total = total + record.duration();
+        }
+        if total == 0 {
+            None
+        } else {
+            Some(total)
+        }
+    }
+
+    pub fn duration_display(&self, duration: i64) -> String {
+        let (min, sec) = (duration / 60, duration % 60);
+        if min > 60 {
+            let (hour, min) = (duration / 60, duration % 60);
+            format!("{}:{}:{}", hour, min, sec)
+        } else {
+            format!("{}:{}", min, sec)
+        }
     }
 
     pub fn id(&self) -> i64 {
@@ -141,10 +156,6 @@ impl Task {
         self.property("list")
     }
 
-    pub fn duration(&self) -> String {
-        self.property("duration")
-    }
-
     pub fn position(&self) -> i32 {
         self.property("position")
     }
@@ -164,7 +175,6 @@ impl TryFrom<&Row<'_>> for Task {
             row.get(2)?,
             row.get(3)?,
             row.get(4)?,
-            row.get(5)?,
             row.get(6)?,
             row.get(7)?,
         ))
@@ -173,6 +183,6 @@ impl TryFrom<&Row<'_>> for Task {
 
 impl Default for Task {
     fn default() -> Self {
-        Task::new(1, String::new(), false, 1, 1, String::new(), 0, false)
+        Task::new(1, String::new(), false, 1, 1, 0, false)
     }
 }

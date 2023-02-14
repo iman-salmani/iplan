@@ -16,7 +16,6 @@ pub fn create_task(name: &str, project_id: i64, list_id: i64) -> Result<Task> {
         false,
         project_id,
         list_id,
-        String::new(),
         position,
         false,
     ))
@@ -36,7 +35,7 @@ pub fn read_tasks(
     }
     let conn = get_connection();
     let mut stmt = conn.prepare(&format!(
-        "SELECT * FROM tasks WHERE project = ? {filters} ORDER BY position ASC"
+        "SELECT * FROM tasks WHERE project = ? {filters} ORDER BY position DESC"
     ))?;
     let mut rows = stmt.query([project_id])?;
     let mut tasks = Vec::new();
@@ -92,15 +91,14 @@ pub fn update_task(task: Task) -> Result<()> {
     conn.execute(
         &format!(
             "UPDATE tasks SET
-        name = ?1, done = ?2, project = ?3, list = ?4,
-        duration = ?5, {position_stmt} suspended = ?6 WHERE id = ?7"
+            name = ?1, done = ?2, project = ?3, list = ?4,
+            {position_stmt} suspended = ?6 WHERE id = ?7"
         ),
         (
             task.name(),
             task.done(),
             task.project(),
             task.list(),
-            task.duration(),
             task.suspended(),
             task.id(),
         ),

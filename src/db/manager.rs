@@ -42,9 +42,19 @@ pub fn check_database() -> Result<()> {
                 done	     INTEGER NOT NULL DEFAULT 0,
                 project    INTEGER NOT NULL,
                 list       INTEGER NOT NULL,
-                duration   TEXT    NOT NULL DEFAULT '',
                 position   INTEGER NOT NULL,
                 suspended  INTEGER NOT NULL DEFAULT 0,
+                PRIMARY KEY(id AUTOINCREMENT)
+            );",
+            (),
+        )?;
+
+        conn.execute(
+            "CREATE TABLE records (
+                id	      INTEGER NOT NULL,
+                start	  INTEGER NOT NULL,
+                duration  INTEGER NOT NULL DEFAULT 0,
+                task      INTEGER NOT NULL,
                 PRIMARY KEY(id AUTOINCREMENT)
             );",
             (),

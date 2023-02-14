@@ -2,6 +2,8 @@ use gtk::{glib, glib::once_cell::sync::Lazy, prelude::*, subclass::prelude::*};
 use rusqlite::{Error, Result, Row};
 use std::cell::{Cell, RefCell};
 
+use crate::db::operations::read_tasks;
+
 mod imp {
     use super::*;
 
@@ -80,6 +82,30 @@ impl Project {
             .build()
     }
 
+    pub fn durartion(&self) -> Option<i64> {
+        let mut total = 0;
+        for task in read_tasks(self.id(), None, None).expect("Faield to read tasks") {
+            if let Some(task_duration) = task.duration() {
+                total = total + task_duration;
+            }
+        }
+        if total == 0 {
+            None
+        } else {
+            Some(total)
+        }
+    }
+
+    pub fn duration_display(&self, duration: i64) -> String {
+        let (min, sec) = (duration / 60, duration % 60);
+        if min > 60 {
+            let (hour, min) = (duration / 60, duration % 60);
+            format!("{}:{}:{}", hour, min, sec)
+        } else {
+            format!("{}:{}", min, sec)
+        }
+    }
+
     pub fn id(&self) -> i64 {
         self.property("id")
     }
@@ -112,6 +138,6 @@ impl TryFrom<&Row<'_>> for Project {
 
 impl Default for Project {
     fn default() -> Self {
-        Project::new(0, String::new(), false, 0)
+        Project::new(1, String::new(), false, 0)
     }
 }
