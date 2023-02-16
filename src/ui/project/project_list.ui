@@ -15,7 +15,7 @@
             <property name="margin-start">4</property>
             <property name="hexpand">true</property>
             <property name="halign">start</property>
-            <signal name="clicked" handler="name_button_clicked_cb"/>
+            <signal name="clicked" handler="handle_name_button_clicked" swapped="true"/>
           </object>
         </child><!-- End Name Button -->
         <child><!-- Name Entry -->
@@ -27,7 +27,7 @@
               bind-source="name_button"
               bind-property="visible"
               bind-flags="invert-boolean">false</property>
-            <signal name="activate" handler="name_entry_activate_cb"/>
+            <signal name="activate" handler="handle_name_entry_activate" swapped="true"/>
             <attributes>
               <attribute name="weight" value="PANGO_WEIGHT_BOLD"/>
             </attributes>
@@ -37,7 +37,7 @@
           <object class="GtkButton" id="new_task_button">
             <property name="icon-name">list-add-symbolic</property>
             <property name="has_frame">false</property>
-            <signal name="clicked" handler="new_button_clicked_cb"/>
+            <signal name="clicked" handler="handle_new_button_clicked" swapped="true"/>
           </object>
         </child><!-- End New Task Button -->
         <child><!-- Project Options Button -->
@@ -88,7 +88,7 @@
         <property name="spacing">6</property>
         <child><!-- Toggle Completed Tasks -->
           <object class="GtkToggleButton" id="show_done_tasks_toggle_button">
-            <signal name="toggled" handler="show_done_tasks_toggle_button_toggled_cb"/>
+            <signal name="toggled" handler="handle_show_done_tasks_toggle_button_toggled" swapped="true"/>
             <style>
               <class name="flat"/>
             </style>
@@ -117,7 +117,7 @@
         </child>
         <child><!-- Delete List -->
           <object class="GtkButton">
-            <signal name="clicked" handler="delete_button_clicked_cb"/>
+            <signal name="clicked" handler="handle_delete_button_clicked" swapped="true"/>
             <style>
               <class name="flat"/>
             </style>

@@ -126,16 +126,6 @@ impl Task {
         }
     }
 
-    pub fn duration_display(&self, duration: i64) -> String {
-        let (min, sec) = (duration / 60, duration % 60);
-        if min > 60 {
-            let (hour, min) = (duration / 60, duration % 60);
-            format!("{}:{}:{}", hour, min, sec)
-        } else {
-            format!("{}:{}", min, sec)
-        }
-    }
-
     pub fn id(&self) -> i64 {
         self.property("id")
     }
@@ -186,3 +176,4 @@ impl Default for Task {
         Task::new(1, String::new(), false, 1, 1, 0, false)
     }
 }
+

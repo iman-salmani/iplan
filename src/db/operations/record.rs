@@ -3,17 +3,17 @@ use rusqlite::Result;
 use crate::db::get_connection;
 use crate::db::models::Record;
 
-pub fn create_record(start: i64, task: i64) -> Result<Record> {
+pub fn create_record(start: i64, task_id: i64) -> Result<Record> {
     let conn = get_connection();
     conn.execute(
         "INSERT INTO records(start, task) VALUES (?1,?2)",
-        (start, task),
+        (start, task_id),
     )?;
-    Ok(Record::new(conn.last_insert_rowid(), start, 0, task))
+    Ok(Record::new(conn.last_insert_rowid(), start, 0, task_id))
 }
 
 pub fn read_records(task_id: i64, uncomplete: bool) -> Result<Vec<Record>> {
-    let filters = if uncomplete { ", duration = 0" } else { "" };
+    let filters = if uncomplete { "AND duration = 0" } else { "" };
     let conn = get_connection();
     let mut stmt = conn.prepare(&format!(
         "SELECT * FROM records WHERE task = ? {filters} ORDER BY start DESC"

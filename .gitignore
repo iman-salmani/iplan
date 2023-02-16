@@ -1,4 +1,5 @@
 .flatpak
+.flatpak-builder
 build
 .vscode
 src/config.rs

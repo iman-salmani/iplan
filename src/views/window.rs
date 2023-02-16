@@ -24,7 +24,7 @@ use std::cell::RefCell;
 
 use crate::db::models::Project;
 use crate::db::operations::{create_list, create_project, read_projects};
-use crate::views::project::ProjectHeader;
+use crate::views::project::{ProjectHeader, ProjectLists};
 use crate::views::sidebar::Sidebar;
 
 mod imp {
@@ -38,9 +38,13 @@ mod imp {
         #[template_child]
         pub project_layout_button: TemplateChild<gtk::Button>,
         #[template_child]
+        pub sidebar: TemplateChild<Sidebar>,
+        #[template_child]
         pub project_header: TemplateChild<ProjectHeader>,
         #[template_child]
-        pub sidebar: TemplateChild<Sidebar>,
+        pub toast_overlay: TemplateChild<adw::ToastOverlay>,
+        #[template_child]
+        pub project_lists: TemplateChild<ProjectLists>,
     }
 
     #[glib::object_subclass]
@@ -68,8 +72,10 @@ mod imp {
                 settings: gio::Settings::new("ir.imansalmani.iplan.State"),
                 project: RefCell::new(Project::default()),
                 project_layout_button: TemplateChild::default(),
-                project_header: TemplateChild::default(),
                 sidebar: TemplateChild::default(),
+                project_header: TemplateChild::default(),
+                toast_overlay: TemplateChild::default(),
+                project_lists: TemplateChild::default(),
             }
         }
     }
@@ -216,6 +222,7 @@ impl IPlanWindow {
             .activate_action("project.open", None)
             .expect("Failed to open project");
         imp.sidebar.imp().projects_section.select_active_project();
+        imp.project_lists.open_project(window.project().id());
 
         window
     }
@@ -245,3 +252,4 @@ impl IPlanWindow {
         }
     }
 }
+

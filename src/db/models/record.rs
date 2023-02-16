@@ -58,9 +58,9 @@ mod imp {
         fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
             match pspec.name() {
                 "id" => self.id.get().to_value(),
-                "start" => self.id.get().to_value(),
-                "duration" => self.id.get().to_value(),
-                "task" => self.id.get().to_value(),
+                "start" => self.start.get().to_value(),
+                "duration" => self.duration.get().to_value(),
+                "task" => self.task.get().to_value(),
                 _ => unimplemented!(),
             }
         }
@@ -79,6 +79,16 @@ impl Record {
             .property("duration", duration)
             .property("task", task)
             .build()
+    }
+
+    pub fn duration_display(duration: i64) -> String {
+        let (min, sec) = (duration / 60, duration % 60);
+        if min > 60 {
+            let (hour, min) = (duration / 60, duration % 60);
+            format!("{}:{}:{}", hour, min, sec)
+        } else {
+            format!("{}:{}", min, sec)
+        }
     }
 
     pub fn id(&self) -> i64 {
@@ -132,3 +142,4 @@ impl fmt::Display for Record {
         fmt::Result::Err(fmt::Error)
     }
 }
+

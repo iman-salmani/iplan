@@ -66,10 +66,7 @@
             <child>
               <object class="AdwToastOverlay" id="toast_overlay">
                 <child>
-                  <object class="GtkLabel">
-                    <property name="label">Projects list</property>
-                  </object>
-                  <!-- <object class="ProjectLists" id="project_lists"/> -->
+                  <object class="ProjectLists" id="project_lists"/>
                 </child>
               </object>
             </child>

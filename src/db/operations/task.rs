@@ -92,7 +92,7 @@ pub fn update_task(task: Task) -> Result<()> {
         &format!(
             "UPDATE tasks SET
             name = ?1, done = ?2, project = ?3, list = ?4,
-            {position_stmt} suspended = ?6 WHERE id = ?7"
+            {position_stmt} suspended = ?5 WHERE id = ?6"
         ),
         (
             task.name(),
@@ -106,7 +106,7 @@ pub fn update_task(task: Task) -> Result<()> {
     Ok(())
 }
 
-pub fn delete_task(task_id: i64, list_id: i64, position: i64) -> Result<()> {
+pub fn delete_task(task_id: i64, list_id: i64, position: i32) -> Result<()> {
     let conn = get_connection();
     // Notify: Not return error when id not exists
     conn.execute("DELETE FROM tasks WHERE id = ?", (task_id,))?;
