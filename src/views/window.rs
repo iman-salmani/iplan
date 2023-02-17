@@ -59,7 +59,7 @@ mod imp {
             klass.install_action("project.open", None, move |win, _, _| {
                 let imp = win.imp();
                 imp.project_header.open_project(&win.project());
-                // TODO: project_lists.open_project()
+                imp.project_lists.open_project(win.project().id());
             });
         }
 
@@ -252,4 +252,5 @@ impl IPlanWindow {
         }
     }
 }
+
 

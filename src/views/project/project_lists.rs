@@ -73,11 +73,28 @@ impl ProjectLists {
 
     pub fn open_project(&self, project_id: i64) {
         let imp = self.imp();
+
+        loop {
+            if let Some(child) = imp.lists_box.first_child() {
+                imp.lists_box.remove(&child);
+            } else {
+                break
+            }
+        }
+
         for list in read_lists(project_id).expect("Failed to read lists") {
             let project_list = ProjectList::new(list);
             imp.lists_box.append(&project_list);
             project_list.init_widgets(project_id);
         }
+
+        if imp.lists_box.first_child().is_none() {
+            imp.lists_box.append(&imp.placeholder.get());
+        }
+
+        // TODO: Set layout
+
+        // TODO: Select target task
     }
 }
 
