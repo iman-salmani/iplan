@@ -225,7 +225,7 @@ impl ProjectList {
             .object::<adw::MessageDialog>("dialog")
             .unwrap();
         dialog.set_transient_for(self.root().and_downcast::<gtk::Window>().as_ref());
-        dialog.set_heading(Some(&format!("Delete {} List?", self.list().name())));
+        dialog.set_heading(Some(&format!("Delete \"{}\" List?", self.list().name())));
         dialog.connect_response(Some("delete"), glib::clone!(
             @weak self as obj =>
             move |_dialog, response| {
