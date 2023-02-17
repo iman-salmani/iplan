@@ -1,9 +1,10 @@
 use gtk::{glib, gdk, prelude::*, subclass::prelude::*, glib::once_cell::sync::Lazy};
+use adw::prelude::*;
 use std::cell::{Cell, RefCell};
 
 use crate::db::models::{List, Task};
-use crate::db::operations::{update_list, create_task, read_tasks, read_task, update_task, new_position};
-use crate::views::project::ProjectListTask;
+use crate::db::operations::{update_list, delete_list, create_task, read_tasks, read_task, update_task, new_position};
+use crate::views::{IPlanWindow, project::ProjectListTask};
 
 mod imp {
     use super::*;
@@ -219,7 +220,31 @@ impl ProjectList {
     fn handle_delete_button_clicked(&self, _button: gtk::Button) {
         let imp = self.imp();
         imp.options_button.popdown();
-        // TODO: present ProjectListDeleteDialog
+        let dialog = gtk::Builder::
+            from_resource("/ir/imansalmani/iplan/ui/project/project_list_delete_dialog.ui")
+            .object::<adw::MessageDialog>("dialog")
+            .unwrap();
+        dialog.set_transient_for(self.root().and_downcast::<gtk::Window>().as_ref());
+        dialog.set_heading(Some(&format!("Delete {} List?", self.list().name())));
+        dialog.connect_response(Some("delete"), glib::clone!(
+            @weak self as obj =>
+            move |_dialog, response| {
+                if response == "delete" {
+                    delete_list(obj.list().id()).expect("Failed to delete list");
+                    let lists_box = obj.parent().and_downcast::<gtk::Box>().unwrap();
+                    let placeholder = obj.root()
+                        .and_downcast::<IPlanWindow>()
+                        .unwrap()
+                        .imp()
+                        .project_lists
+                        .imp()
+                        .placeholder
+                        .get();
+                    lists_box.remove(&obj);
+                    if lists_box.first_child().is_none() {
+                        lists_box.append(&placeholder);
+                    }}}));
+        dialog.present();
     }
 
     #[template_callback]
