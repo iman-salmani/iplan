@@ -1,7 +1,7 @@
-use std::cell::RefCell;
+use std::cell::{Cell, RefCell};
 use std::thread;
 use std::time::Duration;
-use gtk::{glib, prelude::*, subclass::prelude::*, glib::once_cell::sync::Lazy};
+use gtk::{glib, gdk, prelude::*, subclass::prelude::*, glib::once_cell::sync::Lazy};
 
 use crate::db::models::{Task, Record};
 use crate::db::operations::{update_task, delete_task, create_record, read_records, update_record};
@@ -14,6 +14,7 @@ mod imp {
     #[template(resource = "/ir/imansalmani/iplan/ui/project/project_list_task.ui")]
     pub struct ProjectListTask {
         pub task: RefCell<Task>,
+        pub moving_out: Cell<bool>,
         #[template_child]
         pub checkbox: TemplateChild<gtk::CheckButton>,
         #[template_child]
@@ -300,6 +301,49 @@ impl ProjectListTask {
             .row_at_index(self.index() - 1);
         if let Some(upper_row) = upper_row {upper_row.grab_focus();}
         self.changed();
+    }
+
+    #[template_callback]
+    fn handle_drag_prepare(&self, _x: f64, _y: f64) -> Option<gdk::ContentProvider> {
+        let name_entry = self.imp().name_entry.get();
+        if  WidgetExt::is_visible(&name_entry) {
+            None
+        } else {
+            Some(gdk::ContentProvider::for_value(&self.to_value()))
+        }
+    }
+
+    #[template_callback]
+    fn handle_drag_begin(&self, drag: gdk::Drag) {
+        self.parent()
+            .and_downcast::<gtk::ListBox>()
+            .unwrap()
+            .drag_highlight_row(self);
+        let drag_icon: gtk::DragIcon = gtk::DragIcon::for_drag(&drag).downcast().unwrap();
+        let label = gtk::Label::builder().label("").build();
+        drag_icon.set_child(Some(&label));
+        drag.set_hotspot(0, 0);
+    }
+
+    #[template_callback]
+    fn handle_drag_cancel(&self, _drag: gdk::Drag) -> bool {
+        self.imp().moving_out.set(false);
+        self.changed();
+        false
+    }
+
+    #[template_callback]
+    fn handle_drag_end(&self, _drag: gdk::Drag) {
+        // TODO: select active project
+        if let Some(root) = self.root() {
+            root.downcast::<IPlanWindow>()
+            .unwrap()
+            .imp()
+            .sidebar
+            .imp()
+            .projects_section
+            .select_active_project();
+        }
     }
 }
 

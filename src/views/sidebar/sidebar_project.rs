@@ -2,6 +2,9 @@ use gtk::{gdk, glib, glib::once_cell::sync::Lazy, prelude::*, subclass::prelude:
 use std::cell::RefCell;
 
 use crate::db::models::Project;
+use crate::db::operations::{read_lists, update_task, new_position};
+use crate::views::sidebar::SidebarProjects;
+use crate::views::project::ProjectListTask;
 
 mod imp {
     use super::*;
@@ -89,7 +92,18 @@ impl SidebarProject {
         self.property("project")
     }
 
-    fn init_widgets(&self) {}
+    fn init_widgets(&self) {
+        let task_drop_target =
+            gtk::DropTarget::new(ProjectListTask::static_type(), gdk::DragAction::MOVE);
+        task_drop_target.set_preload(true);
+        task_drop_target.connect_drop(glib::clone!(
+            @weak self as obj => @default-return false,
+            move |target, value, x, y| obj.task_drop_target_drop(target, value, x, y)));
+        task_drop_target.connect_motion(glib::clone!(
+            @weak self as obj => @default-return gdk::DragAction::empty(),
+            move |target, x, y| obj.task_drop_target_motion(target, x, y)));
+        self.add_controller(&task_drop_target);
+    }
 
     #[template_callback]
     fn handle_drag_prepare(&self, _x: f64, _y: f64) -> Option<gdk::ContentProvider> {
@@ -115,7 +129,51 @@ impl SidebarProject {
         false
     }
 
-    // TODO: handle_drop_task_target_drop
+    fn task_drop_target_drop(
+        &self,
+        _target: &gtk::DropTarget,
+        value: &glib::Value,
+        _x: f64,
+        _y: f64,
+    ) -> bool {
+        let row: ProjectListTask = value.get().unwrap();
+        let task = row.task();
+        let project_id = self.project().id();
+        task.set_property("project", project_id);
+        let list_id = read_lists(project_id)
+            .expect("Failed to read lists")
+            .first()
+            .expect("Project should have list")
+            .id();
+        task.set_property("list", list_id);
+        task.set_property("position", new_position(list_id));
+        row.parent().and_downcast::<gtk::ListBox>().unwrap().remove(&row);
+        update_task(task).expect("Failed to update task");
+        self.parent()
+            .unwrap()
+            .parent()
+            .and_downcast::<SidebarProjects>()
+            .unwrap()
+            .select_active_project();
+        true
+    }
 
-    // TODO: handle_drop_task_target_motion
+    fn task_drop_target_motion(
+        &self,
+        target: &gtk::DropTarget,
+        _x: f64,
+        _y: f64,
+    ) -> gdk::DragAction {
+        let task_row: ProjectListTask = target.value_as().unwrap();
+        if task_row.task().project() != self.project().id() {
+            self.parent()
+                .and_downcast::<gtk::ListBox>()
+                .unwrap()
+                .select_row(Some(self));
+            gdk::DragAction::MOVE
+        } else {
+            gdk::DragAction::empty()
+        }
+    }
 }
+

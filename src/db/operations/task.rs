@@ -135,14 +135,15 @@ pub fn find_tasks(text: &str, done: bool) -> Result<Vec<Task>> {
     Ok(tasks)
 }
 
-fn new_position(list_id: i64) -> i32 {
+pub fn new_position(list_id: i64) -> i32 {
     let conn = get_connection();
     let mut stmt = conn
         .prepare("SELECT position FROM tasks WHERE list = ? ORDER BY position DESC")
-        .expect("Failed to find new position");
+        .expect("Failed to find new task position");
     let first_row = stmt.query_row([list_id], |row| row.get::<_, i32>(0));
     match first_row {
         Ok(first_row) => return first_row + 1,
         Err(_) => return 0,
     };
 }
+

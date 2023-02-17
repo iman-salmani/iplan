@@ -1,8 +1,8 @@
-use gtk::{glib, prelude::*, subclass::prelude::*, glib::once_cell::sync::Lazy};
+use gtk::{glib, gdk, prelude::*, subclass::prelude::*, glib::once_cell::sync::Lazy};
 use std::cell::{Cell, RefCell};
 
 use crate::db::models::{List, Task};
-use crate::db::operations::{create_task, read_tasks, update_list};
+use crate::db::operations::{update_list, create_task, read_tasks, read_task, update_task, new_position};
 use crate::views::project::ProjectListTask;
 
 mod imp {
@@ -139,13 +139,29 @@ impl ProjectList {
                 } else if !imp.show_done_tasks_toggle_button.is_active() {
                     !row.task().done()
                 } else {
-                    true
-                    // TODO: replace with !row.moving_out()
+                    !row.imp().moving_out.get()
                 }
             }
         ));
 
         self.fetch(project_id, false);
+
+        let task_drop_target =
+            gtk::DropTarget::new(ProjectListTask::static_type(), gdk::DragAction::MOVE);
+        task_drop_target.set_preload(true);
+        task_drop_target.connect_drop(glib::clone!(
+            @weak self as obj => @default-return false,
+            move |target, value, x, y| obj.task_drop_target_drop(target, value, x, y)));
+        task_drop_target.connect_motion(glib::clone!(
+            @weak self as obj => @default-return gdk::DragAction::empty(),
+            move |target, x, y| obj.task_drop_target_motion(target, x, y)));
+        task_drop_target.connect_enter(glib::clone!(
+            @weak self as obj => @default-return gdk::DragAction::empty(),
+            move |target, x, y| obj.task_drop_target_enter(target, x, y)));
+        task_drop_target.connect_leave(glib::clone!(
+            @weak self as obj =>
+            move |target| obj.task_drop_target_leave(target)));
+        imp.tasks_box.add_controller(&task_drop_target);
     }
 
     pub fn list(&self) -> List {
@@ -228,12 +244,135 @@ impl ProjectList {
 
     // TODO: handle_drop_list_target_motion
 
-    // TODO: handle_drop_task_target_drop
+    fn task_drop_target_drop(
+        &self,
+        _target: &gtk::DropTarget,
+        value: &glib::Value,
+        _x: f64,
+        _y: f64,
+    ) -> bool {
+        // Source_row moved by motion signal so it should drop on itself
+        self.imp().tasks_box.drag_unhighlight_row();
+        let row: ProjectListTask = value.get().unwrap();
+        let task = row.task();
+        let task_db = read_task(task.id()).expect("Failed to read task");
+        if task_db.position() != task.position() || task_db.list() != task.list() {
+            update_task(task).expect("Failed to update task");
+        }
+        row.grab_focus();
+        true
+    }
 
-    // TODO: handle_drop_task_target_motion
+    fn task_drop_target_motion(
+        &self,
+        target: &gtk::DropTarget,
+        _x: f64,
+        y: f64,
+    ) -> gdk::DragAction {
+        let imp = self.imp();
+        let source_row: Option<ProjectListTask> = target.value_as();
+        let target_row = imp.tasks_box.row_at_y(y as i32);
 
-    // TODO: handle_drop_task_target_enter
+        if source_row.is_none() || target_row.is_none() {
+            return gdk::DragAction::empty();
+        }
+        let source_row = source_row.unwrap();
+        let target_row: ProjectListTask = target_row.and_downcast().unwrap();
 
-    // TODO: handle_drop_task_target_leave
+        // Move
+        let source_task = source_row.task();
+        let target_task = target_row.task();
+        if source_task.id() != target_task.id() {
+            let source_i = source_row.index();
+            let target_i = target_row.index();
+            let source_p = source_task.position();
+            let target_p = target_task.position();
+            if source_i - target_i == 1 {
+                source_task.set_property("position", source_p + 1);
+                target_task.set_property("position", target_p - 1);
+            } else if source_i > target_i {
+                for i in target_i..source_i {
+                    let row: ProjectListTask = imp
+                        .tasks_box
+                        .row_at_index(i)
+                        .and_downcast()
+                        .unwrap();
+                    row.task().set_property("position", row.task().position() - 1);
+                }
+                source_task.set_property("position", target_p)
+            } else if source_i - target_i == -1 {
+                source_task.set_property("position", source_p - 1);
+                target_task.set_property("position", target_p + 1);
+            } else if source_i < target_i {
+                for i in source_i + 1..target_i + 1 {
+                    let row: ProjectListTask = imp
+                        .tasks_box
+                        .row_at_index(i)
+                        .and_downcast()
+                        .unwrap();
+                    row.task().set_property("position", row.task().position() + 1);
+                }
+                source_task.set_property("position", target_p)
+            }
+
+            // Should use invalidate_sort() insteed of changed() for Refresh hightlight shape
+            // TODO: Check this in rust
+            imp.tasks_box.invalidate_sort();
+        }
+
+        // Scroll
+        // FIXME: Dont work on vertical layout
+        if imp.tasks_box.height() > imp.scrolled_window.height() {
+            let adjustment = imp.scrolled_window.vadjustment();
+            let step = adjustment.step_increment() / 3.0;
+            let v_pos = adjustment.value();
+            if y - v_pos > 475.0 {
+                adjustment.set_value(v_pos + step);
+            } else if y - v_pos < 25.0 {
+                adjustment.set_value(v_pos - step);
+            }
+        }
+
+        gdk::DragAction::MOVE
+    }
+
+    fn task_drop_target_enter (
+        &self,
+        target: &gtk::DropTarget,
+        _x: f64,
+        _y: f64,
+        ) -> gdk::DragAction {
+        let row: ProjectListTask = target.value_as().unwrap();
+        let tasks_box = self.imp().tasks_box.get();
+        row.imp().moving_out.set(false);
+        // Avoid from when drag start
+        if row.task().list() == self.list().id() && row.imp().moving_out.get() {
+            tasks_box.invalidate_filter();
+        } else if row.task().list() != self.list().id() {
+            let task = row.task();
+            let list_id = self.list().id();
+            task.set_property("list", list_id);
+            task.set_property("position", new_position(list_id));
+            let parent = row.parent().and_downcast::<gtk::ListBox>().unwrap();
+            for i in 0..row.index() {
+                let task = parent.row_at_index(i)
+                    .and_downcast::<ProjectListTask>()
+                    .unwrap()
+                    .task();
+                task.set_property("position", task.position() - 1);
+            }
+            parent.remove(&row);
+            tasks_box.prepend(&row);
+            tasks_box.drag_highlight_row(&row);
+        }
+        gdk::DragAction::MOVE
+    }
+
+    fn task_drop_target_leave(&self, target: &gtk::DropTarget) {
+        if let Some(row) = target.value_as::<ProjectListTask>() {
+            row.imp().moving_out.set(true);
+            self.imp().tasks_box.invalidate_filter();
+        }
+    }
 }
 
