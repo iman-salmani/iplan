@@ -61,6 +61,10 @@ mod imp {
                 imp.project_header.open_project(&win.project());
                 imp.project_lists.open_project(win.project().id());
             });
+            klass.install_action("list.new", None, move |win, _, _| {
+                let imp = win.imp();
+                imp.project_lists.new_list(win.project().id());
+            });
         }
 
         fn instance_init(obj: &glib::subclass::InitializingObject<Self>) {

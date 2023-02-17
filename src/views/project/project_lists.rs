@@ -1,6 +1,6 @@
 use gtk::{glib, prelude::*, subclass::prelude::*};
 
-use crate::db::operations::read_lists;
+use crate::db::operations::{create_list, read_lists};
 use super::ProjectList;
 
 mod imp {
@@ -96,5 +96,19 @@ impl ProjectLists {
 
         // TODO: Select target task
     }
+
+    pub fn new_list(&self, project_id: i64) {
+        let list = create_list("New List", project_id).expect("Faield to create new list");
+        let project_list = ProjectList::new(list);
+        let imp = self.imp();
+        if imp.placeholder.parent().is_some() {
+            imp.lists_box.remove(&imp.placeholder.get());
+        }
+        imp.lists_box.append(&project_list);
+        project_list.imp().name_button.set_visible(false); // Name entry visiblity have binding to this
+        project_list.grab_focus();  // FIXME: dont working when call from primary
+    }
+
+    // TODO: layout management
 }
 

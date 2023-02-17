@@ -64,7 +64,7 @@
     <child>
       <object class="GtkButton">
         <property name="label">New list</property>
-        <property name="action-name">app.new_list</property>
+        <property name="action-name">list.new</property>
         <property name="halign">center</property>
         <property name="margin-top">12</property>
         <style>
@@ -74,4 +74,5 @@
     </child>
   </object>
 </interface>
+
 
