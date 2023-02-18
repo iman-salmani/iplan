@@ -3,7 +3,7 @@ use adw::prelude::*;
 use std::cell::{Cell, RefCell};
 
 use crate::db::models::{List, Task};
-use crate::db::operations::{update_list, delete_list, create_task, read_tasks, read_task, update_task, new_position};
+use crate::db::operations::{update_list, read_list, delete_list, create_task, read_tasks, read_task, update_task, new_position};
 use crate::views::{IPlanWindow, project::ProjectListTask};
 
 mod imp {
@@ -142,10 +142,39 @@ impl ProjectList {
                 } else {
                     !row.imp().moving_out.get()
                 }
-            }
-        ));
+            }));
 
         self.fetch(project_id, false);
+
+        let list_drag_source = gtk::DragSource::builder()
+            .actions(gdk::DragAction::MOVE)
+            .build();
+        list_drag_source.connect_prepare(glib::clone!(
+            @weak self as obj => @default-return None,
+            move |_drag_source, _x, _y| {
+                if obj.imp().name_entry.get_visible() {
+                    None
+                } else {
+                    Some(gdk::ContentProvider::for_value(&obj.to_value()))
+                }}));
+        list_drag_source.connect_drag_begin(|_drag_source, drag| {
+            let drag_icon: gtk::DragIcon = gtk::DragIcon::for_drag(&drag).downcast().unwrap();
+            let label = gtk::Label::builder().label("").build();
+            drag_icon.set_child(Some(&label));
+            drag.set_hotspot(0, 0);
+        });
+        imp.header.add_controller(&list_drag_source);
+
+        let list_drop_target =
+            gtk::DropTarget::new(ProjectList::static_type(), gdk::DragAction::MOVE);
+        list_drop_target.set_preload(true);
+        list_drop_target.connect_drop(glib::clone!(
+            @weak self as obj => @default-return false,
+            move |target, value, x, y| obj.list_drop_target_drop(target, value, x, y)));
+        list_drop_target.connect_motion(glib::clone!(
+            @weak self as obj => @default-return gdk::DragAction::empty(),
+            move |target, x, y| obj.list_drop_target_motion(target, x, y)));
+        self.add_controller(&list_drop_target);
 
         let task_drop_target =
             gtk::DropTarget::new(ProjectListTask::static_type(), gdk::DragAction::MOVE);
@@ -200,7 +229,7 @@ impl ProjectList {
         imp.name_button.set_label(&name);
         imp.name_button.set_visible(true);
         list.set_property("name", name);
-        update_list(list).expect("Failed to update list");
+        update_list(&list).expect("Failed to update list");
     }
 
     #[template_callback]
@@ -261,13 +290,78 @@ impl ProjectList {
 
     // TODO: handle_scroll_controller_scroll
 
-    // TODO: handle_drag_list_source_prepare
+    fn list_drop_target_drop(
+        &self,
+        _target: &gtk::DropTarget,
+        _value: &glib::Value,
+        _x: f64,
+        _y: f64,
+    ) -> bool {
+        // Source list moved by motion signal so it should drop on itself
+        let list = self.list();
+        let list_db = read_list(list.id())
+            .expect("Failed to read list");
+        if list.index() != list_db.index() {   // TODO: add project condition
+            update_list(&list)
+                .expect("Failed to update list");
+        }
+        true
+    }
 
-    // TODO: handle_drag_list_source_begin
-
-    // TODO: handle_drop_list_target_drop
-
-    // TODO: handle_drop_list_target_motion
+    fn list_drop_target_motion(
+        &self,
+        target: &gtk::DropTarget,
+        _x: f64,
+        _y: f64,
+    ) -> gdk::DragAction {
+        if let Some(source_project_list) = target.value_as::<ProjectList>() {
+            let self_list = self.list();
+            let source_list = source_project_list.list();
+            if self_list.id() != source_list.id() {
+                let parent: gtk::Box = self.parent().and_downcast().unwrap();
+                let source_i = source_list.index();
+                let self_i = self_list.index();
+                if source_i - self_i == 1 {
+                    parent.reorder_child_after(self, Some(&source_project_list));
+                    source_list.set_property("index", self_i);
+                    self_list.set_property("index", source_i);
+                } else if source_i > self_i {
+                    let lists = parent.observe_children();
+                    for i in self_i..source_i {
+                        let project_list = lists.item(i as u32)
+                            .and_downcast::<ProjectList>()
+                            .unwrap();
+                        project_list.list().set_property("index", i + 1);
+                    }
+                    if let Some(upper_list) = lists.item((self_i - 1) as u32) {
+                        parent.reorder_child_after(
+                            &source_project_list,
+                            Some(&upper_list.downcast::<ProjectList>().unwrap()));
+                    } else {
+                        parent.reorder_child_after(&source_project_list, gtk::Widget::NONE);
+                    }
+                    source_list.set_property("index", self_i);
+                } else if source_i - self_i == -1 {
+                    parent.reorder_child_after(&source_project_list, Some(self));
+                    source_list.set_property("index", self_i);
+                    self_list.set_property("index", source_i);
+                } else if source_i < self_i {    //
+                    let lists = parent.observe_children();
+                    for i in source_i+1..self_i+1 {
+                        let project_list = lists.item(i as u32)
+                            .and_downcast::<ProjectList>()
+                            .unwrap();
+                        project_list.list().set_property("index", i - 1);
+                    }
+                    parent.reorder_child_after(&source_project_list, Some(self));
+                    source_list.set_property("index", self_i);
+                }
+            }
+            gdk::DragAction::MOVE
+        } else {
+            gdk::DragAction::empty()
+        }
+    }
 
     fn task_drop_target_drop(
         &self,
@@ -276,7 +370,7 @@ impl ProjectList {
         _x: f64,
         _y: f64,
     ) -> bool {
-        // Source_row moved by motion signal so it should drop on itself
+        // Source row moved by motion signal so it should drop on itself
         self.imp().tasks_box.drag_unhighlight_row();
         let row: ProjectListTask = value.get().unwrap();
         let task = row.task();
@@ -340,7 +434,7 @@ impl ProjectList {
                 source_task.set_property("position", target_p)
             }
 
-            // Should use invalidate_sort() insteed of changed() for Refresh hightlight shape
+            // Should use invalidate_sort() insteed of changed() for refresh hightlight shape
             // TODO: Check this in rust
             imp.tasks_box.invalidate_sort();
         }

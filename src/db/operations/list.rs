@@ -35,10 +35,31 @@ pub fn read_list(list_id: i64) -> Result<List> {
     stmt.query_row([list_id], |row| List::try_from(row))
 }
 
-pub fn update_list(list: List) -> Result<()> {
+pub fn update_list(list: &List) -> Result<()> {
     let conn = get_connection();
+    let old_list = read_list(list.id())?;
+    let index_stmt = &mut String::new();
+
+    if list.index() != old_list.index() {
+        index_stmt.push_str(&format!(", i = {}", list.index()));
+        if list.index() > old_list.index() {
+            conn.execute(
+                "UPDATE lists SET i = i - 1
+                WHERE i > ?1 AND i <= ?2",
+                (old_list.index(), list.index()),
+            )?;
+        } else if list.index() < old_list.index() {
+            conn.execute(
+                "UPDATE lists SET i = i + 1
+                WHERE i < ?1 AND i >= ?2",
+                (old_list.index(), list.index()),
+            )?;
+        }
+    }
+
     conn.execute(
-        "UPDATE lists SET name = ?1, project = ?2, i = ?3 WHERE id = ?4",
+        &format!("UPDATE lists SET
+            name = ?1, project = ?2, i = ?3 {index_stmt} WHERE id = ?4"),
         (list.name(), list.project(), list.index(), list.id()),
     )?;
     Ok(())
@@ -63,3 +84,4 @@ fn new_index(project_id: i64) -> i32 {
         Err(_) => return 0,
     };
 }
+
