@@ -208,7 +208,7 @@ impl ProjectList {
 
     fn fetch(&self, project_id: i64, done_tasks: bool) {
         let imp = self.imp();
-        for task in read_tasks(project_id, None, Some(done_tasks)).expect("Faield to read tasks") {
+        for task in read_tasks(project_id, Some(self.list().id()), Some(done_tasks)).expect("Faield to read tasks") {
             let project_list_task = ProjectListTask::new(task);
             imp.tasks_box.append(&project_list_task);
             project_list_task.init_widgets();
