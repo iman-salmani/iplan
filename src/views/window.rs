@@ -24,7 +24,7 @@ use std::cell::RefCell;
 
 use crate::db::models::Project;
 use crate::db::operations::{create_list, create_project, read_projects};
-use crate::views::project::{ProjectHeader, ProjectLists};
+use crate::views::project::{ProjectHeader, ProjectLists, ProjectLayout};
 use crate::views::sidebar::Sidebar;
 
 mod imp {
@@ -139,7 +139,8 @@ impl IPlanWindow {
         // Settings
         if imp.settings.int("default-project-layout") == 1 {
             imp.project_layout_button
-                .set_icon_name("view-columns-symbolic")
+                .set_icon_name("view-columns-symbolic");
+            imp.project_lists.set_layout(&window ,ProjectLayout::Horizontal);
         }
         imp.settings.bind("width", &window, "default-width").build();
         imp.settings
@@ -242,19 +243,21 @@ impl IPlanWindow {
             Some(icon_name) => {
                 if icon_name == "list-symbolic" {
                     button.set_icon_name("view-columns-symbolic");
+                    imp.project_lists.set_layout(self, ProjectLayout::Horizontal);
                     imp.settings
                         .set_int("default-project-layout", 1)
                         .expect("Could not set setting.");
                 } else {
                     button.set_icon_name("list-symbolic");
+                    imp.project_lists.set_layout(self, ProjectLayout::Vertical);
                     imp.settings
                         .set_int("default-project-layout", 0)
                         .expect("Could not set setting.");
                 }
+                imp.project_lists.open_project(self.project().id());
             }
             None => button.set_icon_name("list-symbolic"),
         }
     }
 }
-
 

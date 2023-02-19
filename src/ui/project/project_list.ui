@@ -55,8 +55,8 @@
         <property name="selection_mode">none</property>
         <property name="margin-top">3</property>
         <property name="margin-bottom">9</property>
-        <property name="margin-start">12</property>
-        <property name="margin-end">12</property>
+        <property name="margin-start">15</property>
+        <property name="margin-end">15</property>
         <style>
           <class name="boxed-list"/>
         </style>
@@ -75,8 +75,8 @@
     <child><!-- Scrolled Window - Its for horizontal layout-->
       <object class="GtkScrolledWindow" id="scrolled_window">
         <property name="vexpand">true</property>
-        <property name="hexpand">true</property>
         <property name="visible">false</property>
+        <property name="hscrollbar-policy">never</property>
       </object>
     </child><!-- Scrolled Window -->
   </template>

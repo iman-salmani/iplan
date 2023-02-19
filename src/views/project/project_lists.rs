@@ -1,7 +1,21 @@
+use std::cell::{Cell, RefCell};
 use gtk::{glib, prelude::*, subclass::prelude::*};
 
 use crate::db::operations::{create_list, read_lists};
-use super::ProjectList;
+use crate::views::IPlanWindow;
+use crate::views::project::ProjectList;
+
+#[derive(Clone, Copy, PartialEq)]
+pub enum ProjectLayout {
+    Horizontal,
+    Vertical,
+}
+
+impl Default for ProjectLayout {
+    fn default() -> Self {
+        ProjectLayout::Vertical
+    }
+}
 
 mod imp {
     use super::*;
@@ -9,6 +23,9 @@ mod imp {
     #[derive(Default, gtk::CompositeTemplate)]
     #[template(resource = "/ir/imansalmani/iplan/ui/project/project_lists.ui")]
     pub struct ProjectLists {
+        pub layout: Cell<ProjectLayout>,
+        pub shift_pressed: Cell<bool>,
+        pub shift_controller: RefCell<Option<gtk::EventControllerKey>>,
         #[template_child]
         pub scrolled_window: TemplateChild<gtk::ScrolledWindow>,
         #[template_child]
@@ -74,25 +91,20 @@ impl ProjectLists {
     pub fn open_project(&self, project_id: i64) {
         let imp = self.imp();
 
-        loop {
-            if let Some(child) = imp.lists_box.first_child() {
-                imp.lists_box.remove(&child);
-            } else {
-                break
-            }
+        let lists = imp.lists_box.observe_children();
+        for _i in 0..lists.n_items() {
+            imp.lists_box.remove(&lists.item(0).and_downcast::<ProjectList>().unwrap());
         }
 
         for list in read_lists(project_id).expect("Failed to read lists") {
             let project_list = ProjectList::new(list);
             imp.lists_box.append(&project_list);
-            project_list.init_widgets(project_id);
+            project_list.init_widgets(project_id, imp.layout.get());
         }
 
         if imp.lists_box.first_child().is_none() {
             imp.lists_box.append(&imp.placeholder.get());
         }
-
-        // TODO: Set layout
 
         // TODO: Select target task
     }
@@ -109,6 +121,61 @@ impl ProjectLists {
         project_list.grab_focus();  // FIXME: dont working when call from primary
     }
 
-    // TODO: layout management
+    pub fn set_layout(&self, window: &IPlanWindow, layout: ProjectLayout) {
+        let imp = self.imp();
+        match layout {
+            ProjectLayout::Horizontal => {
+                imp.lists_box.set_orientation(gtk::Orientation::Horizontal);
+                let mut shift_controller = imp.shift_controller.borrow_mut();
+                if let Some(shift_controller) = shift_controller.as_ref() {
+                    window.add_controller(shift_controller);
+                } else {
+                    let new_shift_controller = gtk::EventControllerKey::new();
+                    new_shift_controller.connect_key_pressed(glib::clone!(
+                        @weak self as obj => @default-return gtk::Inhibit(false),
+                        move |_controller, _keyval, keycode, _state| {
+                            if keycode == 50 {
+                                let imp = obj.imp();
+                                imp.shift_pressed.set(true);
+                                let lists = imp.lists_box.observe_children();
+                                for i in 0..lists.n_items() {
+                                    lists.item(i)
+                                        .and_downcast::<ProjectList>()
+                                        .unwrap()
+                                        .imp()
+                                        .scrolled_window
+                                        .vscrollbar()
+                                        .set_sensitive(false);
+                                }}
+                            gtk::Inhibit(true)}));
+                    new_shift_controller.connect_key_released(glib::clone!(
+                        @weak self as obj =>
+                        move |_controller, _keyval, keycode, _state| {
+                            if keycode == 50 {
+                                let imp = obj.imp();
+                                imp.shift_pressed.set(false);
+                                let lists = imp.lists_box.observe_children();
+                                for i in 0..lists.n_items() {
+                                    lists.item(i)
+                                        .and_downcast::<ProjectList>()
+                                        .unwrap()
+                                        .imp()
+                                        .scrolled_window
+                                        .vscrollbar()
+                                        .set_sensitive(true);
+                                }}}));
+                    window.add_controller(&new_shift_controller);
+                    shift_controller.replace(new_shift_controller);
+                }
+            }
+            ProjectLayout::Vertical => {
+                imp.lists_box.set_orientation(gtk::Orientation::Vertical);
+                if let Some(shift_controller) = imp.shift_controller.borrow().as_ref() {
+                    window.remove_controller(shift_controller);
+                }
+            }
+        }
+        imp.layout.set(layout);
+    }
 }
 

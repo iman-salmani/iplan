@@ -4,7 +4,7 @@ use std::cell::{Cell, RefCell};
 
 use crate::db::models::{List, Task};
 use crate::db::operations::{update_list, read_list, delete_list, create_task, read_tasks, read_task, update_task, new_position};
-use crate::views::{IPlanWindow, project::ProjectListTask};
+use crate::views::{IPlanWindow, project::ProjectListTask, project::ProjectLayout};
 
 mod imp {
     use super::*;
@@ -113,9 +113,42 @@ impl ProjectList {
             .build()
     }
 
-    pub fn init_widgets(&self, project_id: i64) {
+    pub fn init_widgets(&self, project_id: i64, layout: ProjectLayout) {
         let imp = self.imp();
         let list = self.list();
+
+        if layout == ProjectLayout::Horizontal {
+            imp.tasks_box.unparent();
+            imp.scrolled_window.set_child(Some(&imp.tasks_box.get()));
+            imp.scrolled_window.set_visible(true);
+            let scroll_controller = gtk::EventControllerScroll::builder()
+                .flags(gtk::EventControllerScrollFlags::VERTICAL)
+                .build();
+            scroll_controller.connect_scroll(glib::clone!(
+                @weak self as obj => @default-return gtk::Inhibit(false),
+                    move |_controller, _dx, dy| {
+                    let project_lists = obj.root()
+                        .and_downcast::<IPlanWindow>()
+                        .unwrap()
+                        .imp()
+                        .project_lists
+                        .get();
+                    let project_lists_imp = project_lists.imp();
+                    let viewport = project_lists_imp.scrolled_window.get().first_child()
+                        .and_downcast::<gtk::Viewport>()
+                        .unwrap();
+                    if project_lists_imp.shift_pressed.get() {
+                        let adjustment = viewport.hadjustment().unwrap();
+                        adjustment.set_value(
+                            adjustment.value() + (adjustment.step_increment() * dy)
+                        );
+                        gtk::Inhibit(true)
+                    } else {
+                        gtk::Inhibit(false)
+                    }
+                }));
+            imp.scrolled_window.add_controller(&scroll_controller);
+        }
 
         imp.name_button.set_label(&list.name());
         imp.name_entry.buffer().set_text(&list.name());
@@ -203,8 +236,6 @@ impl ProjectList {
     }
 
     // TODO: focus_on_task
-
-    // TODO: set_scroll_controller
 
     fn fetch(&self, project_id: i64, done_tasks: bool) {
         let imp = self.imp();
@@ -435,7 +466,6 @@ impl ProjectList {
             }
 
             // Should use invalidate_sort() insteed of changed() for refresh hightlight shape
-            // TODO: Check this in rust
             imp.tasks_box.invalidate_sort();
         }
 

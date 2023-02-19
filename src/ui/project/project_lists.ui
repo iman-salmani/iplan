@@ -7,6 +7,7 @@
     <child>
       <object class="GtkScrolledWindow" id="scrolled_window">
           <property name="width-request">480</property>
+          <property name="vexpand">true</property>
           <child>
             <object class="GtkBox" id="lists_box">
               <property name="orientation">vertical</property>
