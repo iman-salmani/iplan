@@ -470,12 +470,23 @@ impl ProjectList {
         }
 
         // Scroll
-        // FIXME: Dont work on vertical layout
-        if imp.tasks_box.height() > imp.scrolled_window.height() {
-            let adjustment = imp.scrolled_window.vadjustment();
+        let scrolled_window = if imp.scrolled_window.is_visible() {
+            imp.scrolled_window.get()
+        } else {
+            let project_lists = self.root()
+                .and_downcast::<IPlanWindow>()
+                .unwrap()
+                .imp()
+                .project_lists
+                .get();
+            project_lists.imp().scrolled_window.get()
+        };
+        let scrolled_window_height = scrolled_window.height();
+        if imp.tasks_box.height() > scrolled_window_height {
+            let adjustment = scrolled_window.vadjustment();
             let step = adjustment.step_increment() / 3.0;
             let v_pos = adjustment.value();
-            if y - v_pos > 475.0 {
+            if y - v_pos > (scrolled_window_height - 25) as f64 {
                 adjustment.set_value(v_pos + step);
             } else if y - v_pos < 25.0 {
                 adjustment.set_value(v_pos - step);
