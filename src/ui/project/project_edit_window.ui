@@ -34,7 +34,7 @@
               <object class="AdwEntryRow" id="name_entry_row">
                 <property name="title">Name</property>
                 <property name="show-apply-button">true</property>
-                <signal name="apply" handler="name_entry_row_apply_cb"/>
+                <signal name="apply" handler="handle_name_entry_row_apply" swapped="true"/>
               </object>
             </child><!-- End Name -->
           </object>
@@ -64,7 +64,7 @@
                   <object class="GtkButton" id="delete_button">
                     <property name="valign">center</property>
                     <property name="icon-name">user-trash-symbolic</property>
-                    <signal name="clicked" handler="delete_button_clicked_cb"/>
+                    <signal name="clicked" handler="handle_delete_button_clicked" swapped="true"/>
                     <style>
                       <class name="flat"/>
                     </style>
