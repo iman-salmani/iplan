@@ -161,12 +161,18 @@ impl SidebarProjects {
     fn handle_new_button_clicked(&self, _button: gtk::Button) {
         let project = create_project("New Project").expect("Failed to create project");
         create_list("Tasks", project.id()).expect("Failed to create list");
-        // TODO: set active project
-        let row = SidebarProject::new(project);
+        let row = SidebarProject::new(project.clone());
         let imp = self.imp();
         imp.projects_box.append(&row);
         imp.projects_box.select_row(Some(&row));
-        // TODO: activate project.open action
+        self.root()
+            .and_downcast::<IPlanWindow>()
+            .unwrap()
+            .set_property("project", project);
+        self.activate_action("project.open", None)
+            .expect("Failed to start project.open action");
+        self.activate_action("project.edit", None)
+            .expect("Failed to start project.edit action");
     }
 
     // TODO: update_project - used by project.update action in window
