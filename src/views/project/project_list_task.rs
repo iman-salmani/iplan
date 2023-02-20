@@ -1,10 +1,10 @@
+use gtk::{gdk, glib, glib::once_cell::sync::Lazy, prelude::*, subclass::prelude::*};
 use std::cell::{Cell, RefCell};
 use std::thread;
 use std::time::Duration;
-use gtk::{glib, gdk, prelude::*, subclass::prelude::*, glib::once_cell::sync::Lazy};
 
-use crate::db::models::{Task, Record};
-use crate::db::operations::{update_task, delete_task, create_record, read_records, update_record};
+use crate::db::models::{Record, Task};
+use crate::db::operations::{create_record, delete_task, read_records, update_record, update_task};
 use crate::views::IPlanWindow;
 
 mod imp {
@@ -81,9 +81,7 @@ glib::wrapper! {
 #[gtk::template_callbacks]
 impl ProjectListTask {
     pub fn new(task: Task) -> Self {
-        glib::Object::builder()
-            .property("task", task)
-            .build()
+        glib::Object::builder().property("task", task).build()
     }
 
     pub fn init_widgets(&self) {
@@ -101,17 +99,18 @@ impl ProjectListTask {
         imp.name_entry.buffer().set_text(&task_name);
         let name_entry_controller = gtk::EventControllerKey::new();
         name_entry_controller.connect_key_released(glib::clone!(
-            @weak self as obj =>
-            move |_controller, _keyval, keycode, _state| {
-                if keycode == 9 {   // Escape
-                    let imp = obj.imp();
-                    imp.name_button.set_visible(true);
-                    imp.name_entry.buffer().set_text(&obj.task().name());
-                }
-            }));
+        @weak self as obj =>
+        move |_controller, _keyval, keycode, _state| {
+            if keycode == 9 {   // Escape
+                let imp = obj.imp();
+                imp.name_button.set_visible(true);
+                imp.name_entry.buffer().set_text(&obj.task().name());
+            }
+        }));
         imp.name_entry.add_controller(&name_entry_controller);
         if let Some(duration) = task.duration() {
-            imp.timer_button_content.set_label(&Record::duration_display(duration));
+            imp.timer_button_content
+                .set_label(&Record::duration_display(duration));
         }
         if task.done() {
             imp.timer_toggle_button.set_sensitive(false);
@@ -121,8 +120,11 @@ impl ProjectListTask {
                 move |button| obj.handle_timer_toggle_button_toggled(button)));
             imp.timer_toggle_button_handler_id.replace(Some(handler_id));
             // Starting timer if have not finished record
-            let records = read_records(task.id(), true).expect("Faield to read records");
-            if !records.is_empty() {imp.timer_toggle_button.set_active(true)}
+            let records =
+                read_records(task.id(), true, None, None).expect("Faield to read records");
+            if !records.is_empty() {
+                imp.timer_toggle_button.set_active(true)
+            }
         }
     }
 
@@ -136,7 +138,8 @@ impl ProjectListTask {
         let task = self.task();
         let is_active = button.is_active();
 
-        if task.done() != is_active {   // This happens in fetch done tasks
+        if task.done() != is_active {
+            // This happens in fetch done tasks
             task.set_property("done", is_active);
             self.set_property("task", task);
             update_task(self.task()).expect("Failed to update task");
@@ -153,14 +156,15 @@ impl ProjectListTask {
                     let handler_id = imp.timer_toggle_button.connect_toggled(glib::clone!(
                         @weak self as obj =>
                         move |button| obj.handle_timer_toggle_button_toggled(button)));
-                    imp.timer_toggle_button_handler_id.replace(Some(handler_id));                }
+                    imp.timer_toggle_button_handler_id.replace(Some(handler_id));
+                }
             }
         }
     }
 
     #[template_callback]
     fn handle_name_button_clicked(&self, button: gtk::Button) {
-        button.set_visible(false);  // Entry visible param binded to this
+        button.set_visible(false); // Entry visible param binded to this
         self.imp().name_entry.grab_focus_without_selecting();
     }
 
@@ -190,17 +194,16 @@ impl ProjectListTask {
 
     fn handle_timer_toggle_button_toggled(&self, button: &gtk::ToggleButton) {
         let task = self.task();
-        let records = read_records(task.id(), true).expect("Faield to read records");
+        let records = read_records(task.id(), true, None, None).expect("Faield to read records");
         let record = if records.is_empty() {
-            create_record(
-                glib::DateTime::now_local().unwrap().to_unix(),
-                task.id()
-            ).expect("Failed to create record")
+            create_record(glib::DateTime::now_local().unwrap().to_unix(), task.id())
+                .expect("Failed to create record")
         } else {
             let record = records.get(0).unwrap().clone();
             record.set_property(
                 "duration",
-                glib::DateTime::now_local().unwrap().to_unix() - record.start());
+                glib::DateTime::now_local().unwrap().to_unix() - record.start(),
+            );
             record
         };
 
@@ -209,40 +212,47 @@ impl ProjectListTask {
 
             let (tx, rx) = glib::MainContext::channel(glib::PRIORITY_DEFAULT);
             let mut duration = record.duration();
-            thread::spawn(move || {
-                loop {
-                    if let Err(_) = tx.send(duration.to_string()) {
-                        break;
-                    }
-                    thread::sleep(Duration::from_secs(1));
-                    duration += 1;
+            thread::spawn(move || loop {
+                if let Err(_) = tx.send(duration.to_string()) {
+                    break;
                 }
+                thread::sleep(Duration::from_secs(1));
+                duration += 1;
             });
-            rx.attach(None, glib::clone!(
-                @weak button => @default-return glib::Continue(false),
-                move |text| {
-                    if button.is_active() {
-                        let button_content = button.child()
-                            .and_downcast::<adw::ButtonContent>()
-                            .unwrap();
-                        button_content.set_label(
-                            &Record::duration_display(text.parse::<i64>().unwrap())
-                        );
-                        glib::Continue(true)
-                    } else {
-                        glib::Continue(false)
+            rx.attach(
+                None,
+                glib::clone!(
+                    @weak button => @default-return glib::Continue(false),
+                    move |text| {
+                        if button.is_active() {
+                            let button_content = button.child()
+                                .and_downcast::<adw::ButtonContent>()
+                                .unwrap();
+                            button_content.set_label(
+                                &Record::duration_display(text.parse::<i64>().unwrap())
+                            );
+                            glib::Continue(true)
+                        } else {
+                            glib::Continue(false)
+                        }
                     }
-                }
-            ));
+                ),
+            );
         } else {
             button.remove_css_class("destructive-action");
             record.set_property(
                 "duration",
-                glib::DateTime::now_local().unwrap().to_unix() - record.start());
+                glib::DateTime::now_local().unwrap().to_unix() - record.start(),
+            );
             update_record(&record).expect("Failed to update record");
             self.imp()
                 .timer_button_content
-                .set_label(&Record::duration_display(task.duration().expect("Task duration cannot be 0 at this point")));
+                .set_label(&Record::duration_display(
+                    task.duration()
+                        .expect("Task duration cannot be 0 at this point"),
+                ));
+            self.activate_action("project.update", None)
+                .expect("Failed to send project.update");
         }
     }
 
@@ -256,16 +266,16 @@ impl ProjectListTask {
             .button_label("Undo")
             .build();
         toast.connect_button_clicked(glib::clone!(
-            @weak self as obj =>
-            move |_toast| {
-                let task = obj.task();
-                task.set_property("suspended", false);
-                obj.set_property("task", &task);
-                update_task(task).expect("Failed to update task");
-                obj.changed();
-                obj.grab_focus();
-                // FIXME: open another project situation
-            }));
+        @weak self as obj =>
+        move |_toast| {
+            let task = obj.task();
+            task.set_property("suspended", false);
+            obj.set_property("task", &task);
+            update_task(task).expect("Failed to update task");
+            obj.changed();
+            obj.grab_focus();
+            // FIXME: open another project situation
+        }));
         toast.connect_dismissed(glib::clone!(
             @weak self as obj =>
             move |_toast| {
@@ -295,18 +305,21 @@ impl ProjectListTask {
         task.set_property("suspended", true);
         self.set_property("task", &task);
         update_task(task).expect("Failed to update task");
-        let upper_row = self.parent()
+        let upper_row = self
+            .parent()
             .and_downcast::<gtk::ListBox>()
             .unwrap()
             .row_at_index(self.index() - 1);
-        if let Some(upper_row) = upper_row {upper_row.grab_focus();}
+        if let Some(upper_row) = upper_row {
+            upper_row.grab_focus();
+        }
         self.changed();
     }
 
     #[template_callback]
     fn handle_drag_prepare(&self, _x: f64, _y: f64) -> Option<gdk::ContentProvider> {
         let name_entry = self.imp().name_entry.get();
-        if  WidgetExt::is_visible(&name_entry) {
+        if WidgetExt::is_visible(&name_entry) {
             None
         } else {
             Some(gdk::ContentProvider::for_value(&self.to_value()))
@@ -337,12 +350,12 @@ impl ProjectListTask {
         // TODO: select active project
         if let Some(root) = self.root() {
             root.downcast::<IPlanWindow>()
-            .unwrap()
-            .imp()
-            .sidebar
-            .imp()
-            .projects_section
-            .select_active_project();
+                .unwrap()
+                .imp()
+                .sidebar
+                .imp()
+                .projects_section
+                .select_active_project();
         }
     }
 }

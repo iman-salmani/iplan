@@ -28,9 +28,24 @@
   </template>
   <!-- Project duration Popover -->
   <object class="GtkPopover" id="duration_popover">
+    <style>
+      <class name="menu"/>
+    </style>
     <child>
-      <object class="GtkBox" id="stat_box">
-        <property name="orientation">vertical</property>
+      <object class="GtkListBox" id="stat_box">
+        <property name="selection-mode">none</property>
+        <child type="placeholder">
+          <object class="AdwStatusPage">
+            <property name="icon-name">profit-symbolic</property>
+            <property name="title">Time spent per day</property>
+            <property name="description">Use timer to add time</property>
+            <property name="width-request">320</property>
+            <property name="height-request">256</property>
+            <style>
+              <class name="compact"/>
+            </style>
+          </object>
+        </child>
       </object>
     </child>
   </object>

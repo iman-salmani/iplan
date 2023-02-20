@@ -82,7 +82,7 @@ impl Project {
             .build()
     }
 
-    pub fn durartion(&self) -> Option<i64> {
+    pub fn duration(&self) -> Option<i64> {
         let mut total = 0;
         for task in read_tasks(self.id(), None, None).expect("Faield to read tasks") {
             if let Some(task_duration) = task.duration() {
@@ -93,16 +93,6 @@ impl Project {
             None
         } else {
             Some(total)
-        }
-    }
-
-    pub fn duration_display(&self, duration: i64) -> String {
-        let (min, sec) = (duration / 60, duration % 60);
-        if min > 60 {
-            let (hour, min) = (duration / 60, duration % 60);
-            format!("{}:{}:{}", hour, min, sec)
-        } else {
-            format!("{}:{}", min, sec)
         }
     }
 

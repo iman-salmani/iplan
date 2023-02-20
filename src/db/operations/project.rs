@@ -63,8 +63,10 @@ pub fn update_project(project: &Project) -> Result<()> {
     }
 
     conn.execute(
-        &format!("UPDATE projects SET
-            name = ?1, archive = ?2 {index_stmt} WHERE id = ?3"),
+        &format!(
+            "UPDATE projects SET
+            name = ?1, archive = ?2 {index_stmt} WHERE id = ?3"
+        ),
         (project.name(), project.archive(), project.id()),
     )?;
     Ok(())
@@ -109,4 +111,3 @@ fn new_index() -> i32 {
         Err(_) => return 0,
     };
 }
-

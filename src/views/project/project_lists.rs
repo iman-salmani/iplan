@@ -1,9 +1,9 @@
-use std::cell::{Cell, RefCell};
 use gtk::{glib, prelude::*, subclass::prelude::*};
+use std::cell::{Cell, RefCell};
 
 use crate::db::operations::{create_list, read_lists};
-use crate::views::IPlanWindow;
 use crate::views::project::ProjectList;
+use crate::views::IPlanWindow;
 
 #[derive(Clone, Copy, PartialEq)]
 pub enum ProjectLayout {
@@ -93,7 +93,8 @@ impl ProjectLists {
 
         let lists = imp.lists_box.observe_children();
         for _i in 0..lists.n_items() {
-            imp.lists_box.remove(&lists.item(0).and_downcast::<ProjectList>().unwrap());
+            imp.lists_box
+                .remove(&lists.item(0).and_downcast::<ProjectList>().unwrap());
         }
 
         for list in read_lists(project_id).expect("Failed to read lists") {
@@ -118,7 +119,7 @@ impl ProjectLists {
         }
         imp.lists_box.append(&project_list);
         project_list.imp().name_button.set_visible(false); // Name entry visiblity have binding to this
-        project_list.grab_focus();  // FIXME: dont working when call from primary
+        project_list.grab_focus(); // FIXME: dont working when call from primary
     }
 
     pub fn set_layout(&self, window: &IPlanWindow, layout: ProjectLayout) {
@@ -149,21 +150,21 @@ impl ProjectLists {
                                 }}
                             gtk::Inhibit(true)}));
                     new_shift_controller.connect_key_released(glib::clone!(
-                        @weak self as obj =>
-                        move |_controller, _keyval, keycode, _state| {
-                            if keycode == 50 {
-                                let imp = obj.imp();
-                                imp.shift_pressed.set(false);
-                                let lists = imp.lists_box.observe_children();
-                                for i in 0..lists.n_items() {
-                                    lists.item(i)
-                                        .and_downcast::<ProjectList>()
-                                        .unwrap()
-                                        .imp()
-                                        .scrolled_window
-                                        .vscrollbar()
-                                        .set_sensitive(true);
-                                }}}));
+                    @weak self as obj =>
+                    move |_controller, _keyval, keycode, _state| {
+                        if keycode == 50 {
+                            let imp = obj.imp();
+                            imp.shift_pressed.set(false);
+                            let lists = imp.lists_box.observe_children();
+                            for i in 0..lists.n_items() {
+                                lists.item(i)
+                                    .and_downcast::<ProjectList>()
+                                    .unwrap()
+                                    .imp()
+                                    .scrolled_window
+                                    .vscrollbar()
+                                    .set_sensitive(true);
+                            }}}));
                     window.add_controller(&new_shift_controller);
                     shift_controller.replace(new_shift_controller);
                 }

@@ -58,8 +58,10 @@ pub fn update_list(list: &List) -> Result<()> {
     }
 
     conn.execute(
-        &format!("UPDATE lists SET
-            name = ?1, project = ?2, i = ?3 {index_stmt} WHERE id = ?4"),
+        &format!(
+            "UPDATE lists SET
+            name = ?1, project = ?2, i = ?3 {index_stmt} WHERE id = ?4"
+        ),
         (list.name(), list.project(), list.index(), list.id()),
     )?;
     Ok(())
@@ -84,4 +86,3 @@ fn new_index(project_id: i64) -> i32 {
         Err(_) => return 0,
     };
 }
-

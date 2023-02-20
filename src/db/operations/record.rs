@@ -12,8 +12,22 @@ pub fn create_record(start: i64, task_id: i64) -> Result<Record> {
     Ok(Record::new(conn.last_insert_rowid(), start, 0, task_id))
 }
 
-pub fn read_records(task_id: i64, uncomplete: bool) -> Result<Vec<Record>> {
-    let filters = if uncomplete { "AND duration = 0" } else { "" };
+pub fn read_records(
+    task_id: i64,
+    uncomplete: bool,
+    start: Option<i64>,
+    end: Option<i64>,
+) -> Result<Vec<Record>> {
+    let filters = &mut String::new();
+    if uncomplete {
+        filters.push_str("AND duration = 0 ")
+    }
+    if let Some(start) = start {
+        filters.push_str(&format!("AND start > {start} "))
+    }
+    if let Some(end) = end {
+        filters.push_str(&format!("AND start < {end}"))
+    }
     let conn = get_connection();
     let mut stmt = conn.prepare(&format!(
         "SELECT * FROM records WHERE task = ? {filters} ORDER BY start DESC"

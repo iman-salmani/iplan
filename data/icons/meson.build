@@ -29,7 +29,8 @@ install_data(
   [
   	join_paths(actions_dir, 'shoe-box-symbolic.svg'),
   	join_paths(actions_dir, 'view-columns-symbolic.svg'),
-  	join_paths(actions_dir, 'list-symbolic.svg')
+  	join_paths(actions_dir, 'list-symbolic.svg'),
+  	join_paths(actions_dir, 'profit-symbolic.svg'),
 	],
   install_dir: join_paths(get_option('datadir'), 'icons', actions_dir)
 )

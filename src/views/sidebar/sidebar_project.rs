@@ -2,9 +2,9 @@ use gtk::{gdk, glib, glib::once_cell::sync::Lazy, prelude::*, subclass::prelude:
 use std::cell::RefCell;
 
 use crate::db::models::Project;
-use crate::db::operations::{read_lists, update_task, new_position};
-use crate::views::sidebar::SidebarProjects;
+use crate::db::operations::{new_position, read_lists, update_task};
 use crate::views::project::ProjectListTask;
+use crate::views::sidebar::SidebarProjects;
 
 mod imp {
     use super::*;
@@ -147,7 +147,10 @@ impl SidebarProject {
             .id();
         task.set_property("list", list_id);
         task.set_property("position", new_position(list_id));
-        row.parent().and_downcast::<gtk::ListBox>().unwrap().remove(&row);
+        row.parent()
+            .and_downcast::<gtk::ListBox>()
+            .unwrap()
+            .remove(&row);
         update_task(task).expect("Failed to update task");
         self.parent()
             .unwrap()

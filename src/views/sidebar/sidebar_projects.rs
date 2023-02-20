@@ -241,3 +241,4 @@ impl SidebarProjects {
         gdk::DragAction::MOVE
     }
 }
+

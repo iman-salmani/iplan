@@ -146,4 +146,3 @@ pub fn new_position(list_id: i64) -> i32 {
         Err(_) => return 0,
     };
 }
-

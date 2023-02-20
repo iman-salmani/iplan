@@ -24,7 +24,7 @@ use std::cell::RefCell;
 
 use crate::db::models::Project;
 use crate::db::operations::{create_list, create_project, read_projects};
-use crate::views::project::{ProjectHeader, ProjectLists, ProjectLayout};
+use crate::views::project::{ProjectHeader, ProjectLayout, ProjectLists};
 use crate::views::sidebar::Sidebar;
 
 mod imp {
@@ -60,6 +60,11 @@ mod imp {
                 let imp = win.imp();
                 imp.project_header.open_project(&win.project());
                 imp.project_lists.open_project(win.project().id());
+            });
+            klass.install_action("project.update", None, move |win, _, _| {
+                let imp = win.imp();
+                imp.project_header.open_project(&win.project());
+                // TODO: projects_section.update_project
             });
             klass.install_action("list.new", None, move |win, _, _| {
                 let imp = win.imp();
@@ -140,7 +145,8 @@ impl IPlanWindow {
         if imp.settings.int("default-project-layout") == 1 {
             imp.project_layout_button
                 .set_icon_name("view-columns-symbolic");
-            imp.project_lists.set_layout(&window ,ProjectLayout::Horizontal);
+            imp.project_lists
+                .set_layout(&window, ProjectLayout::Horizontal);
         }
         imp.settings.bind("width", &window, "default-width").build();
         imp.settings
@@ -243,7 +249,8 @@ impl IPlanWindow {
             Some(icon_name) => {
                 if icon_name == "list-symbolic" {
                     button.set_icon_name("view-columns-symbolic");
-                    imp.project_lists.set_layout(self, ProjectLayout::Horizontal);
+                    imp.project_lists
+                        .set_layout(self, ProjectLayout::Horizontal);
                     imp.settings
                         .set_int("default-project-layout", 1)
                         .expect("Could not set setting.");
@@ -260,4 +267,3 @@ impl IPlanWindow {
         }
     }
 }
-

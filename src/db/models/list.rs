@@ -115,4 +115,3 @@ impl Default for List {
         List::new(1, String::new(), 1, 0)
     }
 }
-
