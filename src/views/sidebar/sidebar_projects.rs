@@ -57,6 +57,34 @@ impl SidebarProjects {
         glib::Object::new::<SidebarProjects>(&[])
     }
 
+    pub fn select_active_project(&self) {
+        let project_i = self
+            .root()
+            .unwrap()
+            .downcast::<IPlanWindow>()
+            .unwrap()
+            .project()
+            .index();
+        let projects_box = &self.imp().projects_box;
+        let row = projects_box.row_at_index(project_i).unwrap();
+        projects_box.select_row(Some(&row));
+    }
+
+    pub fn update_project(&self, project: &Project) {
+        let row = self.imp()
+            .projects_box.row_at_index(project.index())
+            .and_downcast::<SidebarProject>().unwrap();
+        let row_imp = row.imp();
+        row_imp.name_label.set_label(&project.name());
+        if project.archive() {
+            row_imp.name_label.add_css_class("dim-label");
+        } else {
+            row_imp.name_label.remove_css_class("dim-label");
+        }
+        row.set_property("project", project);
+        row.changed();
+    }
+
     fn init_widgets(&self) {
         let imp = self.imp();
 
@@ -127,19 +155,6 @@ impl SidebarProjects {
     // TODO: update_project - used by project.update action in window
 
     // TODO: project_delete_row - used by project.delete action in window
-
-    pub fn select_active_project(&self) {
-        let project_i = self
-            .root()
-            .unwrap()
-            .downcast::<IPlanWindow>()
-            .unwrap()
-            .project()
-            .index();
-        let projects_box = &self.imp().projects_box;
-        let row = projects_box.row_at_index(project_i).unwrap();
-        projects_box.select_row(Some(&row));
-    }
 
     #[template_callback]
     fn handle_archive_toggle_button_toggled(&self, _toggle_button: gtk::ToggleButton) {
