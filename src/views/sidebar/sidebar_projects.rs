@@ -85,6 +85,23 @@ impl SidebarProjects {
         row.changed();
     }
 
+    pub fn delete_project(&self, index: i32) {
+        let imp = self.imp();
+        let target_row = imp.projects_box.row_at_index(index).unwrap();
+        let last_index = imp.projects_box
+            .last_child().and_downcast::<gtk::ListBoxRow>().unwrap().index();
+
+        for i in index+1..last_index+1 {
+            let row = imp.projects_box
+                .row_at_index(i)
+                .and_downcast::<SidebarProject>()
+                .unwrap();
+            let project = row.project();
+            project.set_property("index", project.index() - 1);
+        }
+        imp.projects_box.remove(&target_row);
+    }
+
     fn init_widgets(&self) {
         let imp = self.imp();
 

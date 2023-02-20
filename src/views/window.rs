@@ -24,7 +24,7 @@ use std::cell::RefCell;
 
 use crate::db::models::Project;
 use crate::db::operations::{create_list, create_project, read_projects};
-use crate::views::project::{ProjectHeader, ProjectLayout, ProjectLists};
+use crate::views::project::{ProjectHeader, ProjectLayout, ProjectLists, ProjectEditWindow};
 use crate::views::sidebar::Sidebar;
 
 mod imp {
@@ -58,14 +58,39 @@ mod imp {
             klass.bind_template_instance_callbacks();
             klass.install_action("project.open", None, move |win, _, _| {
                 let imp = win.imp();
-                imp.project_header.open_project(&win.project());
-                imp.project_lists.open_project(win.project().id());
+                let project = win.project();
+                imp.project_header.open_project(&project);
+                imp.project_lists.open_project(project.id());
+            });
+            klass.install_action("project.edit", None, move |win, _, _| {
+                let window = ProjectEditWindow::new(
+                    win.application().unwrap(),
+                    win,
+                    win.project()
+                    );
+                window.present();
             });
             klass.install_action("project.update", None, move |win, _, _| {
                 let imp = win.imp();
                 let project = win.project();
                 imp.project_header.open_project(&project);
                 imp.sidebar.imp().projects_section.update_project(&project);
+            });
+            klass.install_action("project.delete", None, move |win, _, _| {
+                win.imp().sidebar.imp()
+                    .projects_section
+                    .delete_project(win.project().index());
+                let projects = read_projects(true).expect("Failed to read projects");
+                let home_project = if let Some(project) = projects.get(0) {
+                    project.clone()
+                } else {
+                    let project = create_project("🙂 Personal").expect("Failed to create project");
+                    create_list("Tasks", project.id()).expect("Failed to create list");
+                    project
+                };
+                win.set_property("project", home_project);
+                win.activate_action("project.open", None)
+                    .expect("Failed to send project.open action");
             });
             klass.install_action("list.new", None, move |win, _, _| {
                 let imp = win.imp();

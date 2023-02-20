@@ -288,12 +288,12 @@ impl ProjectList {
         let imp = self.imp();
         imp.options_button.popdown();
         let dialog = gtk::Builder::from_resource(
-            "/ir/imansalmani/iplan/ui/project/project_list_delete_dialog.ui",
-        )
-        .object::<adw::MessageDialog>("dialog")
-        .unwrap();
+            "/ir/imansalmani/iplan/ui/delete_dialog.ui",
+            ).object::<adw::MessageDialog>("dialog")
+            .unwrap();
         dialog.set_transient_for(self.root().and_downcast::<gtk::Window>().as_ref());
         dialog.set_heading(Some(&format!("Delete \"{}\" List?", self.list().name())));
+        dialog.set_body("List and tasks will be permanently lost.");
         dialog.connect_response(
             Some("delete"),
             glib::clone!(

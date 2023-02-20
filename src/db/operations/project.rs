@@ -19,13 +19,9 @@ pub fn create_project(name: &str) -> Result<Project> {
 }
 
 pub fn read_projects(archive: bool) -> Result<Vec<Project>> {
-    let filters = if archive {
-        "ORDER BY i DESC"
-    } else {
-        "WHERE archive = false"
-    };
+    let filters = if !archive { "WHERE archive = false" } else { "" };
     let conn = get_connection();
-    let mut stmt = conn.prepare(&format!("SELECT * FROM projects {filters}"))?;
+    let mut stmt = conn.prepare(&format!("SELECT * FROM projects {filters} ORDER BY i ASC"))?;
     let mut rows = stmt.query([])?;
     let mut projects = Vec::new();
     while let Some(row) = rows.next()? {
@@ -72,7 +68,7 @@ pub fn update_project(project: &Project) -> Result<()> {
     Ok(())
 }
 
-pub fn delete_project(project_id: i64, index: i64) -> Result<()> {
+pub fn delete_project(project_id: i64, index: i32) -> Result<()> {
     let conn = get_connection();
     // Notify: Not return error when id not exists
     conn.execute("DELETE FROM projects WHERE id = ?", (project_id,))?;
