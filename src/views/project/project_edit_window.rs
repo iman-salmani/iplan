@@ -1,11 +1,9 @@
-use gtk::{gdk, glib, glib::once_cell::sync::Lazy, prelude::*, subclass::prelude::*};
+use gtk::{glib, prelude::*, subclass::prelude::*};
 use adw::{prelude::*, subclass::prelude::*};
-use std::cell::{Cell, RefCell};
-use std::thread;
-use std::time::Duration;
+use std::cell::RefCell;
 
-use crate::db::models::{Record, Task, Project};
-use crate::db::operations::{update_project, delete_project, create_record, delete_task, read_records, update_record, update_task};
+use crate::db::models::Project;
+use crate::db::operations::{update_project, delete_project};
 use crate::views::IPlanWindow;
 
 mod imp {

@@ -175,10 +175,6 @@ impl SidebarProjects {
             .expect("Failed to start project.edit action");
     }
 
-    // TODO: update_project - used by project.update action in window
-
-    // TODO: project_delete_row - used by project.delete action in window
-
     #[template_callback]
     fn handle_archive_toggle_button_toggled(&self, _toggle_button: gtk::ToggleButton) {
         self.imp().projects_box.invalidate_filter();
