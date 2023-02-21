@@ -121,7 +121,7 @@ pub fn delete_task(task_id: i64, list_id: i64, position: i32) -> Result<()> {
 pub fn find_tasks(text: &str, done: bool) -> Result<Vec<Task>> {
     let filters = if done { "" } else { "AND done = false" };
     // Replace % and _ with \% and \_ because they have meaning
-    // TODO: do this whitout copy string
+    // FIXME: do this whitout copy string
     let text = text.replace("%", r"\%").replace("_", r"\_");
     let conn = get_connection();
     let mut stmt = conn.prepare(&format!(

@@ -3,9 +3,10 @@ use std::cell::RefCell;
 
 use crate::db::models::Project;
 use crate::db::operations::{
-    create_list, create_project, read_project, read_projects, update_project,
+    create_project, read_project, read_projects, update_project,
+    create_list, read_lists, new_position, update_task,
 };
-use crate::views::{sidebar::SidebarProject, IPlanWindow};
+use crate::views::{sidebar::SidebarProject, IPlanWindow, project::ProjectListTask};
 mod imp {
     use super::*;
 
@@ -138,7 +139,21 @@ impl SidebarProjects {
         project_drop_target.connect_motion(glib::clone!(
             @weak self as obj => @default-return gdk::DragAction::empty(),
             move |target, x, y| obj.project_drop_target_motion(target, x, y)));
-        imp.projects_box.add_controller(&project_drop_target)
+        imp.projects_box.add_controller(&project_drop_target);
+
+        // Task drop target
+        let task_drop_target =
+            gtk::DropTarget::new(ProjectListTask::static_type(), gdk::DragAction::MOVE);
+        task_drop_target.set_preload(true);
+        task_drop_target.connect_drop(glib::clone!(
+            @weak self as obj => @default-return false,
+            move |target, value, x, y| obj.task_drop_target_drop(target, value, x, y)));
+        task_drop_target.connect_motion(glib::clone!(
+            @weak self as obj => @default-return gdk::DragAction::empty(),
+            move |target, x, y| obj.task_drop_target_motion(target, x, y)));
+        task_drop_target.connect_leave(glib::clone!(
+            @weak self as obj => move |_target| { obj.select_active_project(); }));
+        imp.projects_box.add_controller(&task_drop_target);
     }
 
     #[template_callback]
@@ -273,6 +288,51 @@ impl SidebarProjects {
         }
 
         gdk::DragAction::MOVE
+    }
+
+    fn task_drop_target_drop(
+        &self,
+        _target: &gtk::DropTarget,
+        value: &glib::Value,
+        _x: f64,
+        y: f64,
+    ) -> bool {
+        let row: ProjectListTask = value.get().unwrap();
+        let task = row.task();
+        let project_row = self.imp().projects_box.row_at_y(y as i32).unwrap();
+        let project_id = project_row.property::<Project>("project").id();
+        task.set_property("project", project_id);
+        let list_id = read_lists(project_id)
+            .expect("Failed to read lists")
+            .first()
+            .expect("Project should have list")
+            .id();
+        task.set_property("list", list_id);
+        task.set_property("position", new_position(list_id));
+        row.parent()
+            .and_downcast::<gtk::ListBox>()
+            .unwrap()
+            .remove(&row);
+        update_task(task).expect("Failed to update task");
+        self.select_active_project();
+        true
+    }
+
+    fn task_drop_target_motion(
+        &self,
+        target: &gtk::DropTarget,
+        _x: f64,
+        y: f64,
+    ) -> gdk::DragAction {
+        let task_row: ProjectListTask = target.value_as().unwrap();
+        let projects_box = &self.imp().projects_box;
+        if let Some(project_row) = projects_box.row_at_y(y as i32) {
+            if task_row.task().project() != project_row.property::<Project>("project").id() {
+                projects_box.select_row(Some(&project_row));
+                return gdk::DragAction::MOVE;
+            }
+        }
+        gdk::DragAction::empty()
     }
 }
 

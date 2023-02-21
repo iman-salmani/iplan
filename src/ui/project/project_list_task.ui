@@ -81,7 +81,6 @@
         <signal name="prepare" handler="handle_drag_prepare" swapped="true"/>
         <signal name="drag-begin" handler="handle_drag_begin" swapped="true"/>
         <signal name="drag-cancel" handler="handle_drag_cancel" swapped="true"/>
-        <signal name="drag-end" handler="handle_drag_end" swapped="true"/>
       </object>
     </child><!-- End Drag Source -->
   </template>

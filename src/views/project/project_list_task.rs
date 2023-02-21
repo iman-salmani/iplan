@@ -345,19 +345,5 @@ impl ProjectListTask {
         self.changed();
         false
     }
-
-    #[template_callback]
-    fn handle_drag_end(&self, _drag: gdk::Drag) {
-        // TODO: select active project
-        if let Some(root) = self.root() {
-            root.downcast::<IPlanWindow>()
-                .unwrap()
-                .imp()
-                .sidebar
-                .imp()
-                .projects_section
-                .select_active_project();
-        }
-    }
 }
 

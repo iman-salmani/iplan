@@ -241,8 +241,6 @@ impl ProjectList {
         self.property("contain-done-tasks")
     }
 
-    // TODO: focus_on_task
-
     fn fetch(&self, project_id: i64, done_tasks: bool) {
         let imp = self.imp();
         for task in read_tasks(project_id, Some(self.list().id()), Some(done_tasks))
@@ -329,8 +327,6 @@ impl ProjectList {
             imp.tasks_box.invalidate_filter();
         }
     }
-
-    // TODO: handle_scroll_controller_scroll
 
     fn list_drop_target_drop(
         &self,
