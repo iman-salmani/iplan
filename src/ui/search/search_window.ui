@@ -16,14 +16,14 @@
           <object class="GtkSearchEntry" id="search_entry">
             <property name="hexpand">true</property>
             <property name="placeholder-text">Search</property>
-            <signal name="activate" handler="search_entry_activate_cb"/>
-            <signal name="search-changed" handler="search_entry_search_changed_cb"/>
+            <signal name="activate" handler="handle_search_entry_activate" swapped="true"/>
+            <signal name="search-changed" handler="handle_search_entry_search_changed" swapped="true"/>
           </object>
         </property>
         <child type="start">
           <object class="GtkToggleButton" id="show_done_tasks_toggle_button">
             <property name="icon-name">object-select-symbolic</property>
-            <signal name="toggled" handler="search_entry_search_changed_cb"/>
+            <signal name="toggled" handler="handle_show_done_tasks_toggle_button_toggled" swapped="true"/>
           </object>
         </child>
       </object>
@@ -44,10 +44,18 @@
                 <property name="margin-bottom">3</property>
                 <property name="margin-start">12</property>
                 <property name="margin-end">12</property>
-                <signal name="row-activated" handler="search_results_row_activated_cb"/>
+                <signal name="row-activated" handler="handle_search_results_row_activated" swapped="true"/>
                 <style>
                   <class name="boxed-list"/>
                 </style>
+                <child type="placeholder">
+                  <object class="AdwStatusPage" id="search_results_placeholder">
+                    <property name="icon-name">system-search-symbolic</property>
+                    <property name="title">No Results Found</property>
+                    <property name="description">Try a different search</property>
+                    <property name="visible">false</property>
+                  </object>
+                </child>
               </object>
             </child>
           </object>
@@ -55,9 +63,4 @@
       </object>
     </child>
   </template>
-  <object class="AdwStatusPage" id="search_results_placeholder">
-    <property name="icon-name">system-search-symbolic</property>
-    <property name="title">No Results Found</property>
-    <property name="description">Try a different search</property>
-  </object>
 </interface>

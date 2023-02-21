@@ -24,6 +24,7 @@ use gtk::{gio, glib};
 
 use crate::config::{APPLICATION_ID, VERSION};
 use crate::views::IPlanWindow;
+use crate::views::search::SearchWindow;
 
 mod imp {
     use super::*;
@@ -44,7 +45,8 @@ mod imp {
             let obj = self.instance();
             obj.setup_gactions();
             obj.set_accels_for_action("app.quit", &["<primary>q"]);
-            obj.set_accels_for_action("app.shortcuts", &["<primary>question"])
+            obj.set_accels_for_action("app.shortcuts", &["<primary>question"]);
+            obj.set_accels_for_action("app.search", &["<primary>f"]);
         }
     }
 
@@ -96,8 +98,18 @@ impl IPlanApplication {
         let shortcuts_action = gio::ActionEntry::builder("shortcuts")
             .activate(move |app: &Self, _, _| app.show_shortcuts())
             .build();
-        self.add_action_entries([quit_action, about_action, shortcuts_action])
+        let search_action = gio::ActionEntry::builder("search")
+            .activate(move |app: &Self, _, _| app.show_search())
+            .build();
+        self.add_action_entries([quit_action, about_action, shortcuts_action, search_action])
             .unwrap();
+    }
+
+    fn show_search(&self) {
+        let window = SearchWindow::new(
+            self.upcast_ref::<gtk::Application>(),
+            &self.active_window().unwrap());
+        window.present();
     }
 
     fn show_shortcuts(&self) {

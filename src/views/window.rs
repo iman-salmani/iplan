@@ -61,6 +61,7 @@ mod imp {
                 let project = win.project();
                 imp.project_header.open_project(&project);
                 imp.project_lists.open_project(project.id());
+                imp.project_lists.select_task(None);
             });
             klass.install_action("project.edit", None, move |win, _, _| {
                 let window = ProjectEditWindow::new(
@@ -77,9 +78,8 @@ mod imp {
                 imp.sidebar.imp().projects_section.update_project(&project);
             });
             klass.install_action("project.delete", None, move |win, _, _| {
-                win.imp().sidebar.imp()
-                    .projects_section
-                    .delete_project(win.project().index());
+                let projects_section = &win.imp().sidebar.imp().projects_section;
+                projects_section.delete_project(win.project().index());
                 let projects = read_projects(true).expect("Failed to read projects");
                 let home_project = if let Some(project) = projects.get(0) {
                     project.clone()
@@ -89,12 +89,44 @@ mod imp {
                     project
                 };
                 win.set_property("project", home_project);
+                projects_section.select_active_project();
                 win.activate_action("project.open", None)
                     .expect("Failed to send project.open action");
             });
             klass.install_action("list.new", None, move |win, _, _| {
                 let imp = win.imp();
                 imp.project_lists.new_list(win.project().id());
+            });
+            klass.install_action("search.project", None, move |win, _, _| {
+                let imp = win.imp();
+                let project = win.project();
+                imp.project_header.open_project(&project);
+                imp.project_lists.open_project(project.id());
+                imp.project_lists.select_task(None);
+                imp.sidebar.imp().projects_section.select_active_project();
+            });
+            klass.install_action("search.task", Some("(bx)"), move |win, _, value| {
+                let imp = win.imp();
+                let (project_changed, task_id) = value.unwrap().get::<(bool, i64)>().unwrap();
+                if project_changed {
+                    let project = win.project();
+                    imp.project_header.open_project(&project);
+                    imp.project_lists.open_project(project.id());
+                    imp.sidebar.imp().projects_section.select_active_project();
+                }
+                let (tx, rx) = glib::MainContext::channel(glib::PRIORITY_DEFAULT);
+                glib::idle_add_once(move || {
+                    tx.send("").expect("Something happens");
+                });
+                rx.attach(
+                    None,
+                    glib::clone!(
+                        @weak imp => @default-return glib::Continue(false),
+                        move |_text| {
+                            imp.project_lists.select_task(Some(task_id));
+                            glib::Continue(false)
+                        }
+                ));
             });
         }
 

@@ -1,8 +1,8 @@
 use gtk::{glib, prelude::*, subclass::prelude::*};
 use std::cell::{Cell, RefCell};
 
-use crate::db::operations::{create_list, read_lists};
-use crate::views::project::ProjectList;
+use crate::db::operations::{create_list, read_lists, read_list, read_task};
+use crate::views::project::{ProjectList, ProjectListTask};
 use crate::views::IPlanWindow;
 
 #[derive(Clone, Copy, PartialEq)]
@@ -106,8 +106,49 @@ impl ProjectLists {
         if imp.lists_box.first_child().is_none() {
             imp.lists_box.append(&imp.placeholder.get());
         }
+    }
 
-        // TODO: Select target task
+    pub fn select_task(&self, task_id: Option<i64>) {
+        let imp = self.imp();
+        if let Some(task_id) = task_id {
+            let task = read_task(task_id).expect("Failed to read task");
+            let list = read_list(task.list()).expect("Failed to read list");
+            let project_list = imp.lists_box
+                .observe_children()
+                .item(list.index() as u32)
+                .and_downcast::<ProjectList>()
+                .unwrap();
+            let project_list_imp = project_list.imp();
+            let tasks = project_list_imp.tasks_box.observe_children();
+            if task.done() {
+                project_list_imp.show_done_tasks_toggle_button.set_active(true);
+            }
+            if project_list_imp.contain_done_tasks.get() {
+                let task_index = (tasks.n_items() as i32 - 2) - task.position();
+                tasks.item(task_index as u32)
+                    .and_downcast::<ProjectListTask>()
+                    .unwrap()
+                    .grab_focus();
+            } else {
+                for i in 0..tasks.n_items()-1 {
+                    if let Some(project_list_task) =
+                        tasks.item(i).and_downcast::<ProjectListTask>() {
+                        let list_task = project_list_task.task();
+                        if list_task.position() == task.position() as i32 {
+                            project_list_task.grab_focus();
+                            break;
+                        }
+                    }
+                }
+            }
+        } else {
+            if let Some(first_list) = imp.lists_box.first_child().and_downcast::<ProjectList>() {
+                if let Some(first_row) =
+                    first_list.imp().tasks_box.first_child().and_downcast::<ProjectListTask>() {
+                    first_row.grab_focus();
+                }
+            }
+        }
     }
 
     pub fn new_list(&self, project_id: i64) {
@@ -179,4 +220,5 @@ impl ProjectLists {
         imp.layout.set(layout);
     }
 }
+
 
