@@ -265,19 +265,20 @@ impl ProjectListTask {
             .title(&toast_name)
             .button_label("Undo")
             .build();
+
         toast.connect_button_clicked(glib::clone!(
-        @weak self as obj =>
-        move |_toast| {
-            let task = obj.task();
-            task.set_property("suspended", false);
-            obj.set_property("task", &task);
-            update_task(task).expect("Failed to update task");
-            obj.changed();
-            obj.grab_focus();
-            // FIXME: open another project situation
-        }));
-        toast.connect_dismissed(glib::clone!(
             @weak self as obj =>
+            move |_toast| {
+                let task = obj.task();
+                task.set_property("suspended", false);
+                update_task(task).expect("Failed to update task");
+                if obj.parent().is_some() {
+                    obj.changed();
+                    obj.grab_focus();
+                }
+            }));
+        toast.connect_dismissed(glib::clone!(
+            @strong self as obj =>
             move |_toast| {
                 let task = obj.task();
                 if task.suspended() {    // Checking Undo button
