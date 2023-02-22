@@ -62,6 +62,7 @@ impl ProjectEditWindow {
                 win.transient_for().unwrap()
                     .activate_action("project.update", None)
                     .expect("Failed to send project.update action");
+                update_project(&project);
                 gtk::Inhibit(false)
             }));
         imp.project.replace(project);
