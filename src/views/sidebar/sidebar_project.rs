@@ -2,8 +2,7 @@ use gtk::{gdk, glib, glib::once_cell::sync::Lazy, prelude::*, subclass::prelude:
 use std::cell::RefCell;
 
 use crate::db::models::Project;
-use crate::db::operations::{new_position, read_lists, update_task};
-use crate::views::project::ProjectListTask;
+use crate::db::operations::read_projects;
 use crate::views::sidebar::SidebarProjects;
 
 mod imp {
@@ -104,14 +103,32 @@ impl SidebarProject {
             .unwrap()
             .select_row(Some(self));
         let drag_icon: gtk::DragIcon = gtk::DragIcon::for_drag(&drag).downcast().unwrap();
-        let label = gtk::Label::builder().label("label").build();
+        let label = gtk::Label::builder().label("").build();
         drag_icon.set_child(Some(&label));
         drag.set_hotspot(0, 0);
     }
 
     #[template_callback]
     fn handle_drag_cancel(&self, _drag: gdk::Drag) -> bool {
-        // TODO: select active project
+        let projects_box = self.parent().and_downcast::<gtk::ListBox>().unwrap();
+        let projects = read_projects(true).expect("Failed to read projects");
+        let rows = projects_box.observe_children();
+        for row in rows.into_iter() {
+            let row: SidebarProject = row.unwrap().downcast().unwrap();
+            let row_project = row.project();
+            for project in &projects {
+                if project.id() == row_project.id() {
+                    row_project.set_property("index", project.index());
+                    row.set_property("project", row_project);
+                    break;
+                }
+            }
+        }
+        projects_box.invalidate_sort();
+        projects_box.parent()
+            .and_downcast::<SidebarProjects>()
+            .unwrap()
+            .select_active_project();
         false
     }
 }

@@ -59,16 +59,22 @@ impl SidebarProjects {
     }
 
     pub fn select_active_project(&self) {
-        let project_i = self
+        // Finding with id because index realtime changes when dragging a project
+        let project_id = self
             .root()
             .unwrap()
             .downcast::<IPlanWindow>()
             .unwrap()
             .project()
-            .index();
+            .id();
         let projects_box = &self.imp().projects_box;
-        let row = projects_box.row_at_index(project_i).unwrap();
-        projects_box.select_row(Some(&row));
+        for project_row in projects_box.observe_children().into_iter() {
+            let project_row: SidebarProject = project_row.unwrap().downcast().unwrap();
+            if project_id == project_row.project().id() {
+                projects_box.select_row(Some(&project_row));
+                break;
+            }
+        }
     }
 
     pub fn update_project(&self, project: &Project) {
@@ -139,6 +145,13 @@ impl SidebarProjects {
         project_drop_target.connect_motion(glib::clone!(
             @weak self as obj => @default-return gdk::DragAction::empty(),
             move |target, x, y| obj.project_drop_target_motion(target, x, y)));
+        project_drop_target.connect_enter(glib::clone!(
+            @weak self as obj => @default-return gdk::DragAction::empty(),
+            move |target, _x, _y| {
+                let source_row: Option<SidebarProject> = target.value_as();
+                obj.imp().projects_box.select_row(source_row.as_ref());
+                gdk::DragAction::MOVE
+            }));
         imp.projects_box.add_controller(&project_drop_target);
 
         // Task drop target
@@ -152,7 +165,10 @@ impl SidebarProjects {
             @weak self as obj => @default-return gdk::DragAction::empty(),
             move |target, x, y| obj.task_drop_target_motion(target, x, y)));
         task_drop_target.connect_leave(glib::clone!(
-            @weak self as obj => move |_target| { obj.select_active_project(); }));
+            @weak self as obj => move |target| {
+                if target.value_as::<ProjectListTask>().is_some() {
+                    obj.select_active_project();
+                }}));
         imp.projects_box.add_controller(&task_drop_target);
     }
 
@@ -226,7 +242,7 @@ impl SidebarProjects {
         if project_db.index() != project.index() {
             update_project(&project).expect("Failed to update project");
         }
-        // TODO: select active project
+        self.select_active_project();
         true
     }
 
