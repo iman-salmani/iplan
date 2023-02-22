@@ -159,8 +159,15 @@ impl ProjectLists {
             imp.lists_box.remove(&imp.placeholder.get());
         }
         imp.lists_box.append(&project_list);
-        project_list.imp().name_button.set_visible(false); // Name entry visiblity have binding to this
-        project_list.grab_focus(); // FIXME: dont working when call from primary
+        let project_list_imp = project_list.imp();
+        project_list_imp.name_button.set_visible(false); // Name entry visiblity have binding to this
+        let (tx, rx) = glib::MainContext::channel(glib::PRIORITY_DEFAULT);
+        glib::idle_add_once(move || {tx.send("").unwrap()});
+        let name_entry = project_list_imp.name_entry.get();
+        rx.attach(None, move |_text| {
+            name_entry.grab_focus();
+            glib::Continue(false)
+        });
     }
 
     pub fn set_layout(&self, window: &IPlanWindow, layout: ProjectLayout) {
