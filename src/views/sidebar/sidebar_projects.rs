@@ -109,6 +109,14 @@ impl SidebarProjects {
         imp.projects_box.remove(&target_row);
     }
 
+    pub fn check_archive_hidden(&self) {
+        // Filter again maybe previous choice is archived project
+        let imp = self.imp();
+        if !imp.archive_toggle_button.is_active() {
+            imp.projects_box.invalidate_filter();
+        }
+    }
+
     fn init_widgets(&self) {
         let imp = self.imp();
 
@@ -174,17 +182,12 @@ impl SidebarProjects {
 
     #[template_callback]
     fn handle_projects_box_row_activated(&self, row: gtk::ListBoxRow) {
-        let imp = self.imp();
         let window = self.root().unwrap().downcast::<IPlanWindow>().unwrap();
         let row = row.downcast::<SidebarProject>().unwrap();
         if window.project().id() != row.project().id() {
             window.set_property("project", row.project().to_value());
             self.activate_action("project.open", None)
                 .expect("Failed to open project");
-            if !imp.archive_toggle_button.is_active() {
-                // filter again maybe previous choice is archived project
-                imp.projects_box.invalidate_filter()
-            }
         }
     }
 

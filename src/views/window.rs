@@ -62,6 +62,7 @@ mod imp {
                 imp.project_header.open_project(&project);
                 imp.project_lists.open_project(project.id());
                 imp.project_lists.select_task(None);
+                imp.sidebar.imp().projects_section.check_archive_hidden();
             });
             klass.install_action("project.edit", None, move |win, _, _| {
                 let window = ProjectEditWindow::new(
@@ -103,7 +104,9 @@ mod imp {
                 imp.project_header.open_project(&project);
                 imp.project_lists.open_project(project.id());
                 imp.project_lists.select_task(None);
-                imp.sidebar.imp().projects_section.select_active_project();
+                let sidebar_imp = imp.sidebar.imp();
+                sidebar_imp.projects_section.select_active_project();
+                sidebar_imp.projects_section.check_archive_hidden();
             });
             klass.install_action("search.task", Some("(bx)"), move |win, _, value| {
                 let imp = win.imp();
@@ -112,7 +115,9 @@ mod imp {
                     let project = win.project();
                     imp.project_header.open_project(&project);
                     imp.project_lists.open_project(project.id());
-                    imp.sidebar.imp().projects_section.select_active_project();
+                    let sidebar_imp = imp.sidebar.imp();
+                    sidebar_imp.projects_section.select_active_project();
+                    sidebar_imp.projects_section.check_archive_hidden();
                 }
                 let (tx, rx) = glib::MainContext::channel(glib::PRIORITY_DEFAULT);
                 glib::idle_add_once(move || {
