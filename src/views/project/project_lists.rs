@@ -58,7 +58,7 @@ mod imp {
     impl WidgetImpl for ProjectLists {
         fn request_mode(&self) -> gtk::SizeRequestMode {
             self.parent_request_mode();
-            gtk::SizeRequestMode::HeightForWidth
+            gtk::SizeRequestMode::ConstantSize
         }
 
         fn measure(&self, orientation: gtk::Orientation, for_size: i32) -> (i32, i32, i32, i32) {

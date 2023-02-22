@@ -7,13 +7,11 @@
     <child>
       <object class="GtkScrolledWindow" id="scrolled_window">
           <property name="width-request">480</property>
-          <property name="vexpand">true</property>
           <child>
             <object class="GtkBox" id="lists_box">
               <property name="orientation">vertical</property>
               <property name="margin-top">6</property>
               <property name="spacing">12</property>
-              <property name="vexpand">true</property>
             </object>
           </child>
       </object>
