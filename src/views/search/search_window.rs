@@ -152,8 +152,10 @@ impl SearchWindow {
 
     #[template_callback]
     fn handle_show_done_tasks_toggle_button_toggled (&self, _button: gtk::ToggleButton) {
+        let imp = self.imp();
+        imp.prev_search.replace(String::new());
         self.handle_search_entry_search_changed(self.imp().search_entry.get());
-        self.imp().search_entry.grab_focus();
+        imp.search_entry.grab_focus();
     }
 
     #[template_callback]
