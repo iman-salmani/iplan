@@ -30,10 +30,10 @@ use crate::views::sidebar::Sidebar;
 mod imp {
     use super::*;
 
-    #[derive(gtk::CompositeTemplate)]
+    #[derive(Default, gtk::CompositeTemplate)]
     #[template(resource = "/ir/imansalmani/iplan/ui/window.ui")]
     pub struct IPlanWindow {
-        pub settings: gio::Settings,
+        pub settings: RefCell<Option<gio::Settings>>,
         pub project: RefCell<Project>,
         #[template_child]
         pub project_layout_button: TemplateChild<gtk::Button>,
@@ -138,18 +138,6 @@ mod imp {
         fn instance_init(obj: &glib::subclass::InitializingObject<Self>) {
             obj.init_template();
         }
-
-        fn new() -> Self {
-            Self {
-                settings: gio::Settings::new("ir.imansalmani.iplan.State"),
-                project: RefCell::new(Project::default()),
-                project_layout_button: TemplateChild::default(),
-                sidebar: TemplateChild::default(),
-                project_header: TemplateChild::default(),
-                toast_overlay: TemplateChild::default(),
-                project_lists: TemplateChild::default(),
-            }
-        }
     }
 
     impl ObjectImpl for IPlanWindow {
@@ -177,7 +165,22 @@ mod imp {
         }
     }
     impl WidgetImpl for IPlanWindow {}
-    impl WindowImpl for IPlanWindow {}
+    impl WindowImpl for IPlanWindow {
+        fn close_request(&self) -> glib::signal::Inhibit {
+            if let Some(settings) = self.settings.borrow().as_ref() {
+                let obj = self.obj();
+                settings.set_int("width", obj.property("default-width"))
+                    .expect("failed to set width in settings");
+                settings.set_int("height", obj.property("default-height"))
+                    .expect("failed to set height in settings");
+                settings.set_boolean("is-maximized", obj.property("maximized"))
+                    .expect("failed to set width in settings");
+                settings.set_boolean("is-fullscreen", obj.property("fullscreened"))
+                    .expect("failed to set width in settings");
+            }
+            self.parent_close_request()
+        }
+    }
     impl ApplicationWindowImpl for IPlanWindow {}
     impl AdwApplicationWindowImpl for IPlanWindow {}
 }
@@ -198,30 +201,23 @@ impl IPlanWindow {
             create_list("Tasks", project.id()).expect("Failed to create list");
             project
         };
+        let settings = gio::Settings::new("ir.imansalmani.iplan.State");
         let window = glib::Object::builder::<IPlanWindow>()
             .property("application", application)
             .property("project", home_project)
+            .property("default-width", settings.int("width"))
+            .property("default-height", settings.int("height"))
+            .property("maximized", settings.boolean("is-maximized"))
+            .property("fullscreened", settings.boolean("is-fullscreen"))
             .build();
         let imp = window.imp();
-
-        // Settings
-        if imp.settings.int("default-project-layout") == 1 {
+        if settings.int("default-project-layout") == 1 {
             imp.project_layout_button
                 .set_icon_name("view-columns-symbolic");
             imp.project_lists
                 .set_layout(&window, ProjectLayout::Horizontal);
         }
-        imp.settings.bind("width", &window, "default-width").build();
-        imp.settings
-            .bind("width", &window, "default-height")
-            .build();
-        imp.settings
-            .bind("is-maximized", &window, "maximized")
-            .build();
-        imp.settings
-            .bind("is-fullscreen", &window, "fullscreened")
-            .build();
-
+        imp.settings.replace(Some(settings));
         window
             .activate_action("project.open", None)
             .expect("Failed to open project");
@@ -244,13 +240,13 @@ impl IPlanWindow {
                     button.set_icon_name("view-columns-symbolic");
                     imp.project_lists
                         .set_layout(self, ProjectLayout::Horizontal);
-                    imp.settings
+                    imp.settings.borrow().as_ref().unwrap()
                         .set_int("default-project-layout", 1)
                         .expect("Could not set setting.");
                 } else {
                     button.set_icon_name("list-symbolic");
                     imp.project_lists.set_layout(self, ProjectLayout::Vertical);
-                    imp.settings
+                    imp.settings.borrow().as_ref().unwrap()
                         .set_int("default-project-layout", 0)
                         .expect("Could not set setting.");
                 }
