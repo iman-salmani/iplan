@@ -4,7 +4,7 @@
   <requires lib="Adw" version="1.0"/>
   <template class="IPlanWindow" parent="AdwApplicationWindow">
     <property name="width-request">480</property>
-    <property name="height-request">640</property>
+    <property name="height-request">480</property>
     <property name="content"><!-- Flap -->
       <object class="AdwFlap" id="flap">
         <property name="reveal-flap"
