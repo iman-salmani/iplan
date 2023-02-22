@@ -1,5 +1,5 @@
-use std::cell::RefCell;
 use gtk::{glib, prelude::*, subclass::prelude::*};
+use std::cell::RefCell;
 
 use crate::db::models::Project;
 use crate::db::operations::{find_projects, find_tasks, read_project};
@@ -52,7 +52,9 @@ glib::wrapper! {
 #[gtk::template_callbacks]
 impl SearchWindow {
     pub fn new(application: &gtk::Application, app_window: &gtk::Window) -> Self {
-        let win: Self = glib::Object::builder().property("application", application).build();
+        let win: Self = glib::Object::builder()
+            .property("application", application)
+            .build();
         win.set_transient_for(Some(app_window));
         let imp = win.imp();
         imp.search_entry.grab_focus();
@@ -86,25 +88,30 @@ impl SearchWindow {
     }
 
     #[template_callback]
-    fn handle_search_entry_activate (&self, _entry: gtk::SearchEntry) {
+    fn handle_search_entry_activate(&self, _entry: gtk::SearchEntry) {
         let imp = self.imp();
         if let Some(selected_row) = imp.search_results.selected_row() {
             self.handle_search_results_row_activated(
-                selected_row.downcast::<SearchResult>().unwrap());
-        } else if let Some(first_row) = imp.search_results.first_child().and_downcast::<SearchResult>() {
+                selected_row.downcast::<SearchResult>().unwrap(),
+            );
+        } else if let Some(first_row) = imp
+            .search_results
+            .first_child()
+            .and_downcast::<SearchResult>()
+        {
             self.handle_search_results_row_activated(first_row);
         }
     }
 
     #[template_callback]
-    fn handle_search_entry_search_changed (&self, entry: gtk::SearchEntry) {
+    fn handle_search_entry_search_changed(&self, entry: gtk::SearchEntry) {
         let imp = self.imp();
 
         let text = entry.text().to_lowercase();
         let text = text.trim();
 
         if text == imp.prev_search.borrow().as_str() {
-            return
+            return;
         }
 
         if text.is_empty() {
@@ -115,15 +122,17 @@ impl SearchWindow {
                 }
             }
             imp.search_results_placeholder.set_visible(false);
-            return
+            return;
         } else {
             imp.search_results_placeholder.set_visible(false);
             let archive = imp.show_done_tasks_toggle_button.is_active();
             let projects = find_projects(text, archive).expect("Failed to search projects");
             let tasks = find_tasks(text, archive).expect("Failed to search tasks");
-            if imp.search_results.observe_children().n_items() ==
-                (projects.len() + tasks.len() + 1) as u32 { // One for placeholder
-                return
+            if imp.search_results.observe_children().n_items()
+                == (projects.len() + tasks.len() + 1) as u32
+            {
+                // One for placeholder
+                return;
             }
             let lists = imp.search_results.observe_children();
             for _i in 0..lists.n_items() {
@@ -132,16 +141,22 @@ impl SearchWindow {
                 }
             }
             for project in projects {
-                imp.search_results.append(&SearchResult::new(Some(project), None));
+                imp.search_results
+                    .append(&SearchResult::new(Some(project), None));
             }
             for task in tasks {
-                imp.search_results.append(&SearchResult::new(None, Some(task)));
+                imp.search_results
+                    .append(&SearchResult::new(None, Some(task)));
             }
         }
 
         imp.prev_search.replace(text.to_string());
 
-        if let Some(first_row) = imp.search_results.first_child().and_downcast::<SearchResult>() {
+        if let Some(first_row) = imp
+            .search_results
+            .first_child()
+            .and_downcast::<SearchResult>()
+        {
             imp.search_results_placeholder.set_visible(false);
             imp.search_results.select_row(Some(&first_row));
         } else {
@@ -151,7 +166,7 @@ impl SearchWindow {
     }
 
     #[template_callback]
-    fn handle_show_done_tasks_toggle_button_toggled (&self, _button: gtk::ToggleButton) {
+    fn handle_show_done_tasks_toggle_button_toggled(&self, _button: gtk::ToggleButton) {
         let imp = self.imp();
         imp.prev_search.replace(String::new());
         self.handle_search_entry_search_changed(self.imp().search_entry.get());
@@ -159,14 +174,15 @@ impl SearchWindow {
     }
 
     #[template_callback]
-    fn handle_search_results_row_activated (&self, row: SearchResult) {
+    fn handle_search_results_row_activated(&self, row: SearchResult) {
         let row_imp = row.imp();
         let app_win = self.transient_for().unwrap();
         let app_win_project_id = app_win.property::<Project>("project").id();
         if let Some(project) = row_imp.project.take() {
-            if  app_win_project_id != project.id() {
+            if app_win_project_id != project.id() {
                 app_win.set_property("project", project);
-                app_win.activate_action("search.project", None)
+                app_win
+                    .activate_action("search.project", None)
                     .expect("Failed to send project.open action");
             }
         } else if let Some(task) = row_imp.task.take() {
@@ -174,13 +190,16 @@ impl SearchWindow {
             let project_changed = if app_win_project_id != project.id() {
                 app_win.set_property("project", project);
                 true
-            } else { false };
-            app_win.activate_action(
-                "search.task",
-                Some(&(project_changed, task.id()).to_variant()))
+            } else {
+                false
+            };
+            app_win
+                .activate_action(
+                    "search.task",
+                    Some(&(project_changed, task.id()).to_variant()),
+                )
                 .expect("Failed to send project.open action");
         }
         self.close();
     }
 }
-

@@ -125,11 +125,11 @@ impl SidebarProject {
             }
         }
         projects_box.invalidate_sort();
-        projects_box.parent()
+        projects_box
+            .parent()
             .and_downcast::<SidebarProjects>()
             .unwrap()
             .select_active_project();
         false
     }
 }
-

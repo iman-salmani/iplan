@@ -3,10 +3,10 @@ use std::cell::RefCell;
 
 use crate::db::models::Project;
 use crate::db::operations::{
-    create_project, read_project, read_projects, update_project,
-    create_list, read_lists, new_position, update_task,
+    create_list, create_project, new_position, read_lists, read_project, read_projects,
+    update_project, update_task,
 };
-use crate::views::{sidebar::SidebarProject, IPlanWindow, project::ProjectListTask};
+use crate::views::{project::ProjectListTask, sidebar::SidebarProject, IPlanWindow};
 mod imp {
     use super::*;
 
@@ -78,9 +78,12 @@ impl SidebarProjects {
     }
 
     pub fn update_project(&self, project: &Project) {
-        let row = self.imp()
-            .projects_box.row_at_index(project.index())
-            .and_downcast::<SidebarProject>().unwrap();
+        let row = self
+            .imp()
+            .projects_box
+            .row_at_index(project.index())
+            .and_downcast::<SidebarProject>()
+            .unwrap();
         let row_imp = row.imp();
         row_imp.name_label.set_label(&project.name());
         if project.archive() {
@@ -95,11 +98,16 @@ impl SidebarProjects {
     pub fn delete_project(&self, index: i32) {
         let imp = self.imp();
         let target_row = imp.projects_box.row_at_index(index).unwrap();
-        let last_index = imp.projects_box
-            .last_child().and_downcast::<gtk::ListBoxRow>().unwrap().index();
+        let last_index = imp
+            .projects_box
+            .last_child()
+            .and_downcast::<gtk::ListBoxRow>()
+            .unwrap()
+            .index();
 
-        for i in index+1..last_index+1 {
-            let row = imp.projects_box
+        for i in index + 1..last_index + 1 {
+            let row = imp
+                .projects_box
                 .row_at_index(i)
                 .and_downcast::<SidebarProject>()
                 .unwrap();
@@ -154,12 +162,12 @@ impl SidebarProjects {
             @weak self as obj => @default-return gdk::DragAction::empty(),
             move |target, x, y| obj.project_drop_target_motion(target, x, y)));
         project_drop_target.connect_enter(glib::clone!(
-            @weak self as obj => @default-return gdk::DragAction::empty(),
-            move |target, _x, _y| {
-                let source_row: Option<SidebarProject> = target.value_as();
-                obj.imp().projects_box.select_row(source_row.as_ref());
-                gdk::DragAction::MOVE
-            }));
+        @weak self as obj => @default-return gdk::DragAction::empty(),
+        move |target, _x, _y| {
+            let source_row: Option<SidebarProject> = target.value_as();
+            obj.imp().projects_box.select_row(source_row.as_ref());
+            gdk::DragAction::MOVE
+        }));
         imp.projects_box.add_controller(&project_drop_target);
 
         // Task drop target
@@ -173,10 +181,10 @@ impl SidebarProjects {
             @weak self as obj => @default-return gdk::DragAction::empty(),
             move |target, x, y| obj.task_drop_target_motion(target, x, y)));
         task_drop_target.connect_leave(glib::clone!(
-            @weak self as obj => move |target| {
-                if target.value_as::<ProjectListTask>().is_some() {
-                    obj.select_active_project();
-                }}));
+        @weak self as obj => move |target| {
+            if target.value_as::<ProjectListTask>().is_some() {
+                obj.select_active_project();
+            }}));
         imp.projects_box.add_controller(&task_drop_target);
     }
 
@@ -354,4 +362,3 @@ impl SidebarProjects {
         gdk::DragAction::empty()
     }
 }
-

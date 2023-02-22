@@ -267,16 +267,16 @@ impl ProjectListTask {
             .build();
 
         toast.connect_button_clicked(glib::clone!(
-            @weak self as obj =>
-            move |_toast| {
-                let task = obj.task();
-                task.set_property("suspended", false);
-                update_task(task).expect("Failed to update task");
-                if obj.parent().is_some() {
-                    obj.changed();
-                    obj.grab_focus();
-                }
-            }));
+        @weak self as obj =>
+        move |_toast| {
+            let task = obj.task();
+            task.set_property("suspended", false);
+            update_task(task).expect("Failed to update task");
+            if obj.parent().is_some() {
+                obj.changed();
+                obj.grab_focus();
+            }
+        }));
         toast.connect_dismissed(glib::clone!(
             @strong self as obj =>
             move |_toast| {
@@ -346,4 +346,3 @@ impl ProjectListTask {
         false
     }
 }
-

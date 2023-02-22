@@ -285,9 +285,8 @@ impl ProjectList {
     fn handle_delete_button_clicked(&self, _button: gtk::Button) {
         let imp = self.imp();
         imp.options_button.popdown();
-        let dialog = gtk::Builder::from_resource(
-            "/ir/imansalmani/iplan/ui/delete_dialog.ui",
-            ).object::<adw::MessageDialog>("dialog")
+        let dialog = gtk::Builder::from_resource("/ir/imansalmani/iplan/ui/delete_dialog.ui")
+            .object::<adw::MessageDialog>("dialog")
             .unwrap();
         dialog.set_transient_for(self.root().and_downcast::<gtk::Window>().as_ref());
         dialog.set_heading(Some(&format!("Delete \"{}\" List?", self.list().name())));
@@ -539,4 +538,3 @@ impl ProjectList {
         }
     }
 }
-

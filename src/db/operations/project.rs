@@ -19,7 +19,11 @@ pub fn create_project(name: &str) -> Result<Project> {
 }
 
 pub fn read_projects(archive: bool) -> Result<Vec<Project>> {
-    let filters = if !archive { "WHERE archive = false" } else { "" };
+    let filters = if !archive {
+        "WHERE archive = false"
+    } else {
+        ""
+    };
     let conn = get_connection();
     let mut stmt = conn.prepare(&format!("SELECT * FROM projects {filters} ORDER BY i ASC"))?;
     let mut rows = stmt.query([])?;

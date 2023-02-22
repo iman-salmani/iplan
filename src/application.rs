@@ -23,8 +23,8 @@ use gtk::prelude::*;
 use gtk::{gio, glib};
 
 use crate::config::{APPLICATION_ID, VERSION};
-use crate::views::IPlanWindow;
 use crate::views::search::SearchWindow;
+use crate::views::IPlanWindow;
 
 mod imp {
     use super::*;
@@ -105,15 +105,21 @@ impl IPlanApplication {
         let modal_close_action = gio::ActionEntry::builder("modal-close")
             .activate(move |app: &Self, _, _| app.close_modal())
             .build();
-        self.add_action_entries(
-                [quit_action, about_action, shortcuts_action,search_action, modal_close_action]
-            ).unwrap();
+        self.add_action_entries([
+            quit_action,
+            about_action,
+            shortcuts_action,
+            search_action,
+            modal_close_action,
+        ])
+        .unwrap();
     }
 
     fn show_search(&self) {
         let window = SearchWindow::new(
             self.upcast_ref::<gtk::Application>(),
-            &self.active_window().unwrap());
+            &self.active_window().unwrap(),
+        );
         window.present();
     }
 
@@ -153,4 +159,3 @@ impl IPlanApplication {
         }
     }
 }
-

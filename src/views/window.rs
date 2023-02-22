@@ -24,7 +24,7 @@ use std::cell::RefCell;
 
 use crate::db::models::Project;
 use crate::db::operations::{create_list, create_project, read_projects};
-use crate::views::project::{ProjectHeader, ProjectLayout, ProjectLists, ProjectEditWindow};
+use crate::views::project::{ProjectEditWindow, ProjectHeader, ProjectLayout, ProjectLists};
 use crate::views::sidebar::Sidebar;
 
 mod imp {
@@ -65,11 +65,7 @@ mod imp {
                 imp.sidebar.imp().projects_section.check_archive_hidden();
             });
             klass.install_action("project.edit", None, move |win, _, _| {
-                let window = ProjectEditWindow::new(
-                    win.application().unwrap(),
-                    win,
-                    win.project()
-                    );
+                let window = ProjectEditWindow::new(win.application().unwrap(), win, win.project());
                 window.present();
             });
             klass.install_action("project.update", None, move |win, _, _| {
@@ -126,12 +122,13 @@ mod imp {
                 rx.attach(
                     None,
                     glib::clone!(
-                        @weak imp => @default-return glib::Continue(false),
-                        move |_text| {
-                            imp.project_lists.select_task(Some(task_id));
-                            glib::Continue(false)
-                        }
-                ));
+                            @weak imp => @default-return glib::Continue(false),
+                            move |_text| {
+                                imp.project_lists.select_task(Some(task_id));
+                                glib::Continue(false)
+                            }
+                    ),
+                );
             });
         }
 
@@ -169,13 +166,17 @@ mod imp {
         fn close_request(&self) -> glib::signal::Inhibit {
             if let Some(settings) = self.settings.borrow().as_ref() {
                 let obj = self.obj();
-                settings.set_int("width", obj.property("default-width"))
+                settings
+                    .set_int("width", obj.property("default-width"))
                     .expect("failed to set width in settings");
-                settings.set_int("height", obj.property("default-height"))
+                settings
+                    .set_int("height", obj.property("default-height"))
                     .expect("failed to set height in settings");
-                settings.set_boolean("is-maximized", obj.property("maximized"))
+                settings
+                    .set_boolean("is-maximized", obj.property("maximized"))
                     .expect("failed to set width in settings");
-                settings.set_boolean("is-fullscreen", obj.property("fullscreened"))
+                settings
+                    .set_boolean("is-fullscreen", obj.property("fullscreened"))
                     .expect("failed to set width in settings");
             }
             self.parent_close_request()
@@ -240,13 +241,19 @@ impl IPlanWindow {
                     button.set_icon_name("view-columns-symbolic");
                     imp.project_lists
                         .set_layout(self, ProjectLayout::Horizontal);
-                    imp.settings.borrow().as_ref().unwrap()
+                    imp.settings
+                        .borrow()
+                        .as_ref()
+                        .unwrap()
                         .set_int("default-project-layout", 1)
                         .expect("Could not set setting.");
                 } else {
                     button.set_icon_name("list-symbolic");
                     imp.project_lists.set_layout(self, ProjectLayout::Vertical);
-                    imp.settings.borrow().as_ref().unwrap()
+                    imp.settings
+                        .borrow()
+                        .as_ref()
+                        .unwrap()
                         .set_int("default-project-layout", 0)
                         .expect("Could not set setting.");
                 }
@@ -256,4 +263,3 @@ impl IPlanWindow {
         }
     }
 }
-

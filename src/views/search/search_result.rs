@@ -63,4 +63,3 @@ impl SearchResult {
         win
     }
 }
-
