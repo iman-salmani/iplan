@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <schemalist gettext-domain="iplan">
 	<schema id="ir.imansalmani.iplan.State" path="/ir/imansalmani/iplan/State/">
-	  <key name="list-layout" type="i">
+	  <key name="default-project-layout" type="i">
 	    <default>0</default>
 	  </key>
 	  <key name="width" type="i">

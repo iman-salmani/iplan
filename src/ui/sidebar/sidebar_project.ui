@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <template class="SidebarProject" parent="GtkListBoxRow">
+    <child>
+      <object class="GtkLabel" id="name_label">
+        <property name="halign">start</property>
+        <property name="use-markup">true</property>
+      </object>
+    </child>
+    <child><!-- Drag Source -->
+      <object class="GtkDragSource">
+        <property name="actions">move</property>
+        <property name="propagation-phase">capture</property>
+        <signal name="prepare" handler="handle_drag_prepare" swapped="true"/>
+        <signal name="drag-begin" handler="handle_drag_begin" swapped="true"/>
+        <signal name="drag-cancel" handler="handle_drag_cancel" swapped="true"/>
+      </object>
+    </child><!-- End Drag Source -->
+  </template>
+</interface>

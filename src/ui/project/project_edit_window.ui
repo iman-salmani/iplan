@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <requires lib="gtk" version="4.0"/>
+  <requires lib="Adw" version="1.0"/>
+  <template class="ProjectEditWindow" parent="AdwWindow">
+    <property name="width-request">320</property>
+    <property name="modal">true</property>
+    <property name="destroy-with-parent">true</property>
+    <property name="content"><!-- Content -->
+      <object class="GtkBox">
+        <property name="orientation">vertical</property>
+        <child><!-- Header -->
+          <object class="AdwHeaderBar">
+            <style>
+              <class name="flat"/>
+            </style>
+            <property name="title-widget">
+              <object class="GtkLabel">
+                <property name="label" translatable="yes">Edit Project</property>
+                <style>
+                  <class name="heading"/>
+                </style>
+              </object>
+            </property>
+          </object>
+        </child><!-- End Header -->
+        <child><!-- Profile -->
+          <object class="AdwPreferencesGroup">
+            <property name="margin-top">12</property>
+            <property name="margin-bottom">12</property>
+            <property name="margin-start">12</property>
+            <property name="margin-end">12</property>
+            <child><!-- Name -->
+              <object class="AdwEntryRow" id="name_entry_row">
+                <property name="title">Name</property>
+                <property name="show-apply-button">true</property>
+                <signal name="apply" handler="handle_name_entry_row_apply" swapped="true"/>
+              </object>
+            </child><!-- End Name -->
+          </object>
+        </child><!-- End Profile -->
+        <child><!-- Delete & Archive -->
+          <object class="AdwPreferencesGroup">
+            <property name="margin-top">12</property>
+            <property name="margin-bottom">12</property>
+            <property name="margin-start">12</property>
+            <property name="margin-end">12</property>
+            <child><!-- Archive -->
+              <object class="AdwActionRow">
+                <property name="title">Archive</property>
+                <property name="activatable-widget">archive_switch</property>
+                <child type="suffix">
+                  <object class="GtkSwitch" id="archive_switch">
+                    <property name="valign">center</property>
+                  </object>
+                </child>
+              </object>
+            </child><!-- End Archive-->
+            <child><!-- Delete -->
+              <object class="AdwActionRow" >
+                <property name="title">Delete</property>
+                <property name="activatable-widget">delete_button</property>
+                <child type="suffix">
+                  <object class="GtkButton" id="delete_button">
+                    <property name="valign">center</property>
+                    <property name="icon-name">user-trash-symbolic</property>
+                    <signal name="clicked" handler="handle_delete_button_clicked" swapped="true"/>
+                    <style>
+                      <class name="flat"/>
+                    </style>
+                  </object>
+                </child>
+              </object>
+            </child><!-- Delete -->
+          </object>
+        </child><!-- End Delete & Archive -->
+      </object>
+    </property><!-- End Content -->
+  </template>
+</interface>

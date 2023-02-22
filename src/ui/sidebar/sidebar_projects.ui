@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <requires lib="gtk" version="4.0"/>
+  <requires lib="Adw" version="1.0"/>
+  <template class="SidebarProjects" parent="GtkBox">
+    <property name="orientation">vertical</property>
+    <child><!-- Projects Header -->
+      <object class="GtkBox">
+        <style>
+          <class name="toolbar"/>
+        </style>
+        <child>
+          <object class="GtkLabel">
+            <property name="label">Projects</property>
+            <property name="margin-start">6</property>
+            <style>
+              <class name="heading"/>
+            </style>
+          </object>
+        </child>
+        <child>
+          <object class="GtkSeparator">
+            <property name="hexpand">True</property>
+            <style>
+              <class name="spacer"/>
+            </style>
+          </object>
+        </child>
+        <child>
+          <object class="GtkToggleButton" id="archive_toggle_button">
+            <property name="icon_name">shoe-box-symbolic</property>
+            <property name="active">false</property>
+            <property name="tooltip_text">Show archive projects</property>
+            <signal name="toggled" handler="handle_archive_toggle_button_toggled" swapped="true"></signal>
+          </object>
+        </child>
+        <child>
+          <object class="GtkButton">
+            <property name="icon-name">tab-new-symbolic</property>
+            <property name="tooltip_text">New project</property>
+            <signal name="clicked" handler="handle_new_button_clicked" swapped="true"/>
+          </object>
+          </child>
+      </object>
+    </child><!-- End Projects Header -->
+    <child><!-- Projects List -->
+      <object class="GtkListBox" id="projects_box">
+        <property name="margin-start">6</property>
+        <property name="margin-end">6</property>
+        <property name="selection-mode">browse</property>
+        <property name="activate-on-single-click">true</property>
+        <signal name="row-activated" handler="handle_projects_box_row_activated" swapped="true"/>
+        <style>
+          <class name="navigation-sidebar"/>
+        </style>
+      </object>
+    </child><!-- Projects List -->
+  </template>
+</interface>

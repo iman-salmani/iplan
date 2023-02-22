@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <requires lib="gtk" version="4.0"/>
+  <requires lib="Adw" version="1.0"/>
+  <template class="ProjectHeader" parent="GtkBox">
+    <child><!-- Project Name Label -->
+      <object class="GtkLabel" id="name_label">
+        <property name="margin-start">6</property>
+        <style>
+          <class name="heading"/>
+        </style>
+      </object>
+    </child><!-- End Project Name Label -->
+    <child><!-- Project Duration button -->
+      <object class="GtkMenuButton">
+        <property name="popover">duration_popover</property>
+        <property name="margin-start">3</property>
+        <style>
+          <class name="flat"/>
+        </style>
+        <child>
+          <object class="AdwButtonContent" id="duration_button_content">
+            <property name="icon-name">preferences-system-time-symbolic</property>
+          </object>
+        </child>
+      </object>
+    </child><!-- End Project Duration button -->
+  </template>
+  <!-- Project duration Popover -->
+  <object class="GtkPopover" id="duration_popover">
+    <style>
+      <class name="menu"/>
+    </style>
+    <child>
+      <object class="GtkListBox" id="stat_box">
+        <property name="selection-mode">none</property>
+        <child type="placeholder">
+          <object class="AdwStatusPage">
+            <property name="icon-name">profit-symbolic</property>
+            <property name="title">Time spent per day</property>
+            <property name="description">Use timer to add time</property>
+            <property name="width-request">320</property>
+            <property name="height-request">256</property>
+            <style>
+              <class name="compact"/>
+            </style>
+          </object>
+        </child>
+      </object>
+    </child>
+  </object>
+  <!-- End Project duration Popover -->
+</interface>
+

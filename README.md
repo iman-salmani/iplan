@@ -42,7 +42,7 @@ git clone https://github.com/iman-salmani/iplan.git && cd iplan
 
 4. Install dependencies
   ```sh
-  flatpak install runtime/org.gnome.Sdk/x86_64/43 runtime/org.gnome.Platform/x86_64/43
+  flatpak install runtime/org.gnome.Sdk/x86_64/43 runtime/org.freedesktop.Sdk.Extension.rust-stable/x86_64/22.08 runtime/org.gnome.Platform/x86_64/43
   ```
 
 3. Build and install with flatpak builder
