@@ -81,11 +81,11 @@ impl ProjectHeader {
                 0,
                 0.0,
             )
-            .unwrap()
-            .to_unix();
+            .unwrap();
+            let date_unix = date.to_unix();
             let mut duration = 0;
             for task in &tasks {
-                let records = read_records(task.id(), false, Some(date), Some(dates[(i) as usize]))
+                let records = read_records(task.id(), false, Some(date_unix), Some(dates[(i) as usize]))
                     .expect("Failed to read records");
                 for record in records {
                     duration += record.duration();
@@ -96,7 +96,7 @@ impl ProjectHeader {
                 let date_label = if i == 0 {
                     String::from("Today")
                 } else {
-                    now.format("%A").unwrap().to_string()
+                    date.format("%A").unwrap().to_string()
                 };
                 let stat_item_date = gtk::Label::builder().label(&date_label).build();
                 stat_item.append(&stat_item_date);
@@ -108,7 +108,7 @@ impl ProjectHeader {
                 stat_item.append(&stat_item_duration);
                 imp.stat_box.append(&stat_item);
             }
-            dates.push(date);
+            dates.push(date_unix);
         }
     }
 }
