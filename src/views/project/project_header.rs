@@ -85,8 +85,9 @@ impl ProjectHeader {
             let date_unix = date.to_unix();
             let mut duration = 0;
             for task in &tasks {
-                let records = read_records(task.id(), false, Some(date_unix), Some(dates[(i) as usize]))
-                    .expect("Failed to read records");
+                let records =
+                    read_records(task.id(), false, Some(date_unix), Some(dates[(i) as usize]))
+                        .expect("Failed to read records");
                 for record in records {
                     duration += record.duration();
                 }

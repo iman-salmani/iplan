@@ -142,4 +142,3 @@ impl fmt::Display for Record {
         fmt::Result::Err(fmt::Error)
     }
 }
-

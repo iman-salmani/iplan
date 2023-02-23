@@ -1,6 +1,10 @@
 use gtk::glib;
 use rusqlite::{Connection, Result};
 
+use crate::db::migrate::MIGRATIONS;
+
+const DB_VERSION: u8 = 1;
+
 pub fn get_connection() -> Connection {
     Connection::open(glib::user_data_dir().join("data.db")).expect("Failed connect to database")
 }
@@ -59,6 +63,22 @@ pub fn check_database() -> Result<()> {
             );",
             (),
         )?;
+
+        conn.execute(&format!("PRAGMA user_version={}", DB_VERSION), ())?;
+    } else {
+        let conn = get_connection();
+        // conn.pragma(schema_name, pragma_name, pragma_value, f)
+        let mut stmt = conn.prepare("PRAGMA user_version")?;
+        let version = stmt.query_row([], |row| row.get::<usize, u8>(0)).unwrap();
+        if DB_VERSION > version {
+            MIGRATIONS[version as usize]().expect("Failed to migrate database");
+            conn.execute(&format!("PRAGMA user_version={}", DB_VERSION), ())?;
+        } else if DB_VERSION < version {
+            panic!(
+                "Database version is {}. please update application.",
+                version
+            );
+        }
     }
     Ok(())
 }
