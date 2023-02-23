@@ -84,7 +84,7 @@ impl Record {
     pub fn duration_display(duration: i64) -> String {
         let (min, sec) = (duration / 60, duration % 60);
         if min > 60 {
-            let (hour, min) = (duration / 60, duration % 60);
+            let (hour, min) = (min / 60, min % 60);
             format!("{}:{}:{}", hour, min, sec)
         } else {
             format!("{}:{}", min, sec)
@@ -142,3 +142,4 @@ impl fmt::Display for Record {
         fmt::Result::Err(fmt::Error)
     }
 }
+
