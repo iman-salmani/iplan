@@ -147,6 +147,9 @@ impl IPlanApplication {
             .version(VERSION)
             .developers(vec!["Iman Salmani".into()])
             .copyright("© 2023 Iman Salmani")
+            .license_type(gtk::License::Lgpl30)
+            .website("https://github.com/iman-salmani/iplan")
+            .issue_url("https://github.com/iman-salmani/iplan/issues/new/choose")
             .build();
 
         about.present();
