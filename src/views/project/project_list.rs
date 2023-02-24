@@ -276,6 +276,7 @@ impl ProjectList {
         let task_ui = ProjectListTask::new(task);
         let imp = self.imp();
         imp.tasks_box.prepend(&task_ui);
+        task_ui.init_widgets();
         let task_imp = task_ui.imp();
         task_imp.name_button.set_visible(false);
         task_imp.name_entry.grab_focus();
