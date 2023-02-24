@@ -1,4 +1,4 @@
-application_id = 'ir.imansalmani.iplan'
+application_id = 'ir.imansalmani.IPlan'
 
 scalable_dir = join_paths('hicolor', 'scalable', 'apps')
 install_data(

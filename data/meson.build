@@ -1,6 +1,6 @@
 desktop_file = i18n.merge_file(
-        input: 'ir.imansalmani.iplan.desktop.in',
-       output: 'ir.imansalmani.iplan.desktop',
+        input: 'ir.imansalmani.IPlan.desktop.in',
+       output: 'ir.imansalmani.IPlan.desktop',
          type: 'desktop',
        po_dir: '../po',
       install: true,
@@ -13,8 +13,8 @@ if desktop_utils.found()
 endif
 
 appstream_file = i18n.merge_file(
-        input: 'ir.imansalmani.iplan.metainfo.xml.in',
-       output: 'ir.imansalmani.iplan.metainfo.xml',
+        input: 'ir.imansalmani.IPlan.metainfo.xml.in',
+       output: 'ir.imansalmani.IPlan.metainfo.xml',
        po_dir: '../po',
       install: true,
   install_dir: join_paths(get_option('datadir'), 'metainfo')
@@ -25,7 +25,7 @@ if appstream_util.found()
   test('Validate appstream file', appstream_util, args: ['validate', appstream_file])
 endif
 
-install_data('ir.imansalmani.iplan.gschema.xml',
+install_data('ir.imansalmani.IPlan.gschema.xml',
   install_dir: join_paths(get_option('datadir'), 'glib-2.0/schemas')
 )
 

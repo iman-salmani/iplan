@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <schemalist gettext-domain="iplan">
-	<schema id="ir.imansalmani.iplan.State" path="/ir/imansalmani/iplan/State/">
+	<schema id="ir.imansalmani.IPlan.State" path="/ir/imansalmani/IPlan/State/">
 	  <key name="default-project-layout" type="i">
 	    <default>0</default>
 	  </key>

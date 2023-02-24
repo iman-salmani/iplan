@@ -63,7 +63,7 @@ mod imp {
                 window
             } else {
                 let window = IPlanWindow::new(&*application);
-                if APPLICATION_ID == "ir.imansalmani.iplan.devel" {
+                if APPLICATION_ID == "ir.imansalmani.IPlan.Devel" {
                     window.add_css_class("devel")
                 }
                 window.upcast()
@@ -142,7 +142,7 @@ impl IPlanApplication {
         let about = adw::AboutWindow::builder()
             .transient_for(&window)
             .application_name("IPlan")
-            .application_icon("ir.imansalmani.iplan")
+            .application_icon("ir.imansalmani.IPlan")
             .developer_name("Iman Salmani")
             .version(VERSION)
             .developers(vec!["Iman Salmani".into()])

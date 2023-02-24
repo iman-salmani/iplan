@@ -1,7 +1,7 @@
 [Desktop Entry]
 Name=IPlan
 Exec=iplan
-Icon=ir.imansalmani.iplan
+Icon=ir.imansalmani.IPlan
 Terminal=false
 Type=Application
 Categories=GNOME;GTK;Utility;

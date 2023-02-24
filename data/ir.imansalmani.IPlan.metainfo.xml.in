@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component type="desktop">
-	<id>ir.imansalmani.iplan.desktop</id>
+	<id>ir.imansalmani.IPlan.desktop</id>
 	<metadata_license>CC0-1.0</metadata_license>
   <project_license>GPL-3.0-or-later</project_license>
   <name>IPlan</name>
@@ -14,7 +14,7 @@
 	  </ul>
 	</description>
 
-  <launchable type="desktop-id">ir.imansalmani.iplan.desktop</launchable>
+  <launchable type="desktop-id">ir.imansalmani.IPlan.desktop</launchable>
 
   <url type="homepage">https://github.com/iman-salmani/iplan</url>
   <url type="bugtracker">https://github.com/iman-salmani/iplan/issues</url>

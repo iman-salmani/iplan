@@ -1,4 +1,4 @@
-<img align="left" style="vertical-align: middle" src="data/icons/hicolor/256x256/apps/ir.imansalmani.iplan.png" alt="IPlan" width="128">
+<img align="left" style="vertical-align: middle" src="data/icons/hicolor/256x256/apps/ir.imansalmani.IPlan.png" alt="IPlan" width="128">
 
 # IPlan
 Your plan for improve personal life and workflow
@@ -48,15 +48,15 @@ git clone https://github.com/iman-salmani/iplan.git && cd iplan
 3. Build and install with flatpak builder
   - System wide (Recommended)
   ```sh
-  sudo flatpak-builder --install builddir ir.imansalmani.iplan.json --force-clean
+  sudo flatpak-builder --install builddir ir.imansalmani.IPlan.json --force-clean
   ```
   - User (For testing)
   ```sh
-  flatpak-builder --install builddir ir.imansalmani.iplan.json --force-clean --user
+  flatpak-builder --install builddir ir.imansalmani.IPlan.json --force-clean --user
   ```
 
 4. Run
 > App should be appear in your applications menu.
 ```sh
-flatpak run ir.imansalmani.iplan
+flatpak run ir.imansalmani.IPlan
 ```

@@ -13,9 +13,9 @@ gnome.compile_resources('iplan',
 
 conf = configuration_data()
 if get_option('profile') == 'development'
-	conf.set_quoted('APPLICATION_ID', 'ir.imansalmani.iplan.devel')
+	conf.set_quoted('APPLICATION_ID', 'ir.imansalmani.IPlan.Devel')
 else
-	conf.set_quoted('APPLICATION_ID', 'ir.imansalmani.iplan')
+	conf.set_quoted('APPLICATION_ID', 'ir.imansalmani.IPlan')
 endif
 conf.set_quoted('VERSION', meson.project_version())
 conf.set_quoted('GETTEXT_PACKAGE', 'iplan')

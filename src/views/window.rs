@@ -202,7 +202,7 @@ impl IPlanWindow {
             create_list("Tasks", project.id()).expect("Failed to create list");
             project
         };
-        let settings = gio::Settings::new("ir.imansalmani.iplan.State");
+        let settings = gio::Settings::new("ir.imansalmani.IPlan.State");
         let window = glib::Object::builder::<IPlanWindow>()
             .property("application", application)
             .property("project", home_project)

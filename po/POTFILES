@@ -1,6 +1,6 @@
-data/ir.imansalmani.iplan.desktop.in
-data/ir.imansalmani.iplan.appdata.xml.in
-data/ir.imansalmani.iplan.gschema.xml
+data/ir.imansalmani.IPlan.desktop.in
+data/ir.imansalmani.IPlan.appdata.xml.in
+data/ir.imansalmani.IPlan.gschema.xml
 src/main.py
 src/window.py
 src/window.ui
