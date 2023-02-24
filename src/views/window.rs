@@ -64,6 +64,14 @@ mod imp {
                 imp.project_lists.select_task(None);
                 imp.sidebar.imp().projects_section.check_archive_hidden();
             });
+            klass.install_action("project.new", None, move |win, _, _| {
+                let imp = win.imp();
+                let project = win.project();
+                imp.project_header.open_project(&project);
+                imp.project_lists.open_project(project.id());
+                imp.project_header.imp().name_button.emit_clicked();
+                imp.sidebar.imp().projects_section.check_archive_hidden();
+            });
             klass.install_action("project.edit", None, move |win, _, _| {
                 let window = ProjectEditWindow::new(win.application().unwrap(), win, win.project());
                 window.present();

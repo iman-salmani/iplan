@@ -201,7 +201,7 @@ impl SidebarProjects {
 
     #[template_callback]
     fn handle_new_button_clicked(&self, _button: gtk::Button) {
-        let project = create_project("New Project").expect("Failed to create project");
+        let project = create_project("").expect("Failed to create project");
         create_list("Tasks", project.id()).expect("Failed to create list");
         let row = SidebarProject::new(project.clone());
         let imp = self.imp();
@@ -211,10 +211,8 @@ impl SidebarProjects {
             .and_downcast::<IPlanWindow>()
             .unwrap()
             .set_property("project", project);
-        self.activate_action("project.open", None)
-            .expect("Failed to start project.open action");
-        self.activate_action("project.edit", None)
-            .expect("Failed to start project.edit action");
+        self.activate_action("project.new", None)
+            .expect("Failed to start project.new action");
     }
 
     #[template_callback]

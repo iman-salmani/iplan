@@ -2,7 +2,8 @@ use adw;
 use gtk::{glib, prelude::*, subclass::prelude::*};
 
 use crate::db::models::{Project, Record};
-use crate::db::operations::{read_records, read_tasks};
+use crate::db::operations::{update_project, read_records, read_tasks};
+use crate::views::IPlanWindow;
 
 mod imp {
     use super::*;
@@ -11,7 +12,9 @@ mod imp {
     #[template(resource = "/ir/imansalmani/iplan/ui/project/project_header.ui")]
     pub struct ProjectHeader {
         #[template_child]
-        pub name_label: TemplateChild<gtk::Label>,
+        pub name_button: TemplateChild<gtk::Button>,
+        #[template_child]
+        pub name_entry: TemplateChild<gtk::Entry>,
         #[template_child]
         pub duration_button_content: TemplateChild<adw::ButtonContent>,
         #[template_child]
@@ -26,6 +29,7 @@ mod imp {
 
         fn class_init(klass: &mut Self::Class) {
             klass.bind_template();
+            klass.bind_template_instance_callbacks();
         }
 
         fn instance_init(obj: &glib::subclass::InitializingObject<Self>) {
@@ -44,6 +48,7 @@ glib::wrapper! {
         @implements gtk::Buildable;
 }
 
+#[gtk::template_callbacks]
 impl ProjectHeader {
     pub fn new() -> Self {
         glib::Object::builder().build()
@@ -52,7 +57,9 @@ impl ProjectHeader {
     // open_project - used by handle_project_open and handle_project_update in window
     pub fn open_project(&self, project: &Project) {
         let imp = self.imp();
-        imp.name_label.set_text(&project.name());
+
+        imp.name_button.set_label(&project.name());
+        imp.name_entry.buffer().set_text(&project.name());
 
         if let Some(duration) = project.duration() {
             imp.duration_button_content
@@ -111,5 +118,24 @@ impl ProjectHeader {
             }
             dates.push(date_unix);
         }
+    }
+
+    #[template_callback]
+    fn handle_name_button_clicked(&self, button: gtk::Button) {
+        button.set_visible(false); // Entry visible param binded to this
+        self.imp().name_entry.grab_focus_without_selecting();
+    }
+
+    #[template_callback]
+    fn handle_name_entry_activate(&self, entry: gtk::Entry) {
+        let name = entry.buffer().text();
+        let win = self.root().and_downcast::<IPlanWindow>().unwrap();
+        let project = win.project();
+        let imp = self.imp();
+        imp.name_button.set_label(&name);
+        imp.name_button.set_visible(true);
+        project.set_property("name", name);
+        update_project(&project).expect("Failed to update project");
+        win.imp().sidebar.imp().projects_section.update_project(&project);
     }
 }
