@@ -2,7 +2,7 @@ use adw;
 use gtk::{glib, prelude::*, subclass::prelude::*};
 
 use crate::db::models::{Project, Record};
-use crate::db::operations::{update_project, read_records, read_tasks};
+use crate::db::operations::{read_records, read_tasks, update_project};
 use crate::views::IPlanWindow;
 
 mod imp {
@@ -136,6 +136,10 @@ impl ProjectHeader {
         imp.name_button.set_visible(true);
         project.set_property("name", name);
         update_project(&project).expect("Failed to update project");
-        win.imp().sidebar.imp().projects_section.update_project(&project);
+        win.imp()
+            .sidebar
+            .imp()
+            .projects_section
+            .update_project(&project);
     }
 }
