@@ -4,36 +4,41 @@
 	<metadata_license>CC0-1.0</metadata_license>
   <project_license>GPL-3.0-or-later</project_license>
   <name>IPlan</name>
-  <summary>Planner application with time tracking ability</summary>
-
+  <summary>Your plan for improve personal life and workflow</summary>
   <description>
 	  <p>Features</p>
 	  <ul>
-	    <li>Grouping tasks with Projects</li>
+	    <li>Grouping tasks with project and list</li>
 	    <li>Timer for tasks</li>
+	    <li>Global search</li>
+	    <li>Arranging projects, lists and tasks by drag and drop</li>
 	  </ul>
 	</description>
-
-  <launchable type="desktop-id">ir.imansalmani.IPlan.desktop</launchable>
-
-  <url type="homepage">https://github.com/iman-salmani/iplan</url>
-  <url type="bugtracker">https://github.com/iman-salmani/iplan/issues</url>
-
   <screenshots>
     <screenshot type="default">
       <caption>The IPlan main window.</caption>
-      <image type="source" width="800" height="450">http://5.75.147.226/imgs/window.png</image>
+      <image type="source" width="800" height="450">https://github.com/iman-salmani/iplan/blob/ee9ab7a6adc2afcb6d2440d2af62d580b097427f/data/screenshots/window.png</image>
     </screenshot>
   </screenshots>
-
+  <launchable type="desktop-id">ir.imansalmani.IPlan.desktop</launchable>
+  <url type="homepage">https://github.com/iman-salmani/iplan</url>
+  <url type="bugtracker">https://github.com/iman-salmani/iplan/issues</url>
+  <developer_name>Iman Salmani</developer_name>
+  <custom>
+    <value key="Purism::form_factor">workstation</value>
+    <value key="Purism::form_factor">mobile</value>
+  </custom>
+  <requires>
+    <display_length compare="ge">480</display_length>
+  </requires>
   <recommends>
       <control>pointing</control>
       <control>keyboard</control>
+      <control>touch</control>
   </recommends>
-
   <categories>
       <category>Utility</category>
   </categories>
-
   <content_rating type="oars-1.1"/>
+  <provides>ir.imansalmani.IPlan.desktop</provides>
 </component>
