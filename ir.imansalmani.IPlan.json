@@ -1,5 +1,5 @@
 {
-  "app-id": "ir.imansalmani.IPlan.Devel",
+  "app-id": "ir.imansalmani.IPlan",
   "runtime": "org.gnome.Platform",
   "runtime-version": "43",
   "sdk": "org.gnome.Sdk",
@@ -26,13 +26,13 @@
   "modules": [
     {
       "name": "iplan",
-      "config-opts": ["-Dprofile=development"],
+      "config-opts": ["-Dprofile=default"],
       "builddir": true,
       "buildsystem": "meson",
       "sources": [
         {
           "type": "git",
-          "branch": "rust",
+          "branch": "main",
           "url": "."
         }
       ]

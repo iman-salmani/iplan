@@ -55,7 +55,7 @@ cargo_env = [ 'CARGO_HOME=' + meson.project_build_root() / 'cargo-home' ]
 # )
 
 # Check buildtype
-if get_option('buildtype') == 'release'
+if get_option('profile') == 'default'
 	cargo_opt += [ '--release' ]
 	rust_target = 'release'
 else
