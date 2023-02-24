@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component type="desktop">
-	<id>ir.imansalmani.IPlan.desktop</id>
+	<id>ir.imansalmani.IPlan</id>
 	<metadata_license>CC0-1.0</metadata_license>
   <project_license>GPL-3.0-or-later</project_license>
   <name>IPlan</name>
@@ -40,5 +40,4 @@
       <category>Utility</category>
   </categories>
   <content_rating type="oars-1.1"/>
-  <provides>ir.imansalmani.IPlan.desktop</provides>
 </component>
