@@ -96,6 +96,7 @@ impl ProjectListTask {
             .downcast::<gtk::Label>()
             .unwrap()
             .set_text(&task_name);
+        imp.name_button.set_tooltip_text(Some(&task_name));
         imp.name_entry.buffer().set_text(&task_name);
         let name_entry_controller = gtk::EventControllerKey::new();
         name_entry_controller.connect_key_released(glib::clone!(
