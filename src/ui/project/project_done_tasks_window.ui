@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <requires lib="gtk" version="4.0"/>
+  <requires lib="Adw" version="1.0"/>
+  <template class="ProjectDoneTasksWindow" parent="AdwWindow">
+    <property name="width-request">320</property>
+    <property name="modal">true</property>
+    <property name="destroy-with-parent">true</property>
+    <property name="content"><!-- Content -->
+      <object class="GtkBox">
+        <property name="orientation">vertical</property>
+        <child><!-- Header -->
+          <object class="AdwHeaderBar">
+            <style>
+              <class name="flat"/>
+            </style>
+            <property name="title-widget">
+              <object class="GtkLabel" id="name_label">
+                <style>
+                  <class name="heading"/>
+                </style>
+              </object>
+            </property>
+          </object>
+        </child><!-- End Header -->
+        <child>
+          <object class="AdwToastOverlay" id="toast_overlay">
+            <child><!-- Scrolled Window -->
+              <object class="GtkScrolledWindow" id="scrolled_window">
+                <property name="vexpand">true</property>
+                <property name="height-request">320</property>
+                <property name="width-request">480</property>
+                <property name="hscrollbar-policy">never</property>
+                <child><!-- Task List -->
+                  <object class="GtkListBox" id="tasks_box">
+                    <property name="valign">start</property>
+                    <property name="selection_mode">none</property>
+                    <property name="margin-top">3</property>
+                    <property name="margin-bottom">9</property>
+                    <property name="margin-start">15</property>
+                    <property name="margin-end">15</property>
+                    <style>
+                    <class name="boxed-list"/>
+                    </style>
+                    <child type="placeholder">
+                      <object class="GtkLabel">
+                        <property name="margin-top">22</property>
+                        <property name="margin-bottom">22</property>
+                        <property name="label">Nothing to do 🤔️</property>
+                        <style>
+                        <class name="heading"/>
+                        </style>
+                      </object>
+                    </child>
+                  </object>
+                </child><!-- End Task List -->
+              </object>
+            </child><!-- Scrolled Window -->
+          </object>
+        </child>
+      </object>
+    </property><!-- End Content -->
+  </template>
+</interface>

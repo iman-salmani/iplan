@@ -121,27 +121,12 @@ impl ProjectLists {
                 .unwrap();
             let project_list_imp = project_list.imp();
             let tasks = project_list_imp.tasks_box.observe_children();
-            if task.done() {
-                project_list_imp
-                    .show_done_tasks_toggle_button
-                    .set_active(true);
-            }
-            if project_list_imp.contain_done_tasks.get() {
-                let task_index = (tasks.n_items() as i32 - 2) - task.position();
-                tasks
-                    .item(task_index as u32)
-                    .and_downcast::<ProjectListTask>()
-                    .unwrap()
-                    .grab_focus();
-            } else {
-                for i in 0..tasks.n_items() - 1 {
-                    if let Some(project_list_task) = tasks.item(i).and_downcast::<ProjectListTask>()
-                    {
-                        let list_task = project_list_task.task();
-                        if list_task.position() == task.position() as i32 {
-                            project_list_task.grab_focus();
-                            break;
-                        }
+            for i in 0..tasks.n_items() - 1 {
+                if let Some(project_list_task) = tasks.item(i).and_downcast::<ProjectListTask>() {
+                    let list_task = project_list_task.task();
+                    if list_task.position() == task.position() as i32 {
+                        project_list_task.grab_focus();
+                        break;
                     }
                 }
             }

@@ -12,3 +12,6 @@ pub use project_list_task::ProjectListTask;
 
 mod project_edit_window;
 pub use project_edit_window::ProjectEditWindow;
+
+mod project_done_tasks_window;
+pub use project_done_tasks_window::ProjectDoneTasksWindow;

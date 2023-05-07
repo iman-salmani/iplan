@@ -1,13 +1,15 @@
 use adw::prelude::*;
 use gtk::{gdk, glib, glib::once_cell::sync::Lazy, subclass::prelude::*};
-use std::cell::{Cell, RefCell};
+use std::cell::RefCell;
 
 use crate::db::models::{List, Task};
 use crate::db::operations::{
     create_task, delete_list, new_position, read_list, read_task, read_tasks, update_list,
     update_task,
 };
-use crate::views::{project::ProjectLayout, project::ProjectListTask, IPlanWindow};
+use crate::views::{
+    project::ProjectDoneTasksWindow, project::ProjectLayout, project::ProjectListTask, IPlanWindow,
+};
 
 mod imp {
     use super::*;
@@ -16,7 +18,6 @@ mod imp {
     #[template(resource = "/ir/imansalmani/iplan/ui/project/project_list.ui")]
     pub struct ProjectList {
         pub list: RefCell<List>,
-        pub contain_done_tasks: Cell<bool>,
         #[template_child]
         pub header: TemplateChild<gtk::Box>,
         #[template_child]
@@ -34,7 +35,7 @@ mod imp {
         #[template_child]
         pub options_popover: TemplateChild<gtk::Popover>,
         #[template_child]
-        pub show_done_tasks_toggle_button: TemplateChild<gtk::ToggleButton>,
+        pub show_done_tasks_button: TemplateChild<gtk::Button>,
     }
 
     #[glib::object_subclass]
@@ -46,22 +47,15 @@ mod imp {
         fn class_init(klass: &mut Self::Class) {
             klass.bind_template();
             klass.bind_template_instance_callbacks();
-            klass.install_action("task.done", Some("i"), move |obj, _, value| {
+            klass.install_action("task.check", Some("i"), move |obj, _, value| {
                 let imp = obj.imp();
                 let value = value.unwrap().get().unwrap();
                 let upper_row = imp.tasks_box.row_at_index(value - 1);
                 let row = imp.tasks_box.row_at_index(value).unwrap();
-                if obj.contain_done_tasks() {
-                    if let Some(upper_row) = upper_row {
-                        upper_row.grab_focus();
-                    }
-                    row.changed();
-                } else if !imp.show_done_tasks_toggle_button.is_active() {
-                    if let Some(upper_row) = upper_row {
-                        upper_row.grab_focus();
-                    }
-                    imp.tasks_box.remove(&row);
+                if let Some(upper_row) = upper_row {
+                    upper_row.grab_focus();
                 }
+                imp.tasks_box.remove(&row);
             });
         }
 
@@ -72,12 +66,8 @@ mod imp {
 
     impl ObjectImpl for ProjectList {
         fn properties() -> &'static [glib::ParamSpec] {
-            static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
-                vec![
-                    glib::ParamSpecObject::builder::<List>("list").build(),
-                    glib::ParamSpecBoolean::builder("contain-done-tasks").build(),
-                ]
-            });
+            static PROPERTIES: Lazy<Vec<glib::ParamSpec>> =
+                Lazy::new(|| vec![glib::ParamSpecObject::builder::<List>("list").build()]);
             PROPERTIES.as_ref()
         }
 
@@ -87,10 +77,6 @@ mod imp {
                     let value = value.get::<List>().expect("value must be a List");
                     self.list.replace(value);
                 }
-                "contain-done-tasks" => {
-                    let value = value.get::<bool>().expect("value must be a bool");
-                    self.contain_done_tasks.replace(value);
-                }
                 _ => unimplemented!(),
             }
         }
@@ -98,7 +84,6 @@ mod imp {
         fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
             match pspec.name() {
                 "list" => self.list.borrow().to_value(),
-                "contain-done-tasks" => self.contain_done_tasks.get().to_value(),
                 _ => unimplemented!(),
             }
         }
@@ -120,6 +105,7 @@ impl ProjectList {
     }
 
     pub fn init_widgets(&self, project_id: i64, layout: ProjectLayout) {
+        // TODO: check why project_id needed
         let imp = self.imp();
         let list = self.list();
 
@@ -176,14 +162,12 @@ impl ProjectList {
             let row = row.downcast_ref::<ProjectListTask>().unwrap();
             if row.task().suspended() {
                 false
-            } else if !imp.show_done_tasks_toggle_button.is_active() {
-                !row.task().done()
             } else {
                 !row.imp().moving_out.get()
             }
         }));
 
-        self.fetch(project_id, false);
+        self.fetch(project_id);
 
         let list_drag_source = gtk::DragSource::builder()
             .actions(gdk::DragAction::MOVE)
@@ -237,13 +221,9 @@ impl ProjectList {
         self.property("list")
     }
 
-    pub fn contain_done_tasks(&self) -> bool {
-        self.property("contain-done-tasks")
-    }
-
-    fn fetch(&self, project_id: i64, done_tasks: bool) {
+    fn fetch(&self, project_id: i64) {
         let imp = self.imp();
-        for task in read_tasks(project_id, Some(self.list().id()), Some(done_tasks))
+        for task in read_tasks(project_id, Some(self.list().id()), Some(false))
             .expect("Faield to read tasks")
         {
             let project_list_task = ProjectListTask::new(task);
@@ -317,15 +297,12 @@ impl ProjectList {
     }
 
     #[template_callback]
-    fn handle_show_done_tasks_toggle_button_toggled(&self, _button: gtk::ToggleButton) {
+    fn handle_show_done_tasks_button_clicked(&self, _button: gtk::Button) {
         let imp = self.imp();
         imp.options_button.popdown();
-        if !self.contain_done_tasks() {
-            self.set_property("contain_done_tasks", true);
-            self.fetch(self.list().project(), true);
-        } else {
-            imp.tasks_box.invalidate_filter();
-        }
+        let win: IPlanWindow = self.root().and_downcast().unwrap();
+        let window = ProjectDoneTasksWindow::new(win.application().unwrap(), &win, self.list());
+        window.present();
     }
 
     fn list_drop_target_drop(

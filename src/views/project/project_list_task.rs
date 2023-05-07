@@ -5,7 +5,7 @@ use std::time::Duration;
 
 use crate::db::models::{Record, Task};
 use crate::db::operations::{create_record, delete_task, read_records, update_record, update_task};
-use crate::views::IPlanWindow;
+use crate::views::{project::ProjectDoneTasksWindow, IPlanWindow};
 
 mod imp {
     use super::*;
@@ -148,9 +148,6 @@ impl ProjectListTask {
             if is_active {
                 imp.timer_toggle_button.set_active(false);
                 imp.timer_toggle_button.set_sensitive(false);
-
-                self.activate_action("task.done", Some(&self.index().to_variant()))
-                    .expect("Failed to activate task.done action");
             } else {
                 imp.timer_toggle_button.set_sensitive(true);
                 if imp.timer_toggle_button_handler_id.borrow().is_none() {
@@ -160,6 +157,9 @@ impl ProjectListTask {
                     imp.timer_toggle_button_handler_id.replace(Some(handler_id));
                 }
             }
+
+            self.activate_action("task.check", Some(&self.index().to_variant()))
+                .expect("Failed to activate task.check action");
         }
     }
 
@@ -302,8 +302,17 @@ impl ProjectListTask {
                 }
             }
         ));
-        let window = self.root().and_downcast::<IPlanWindow>().unwrap();
-        window.imp().toast_overlay.add_toast(&toast);
+        let win_name = self.root().unwrap().widget_name();
+        if win_name == "IPlanWindow" {
+            let window = self.root().and_downcast::<IPlanWindow>().unwrap();
+            window.imp().toast_overlay.add_toast(&toast);
+        } else if win_name == "ProjectDoneTasksWindow" {
+            let window = self
+                .root()
+                .and_downcast::<ProjectDoneTasksWindow>()
+                .unwrap();
+            window.imp().toast_overlay.add_toast(&toast);
+        }
         task.set_property("suspended", true);
         self.set_property("task", &task);
         update_task(task).expect("Failed to update task");

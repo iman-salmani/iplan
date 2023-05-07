@@ -23,8 +23,10 @@ use gtk::{gio, glib, glib::once_cell::sync::Lazy, prelude::*};
 use std::cell::RefCell;
 
 use crate::db::models::Project;
-use crate::db::operations::{create_list, create_project, read_projects};
-use crate::views::project::{ProjectEditWindow, ProjectHeader, ProjectLayout, ProjectLists};
+use crate::db::operations::{create_list, create_project, read_list, read_projects};
+use crate::views::project::{
+    ProjectDoneTasksWindow, ProjectEditWindow, ProjectHeader, ProjectLayout, ProjectLists,
+};
 use crate::views::sidebar::Sidebar;
 
 mod imp {
@@ -133,6 +135,36 @@ mod imp {
                             @weak imp => @default-return glib::Continue(false),
                             move |_text| {
                                 imp.project_lists.select_task(Some(task_id));
+                                glib::Continue(false)
+                            }
+                    ),
+                );
+            });
+            klass.install_action("search.task-done", Some("(bxx)"), move |win, _, value| {
+                let imp = win.imp();
+                let (project_changed, task_id, list_id) =
+                    value.unwrap().get::<(bool, i64, i64)>().unwrap();
+                if project_changed {
+                    let project = win.project();
+                    imp.project_header.open_project(&project);
+                    imp.project_lists.open_project(project.id());
+                    let sidebar_imp = imp.sidebar.imp();
+                    sidebar_imp.projects_section.select_active_project();
+                    sidebar_imp.projects_section.check_archive_hidden();
+                }
+                let (tx, rx) = glib::MainContext::channel(glib::PRIORITY_DEFAULT);
+                glib::idle_add_once(move || {
+                    tx.send("").expect("Something happens");
+                });
+                let list = read_list(list_id).expect("Failed to read list");
+                let window = ProjectDoneTasksWindow::new(win.application().unwrap(), win, list);
+                window.present();
+                rx.attach(
+                    None,
+                    glib::clone!(
+                            @weak window => @default-return glib::Continue(false),
+                            move |_text| {
+                                window.select_task(task_id);
                                 glib::Continue(false)
                             }
                     ),

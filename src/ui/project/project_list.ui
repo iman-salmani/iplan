@@ -87,8 +87,8 @@
         <property name="orientation">vertical</property>
         <property name="spacing">6</property>
         <child><!-- Toggle Completed Tasks -->
-          <object class="GtkToggleButton" id="show_done_tasks_toggle_button">
-            <signal name="toggled" handler="handle_show_done_tasks_toggle_button_toggled" swapped="true"/>
+          <object class="GtkButton" id="show_done_tasks_button">
+            <signal name="clicked" handler="handle_show_done_tasks_button_clicked" swapped="true"/>
             <style>
               <class name="flat"/>
             </style>
@@ -102,7 +102,7 @@
                 </child>
                 <child>
                   <object class="GtkLabel">
-                    <property name="label">Show completed tasks</property>
+                    <property name="label">Done tasks</property>
                     <attributes>
                       <attribute name="weight" value="PANGO_WEIGHT_NORMAL"/>
                     </attributes>
