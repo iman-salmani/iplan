@@ -6,7 +6,8 @@
   <name>IPlan</name>
   <summary>Your plan for improve personal life and workflow</summary>
   <description>
-	  <p>Features</p>
+    <p>IPlan goal is to be a user friendly tool for who wants to organize his personal life or jobs.<p>
+	  <p>Features:</p>
 	  <ul>
 	    <li>Grouping tasks with project and list</li>
 	    <li>Timer for tasks</li>
@@ -16,8 +17,8 @@
 	</description>
   <screenshots>
     <screenshot type="default">
-      <caption>The IPlan main window.</caption>
-      <image type="source" width="800" height="450">https://github.com/iman-salmani/iplan/blob/ee9ab7a6adc2afcb6d2440d2af62d580b097427f/data/screenshots/window.png</image>
+      <caption>The IPlan main window</caption>
+      <image type="source" width="800" height="450">https://github.com/iman-salmani/iplan/blob/ee9ab7a6adc2afcb6d2440d2af62d580b097427f/data/screenshots/window.png?raw=true</image>
     </screenshot>
   </screenshots>
   <launchable type="desktop-id">ir.imansalmani.IPlan.desktop</launchable>
@@ -40,4 +41,18 @@
       <category>Utility</category>
   </categories>
   <content_rating type="oars-1.1"/>
+  <releases>
+    <release version="1.0" date="2023-05-10">
+      <description>
+        <p>First stable release.</p>
+        <p>Features:</p>
+        <ul>
+          <li>Grouping tasks with project and list</li>
+          <li>Timer for tasks</li>
+          <li>Global search</li>
+          <li>Arranging projects, lists and tasks by drag and drop</li>
+        </ul>
+      </description>
+    </release>
+  </releases>
 </component>
