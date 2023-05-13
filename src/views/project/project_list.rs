@@ -18,6 +18,7 @@ mod imp {
     #[template(resource = "/ir/imansalmani/iplan/ui/project/project_list.ui")]
     pub struct ProjectList {
         pub list: RefCell<List>,
+        pub tasks: RefCell<Vec<Task>>,
         #[template_child]
         pub header: TemplateChild<gtk::Box>,
         #[template_child]
@@ -104,7 +105,7 @@ impl ProjectList {
         glib::Object::builder().property("list", list).build()
     }
 
-    pub fn init_widgets(&self, project_id: i64, layout: ProjectLayout) {
+    pub fn init_widgets(&self, project_id: i64, layout: ProjectLayout, tasks_per_page: usize) {
         // TODO: check why project_id needed
         let imp = self.imp();
         let list = self.list();
@@ -140,10 +141,42 @@ impl ProjectList {
                 }
             }));
             imp.scrolled_window.add_controller(&scroll_controller);
+
+            imp.scrolled_window.connect_edge_reached(glib::clone!(
+            @weak self as obj @weak imp => @default-return (),
+            move |_obj, pos| {
+                if pos == gtk::PositionType::Bottom {
+                    let next = imp.tasks_box.observe_children().n_items() as usize;
+                    let tasks = imp.tasks.borrow();
+                    if next < tasks.len() {
+                        let project_list_task = ProjectListTask::new(tasks.get(next).unwrap().clone());
+                        imp.tasks_box.append(&project_list_task);
+                        project_list_task.init_widgets();
+                    }
+                }
+            }));
         }
 
         imp.name_button.set_label(&list.name());
         imp.name_entry.buffer().set_text(&list.name());
+
+        let tasks = read_tasks(project_id, Some(self.list().id()), Some(false))
+            .expect("Faield to read tasks");
+        imp.tasks.replace(tasks);
+        let tasks = imp.tasks.borrow();
+        if tasks.len() > tasks_per_page && layout == ProjectLayout::Horizontal {
+            for task in tasks.split_at(tasks_per_page).0 {
+                let project_list_task = ProjectListTask::new(task.clone());
+                imp.tasks_box.append(&project_list_task);
+                project_list_task.init_widgets();
+            }
+        } else {
+            for task in tasks.clone() {
+                let project_list_task = ProjectListTask::new(task);
+                imp.tasks_box.append(&project_list_task);
+                project_list_task.init_widgets();
+            }
+        }
 
         imp.tasks_box.set_sort_func(|row1, row2| {
             let row1_p = row1.property::<Task>("task").position();
@@ -166,8 +199,6 @@ impl ProjectList {
                 !row.imp().moving_out.get()
             }
         }));
-
-        self.fetch(project_id);
 
         let list_drag_source = gtk::DragSource::builder()
             .actions(gdk::DragAction::MOVE)
@@ -219,17 +250,6 @@ impl ProjectList {
 
     pub fn list(&self) -> List {
         self.property("list")
-    }
-
-    fn fetch(&self, project_id: i64) {
-        let imp = self.imp();
-        for task in read_tasks(project_id, Some(self.list().id()), Some(false))
-            .expect("Faield to read tasks")
-        {
-            let project_list_task = ProjectListTask::new(task);
-            imp.tasks_box.append(&project_list_task);
-            project_list_task.init_widgets();
-        }
     }
 
     #[template_callback]

@@ -97,12 +97,13 @@ impl ProjectLists {
                 .remove(&lists.item(0).and_downcast::<ProjectList>().unwrap());
         }
 
+        // let tasks_per_page = self.allocated_height() / 72;   // TODO: update by window resize
+        let tasks_per_page = 18;
         for list in read_lists(project_id).expect("Failed to read lists") {
             let project_list = ProjectList::new(list);
             imp.lists_box.append(&project_list);
-            project_list.init_widgets(project_id, imp.layout.get());
+            project_list.init_widgets(project_id, imp.layout.get(), tasks_per_page as usize);
         }
-
         if imp.lists_box.first_child().is_none() {
             imp.lists_box.append(&imp.placeholder.get());
         }

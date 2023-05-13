@@ -43,6 +43,7 @@
   </template>
   <!-- Project duration Popover -->
   <object class="GtkPopover" id="duration_popover">
+    <signal name="show" handler="handle_duration_popover_show" swapped="true"/>
     <style>
       <class name="menu"/>
     </style>
@@ -54,7 +55,7 @@
             <property name="icon-name">profit-symbolic</property>
             <property name="title">Time spent per day</property>
             <property name="description">Use timer to add time</property>
-            <property name="width-request">320</property>
+            <property name="width-request">300</property>
             <property name="height-request">256</property>
             <style>
               <class name="compact"/>
