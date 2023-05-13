@@ -116,7 +116,7 @@ impl Task {
 
     pub fn duration(&self) -> Option<i64> {
         let mut total = 0;
-        for record in read_records(self.id(), false, None, None).expect("Faield to read records") {
+        for record in read_records(self.id(), false, None, None).expect("Failed to read records") {
             total = total + record.duration();
         }
         if total == 0 {

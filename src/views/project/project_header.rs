@@ -117,7 +117,7 @@ impl ProjectHeader {
             let now = glib::DateTime::now_local().unwrap();
             let dates = &mut vec![];
             dates.push(now.to_unix());
-            let tasks = read_tasks(project_id, None, None).expect("Faield to read tasks");
+            let tasks = read_tasks(project_id, None, None).expect("Failed to read tasks");
             for i in 0..7 {
                 let date = glib::DateTime::from_local(
                     now.year(),

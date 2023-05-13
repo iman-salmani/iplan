@@ -86,7 +86,7 @@ pub fn delete_project(project_id: i64, index: i32) -> Result<()> {
 pub fn find_projects(text: &str, archive: bool) -> Result<Vec<Project>> {
     let filters = if archive { "" } else { "AND archive = false" };
     // Replace % and _ with \% and \_ because they have meaning
-    // FIXME: do this whitout copy string
+    // FIXME: do this without copy string
     let text = text.replace("%", r"\%").replace("_", r"\_");
     let conn = get_connection();
     let mut stmt = conn.prepare(&format!(

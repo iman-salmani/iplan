@@ -14,12 +14,12 @@ pub fn create_record(start: i64, task_id: i64) -> Result<Record> {
 
 pub fn read_records(
     task_id: i64,
-    uncomplete: bool,
+    incomplete: bool,
     start: Option<i64>,
     end: Option<i64>,
 ) -> Result<Vec<Record>> {
     let filters = &mut String::new();
-    if uncomplete {
+    if incomplete {
         filters.push_str("AND duration = 0 ")
     }
     if let Some(start) = start {

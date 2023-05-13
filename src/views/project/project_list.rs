@@ -161,7 +161,7 @@ impl ProjectList {
         imp.name_entry.buffer().set_text(&list.name());
 
         let tasks = read_tasks(project_id, Some(self.list().id()), Some(false))
-            .expect("Faield to read tasks");
+            .expect("Failed to read tasks");
         imp.tasks.replace(tasks);
         let tasks = imp.tasks.borrow();
         if tasks.len() > tasks_per_page && layout == ProjectLayout::Horizontal {
@@ -464,7 +464,7 @@ impl ProjectList {
                 source_task.set_property("position", target_p)
             }
 
-            // Should use invalidate_sort() insteed of changed() for refresh hightlight shape
+            // Should use invalidate_sort() insteed of changed() for refresh highlight shape
             imp.tasks_box.invalidate_sort();
         }
 

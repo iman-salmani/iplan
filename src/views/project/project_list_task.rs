@@ -122,7 +122,7 @@ impl ProjectListTask {
             imp.timer_toggle_button_handler_id.replace(Some(handler_id));
             // Starting timer if have not finished record
             let records =
-                read_records(task.id(), true, None, None).expect("Faield to read records");
+                read_records(task.id(), true, None, None).expect("Failed to read records");
             if !records.is_empty() {
                 imp.timer_toggle_button.set_active(true)
             }
@@ -195,7 +195,7 @@ impl ProjectListTask {
 
     fn handle_timer_toggle_button_toggled(&self, button: &gtk::ToggleButton) {
         let task = self.task();
-        let records = read_records(task.id(), true, None, None).expect("Faield to read records");
+        let records = read_records(task.id(), true, None, None).expect("Failed to read records");
         let record = if records.is_empty() {
             create_record(glib::DateTime::now_local().unwrap().to_unix(), task.id())
                 .expect("Failed to create record")

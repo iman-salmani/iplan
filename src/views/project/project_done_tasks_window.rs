@@ -99,7 +99,7 @@ impl ProjectDoneTasksWindow {
         imp.name_label
             .set_label(&format!("Done tasks in {}", list.name()));
         for task in
-            read_tasks(list.project(), Some(list.id()), Some(true)).expect("Faield to read tasks")
+            read_tasks(list.project(), Some(list.id()), Some(true)).expect("Failed to read tasks")
         {
             let project_list_task = ProjectListTask::new(task);
             imp.tasks_box.append(&project_list_task);

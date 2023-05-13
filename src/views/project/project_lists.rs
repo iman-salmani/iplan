@@ -146,7 +146,7 @@ impl ProjectLists {
     }
 
     pub fn new_list(&self, project_id: i64) {
-        let list = create_list("New List", project_id).expect("Faield to create new list");
+        let list = create_list("New List", project_id).expect("Failed to create new list");
         let project_list = ProjectList::new(list);
         let imp = self.imp();
         if imp.placeholder.parent().is_some() {
@@ -154,7 +154,7 @@ impl ProjectLists {
         }
         imp.lists_box.append(&project_list);
         let project_list_imp = project_list.imp();
-        project_list_imp.name_button.set_visible(false); // Name entry visiblity have binding to this
+        project_list_imp.name_button.set_visible(false); // Name entry visibility have binding to this
         let (tx, rx) = glib::MainContext::channel(glib::PRIORITY_DEFAULT);
         glib::idle_add_once(move || tx.send("").unwrap());
         let name_entry = project_list_imp.name_entry.get();
