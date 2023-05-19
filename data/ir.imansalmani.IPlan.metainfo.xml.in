@@ -18,7 +18,11 @@
   <screenshots>
     <screenshot type="default">
       <caption>The IPlan main window</caption>
-      <image type="source" width="800" height="450">https://github.com/iman-salmani/iplan/blob/ee9ab7a6adc2afcb6d2440d2af62d580b097427f/data/screenshots/window.png?raw=true</image>
+      <image type="source" width="800" height="450">https://github.com/iman-salmani/iplan/blob/ddc568765732dafbc5399f407bfe7807730030e4/data/screenshots/window.png?raw=true</image>
+    </screenshot>
+    <screenshot type="default">
+      <caption>The IPlan main window</caption>
+      <image type="source" width="450" height="800">https://github.com/iman-salmani/iplan/blob/ddc568765732dafbc5399f407bfe7807730030e4/data/screenshots/window-small.png?raw=true</image>
     </screenshot>
   </screenshots>
   <launchable type="desktop-id">ir.imansalmani.IPlan.desktop</launchable>
