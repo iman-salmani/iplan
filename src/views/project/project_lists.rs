@@ -120,17 +120,7 @@ impl ProjectLists {
                 .item(list.index() as u32)
                 .and_downcast::<ProjectList>()
                 .unwrap();
-            let project_list_imp = project_list.imp();
-            let tasks = project_list_imp.tasks_box.observe_children();
-            for i in 0..tasks.n_items() - 1 {
-                if let Some(project_list_task) = tasks.item(i).and_downcast::<ProjectListTask>() {
-                    let list_task = project_list_task.task();
-                    if list_task.position() == task.position() as i32 {
-                        project_list_task.grab_focus();
-                        break;
-                    }
-                }
-            }
+            project_list.select_task(task);
         } else {
             if let Some(first_list) = imp.lists_box.first_child().and_downcast::<ProjectList>() {
                 if let Some(first_row) = first_list
