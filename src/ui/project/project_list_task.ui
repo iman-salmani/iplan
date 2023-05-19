@@ -66,12 +66,13 @@
             </child>
           </object>
         </child><!-- End Timer -->
-        <child><!-- Delete Button -->
-          <object class="GtkButton">
-            <property name="icon-name">user-trash-symbolic</property>
-            <signal name="clicked" handler="handle_delete_button_clicked" swapped="true"/>
+        <child><!-- Task Options Button -->
+          <object class="GtkMenuButton" id="options_button">
+            <property name="icon_name">view-more-symbolic</property>
+            <property name="has_frame">false</property>
+            <property name="popover">options_popover</property>
           </object>
-        </child><!-- End Delete Button -->
+        </child><!-- End Task Options Button -->
       </object>
     </child><!-- End Box -->
     <child><!-- Drag Source -->
@@ -84,4 +85,69 @@
       </object>
     </child><!-- End Drag Source -->
   </template>
+  <!-- Options Popover -->
+  <object class="GtkPopover" id="options_popover">
+    <child>
+      <object class="GtkBox">
+        <property name="orientation">vertical</property>
+        <property name="spacing">6</property>
+        <child><!-- Records Button -->
+          <object class="GtkButton">
+            <signal name="clicked" handler="handle_records_button_clicked" swapped="true"/>
+            <style>
+              <class name="flat"/>
+            </style>
+            <child>
+              <object class="GtkBox">
+                <property name="spacing">6</property>
+                <child>
+                  <object class="GtkImage">
+                    <property name="icon-name">preferences-system-time-symbolic</property>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkLabel">
+                    <property name="label">Records</property>
+                    <attributes>
+                      <attribute name="weight" value="PANGO_WEIGHT_NORMAL"/>
+                    </attributes>
+                  </object>
+                </child>
+              </object>
+            </child>
+          </object>
+        </child><!-- End Records Button -->
+        <child>
+          <object class="GtkSeparator"/>
+        </child>
+        <child><!-- Delete Task -->
+          <object class="GtkButton">
+            <signal name="clicked" handler="handle_delete_button_clicked" swapped="true"/>
+            <style>
+              <class name="flat"/>
+            </style>
+            <child>
+              <object class="GtkBox">
+                <property name="spacing">6</property>
+                <child>
+                  <object class="GtkImage">
+                    <property name="icon-name">user-trash-symbolic</property>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkLabel">
+                    <property name="label">Delete task</property>
+                    <attributes>
+                      <attribute name="weight" value="PANGO_WEIGHT_NORMAL"/>
+                    </attributes>
+                  </object>
+                </child>
+              </object>
+            </child>
+          </object>
+        </child><!-- End Delete Task -->
+      </object>
+    </child>
+  </object>
+  <!-- End Options Popover -->
 </interface>

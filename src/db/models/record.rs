@@ -2,10 +2,8 @@ use gtk::{glib, glib::once_cell::sync::Lazy, prelude::*, subclass::prelude::*};
 use rusqlite::{Error, Result, Row};
 use std::cell::Cell;
 use std::fmt;
-
 mod imp {
     use super::*;
-
     #[derive(Default, Debug)]
     pub struct Record {
         pub id: Cell<i64>,

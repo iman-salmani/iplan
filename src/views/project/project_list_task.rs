@@ -5,7 +5,7 @@ use std::time::Duration;
 
 use crate::db::models::{Record, Task};
 use crate::db::operations::{create_record, delete_task, read_records, update_record, update_task};
-use crate::views::{project::ProjectDoneTasksWindow, IPlanWindow};
+use crate::views::{project::ProjectDoneTasksWindow, project::RecordsWindow, IPlanWindow};
 
 mod imp {
     use super::*;
@@ -26,6 +26,8 @@ mod imp {
         pub timer_toggle_button_handler_id: RefCell<Option<gtk::glib::SignalHandlerId>>,
         #[template_child]
         pub timer_button_content: TemplateChild<adw::ButtonContent>,
+        #[template_child]
+        pub options_popover: TemplateChild<gtk::Popover>,
     }
 
     #[glib::object_subclass]
@@ -197,7 +199,7 @@ impl ProjectListTask {
         let task = self.task();
         let records = read_records(task.id(), true, None, None).expect("Failed to read records");
         let record = if records.is_empty() {
-            create_record(glib::DateTime::now_local().unwrap().to_unix(), task.id())
+            create_record(glib::DateTime::now_local().unwrap().to_unix(), task.id(), 0)
                 .expect("Failed to create record")
         } else {
             let record = records.get(0).unwrap().clone();
@@ -255,6 +257,28 @@ impl ProjectListTask {
             self.activate_action("project.update", None)
                 .expect("Failed to send project.update");
         }
+    }
+
+    #[template_callback]
+    fn handle_records_button_clicked(&self, _button: gtk::Button) {
+        let win = self.root().and_downcast::<IPlanWindow>().unwrap();
+        let modal = RecordsWindow::new(&win.application().unwrap(), &win, self.task().id());
+        modal.present();
+        self.imp().options_popover.popdown();
+        modal.connect_close_request(glib::clone!(
+            @weak self as obj => @default-return gtk::Inhibit(false),
+            move |_| {
+                let task = obj.task();
+                let imp = obj.imp();
+                if let Some(duration) = task.duration() {
+                    if !imp.timer_toggle_button.is_active() {
+                        imp.timer_button_content.set_label(&Record::duration_display(duration));
+                    }
+                }
+                obj.activate_action("project.update", None).expect("Failed to send project.update signal");
+                gtk::Inhibit(false)
+            }
+        ));
     }
 
     #[template_callback]
