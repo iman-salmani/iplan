@@ -16,6 +16,7 @@ mod imp {
         pub list: Cell<i64>,
         pub position: Cell<i32>,
         pub suspended: Cell<bool>,
+        pub parent: Cell<i64>,
     }
 
     #[glib::object_subclass]
@@ -35,6 +36,7 @@ mod imp {
                     glib::ParamSpecInt64::builder("list").build(),
                     glib::ParamSpecInt::builder("position").build(),
                     glib::ParamSpecBoolean::builder("suspended").build(),
+                    glib::ParamSpecInt64::builder("parent").build(),
                 ]
             });
             PROPERTIES.as_ref()
@@ -70,6 +72,10 @@ mod imp {
                     let value = value.get::<bool>().expect("Value must be a bool");
                     self.suspended.set(value);
                 }
+                "parent" => {
+                    let value = value.get::<i64>().expect("Value must be a i64");
+                    self.parent.set(value);
+                }
                 _ => unimplemented!(),
             }
         }
@@ -83,6 +89,7 @@ mod imp {
                 "list" => self.list.get().to_value(),
                 "position" => self.position.get().to_value(),
                 "suspended" => self.suspended.get().to_value(),
+                "parent" => self.parent.get().to_value(),
                 _ => unimplemented!(),
             }
         }
@@ -102,6 +109,7 @@ impl Task {
         list: i64,
         position: i32,
         suspended: bool,
+        parent: i64,
     ) -> Self {
         glib::Object::builder()
             .property("id", id)
@@ -111,6 +119,7 @@ impl Task {
             .property("list", list)
             .property("position", position)
             .property("suspended", suspended)
+            .property("parent", parent)
             .build()
     }
 
@@ -153,6 +162,10 @@ impl Task {
     pub fn suspended(&self) -> bool {
         self.property("suspended")
     }
+
+    pub fn parent(&self) -> i64 {
+        self.property("parent")
+    }
 }
 
 impl TryFrom<&Row<'_>> for Task {
@@ -167,12 +180,13 @@ impl TryFrom<&Row<'_>> for Task {
             row.get(4)?,
             row.get(5)?,
             row.get(6)?,
+            row.get(7)?,
         ))
     }
 }
 
 impl Default for Task {
     fn default() -> Self {
-        Task::new(1, String::new(), false, 1, 1, 0, false)
+        Task::new(1, String::new(), false, 1, 1, 0, false, 0)
     }
 }

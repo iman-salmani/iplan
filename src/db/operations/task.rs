@@ -3,12 +3,12 @@ use rusqlite::Result;
 use crate::db::get_connection;
 use crate::db::models::Task;
 
-pub fn create_task(name: &str, project_id: i64, list_id: i64) -> Result<Task> {
+pub fn create_task(name: &str, project_id: i64, list_id: i64, parent: i64) -> Result<Task> {
     let position = new_position(list_id);
     let conn = get_connection();
     conn.execute(
-        "INSERT INTO tasks(name, project, list, position) VALUES (?1,?2,?3,?4)",
-        (name, project_id, list_id, position),
+        "INSERT INTO tasks(name, project, list, position, parent) VALUES (?1,?2,?3,?4,?5)",
+        (name, project_id, list_id, position, parent),
     )?;
     Ok(Task::new(
         conn.last_insert_rowid(),
@@ -18,6 +18,7 @@ pub fn create_task(name: &str, project_id: i64, list_id: i64) -> Result<Task> {
         list_id,
         position,
         false,
+        parent,
     ))
 }
 
@@ -92,7 +93,7 @@ pub fn update_task(task: Task) -> Result<()> {
         &format!(
             "UPDATE tasks SET
             name = ?1, done = ?2, project = ?3, list = ?4,
-            {position_stmt} suspended = ?5 WHERE id = ?6"
+            {position_stmt} suspended = ?5, parent = ?6 WHERE id = ?7"
         ),
         (
             task.name(),
@@ -100,6 +101,7 @@ pub fn update_task(task: Task) -> Result<()> {
             task.project(),
             task.list(),
             task.suspended(),
+            task.parent(),
             task.id(),
         ),
     )?;

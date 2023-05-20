@@ -305,7 +305,7 @@ impl ProjectList {
     #[template_callback]
     fn handle_new_button_clicked(&self, _button: gtk::Button) {
         let list = self.list();
-        let task = create_task("", list.project(), list.id()).expect("Failed to create task");
+        let task = create_task("", list.project(), list.id(), 0).expect("Failed to create task");
         let task_ui = ProjectListTask::new(task);
         let imp = self.imp();
         imp.tasks_box.prepend(&task_ui);
