@@ -11,8 +11,8 @@ mod imp {
     use super::*;
 
     #[derive(Default, gtk::CompositeTemplate)]
-    #[template(resource = "/ir/imansalmani/iplan/ui/project/project_list_task.ui")]
-    pub struct ProjectListTask {
+    #[template(resource = "/ir/imansalmani/iplan/ui/project/task_row.ui")]
+    pub struct TaskRow {
         pub task: RefCell<Task>,
         pub moving_out: Cell<bool>,
         #[template_child]
@@ -31,9 +31,9 @@ mod imp {
     }
 
     #[glib::object_subclass]
-    impl ObjectSubclass for ProjectListTask {
-        const NAME: &'static str = "ProjectListTask";
-        type Type = super::ProjectListTask;
+    impl ObjectSubclass for TaskRow {
+        const NAME: &'static str = "TaskRow";
+        type Type = super::TaskRow;
         type ParentType = gtk::ListBoxRow;
 
         fn class_init(klass: &mut Self::Class) {
@@ -46,7 +46,7 @@ mod imp {
         }
     }
 
-    impl ObjectImpl for ProjectListTask {
+    impl ObjectImpl for TaskRow {
         fn properties() -> &'static [glib::ParamSpec] {
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> =
                 Lazy::new(|| vec![glib::ParamSpecObject::builder::<Task>("task").build()]);
@@ -70,18 +70,18 @@ mod imp {
             }
         }
     }
-    impl WidgetImpl for ProjectListTask {}
-    impl ListBoxRowImpl for ProjectListTask {}
+    impl WidgetImpl for TaskRow {}
+    impl ListBoxRowImpl for TaskRow {}
 }
 
 glib::wrapper! {
-    pub struct ProjectListTask(ObjectSubclass<imp::ProjectListTask>)
+    pub struct TaskRow(ObjectSubclass<imp::TaskRow>)
         @extends gtk::Widget, gtk::ListBoxRow,
         @implements gtk::Buildable;
 }
 
 #[gtk::template_callbacks]
-impl ProjectListTask {
+impl TaskRow {
     pub fn new(task: Task) -> Self {
         glib::Object::builder().property("task", task).build()
     }

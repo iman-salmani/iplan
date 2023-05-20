@@ -7,8 +7,8 @@ pub use project_lists::{ProjectLayout, ProjectLists};
 mod project_list;
 pub use project_list::ProjectList;
 
-mod project_list_task;
-pub use project_list_task::ProjectListTask;
+mod task_row;
+pub use task_row::TaskRow;
 
 mod project_edit_window;
 pub use project_edit_window::ProjectEditWindow;

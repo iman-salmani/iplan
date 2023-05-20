@@ -4,7 +4,7 @@ use std::cell::RefCell;
 
 use crate::db::models::{List, Task};
 use crate::db::operations::{read_task, read_tasks};
-use crate::views::{project::ProjectListTask, IPlanWindow};
+use crate::views::{project::TaskRow, IPlanWindow};
 
 mod imp {
     use super::*;
@@ -101,7 +101,7 @@ impl ProjectDoneTasksWindow {
         for task in
             read_tasks(list.project(), Some(list.id()), Some(true)).expect("Failed to read tasks")
         {
-            let project_list_task = ProjectListTask::new(task);
+            let project_list_task = TaskRow::new(task);
             imp.tasks_box.append(&project_list_task);
             project_list_task.init_widgets();
         }
@@ -119,7 +119,7 @@ impl ProjectDoneTasksWindow {
         imp.tasks_box.set_filter_func(glib::clone!(
         @weak imp => @default-return false,
         move |row| {
-            let row = row.downcast_ref::<ProjectListTask>().unwrap();
+            let row = row.downcast_ref::<TaskRow>().unwrap();
             if row.task().suspended() {
                 false
             } else {
@@ -134,7 +134,7 @@ impl ProjectDoneTasksWindow {
         let tasks = imp.tasks_box.observe_children();
         let task = read_task(task_id).expect("Failed to read task");
         for i in 0..tasks.n_items() - 1 {
-            if let Some(project_list_task) = tasks.item(i).and_downcast::<ProjectListTask>() {
+            if let Some(project_list_task) = tasks.item(i).and_downcast::<TaskRow>() {
                 let list_task = project_list_task.task();
                 if list_task.position() == task.position() as i32 {
                     project_list_task.grab_focus();
