@@ -12,12 +12,13 @@
     <file preprocess="xml-stripblanks">ui/project/project_header.ui</file>
     <file preprocess="xml-stripblanks">ui/project/project_lists.ui</file>
     <file preprocess="xml-stripblanks">ui/project/project_list.ui</file>
-    <file preprocess="xml-stripblanks">ui/project/project_list_task.ui</file>
+    <file preprocess="xml-stripblanks">ui/project/task_row.ui</file>
     <file preprocess="xml-stripblanks">ui/project/project_edit_window.ui</file>
     <file preprocess="xml-stripblanks">ui/project/project_done_tasks_window.ui</file>
     <file preprocess="xml-stripblanks">ui/project/records_window.ui</file>
     <file preprocess="xml-stripblanks">ui/project/record_row.ui</file>
     <file preprocess="xml-stripblanks">ui/project/record_create_window.ui</file>
+    <file preprocess="xml-stripblanks">ui/project/subtasks_window.ui</file>
 
     <file preprocess="xml-stripblanks">ui/search/search_window.ui</file>
     <file preprocess="xml-stripblanks">ui/search/search_result.ui</file>

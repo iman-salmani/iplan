@@ -5,14 +5,16 @@ use std::time::Duration;
 
 use crate::db::models::{Record, Task};
 use crate::db::operations::{create_record, delete_task, read_records, update_record, update_task};
-use crate::views::{project::ProjectDoneTasksWindow, project::RecordsWindow, IPlanWindow};
+use crate::views::{
+    project::ProjectDoneTasksWindow, project::RecordsWindow, project::SubTasksWindow, IPlanWindow,
+};
 
 mod imp {
     use super::*;
 
     #[derive(Default, gtk::CompositeTemplate)]
-    #[template(resource = "/ir/imansalmani/iplan/ui/project/project_list_task.ui")]
-    pub struct ProjectListTask {
+    #[template(resource = "/ir/imansalmani/iplan/ui/project/task_row.ui")]
+    pub struct TaskRow {
         pub task: RefCell<Task>,
         pub moving_out: Cell<bool>,
         #[template_child]
@@ -31,9 +33,9 @@ mod imp {
     }
 
     #[glib::object_subclass]
-    impl ObjectSubclass for ProjectListTask {
-        const NAME: &'static str = "ProjectListTask";
-        type Type = super::ProjectListTask;
+    impl ObjectSubclass for TaskRow {
+        const NAME: &'static str = "TaskRow";
+        type Type = super::TaskRow;
         type ParentType = gtk::ListBoxRow;
 
         fn class_init(klass: &mut Self::Class) {
@@ -46,7 +48,7 @@ mod imp {
         }
     }
 
-    impl ObjectImpl for ProjectListTask {
+    impl ObjectImpl for TaskRow {
         fn properties() -> &'static [glib::ParamSpec] {
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> =
                 Lazy::new(|| vec![glib::ParamSpecObject::builder::<Task>("task").build()]);
@@ -70,18 +72,18 @@ mod imp {
             }
         }
     }
-    impl WidgetImpl for ProjectListTask {}
-    impl ListBoxRowImpl for ProjectListTask {}
+    impl WidgetImpl for TaskRow {}
+    impl ListBoxRowImpl for TaskRow {}
 }
 
 glib::wrapper! {
-    pub struct ProjectListTask(ObjectSubclass<imp::ProjectListTask>)
+    pub struct TaskRow(ObjectSubclass<imp::TaskRow>)
         @extends gtk::Widget, gtk::ListBoxRow,
         @implements gtk::Buildable;
 }
 
 #[gtk::template_callbacks]
-impl ProjectListTask {
+impl TaskRow {
     pub fn new(task: Task) -> Self {
         glib::Object::builder().property("task", task).build()
     }
@@ -260,8 +262,30 @@ impl ProjectListTask {
     }
 
     #[template_callback]
+    fn handle_subtasks_button_clicked(&self, _button: gtk::Button) {
+        let win = self.root().and_downcast::<gtk::Window>().unwrap();
+        let modal = SubTasksWindow::new(&win.application().unwrap(), &win, self.task());
+        modal.present();
+        self.imp().options_popover.popdown();
+        modal.connect_close_request(glib::clone!(
+            @weak self as obj => @default-return gtk::Inhibit(false),
+            move |_| {
+                let task = obj.task();
+                let imp = obj.imp();
+                if let Some(duration) = task.duration() {
+                    if !imp.timer_toggle_button.is_active() {
+                        imp.timer_button_content.set_label(&Record::duration_display(duration));
+                    }
+                }
+                obj.activate_action("project.update", None).expect("Failed to send project.update signal");
+                gtk::Inhibit(false)
+            }
+        ));
+    }
+
+    #[template_callback]
     fn handle_records_button_clicked(&self, _button: gtk::Button) {
-        let win = self.root().and_downcast::<IPlanWindow>().unwrap();
+        let win = self.root().and_downcast::<gtk::Window>().unwrap();
         let modal = RecordsWindow::new(&win.application().unwrap(), &win, self.task().id());
         modal.present();
         self.imp().options_popover.popdown();

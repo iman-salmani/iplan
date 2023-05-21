@@ -2,7 +2,7 @@ use gtk::{glib, prelude::*, subclass::prelude::*};
 use std::cell::{Cell, RefCell};
 
 use crate::db::operations::{create_list, read_list, read_lists, read_task};
-use crate::views::project::{ProjectList, ProjectListTask};
+use crate::views::project::{ProjectList, TaskRow};
 use crate::views::IPlanWindow;
 
 #[derive(Clone, Copy, PartialEq)]
@@ -127,7 +127,7 @@ impl ProjectLists {
                     .imp()
                     .tasks_box
                     .first_child()
-                    .and_downcast::<ProjectListTask>()
+                    .and_downcast::<TaskRow>()
                 {
                     first_row.grab_focus();
                 }

@@ -6,7 +6,7 @@ use crate::db::operations::{
     create_list, create_project, new_position, read_lists, read_project, read_projects,
     update_project, update_task,
 };
-use crate::views::{project::ProjectListTask, sidebar::SidebarProject, IPlanWindow};
+use crate::views::{project::TaskRow, sidebar::SidebarProject, IPlanWindow};
 mod imp {
     use super::*;
 
@@ -171,8 +171,7 @@ impl SidebarProjects {
         imp.projects_box.add_controller(&project_drop_target);
 
         // Task drop target
-        let task_drop_target =
-            gtk::DropTarget::new(ProjectListTask::static_type(), gdk::DragAction::MOVE);
+        let task_drop_target = gtk::DropTarget::new(TaskRow::static_type(), gdk::DragAction::MOVE);
         task_drop_target.set_preload(true);
         task_drop_target.connect_drop(glib::clone!(
             @weak self as obj => @default-return false,
@@ -182,7 +181,7 @@ impl SidebarProjects {
             move |target, x, y| obj.task_drop_target_motion(target, x, y)));
         task_drop_target.connect_leave(glib::clone!(
         @weak self as obj => move |target| {
-            if target.value_as::<ProjectListTask>().is_some() {
+            if target.value_as::<TaskRow>().is_some() {
                 obj.select_active_project();
             }}));
         imp.projects_box.add_controller(&task_drop_target);
@@ -322,7 +321,7 @@ impl SidebarProjects {
         _x: f64,
         y: f64,
     ) -> bool {
-        let row: ProjectListTask = value.get().unwrap();
+        let row: TaskRow = value.get().unwrap();
         let task = row.task();
         let project_row = self.imp().projects_box.row_at_y(y as i32).unwrap();
         let project_id = project_row.property::<Project>("project").id();
@@ -349,7 +348,7 @@ impl SidebarProjects {
         _x: f64,
         y: f64,
     ) -> gdk::DragAction {
-        let task_row: ProjectListTask = target.value_as().unwrap();
+        let task_row: TaskRow = target.value_as().unwrap();
         let projects_box = &self.imp().projects_box;
         if let Some(project_row) = projects_box.row_at_y(y as i32) {
             if task_row.task().project() != project_row.property::<Project>("project").id() {

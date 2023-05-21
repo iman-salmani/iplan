@@ -8,7 +8,7 @@ use crate::db::operations::{
     update_task,
 };
 use crate::views::{
-    project::ProjectDoneTasksWindow, project::ProjectLayout, project::ProjectListTask, IPlanWindow,
+    project::ProjectDoneTasksWindow, project::ProjectLayout, project::TaskRow, IPlanWindow,
 };
 
 mod imp {
@@ -149,7 +149,7 @@ impl ProjectList {
                     let next = imp.tasks_box.observe_children().n_items() as usize - 1;
                     let tasks = imp.tasks.borrow();
                     if next < tasks.len() {
-                        let project_list_task = ProjectListTask::new(tasks.get(next).unwrap().clone());
+                        let project_list_task = TaskRow::new(tasks.get(next).unwrap().clone());
                         imp.tasks_box.append(&project_list_task);
                         project_list_task.init_widgets();
                     }
@@ -160,19 +160,19 @@ impl ProjectList {
         imp.name_button.set_label(&list.name());
         imp.name_entry.buffer().set_text(&list.name());
 
-        let tasks = read_tasks(project_id, Some(self.list().id()), Some(false))
+        let tasks = read_tasks(project_id, Some(self.list().id()), Some(false), Some(0))
             .expect("Failed to read tasks");
         imp.tasks.replace(tasks);
         let tasks = imp.tasks.borrow();
         if tasks.len() > tasks_per_page && layout == ProjectLayout::Horizontal {
             for task in tasks.split_at(tasks_per_page).0 {
-                let project_list_task = ProjectListTask::new(task.clone());
+                let project_list_task = TaskRow::new(task.clone());
                 imp.tasks_box.append(&project_list_task);
                 project_list_task.init_widgets();
             }
         } else {
             for task in tasks.clone() {
-                let project_list_task = ProjectListTask::new(task);
+                let project_list_task = TaskRow::new(task);
                 imp.tasks_box.append(&project_list_task);
                 project_list_task.init_widgets();
             }
@@ -192,7 +192,7 @@ impl ProjectList {
         imp.tasks_box.set_filter_func(glib::clone!(
         @weak imp => @default-return false,
         move |row| {
-            let row = row.downcast_ref::<ProjectListTask>().unwrap();
+            let row = row.downcast_ref::<TaskRow>().unwrap();
             if row.task().suspended() {
                 false
             } else {
@@ -230,8 +230,7 @@ impl ProjectList {
             move |target, x, y| obj.list_drop_target_motion(target, x, y)));
         self.add_controller(&list_drop_target);
 
-        let task_drop_target =
-            gtk::DropTarget::new(ProjectListTask::static_type(), gdk::DragAction::MOVE);
+        let task_drop_target = gtk::DropTarget::new(TaskRow::static_type(), gdk::DragAction::MOVE);
         task_drop_target.set_preload(true);
         task_drop_target.connect_drop(glib::clone!(
             @weak self as obj => @default-return false,
@@ -257,7 +256,7 @@ impl ProjectList {
         let task_rows = imp.tasks_box.observe_children();
         let mut loaded = false;
         for i in 0..task_rows.n_items() - 1 {
-            if let Some(project_list_task) = task_rows.item(i).and_downcast::<ProjectListTask>() {
+            if let Some(project_list_task) = task_rows.item(i).and_downcast::<TaskRow>() {
                 let list_task = project_list_task.task();
                 if list_task.position() == target_task.position() as i32 {
                     project_list_task.grab_focus();
@@ -273,7 +272,7 @@ impl ProjectList {
                 if next < tasks.len() {
                     let task = tasks.get(next).unwrap().clone();
                     let task_p = task.position();
-                    let project_list_task = ProjectListTask::new(task);
+                    let project_list_task = TaskRow::new(task);
                     imp.tasks_box.append(&project_list_task);
                     project_list_task.init_widgets();
                     if task_p == target_task.position() {
@@ -305,8 +304,8 @@ impl ProjectList {
     #[template_callback]
     fn handle_new_button_clicked(&self, _button: gtk::Button) {
         let list = self.list();
-        let task = create_task("", list.project(), list.id()).expect("Failed to create task");
-        let task_ui = ProjectListTask::new(task);
+        let task = create_task("", list.project(), list.id(), 0).expect("Failed to create task");
+        let task_ui = TaskRow::new(task);
         let imp = self.imp();
         imp.tasks_box.prepend(&task_ui);
         task_ui.init_widgets();
@@ -439,7 +438,7 @@ impl ProjectList {
     ) -> bool {
         // Source row moved by motion signal so it should drop on itself
         self.imp().tasks_box.drag_unhighlight_row();
-        let row: ProjectListTask = value.get().unwrap();
+        let row: TaskRow = value.get().unwrap();
         let task = row.task();
         let task_db = read_task(task.id()).expect("Failed to read task");
         if task_db.position() != task.position() || task_db.list() != task.list() {
@@ -456,14 +455,14 @@ impl ProjectList {
         y: f64,
     ) -> gdk::DragAction {
         let imp = self.imp();
-        let source_row: Option<ProjectListTask> = target.value_as();
+        let source_row: Option<TaskRow> = target.value_as();
         let target_row = imp.tasks_box.row_at_y(y as i32);
 
         if source_row.is_none() || target_row.is_none() {
             return gdk::DragAction::empty();
         }
         let source_row = source_row.unwrap();
-        let target_row: ProjectListTask = target_row.and_downcast().unwrap();
+        let target_row: TaskRow = target_row.and_downcast().unwrap();
 
         // Move
         let source_task = source_row.task();
@@ -478,8 +477,7 @@ impl ProjectList {
                 target_task.set_property("position", target_p - 1);
             } else if source_i > target_i {
                 for i in target_i..source_i {
-                    let row: ProjectListTask =
-                        imp.tasks_box.row_at_index(i).and_downcast().unwrap();
+                    let row: TaskRow = imp.tasks_box.row_at_index(i).and_downcast().unwrap();
                     row.task()
                         .set_property("position", row.task().position() - 1);
                 }
@@ -489,8 +487,7 @@ impl ProjectList {
                 target_task.set_property("position", target_p + 1);
             } else if source_i < target_i {
                 for i in source_i + 1..target_i + 1 {
-                    let row: ProjectListTask =
-                        imp.tasks_box.row_at_index(i).and_downcast().unwrap();
+                    let row: TaskRow = imp.tasks_box.row_at_index(i).and_downcast().unwrap();
                     row.task()
                         .set_property("position", row.task().position() + 1);
                 }
@@ -535,7 +532,7 @@ impl ProjectList {
         _x: f64,
         _y: f64,
     ) -> gdk::DragAction {
-        let row: ProjectListTask = target.value_as().unwrap();
+        let row: TaskRow = target.value_as().unwrap();
         let tasks_box = self.imp().tasks_box.get();
         row.imp().moving_out.set(false);
         // Avoid from when drag start
@@ -550,7 +547,7 @@ impl ProjectList {
             for i in 0..row.index() {
                 let task = parent
                     .row_at_index(i)
-                    .and_downcast::<ProjectListTask>()
+                    .and_downcast::<TaskRow>()
                     .unwrap()
                     .task();
                 task.set_property("position", task.position() - 1);
@@ -563,7 +560,7 @@ impl ProjectList {
     }
 
     fn task_drop_target_leave(&self, target: &gtk::DropTarget) {
-        if let Some(row) = target.value_as::<ProjectListTask>() {
+        if let Some(row) = target.value_as::<TaskRow>() {
             row.imp().moving_out.set(true);
             self.imp().tasks_box.invalidate_filter();
         }

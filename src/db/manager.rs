@@ -3,7 +3,7 @@ use rusqlite::{Connection, Result};
 
 use crate::db::migrate::MIGRATIONS;
 
-const DB_VERSION: u8 = 1;
+const DB_VERSION: u8 = 2;
 
 pub fn get_connection() -> Connection {
     Connection::open(glib::user_data_dir().join("data.db")).expect("Failed connect to database")
@@ -41,13 +41,14 @@ pub fn check_database() -> Result<()> {
 
         conn.execute(
             "CREATE TABLE tasks (
-                id	     INTEGER NOT NULL,
-                name	     TEXT    NOT NULL,
-                done	     INTEGER NOT NULL DEFAULT 0,
+                id	       INTEGER NOT NULL,
+                name	   TEXT    NOT NULL,
+                done	   INTEGER NOT NULL DEFAULT 0,
                 project    INTEGER NOT NULL,
                 list       INTEGER NOT NULL,
                 position   INTEGER NOT NULL,
                 suspended  INTEGER NOT NULL DEFAULT 0,
+                parent     INTEGER NOT NULL DEFAULT 0,
                 PRIMARY KEY(id AUTOINCREMENT)
             );",
             (),
