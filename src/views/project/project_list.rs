@@ -160,7 +160,7 @@ impl ProjectList {
         imp.name_button.set_label(&list.name());
         imp.name_entry.buffer().set_text(&list.name());
 
-        let tasks = read_tasks(project_id, Some(self.list().id()), Some(false))
+        let tasks = read_tasks(project_id, Some(self.list().id()), Some(false), Some(0))
             .expect("Failed to read tasks");
         imp.tasks.replace(tasks);
         let tasks = imp.tasks.borrow();

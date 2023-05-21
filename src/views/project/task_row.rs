@@ -5,7 +5,9 @@ use std::time::Duration;
 
 use crate::db::models::{Record, Task};
 use crate::db::operations::{create_record, delete_task, read_records, update_record, update_task};
-use crate::views::{project::ProjectDoneTasksWindow, project::RecordsWindow, IPlanWindow};
+use crate::views::{
+    project::ProjectDoneTasksWindow, project::RecordsWindow, project::SubTasksWindow, IPlanWindow,
+};
 
 mod imp {
     use super::*;
@@ -260,8 +262,16 @@ impl TaskRow {
     }
 
     #[template_callback]
+    fn handle_subtasks_button_clicked(&self, _button: gtk::Button) {
+        let win = self.root().and_downcast::<gtk::Window>().unwrap();
+        let modal = SubTasksWindow::new(&win.application().unwrap(), &win, self.task());
+        modal.present();
+        self.imp().options_popover.popdown();
+    }
+
+    #[template_callback]
     fn handle_records_button_clicked(&self, _button: gtk::Button) {
-        let win = self.root().and_downcast::<IPlanWindow>().unwrap();
+        let win = self.root().and_downcast::<gtk::Window>().unwrap();
         let modal = RecordsWindow::new(&win.application().unwrap(), &win, self.task().id());
         modal.present();
         self.imp().options_popover.popdown();

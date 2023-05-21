@@ -3,7 +3,7 @@ use std::cell::Cell;
 
 use crate::db::models::Record;
 use crate::db::operations::{read_record, read_records};
-use crate::views::{project::RecordCreateWindow, project::RecordRow, IPlanWindow};
+use crate::views::{project::RecordCreateWindow, project::RecordRow};
 
 mod imp {
     use super::*;
@@ -52,7 +52,7 @@ glib::wrapper! {
 
 #[gtk::template_callbacks]
 impl RecordsWindow {
-    pub fn new(application: &gtk::Application, app_window: &IPlanWindow, task_id: i64) -> Self {
+    pub fn new(application: &gtk::Application, app_window: &gtk::Window, task_id: i64) -> Self {
         let win: Self = glib::Object::builder()
             .property("application", application)
             .build();

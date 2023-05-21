@@ -26,6 +26,7 @@ pub fn read_tasks(
     project_id: i64,
     list_id: Option<i64>,
     done_tasks: Option<bool>,
+    parent_id: Option<i64>,
 ) -> Result<Vec<Task>> {
     let filters = &mut String::new();
     if let Some(list_id) = list_id {
@@ -33,6 +34,9 @@ pub fn read_tasks(
     }
     if let Some(done_tasks) = done_tasks {
         filters.push_str(&format!(" AND done = {done_tasks}"));
+    }
+    if let Some(parent_id) = parent_id {
+        filters.push_str(&format!(" AND parent = {parent_id}"));
     }
     let conn = get_connection();
     let mut stmt = conn.prepare(&format!(

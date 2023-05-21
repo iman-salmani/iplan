@@ -2,7 +2,7 @@ use gtk::{glib, glib::once_cell::sync::Lazy, prelude::*, subclass::prelude::*};
 use rusqlite::{Error, Result, Row};
 use std::cell::{Cell, RefCell};
 
-use crate::db::operations::read_records;
+use crate::db::operations::{read_records, read_tasks};
 
 mod imp {
     use super::*;
@@ -127,6 +127,13 @@ impl Task {
         let mut total = 0;
         for record in read_records(self.id(), false, None, None).expect("Failed to read records") {
             total = total + record.duration();
+        }
+        for subtask in read_tasks(self.project(), None, None, Some(self.id()))
+            .expect("Failed to read subtasks")
+        {
+            if let Some(duration) = subtask.duration() {
+                total += duration;
+            }
         }
         if total == 0 {
             None

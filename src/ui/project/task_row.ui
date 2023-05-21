@@ -91,6 +91,32 @@
       <object class="GtkBox">
         <property name="orientation">vertical</property>
         <property name="spacing">6</property>
+        <child><!-- SubTasks Button -->
+          <object class="GtkButton">
+            <signal name="clicked" handler="handle_subtasks_button_clicked" swapped="true"/>
+            <style>
+              <class name="flat"/>
+            </style>
+            <child>
+              <object class="GtkBox">
+                <property name="spacing">4</property>
+                <child>
+                  <object class="GtkImage">
+                    <property name="icon-name">view-list-symbolic</property>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkLabel">
+                    <property name="label">Subtasks</property>
+                    <attributes>
+                      <attribute name="weight" value="PANGO_WEIGHT_NORMAL"/>
+                    </attributes>
+                  </object>
+                </child>
+              </object>
+            </child>
+          </object>
+        </child><!-- End SubTasks Button -->
         <child><!-- Records Button -->
           <object class="GtkButton">
             <signal name="clicked" handler="handle_records_button_clicked" swapped="true"/>
@@ -99,7 +125,7 @@
             </style>
             <child>
               <object class="GtkBox">
-                <property name="spacing">6</property>
+                <property name="spacing">4</property>
                 <child>
                   <object class="GtkImage">
                     <property name="icon-name">preferences-system-time-symbolic</property>
@@ -128,7 +154,7 @@
             </style>
             <child>
               <object class="GtkBox">
-                <property name="spacing">6</property>
+                <property name="spacing">4</property>
                 <child>
                   <object class="GtkImage">
                     <property name="icon-name">user-trash-symbolic</property>
