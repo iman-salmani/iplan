@@ -1,6 +1,8 @@
 .flatpak
 .flatpak-builder
 build
+_build
 .vscode
 src/config.rs
 target
+build-aux/export
