@@ -267,6 +267,20 @@ impl TaskRow {
         let modal = SubTasksWindow::new(&win.application().unwrap(), &win, self.task());
         modal.present();
         self.imp().options_popover.popdown();
+        modal.connect_close_request(glib::clone!(
+            @weak self as obj => @default-return gtk::Inhibit(false),
+            move |_| {
+                let task = obj.task();
+                let imp = obj.imp();
+                if let Some(duration) = task.duration() {
+                    if !imp.timer_toggle_button.is_active() {
+                        imp.timer_button_content.set_label(&Record::duration_display(duration));
+                    }
+                }
+                obj.activate_action("project.update", None).expect("Failed to send project.update signal");
+                gtk::Inhibit(false)
+            }
+        ));
     }
 
     #[template_callback]
