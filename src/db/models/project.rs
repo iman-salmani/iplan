@@ -13,6 +13,7 @@ mod imp {
         pub name: RefCell<String>,
         pub archive: Cell<bool>,
         pub index: Cell<i32>,
+        pub icon: RefCell<String>,
     }
 
     #[glib::object_subclass]
@@ -29,6 +30,7 @@ mod imp {
                     glib::ParamSpecString::builder("name").build(),
                     glib::ParamSpecBoolean::builder("archive").build(),
                     glib::ParamSpecInt::builder("index").build(),
+                    glib::ParamSpecString::builder("icon").build(),
                 ]
             });
             PROPERTIES.as_ref()
@@ -52,6 +54,10 @@ mod imp {
                     let value = value.get::<i32>().expect("Value must be a i32");
                     self.index.set(value);
                 }
+                "icon" => {
+                    let value = value.get::<String>().expect("Value must be a String");
+                    self.icon.replace(value);
+                }
                 _ => unimplemented!(),
             }
         }
@@ -62,6 +68,7 @@ mod imp {
                 "name" => self.name.borrow().to_string().to_value(),
                 "archive" => self.archive.get().to_value(),
                 "index" => self.index.get().to_value(),
+                "icon" => self.icon.borrow().to_string().to_value(),
                 _ => unimplemented!(),
             }
         }
@@ -73,12 +80,13 @@ glib::wrapper! {
 }
 
 impl Project {
-    pub fn new(id: i64, name: String, archive: bool, index: i32) -> Self {
+    pub fn new(id: i64, name: String, archive: bool, index: i32, icon: String) -> Self {
         glib::Object::builder()
             .property("id", id)
             .property("name", name)
             .property("archive", archive)
             .property("index", index)
+            .property("icon", icon)
             .build()
     }
 
@@ -111,6 +119,10 @@ impl Project {
     pub fn index(&self) -> i32 {
         self.property("index")
     }
+
+    pub fn icon(&self) -> String {
+        self.property("icon")
+    }
 }
 
 impl TryFrom<&Row<'_>> for Project {
@@ -122,12 +134,13 @@ impl TryFrom<&Row<'_>> for Project {
             row.get(1)?,
             row.get(2)?,
             row.get(3)?,
+            row.get(4)?,
         ))
     }
 }
 
 impl Default for Project {
     fn default() -> Self {
-        Project::new(1, String::new(), false, 0)
+        Project::new(1, String::new(), false, 0, String::new())
     }
 }

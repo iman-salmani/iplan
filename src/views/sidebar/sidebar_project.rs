@@ -13,6 +13,8 @@ mod imp {
     pub struct SidebarProject {
         pub project: RefCell<Project>,
         #[template_child]
+        pub icon_label: TemplateChild<gtk::Label>,
+        #[template_child]
         pub name_label: TemplateChild<gtk::Label>,
     }
 
@@ -77,6 +79,7 @@ impl SidebarProject {
 
         let imp = obj.imp();
 
+        imp.icon_label.set_text(&obj.project().icon());
         imp.name_label.set_text(&obj.project().name());
 
         if obj.project().archive() {

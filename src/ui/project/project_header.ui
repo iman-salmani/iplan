@@ -6,15 +6,35 @@
     <child><!-- Name Button -->
       <object class="GtkButton" id="name_button">
         <property name="has-frame">false</property>
-        <property name="margin-start">9</property>
+        <property name="margin-start">3</property>
         <property name="hexpand">true</property>
         <property name="halign">start</property>
         <signal name="clicked" handler="handle_name_button_clicked" swapped="true"/>
+        <child>
+          <object class="GtkBox">
+            <property name="orientation">horizontal</property>
+            <child><!-- Icon -->
+              <object class="GtkLabel" id="icon_label">
+                <style>
+                  <class name="title-2"/>
+                </style>
+              </object>
+            </child><!-- End Icon -->
+            <child><!-- Icon -->
+              <object class="GtkLabel" id="name_label">
+                <property name="margin-start">3</property>
+                <style>
+                  <class name="heading"/>
+                </style>
+              </object>
+            </child><!-- End Icon -->
+          </object>
+        </child>
       </object>
     </child><!-- End Name Button -->
     <child><!-- Name Entry -->
       <object class="GtkEntry" id="name_entry">
-        <property name="margin-start">17</property>
+        <property name="margin-start">10</property>
         <property name="hexpand">true</property>
         <property name="visible"
           bind-source="name_button"

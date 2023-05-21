@@ -85,6 +85,7 @@ impl SidebarProjects {
             .and_downcast::<SidebarProject>()
             .unwrap();
         let row_imp = row.imp();
+        row_imp.icon_label.set_label(&project.icon());
         row_imp.name_label.set_label(&project.name());
         if project.archive() {
             row_imp.name_label.add_css_class("dim-label");

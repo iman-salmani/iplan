@@ -2,7 +2,7 @@ use rusqlite::Result;
 
 use crate::db::get_connection;
 
-pub static MIGRATIONS: [fn() -> Result<()>; 2] = [to1, to2];
+pub static MIGRATIONS: [fn() -> Result<()>; 3] = [to1, to2, to3];
 
 fn to1() -> Result<()> {
     // Create records from duration column in tasks table and drop it.
@@ -63,6 +63,16 @@ fn to2() -> Result<()> {
     let conn = get_connection();
     conn.execute(
         "ALTER TABLE tasks ADD parent INTEGER NOT NULL DEFAULT 0;",
+        (),
+    )?;
+    Ok(())
+}
+
+fn to3() -> Result<()> {
+    // Add icon column to projects table
+    let conn = get_connection();
+    conn.execute(
+        "ALTER TABLE projects ADD icon TEXT NOT NULL DEFAULT '';",
         (),
     )?;
     Ok(())

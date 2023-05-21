@@ -14,6 +14,8 @@ mod imp {
     pub struct ProjectEditWindow {
         pub project: RefCell<Project>,
         #[template_child]
+        pub icon_label: TemplateChild<gtk::Label>,
+        #[template_child]
         pub name_entry_row: TemplateChild<adw::EntryRow>,
         #[template_child]
         pub archive_switch: TemplateChild<gtk::Switch>,
@@ -55,6 +57,7 @@ impl ProjectEditWindow {
             .build();
         win.set_transient_for(Some(app_window));
         let imp = win.imp();
+        imp.icon_label.set_text(&project.icon());
         imp.name_entry_row.set_text(&project.name());
         imp.archive_switch.set_active(project.archive());
         imp.archive_switch.connect_state_set(glib::clone!(
@@ -75,6 +78,18 @@ impl ProjectEditWindow {
     fn handle_name_entry_row_apply(&self, entry_row: adw::EntryRow) {
         let project = self.imp().project.borrow();
         project.set_property("name", entry_row.text());
+        update_project(&project).expect("Failed to update project");
+        self.transient_for()
+            .unwrap()
+            .activate_action("project.update", None)
+            .expect("Failed to send project.update action");
+    }
+
+    #[template_callback]
+    fn handle_project_emoji_picked(&self, emoji: &str, _: gtk::EmojiChooser) {
+        self.imp().icon_label.set_text(emoji);
+        let project = self.imp().project.borrow();
+        project.set_property("icon", emoji.to_string());
         update_project(&project).expect("Failed to update project");
         self.transient_for()
             .unwrap()

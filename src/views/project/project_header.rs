@@ -15,6 +15,10 @@ mod imp {
         #[template_child]
         pub name_button: TemplateChild<gtk::Button>,
         #[template_child]
+        pub icon_label: TemplateChild<gtk::Label>,
+        #[template_child]
+        pub name_label: TemplateChild<gtk::Label>,
+        #[template_child]
         pub name_entry: TemplateChild<gtk::Entry>,
         #[template_child]
         pub duration_button_content: TemplateChild<adw::ButtonContent>,
@@ -59,7 +63,8 @@ impl ProjectHeader {
     pub fn open_project(&self, project: &Project) {
         let imp = self.imp();
 
-        imp.name_button.set_label(&project.name());
+        imp.icon_label.set_text(&project.icon());
+        imp.name_label.set_text(&project.name());
         imp.name_entry.buffer().set_text(&project.name());
 
         if let Some(duration) = project.duration() {
@@ -89,7 +94,7 @@ impl ProjectHeader {
         let win = self.root().and_downcast::<IPlanWindow>().unwrap();
         let project = win.project();
         let imp = self.imp();
-        imp.name_button.set_label(&name);
+        imp.name_label.set_text(&name);
         imp.name_button.set_visible(true);
         project.set_property("name", name);
         update_project(&project).expect("Failed to update project");

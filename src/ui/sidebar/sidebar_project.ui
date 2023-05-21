@@ -2,9 +2,22 @@
 <interface>
   <template class="SidebarProject" parent="GtkListBoxRow">
     <child>
-      <object class="GtkLabel" id="name_label">
-        <property name="halign">start</property>
-        <property name="use-markup">true</property>
+      <object class="GtkBox">
+        <property name="orientation">horizontal</property>
+        <child><!-- Icon -->
+          <object class="GtkLabel" id="icon_label">
+            <style>
+              <class name="title-3"/>
+            </style>
+          </object>
+        </child><!-- End Icon -->
+        <child>
+          <object class="GtkLabel" id="name_label">
+            <property name="margin-start">3</property>
+            <property name="halign">start</property>
+            <property name="use-markup">true</property>
+          </object>
+        </child>
       </object>
     </child>
     <child><!-- Drag Source -->
