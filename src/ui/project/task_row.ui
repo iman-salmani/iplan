@@ -188,7 +188,7 @@
                 </child>
                 <child>
                   <object class="GtkLabel">
-                    <property name="label">Delete task</property>
+                    <property name="label">Delete</property>
                     <attributes>
                       <attribute name="weight" value="PANGO_WEIGHT_NORMAL"/>
                     </attributes>
