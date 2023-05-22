@@ -1,3 +1,4 @@
+use adw::traits::ExpanderRowExt;
 use gtk::{glib, glib::once_cell::sync::Lazy, prelude::*, subclass::prelude::*};
 use std::cell::RefCell;
 
@@ -14,6 +15,8 @@ mod imp {
         pub task: RefCell<Task>,
         #[template_child]
         pub task_row: TemplateChild<TaskRow>,
+        #[template_child]
+        pub description_expander_row: TemplateChild<adw::ExpanderRow>,
         #[template_child]
         pub description_buffer: TemplateChild<gtk::TextBuffer>,
         #[template_child]
@@ -90,7 +93,9 @@ impl TaskWindow {
         let imp = win.imp();
         imp.task_row.set_property("task", task.clone());
         imp.task_row.init_widgets();
-        imp.description_buffer.set_text(&task.description());
+        let task_description = task.description();
+        imp.description_expander_row.set_subtitle(&task_description);
+        imp.description_buffer.set_text(&task_description);
         imp.subtasks_box.set_sort_func(|row1, _row2| {
             if row1.property::<Task>("task").done() {
                 gtk::Ordering::Larger
