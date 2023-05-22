@@ -2,7 +2,7 @@ use gtk::{glib, glib::once_cell::sync::Lazy, prelude::*, subclass::prelude::*};
 use std::cell::RefCell;
 
 use crate::db::models::Task;
-use crate::db::operations::update_task;
+use crate::db::operations::{create_task, read_tasks, update_task};
 use crate::views::project::TaskRow;
 
 mod imp {
@@ -16,6 +16,8 @@ mod imp {
         pub task_row: TemplateChild<TaskRow>,
         #[template_child]
         pub description_buffer: TemplateChild<gtk::TextBuffer>,
+        #[template_child]
+        pub subtasks_box: TemplateChild<gtk::ListBox>,
     }
 
     #[glib::object_subclass]
@@ -27,6 +29,16 @@ mod imp {
         fn class_init(klass: &mut Self::Class) {
             klass.bind_template();
             klass.bind_template_instance_callbacks();
+            klass.install_action("task.check", Some("i"), move |obj, _, _value| {
+                let imp = obj.imp();
+                imp.subtasks_box.invalidate_sort();
+            });
+            klass.install_action("project.update", None, move |obj, _, _value| {
+                obj.transient_for()
+                    .unwrap()
+                    .activate_action("project.update", None)
+                    .expect("Failed to send project.update action");
+            });
         }
 
         fn instance_init(obj: &glib::subclass::InitializingObject<Self>) {
@@ -79,6 +91,20 @@ impl TaskWindow {
         imp.task_row.set_property("task", task.clone());
         imp.task_row.init_widgets();
         imp.description_buffer.set_text(&task.description());
+        imp.subtasks_box.set_sort_func(|row1, _row2| {
+            if row1.property::<Task>("task").done() {
+                gtk::Ordering::Larger
+            } else {
+                gtk::Ordering::Smaller
+            }
+        });
+        let tasks = read_tasks(task.project(), None, None, Some(task.id()))
+            .expect("Failed to read subtasks");
+        for task in tasks {
+            let row = TaskRow::new(task);
+            row.init_widgets();
+            imp.subtasks_box.append(&row);
+        }
         imp.task.replace(task);
         win
     }
@@ -95,5 +121,18 @@ impl TaskWindow {
             buffer.text(&buffer.start_iter(), &buffer.end_iter(), true),
         );
         update_task(task).expect("Failed to update task");
+    }
+
+    #[template_callback]
+    fn handle_new_subtask_button_clicked(&self, _button: gtk::Button) {
+        let task = self.task();
+        let task = create_task("", task.project(), 0, task.id()).expect("Failed to create subtask");
+        let task_ui = TaskRow::new(task);
+        let imp = self.imp();
+        imp.subtasks_box.prepend(&task_ui);
+        task_ui.init_widgets();
+        let task_imp = task_ui.imp();
+        task_imp.name_button.set_visible(false);
+        task_imp.name_entry.grab_focus();
     }
 }

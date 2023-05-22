@@ -6,10 +6,10 @@
     <child><!-- Box -->
       <object class="GtkBox">
         <property name="orientation">horizontal</property>
-        <property name="margin-start">12</property>
-        <property name="margin-end">12</property>
-        <property name="margin-top">12</property>
-        <property name="margin-bottom">12</property>
+        <property name="margin-start">3</property>
+        <property name="margin-end">3</property>
+        <property name="margin-top">3</property>
+        <property name="margin-bottom">3</property>
         <style>
           <class name="toolbar"/>
         </style>
@@ -20,7 +20,7 @@
         </child><!-- End Check Button -->
         <child><!-- Name Button -->
           <object class="GtkButton" id="name_button">
-            <property name="margin-start">11</property>
+            <property name="margin-start">0</property>
             <signal name="clicked" handler="handle_name_button_clicked" swapped="true"/>
             <style>
               <class name="flat"/>
@@ -37,8 +37,8 @@
         </child><!-- End Name Button -->
         <child><!-- Name Entry -->
           <object class="GtkEntry" id="name_entry">
-            <property name="margin-start">12</property>
-            <property name="margin-end">12</property>
+            <property name="margin-start">1</property>
+            <property name="margin-end">1</property>
             <property name="hexpand">true</property>
             <property name="visible"
               bind-source="name_button"
@@ -91,32 +91,6 @@
       <object class="GtkBox">
         <property name="orientation">vertical</property>
         <property name="spacing">6</property>
-        <child><!-- SubTasks Button -->
-          <object class="GtkButton">
-            <signal name="clicked" handler="handle_subtasks_button_clicked" swapped="true"/>
-            <style>
-              <class name="flat"/>
-            </style>
-            <child>
-              <object class="GtkBox">
-                <property name="spacing">4</property>
-                <child>
-                  <object class="GtkImage">
-                    <property name="icon-name">view-list-symbolic</property>
-                  </object>
-                </child>
-                <child>
-                  <object class="GtkLabel">
-                    <property name="label">Subtasks</property>
-                    <attributes>
-                      <attribute name="weight" value="PANGO_WEIGHT_NORMAL"/>
-                    </attributes>
-                  </object>
-                </child>
-              </object>
-            </child>
-          </object>
-        </child><!-- End SubTasks Button -->
         <child><!-- Records Button -->
           <object class="GtkButton">
             <signal name="clicked" handler="handle_records_button_clicked" swapped="true"/>

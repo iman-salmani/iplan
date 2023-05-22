@@ -25,8 +25,5 @@ pub use record_row::RecordRow;
 mod record_create_window;
 pub use record_create_window::RecordCreateWindow;
 
-mod subtasks_window;
-pub use subtasks_window::SubTasksWindow;
-
 mod task_window;
 pub use task_window::TaskWindow;
