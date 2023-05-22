@@ -135,9 +135,12 @@
                     </style>
                     <child type="placeholder">
                       <object class="AdwStatusPage">
-                        <property name="icon-name"></property>
-                        <property name="title">Nothing to do 🤔️</property>
-                        <property name="description"></property>
+                        <property name="icon-name">view-list-symbolic</property>
+                        <property name="title">no subtasks found</property>
+                        <property name="description">Use plus button up there</property>
+                        <style>
+                          <class name="compact"/>
+                        </style>
                       </object>
                     </child>
                   </object>
@@ -164,8 +167,11 @@
                     <child type="placeholder">
                       <object class="AdwStatusPage" id="search_results_placeholder">
                         <property name="icon-name">preferences-system-time-symbolic</property>
-                        <property name="title">Task does not have any records</property>
-                        <property name="description">Use plus button up there or start timer in task list</property>
+                        <property name="title">no records found</property>
+                        <property name="description">Use plus button up there or start a timer</property>
+                        <style>
+                          <class name="compact"/>
+                        </style>
                       </object>
                     </child>
                   </object>
