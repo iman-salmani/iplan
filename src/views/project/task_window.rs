@@ -15,6 +15,8 @@ mod imp {
     pub struct TaskWindow {
         pub task: RefCell<Task>,
         #[template_child]
+        pub toast_overlay: TemplateChild<adw::ToastOverlay>,
+        #[template_child]
         pub task_row: TemplateChild<TaskRow>,
         #[template_child]
         pub description_expander_row: TemplateChild<adw::ExpanderRow>,
@@ -147,6 +149,12 @@ impl TaskWindow {
                 gtk::Ordering::Smaller
             }
         });
+        imp.subtasks_box.set_filter_func(glib::clone!(
+            @weak imp => @default-return false,
+            move |row| {
+                let row = row.downcast_ref::<TaskRow>().unwrap();
+                !row.task().suspended()
+        }));
         let tasks = read_tasks(task.project(), None, None, Some(task.id()))
             .expect("Failed to read subtasks");
         for task in tasks {

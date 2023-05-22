@@ -5,7 +5,7 @@ use std::time::Duration;
 
 use crate::db::models::{Record, Task};
 use crate::db::operations::{create_record, delete_task, read_records, update_record, update_task};
-use crate::views::{project::ProjectDoneTasksWindow, IPlanWindow};
+use crate::views::{project::ProjectDoneTasksWindow, project::TaskWindow, IPlanWindow};
 
 mod imp {
     use super::*;
@@ -313,6 +313,9 @@ impl TaskRow {
                 .root()
                 .and_downcast::<ProjectDoneTasksWindow>()
                 .unwrap();
+            window.imp().toast_overlay.add_toast(&toast);
+        } else if win_name == "TaskWindow" {
+            let window = self.root().and_downcast::<TaskWindow>().unwrap();
             window.imp().toast_overlay.add_toast(&toast);
         }
         task.set_property("suspended", true);

@@ -91,9 +91,6 @@
       <object class="GtkBox">
         <property name="orientation">vertical</property>
         <property name="spacing">6</property>
-        <child>
-          <object class="GtkSeparator"/>
-        </child>
         <child><!-- Delete Task -->
           <object class="GtkButton">
             <signal name="clicked" handler="handle_delete_button_clicked" swapped="true"/>

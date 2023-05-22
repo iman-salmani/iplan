@@ -19,158 +19,162 @@
         </property>
       </object>
     </property>
-    <child><!-- Page -->
-      <object class="GtkBox">
-        <property name="orientation">vertical</property>
-        <child><!-- Task Info -->
-          <object class="GtkListBox">
-            <property name="margin-top">12</property>
-            <property name="margin-start">12</property>
-            <property name="margin-end">12</property>
-            <property name="margin-bottom">18</property>
-            <property name="selection-mode">none</property>
-            <style>
-              <class name="boxed-list"/>
-            </style>
-            <child><!-- Task Row -->
-              <object class="TaskRow" id="task_row">
-              </object>
-            </child><!-- End Task Row -->
-            <child><!-- Description -->
-              <object class="AdwExpanderRow" id="description_expander_row">
-                <property name="title">Description</property>
-                <child>
-                  <object class="GtkTextView">
-                    <property name="height-request">128</property>
-                    <property name="margin-start">3</property>
-                    <property name="margin-end">3</property>
-                    <property name="margin-top">3</property>
-                    <property name="margin-bottom">3</property>
-                    <property name="top-margin">3</property>
-                    <property name="bottom-margin">3</property>
-                    <property name="left-margin">3</property>
-                    <property name="right-margin">3</property>
-                    <property name="buffer">
-                      <object class="GtkTextBuffer" id="description_buffer">
-                        <signal name="changed" handler="handle_description_buffer_changed" swapped="true"/>
-                      </object>
-                    </property>
-                  </object>
-                </child>
-              </object>
-            </child><!-- End Description -->
-          </object>
-        </child><!-- End Task Info -->
-        <child><!-- List Header -->
+    <child><!-- Toast Overlay -->
+      <object class="AdwToastOverlay" id="toast_overlay">
+        <child><!-- Page -->
           <object class="GtkBox">
-            <property name="margin-start">12</property>
-            <property name="margin-end">12</property>
-            <property name="margin-bottom">6</property>
-            <child><!-- Lists menu -->
-              <object class="GtkMenuButton" id="lists_menu_button">
-                <property name="label">Subtasks</property>
-                <property name="hexpand">true</property>
-                <property name="halign">start</property>
+            <property name="orientation">vertical</property>
+            <child><!-- Task Info -->
+              <object class="GtkListBox">
+                <property name="margin-top">12</property>
+                <property name="margin-start">12</property>
+                <property name="margin-end">12</property>
+                <property name="margin-bottom">18</property>
+                <property name="selection-mode">none</property>
                 <style>
-                  <class name="flat"/>
+                  <class name="boxed-list"/>
                 </style>
-                <property name="popover">
-                  <object class="GtkPopover" id="lists_popover">
-                    <style>
-                      <class name="menu"/>
-                    </style>
+                <child><!-- Task Row -->
+                  <object class="TaskRow" id="task_row">
+                  </object>
+                </child><!-- End Task Row -->
+                <child><!-- Description -->
+                  <object class="AdwExpanderRow" id="description_expander_row">
+                    <property name="title">Description</property>
                     <child>
-                      <object class="GtkListBox">
-                        <signal name="row-activated" handler="handle_lists_menu_row_activated" swapped="true"/>
-                        <child>
-                          <object class="GtkLabel">
-                            <property name="label">Subtasks</property>
+                      <object class="GtkTextView">
+                        <property name="height-request">128</property>
+                        <property name="margin-start">3</property>
+                        <property name="margin-end">3</property>
+                        <property name="margin-top">3</property>
+                        <property name="margin-bottom">3</property>
+                        <property name="top-margin">3</property>
+                        <property name="bottom-margin">3</property>
+                        <property name="left-margin">3</property>
+                        <property name="right-margin">3</property>
+                        <property name="buffer">
+                          <object class="GtkTextBuffer" id="description_buffer">
+                            <signal name="changed" handler="handle_description_buffer_changed" swapped="true"/>
                           </object>
-                        </child>
-                        <child>
-                          <object class="GtkLabel">
-                            <property name="label">Records</property>
-                          </object>
-                        </child>
+                        </property>
                       </object>
                     </child>
                   </object>
-                </property>
+                </child><!-- End Description -->
               </object>
-            </child><!-- End Lists menu -->
-            <child><!-- New Record Button -->
-              <object class="GtkButton" id="new_record_button">
-                <property name="icon-name">list-add-symbolic</property>
-                <property name="has_frame">false</property>
+            </child><!-- End Task Info -->
+            <child><!-- List Header -->
+              <object class="GtkBox">
+                <property name="margin-start">12</property>
+                <property name="margin-end">12</property>
+                <property name="margin-bottom">6</property>
+                <child><!-- Lists menu -->
+                  <object class="GtkMenuButton" id="lists_menu_button">
+                    <property name="label">Subtasks</property>
+                    <property name="hexpand">true</property>
+                    <property name="halign">start</property>
+                    <style>
+                      <class name="flat"/>
+                    </style>
+                    <property name="popover">
+                      <object class="GtkPopover" id="lists_popover">
+                        <style>
+                          <class name="menu"/>
+                        </style>
+                        <child>
+                          <object class="GtkListBox">
+                            <signal name="row-activated" handler="handle_lists_menu_row_activated" swapped="true"/>
+                            <child>
+                              <object class="GtkLabel">
+                                <property name="label">Subtasks</property>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkLabel">
+                                <property name="label">Records</property>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
+                      </object>
+                    </property>
+                  </object>
+                </child><!-- End Lists menu -->
+                <child><!-- New Record Button -->
+                  <object class="GtkButton" id="new_record_button">
+                    <property name="icon-name">list-add-symbolic</property>
+                    <property name="has_frame">false</property>
+                    <property name="visible"
+                      bind-source="new_subtask_button"
+                      bind-property="visible"
+                      bind-flags="sync-create|invert-boolean"/>
+                    <signal name="clicked" handler="handle_new_record_button_clicked" swapped="true"/>
+                  </object>
+                </child><!-- End Record Button -->
+                <child><!-- New SubTask Button -->
+                  <object class="GtkButton" id="new_subtask_button">
+                    <property name="icon-name">list-add-symbolic</property>
+                    <property name="has_frame">false</property>
+                    <signal name="clicked" handler="handle_new_subtask_button_clicked" swapped="true"/>
+                  </object>
+                </child><!-- End SubTask Button -->
+              </object>
+            </child><!-- End List Header -->
+            <child><!-- SubTasks Page -->
+              <object class="GtkScrolledWindow" id="subtasks_page">
+                <child><!-- SubTasks -->
+                  <object class="GtkListBox" id="subtasks_box">
+                    <property name="selection-mode">none</property>
+                    <property name="vexpand">true</property>
+                    <property name="margin-top">6</property>
+                    <property name="margin-bottom">6</property>
+                    <property name="margin-start">12</property>
+                    <property name="margin-end">12</property>
+                    <style>
+                      <class name="boxed-list"/>
+                    </style>
+                    <child type="placeholder">
+                      <object class="AdwStatusPage">
+                        <property name="icon-name"></property>
+                        <property name="title">Nothing to do 🤔️</property>
+                        <property name="description"></property>
+                      </object>
+                    </child>
+                  </object>
+                </child><!-- End SubTasks -->
+              </object>
+            </child><!-- End SubTasks Page -->
+            <child><!-- SubTasks Page -->
+              <object class="GtkScrolledWindow" id="records_page">
                 <property name="visible"
-                  bind-source="new_subtask_button"
-                  bind-property="visible"
-                  bind-flags="sync-create|invert-boolean"/>
-                <signal name="clicked" handler="handle_new_record_button_clicked" swapped="true"/>
-              </object>
-            </child><!-- End Record Button -->
-            <child><!-- New SubTask Button -->
-              <object class="GtkButton" id="new_subtask_button">
-                <property name="icon-name">list-add-symbolic</property>
-                <property name="has_frame">false</property>
-                <signal name="clicked" handler="handle_new_subtask_button_clicked" swapped="true"/>
-              </object>
-            </child><!-- End SubTask Button -->
-          </object>
-        </child><!-- End List Header -->
-        <child><!-- SubTasks Page -->
-          <object class="GtkScrolledWindow" id="subtasks_page">
-            <child><!-- SubTasks -->
-              <object class="GtkListBox" id="subtasks_box">
-                <property name="selection-mode">none</property>
-                <property name="vexpand">true</property>
-                <property name="margin-top">6</property>
-                <property name="margin-bottom">6</property>
-                <property name="margin-start">12</property>
-                <property name="margin-end">12</property>
-                <style>
-                  <class name="boxed-list"/>
-                </style>
-                <child type="placeholder">
-                  <object class="AdwStatusPage">
-                    <property name="icon-name"></property>
-                    <property name="title">Nothing to do 🤔️</property>
-                    <property name="description"></property>
+                      bind-source="subtasks_page"
+                      bind-property="visible"
+                      bind-flags="sync-create|invert-boolean"/>
+                <child><!-- Records Box -->
+                  <object class="GtkListBox" id="records_box">
+                    <property name="selection-mode">none</property>
+                    <property name="margin-top">6</property>
+                    <property name="margin-bottom">6</property>
+                    <property name="margin-start">12</property>
+                    <property name="margin-end">12</property>
+                    <property name="vexpand">true</property>
+                    <style>
+                      <class name="boxed-list"/>
+                    </style>
+                    <child type="placeholder">
+                      <object class="AdwStatusPage" id="search_results_placeholder">
+                        <property name="icon-name">preferences-system-time-symbolic</property>
+                        <property name="title">Task does not have any records</property>
+                        <property name="description">Use plus button up there or start timer in task list</property>
+                      </object>
+                    </child>
                   </object>
-                </child>
+                </child><!-- End Records Box -->
               </object>
-            </child><!-- End SubTasks -->
+            </child><!-- End SubTasks Page -->
           </object>
-        </child><!-- End SubTasks Page -->
-        <child><!-- SubTasks Page -->
-          <object class="GtkScrolledWindow" id="records_page">
-            <property name="visible"
-                  bind-source="subtasks_page"
-                  bind-property="visible"
-                  bind-flags="sync-create|invert-boolean"/>
-            <child><!-- Records Box -->
-              <object class="GtkListBox" id="records_box">
-                <property name="selection-mode">none</property>
-                <property name="margin-top">6</property>
-                <property name="margin-bottom">6</property>
-                <property name="margin-start">12</property>
-                <property name="margin-end">12</property>
-                <property name="vexpand">true</property>
-                <style>
-                  <class name="boxed-list"/>
-                </style>
-                <child type="placeholder">
-                  <object class="AdwStatusPage" id="search_results_placeholder">
-                    <property name="icon-name">preferences-system-time-symbolic</property>
-                    <property name="title">Task does not have any records</property>
-                    <property name="description">Use plus button up there or start timer in task list</property>
-                  </object>
-                </child>
-              </object>
-            </child><!-- End Records Box -->
-          </object>
-        </child><!-- End SubTasks Page -->
-      </object>
-    </child><!-- End Page -->
+        </child><!-- End Page -->
+      </object> 
+    </child><!-- End Toast Overlay -->
   </template>
 </interface>
