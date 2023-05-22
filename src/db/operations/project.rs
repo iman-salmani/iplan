@@ -66,13 +66,13 @@ pub fn update_project(project: &Project) -> Result<()> {
     conn.execute(
         &format!(
             "UPDATE projects SET
-            name = ?1, archive = ?2, icon = ?3 {index_stmt} WHERE id = ?4"
+            name = ?2, archive = ?3, icon = ?4 {index_stmt} WHERE id = ?1"
         ),
         (
+            project.id(),
             project.name(),
             project.archive(),
             project.icon(),
-            project.id(),
         ),
     )?;
     Ok(())

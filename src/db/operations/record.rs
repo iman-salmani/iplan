@@ -58,13 +58,13 @@ pub fn update_record(record: &Record) -> Result<()> {
     conn.execute(
         &format!(
             "UPDATE records SET
-            start = ?1, duration = ?2, task = ?3 WHERE id = ?4"
+            start = ?2, duration = ?3, task = ?4 WHERE id = ?1"
         ),
         (
+            record.id(),
             record.start(),
             record.duration(),
             record.task(),
-            record.id(),
         ),
     )?;
     Ok(())

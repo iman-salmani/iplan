@@ -97,10 +97,11 @@ pub fn update_task(task: Task) -> Result<()> {
     conn.execute(
         &format!(
             "UPDATE tasks SET
-            name = ?1, done = ?2, project = ?3, list = ?4,
-            {position_stmt} suspended = ?5, parent = ?6, description = ?7 WHERE id = ?8"
+            name = ?2, done = ?3, project = ?4, list = ?5,
+            {position_stmt} suspended = ?6, parent = ?7, description = ?8 WHERE id = ?1"
         ),
         (
+            task.id(),
             task.name(),
             task.done(),
             task.project(),
@@ -108,7 +109,6 @@ pub fn update_task(task: Task) -> Result<()> {
             task.suspended(),
             task.parent(),
             task.description(),
-            task.id(),
         ),
     )?;
     Ok(())
