@@ -4,7 +4,7 @@ use std::cell::{Cell, RefCell};
 
 use crate::db::models::Record;
 use crate::db::operations::create_record;
-use crate::views::project::RecordsWindow;
+use crate::views::project::TaskWindow;
 
 mod imp {
     use super::*;
@@ -90,7 +90,7 @@ glib::wrapper! {
 
 #[gtk::template_callbacks]
 impl RecordCreateWindow {
-    pub fn new(application: &gtk::Application, app_window: &RecordsWindow, task_id: i64) -> Self {
+    pub fn new(application: &gtk::Application, app_window: &TaskWindow, task_id: i64) -> Self {
         let win: Self = glib::Object::builder()
             .property("application", application)
             .build();
@@ -120,7 +120,7 @@ impl RecordCreateWindow {
             let record = create_record(record.start(), record.task(), record.duration())
                 .expect("Failed to create record");
             self.transient_for()
-                .and_downcast::<RecordsWindow>()
+                .and_downcast::<TaskWindow>()
                 .unwrap()
                 .activate_action("record.created", Some(&record.id().to_variant()))
                 .expect("Failed to send record.created action");

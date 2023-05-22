@@ -1,10 +1,11 @@
 use adw::traits::ExpanderRowExt;
 use gtk::{glib, glib::once_cell::sync::Lazy, prelude::*, subclass::prelude::*};
 use std::cell::RefCell;
+use std::unimplemented;
 
-use crate::db::models::Task;
-use crate::db::operations::{create_task, read_tasks, update_task};
-use crate::views::project::TaskRow;
+use crate::db::models::{Record, Task};
+use crate::db::operations::{create_task, read_record, read_records, read_tasks, update_task};
+use crate::views::project::{RecordCreateWindow, RecordRow, TaskRow};
 
 mod imp {
     use super::*;
@@ -20,7 +21,21 @@ mod imp {
         #[template_child]
         pub description_buffer: TemplateChild<gtk::TextBuffer>,
         #[template_child]
+        pub lists_menu_button: TemplateChild<gtk::MenuButton>,
+        #[template_child]
+        pub lists_popover: TemplateChild<gtk::Popover>,
+        #[template_child]
+        pub new_subtask_button: TemplateChild<gtk::Button>,
+        #[template_child]
+        pub new_record_button: TemplateChild<gtk::Button>,
+        #[template_child]
+        pub subtasks_page: TemplateChild<gtk::ScrolledWindow>,
+        #[template_child]
         pub subtasks_box: TemplateChild<gtk::ListBox>,
+        #[template_child]
+        pub records_page: TemplateChild<gtk::ScrolledWindow>,
+        #[template_child]
+        pub records_box: TemplateChild<gtk::ListBox>,
     }
 
     #[glib::object_subclass]
@@ -36,11 +51,40 @@ mod imp {
                 let imp = obj.imp();
                 imp.subtasks_box.invalidate_sort();
             });
+            klass.install_action("task.duration-update", None, move |obj, _, _value| {
+                let imp = obj.imp();
+                let task_row_imp = imp.task_row.imp();
+                if let Some(duration) = imp.task_row.task().duration() {
+                    if !task_row_imp.timer_toggle_button.is_active() {
+                        task_row_imp
+                            .timer_button_content
+                            .set_label(&Record::duration_display(duration));
+                    }
+                }
+            });
             klass.install_action("project.update", None, move |obj, _, _value| {
                 obj.transient_for()
                     .unwrap()
                     .activate_action("project.update", None)
                     .expect("Failed to send project.update action");
+            });
+            klass.install_action("record.created", Some("x"), move |obj, _, value| {
+                let record_id = value.unwrap().get::<i64>().unwrap();
+                let imp = obj.imp();
+                let task_row_imp = imp.task_row.imp();
+                if !task_row_imp.timer_toggle_button.is_active() {
+                    task_row_imp
+                        .timer_button_content
+                        .set_label(&Record::duration_display(
+                            imp.task_row
+                                .task()
+                                .duration()
+                                .expect("Task duration cant be 0 at this point"),
+                        ));
+                }
+                let record = read_record(record_id).expect("Failed to read record");
+                let row = RecordRow::new(record);
+                imp.records_box.append(&row);
             });
         }
 
@@ -110,6 +154,22 @@ impl TaskWindow {
             row.init_widgets();
             imp.subtasks_box.append(&row);
         }
+        imp.records_box
+            .set_sort_func(|row1: &gtk::ListBoxRow, row2| {
+                let row1_start = row1.property::<Record>("record").start();
+                let row2_start = row2.property::<Record>("record").start();
+
+                if row1_start > row2_start {
+                    gtk::Ordering::Smaller
+                } else {
+                    gtk::Ordering::Larger
+                }
+            });
+        let records = read_records(task.id(), false, None, None).expect("Failed to read records");
+        for record in records {
+            let row = RecordRow::new(record);
+            imp.records_box.append(&row);
+        }
         imp.task.replace(task);
         win
     }
@@ -126,6 +186,31 @@ impl TaskWindow {
             buffer.text(&buffer.start_iter(), &buffer.end_iter(), true),
         );
         update_task(task).expect("Failed to update task");
+    }
+
+    #[template_callback]
+    fn handle_lists_menu_row_activated(&self, row: gtk::ListBoxRow, _lists_box: gtk::ListBox) {
+        let imp = self.imp();
+        imp.lists_popover.popdown();
+        let label = row.child().and_downcast::<gtk::Label>().unwrap().label();
+        imp.lists_menu_button.set_label(&label);
+        match label.as_str() {
+            "Subtasks" => {
+                imp.new_subtask_button.set_visible(true);
+                imp.subtasks_page.set_visible(true);
+            }
+            "Records" => {
+                imp.new_subtask_button.set_visible(false);
+                imp.subtasks_page.set_visible(false);
+            }
+            _ => unimplemented!(),
+        }
+    }
+
+    #[template_callback]
+    fn handle_new_record_button_clicked(&self, _button: gtk::Button) {
+        let modal = RecordCreateWindow::new(&self.application().unwrap(), self, self.task().id());
+        modal.present();
     }
 
     #[template_callback]

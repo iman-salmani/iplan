@@ -152,6 +152,10 @@ impl RecordRow {
         ));
         imp.start_row
             .set_subtitle(&start.format("%F %H:%M:%S").unwrap());
+        if self.parent().is_some() {
+            self.activate_action("task.duration-update", None)
+                .expect("Failed to send task.duration-update action");
+        }
     }
 
     #[template_callback]
