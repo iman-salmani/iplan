@@ -4,9 +4,12 @@ use std::thread;
 use std::time::Duration;
 
 use crate::db::models::{Record, Task};
-use crate::db::operations::{create_record, delete_task, read_records, update_record, update_task};
+use crate::db::operations::{
+    create_record, delete_task, read_records, read_task, update_record, update_task,
+};
 use crate::views::{
-    project::ProjectDoneTasksWindow, project::RecordsWindow, project::SubTasksWindow, IPlanWindow,
+    project::ProjectDoneTasksWindow, project::RecordsWindow, project::SubTasksWindow,
+    project::TaskDetailWindow, IPlanWindow,
 };
 
 mod imp {
@@ -259,6 +262,39 @@ impl TaskRow {
             self.activate_action("project.update", None)
                 .expect("Failed to send project.update");
         }
+    }
+
+    #[template_callback]
+    fn handle_task_detail_button_clicked(&self, _button: gtk::Button) {
+        let win = self.root().and_downcast::<gtk::Window>().unwrap();
+        let modal = TaskDetailWindow::new(&win.application().unwrap(), &win, self.task());
+        modal.present();
+        self.imp().options_popover.popdown();
+        modal.connect_close_request(glib::clone!(
+            @weak self as obj => @default-return gtk::Inhibit(false),
+            move |_| {
+                let task = obj.task();
+                let imp = obj.imp();
+                if let Some(duration) = task.duration() {
+                    if !imp.timer_toggle_button.is_active() {
+                        imp.timer_button_content.set_label(&Record::duration_display(duration));
+                    }
+                }
+                let task = read_task(obj.task().id()).expect("Failed to read the task");
+                let task_name = task.name();
+                imp.name_button
+                    .child()
+                    .unwrap()
+                    .downcast::<gtk::Label>()
+                    .unwrap()
+                    .set_text(&task_name);
+                imp.name_button.set_tooltip_text(Some(&task_name));
+                imp.name_entry.buffer().set_text(&task_name);
+                imp.task.replace(task);
+                obj.activate_action("project.update", None).expect("Failed to send project.update signal");
+                gtk::Inhibit(false)
+            }
+        ));
     }
 
     #[template_callback]
