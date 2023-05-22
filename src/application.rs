@@ -47,7 +47,6 @@ mod imp {
             obj.set_accels_for_action("app.quit", &["<primary>q"]);
             obj.set_accels_for_action("app.shortcuts", &["<primary>question"]);
             obj.set_accels_for_action("app.search", &["<primary>f"]);
-            obj.set_accels_for_action("app.modal-close", &["Escape"]);
         }
     }
 
@@ -102,17 +101,8 @@ impl IPlanApplication {
         let search_action = gio::ActionEntry::builder("search")
             .activate(move |app: &Self, _, _| app.show_search())
             .build();
-        let modal_close_action = gio::ActionEntry::builder("modal-close")
-            .activate(move |app: &Self, _, _| app.close_modal())
-            .build();
-        self.add_action_entries([
-            quit_action,
-            about_action,
-            shortcuts_action,
-            search_action,
-            modal_close_action,
-        ])
-        .unwrap();
+        self.add_action_entries([quit_action, about_action, shortcuts_action, search_action])
+            .unwrap();
     }
 
     fn show_search(&self) {
@@ -153,12 +143,5 @@ impl IPlanApplication {
             .build();
 
         about.present();
-    }
-
-    fn close_modal(&self) {
-        let active_win = self.active_window().unwrap();
-        if active_win.widget_name() != "IPlanWindow" {
-            active_win.close();
-        }
     }
 }
