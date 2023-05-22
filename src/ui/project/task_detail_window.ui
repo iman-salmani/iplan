@@ -32,6 +32,30 @@
             <signal name="apply" handler="handle_name_entry_row_apply" swapped="true"/>
           </object>
         </child><!-- End Name -->
+        <child><!-- Name -->
+          <object class="AdwExpanderRow" id="description_expander_row">
+            <property name="title">Description</property>
+            <property name="expanded">true</property>
+            <child>
+              <object class="GtkTextView">
+                <property name="height-request">256</property>
+                <property name="margin-start">3</property>
+                <property name="margin-end">3</property>
+                <property name="margin-top">3</property>
+                <property name="margin-bottom">3</property>
+                <property name="top-margin">3</property>
+                <property name="bottom-margin">3</property>
+                <property name="left-margin">3</property>
+                <property name="right-margin">3</property>
+                <property name="buffer">
+                  <object class="GtkTextBuffer" id="description_buffer">
+                    <signal name="changed" handler="handle_description_buffer_changed" swapped="true"/>
+                  </object>
+                </property>
+              </object>
+            </child>
+          </object>
+        </child><!-- End Name -->
       </object>
     </child>
   </template>

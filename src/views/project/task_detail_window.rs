@@ -13,6 +13,8 @@ mod imp {
         pub task: RefCell<Task>,
         #[template_child]
         pub name_entry_row: TemplateChild<adw::EntryRow>,
+        #[template_child]
+        pub description_buffer: TemplateChild<gtk::TextBuffer>,
     }
 
     #[glib::object_subclass]
@@ -74,6 +76,7 @@ impl TaskDetailWindow {
         win.set_transient_for(Some(app_window));
         let imp = win.imp();
         imp.name_entry_row.set_text(&task.name());
+        imp.description_buffer.set_text(&task.description());
         imp.task.replace(task);
         win
     }
@@ -86,6 +89,16 @@ impl TaskDetailWindow {
     fn handle_name_entry_row_apply(&self, entry_row: adw::EntryRow) {
         let task = self.task();
         task.set_property("name", entry_row.text());
+        update_task(task).expect("Failed to update task");
+    }
+
+    #[template_callback]
+    fn handle_description_buffer_changed(&self, buffer: gtk::TextBuffer) {
+        let task = self.task();
+        task.set_property(
+            "description",
+            buffer.text(&buffer.start_iter(), &buffer.end_iter(), true),
+        );
         update_task(task).expect("Failed to update task");
     }
 }

@@ -19,6 +19,7 @@ pub fn create_task(name: &str, project_id: i64, list_id: i64, parent: i64) -> Re
         position,
         false,
         parent,
+        String::new(),
     ))
 }
 
@@ -97,7 +98,7 @@ pub fn update_task(task: Task) -> Result<()> {
         &format!(
             "UPDATE tasks SET
             name = ?1, done = ?2, project = ?3, list = ?4,
-            {position_stmt} suspended = ?5, parent = ?6 WHERE id = ?7"
+            {position_stmt} suspended = ?5, parent = ?6, description = ?7 WHERE id = ?8"
         ),
         (
             task.name(),
@@ -106,6 +107,7 @@ pub fn update_task(task: Task) -> Result<()> {
             task.list(),
             task.suspended(),
             task.parent(),
+            task.description(),
             task.id(),
         ),
     )?;

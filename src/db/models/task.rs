@@ -17,6 +17,7 @@ mod imp {
         pub position: Cell<i32>,
         pub suspended: Cell<bool>,
         pub parent: Cell<i64>,
+        pub description: RefCell<String>,
     }
 
     #[glib::object_subclass]
@@ -37,6 +38,7 @@ mod imp {
                     glib::ParamSpecInt::builder("position").build(),
                     glib::ParamSpecBoolean::builder("suspended").build(),
                     glib::ParamSpecInt64::builder("parent").build(),
+                    glib::ParamSpecString::builder("description").build(),
                 ]
             });
             PROPERTIES.as_ref()
@@ -76,6 +78,10 @@ mod imp {
                     let value = value.get::<i64>().expect("Value must be a i64");
                     self.parent.set(value);
                 }
+                "description" => {
+                    let value = value.get::<String>().expect("Value must be a String");
+                    self.description.replace(value);
+                }
                 _ => unimplemented!(),
             }
         }
@@ -90,6 +96,7 @@ mod imp {
                 "position" => self.position.get().to_value(),
                 "suspended" => self.suspended.get().to_value(),
                 "parent" => self.parent.get().to_value(),
+                "description" => self.description.borrow().to_string().to_value(),
                 _ => unimplemented!(),
             }
         }
@@ -110,6 +117,7 @@ impl Task {
         position: i32,
         suspended: bool,
         parent: i64,
+        description: String,
     ) -> Self {
         glib::Object::builder()
             .property("id", id)
@@ -120,6 +128,7 @@ impl Task {
             .property("position", position)
             .property("suspended", suspended)
             .property("parent", parent)
+            .property("description", description)
             .build()
     }
 
@@ -173,6 +182,10 @@ impl Task {
     pub fn parent(&self) -> i64 {
         self.property("parent")
     }
+
+    pub fn description(&self) -> String {
+        self.property("description")
+    }
 }
 
 impl TryFrom<&Row<'_>> for Task {
@@ -188,12 +201,13 @@ impl TryFrom<&Row<'_>> for Task {
             row.get(5)?,
             row.get(6)?,
             row.get(7)?,
+            row.get(8)?,
         ))
     }
 }
 
 impl Default for Task {
     fn default() -> Self {
-        Task::new(1, String::new(), false, 1, 1, 0, false, 0)
+        Task::new(1, String::new(), false, 1, 1, 0, false, 0, String::new())
     }
 }
