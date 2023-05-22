@@ -24,3 +24,6 @@ pub use record_create_window::RecordCreateWindow;
 
 mod task_window;
 pub use task_window::TaskWindow;
+
+mod task_page;
+pub use task_page::TaskPage;
