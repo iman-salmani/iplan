@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <requires lib="gtk" version="4.0"/>
+  <requires lib="Adw" version="1.0"/>
+  <template class="TaskWindow" parent="GtkWindow">
+    <property name="width-request">480</property>
+    <property name="height-request">480</property>
+    <property name="modal">true</property>
+    <property name="destroy-with-parent">true</property>
+    <property name="titlebar">
+      <object class="AdwHeaderBar">
+        <property name="title-widget">
+          <object class="GtkLabel">
+            <property name="label"></property>
+            <style>
+              <class name="heading"/>
+            </style>
+          </object>
+        </property>
+      </object>
+    </property>
+    <child><!-- Page -->
+      <object class="GtkBox">
+        <property name="orientation">vertical</property>
+        <child><!-- Task Info -->
+          <object class="GtkListBox">
+            <property name="margin-top">12</property>
+            <property name="margin-bottom">12</property>
+            <property name="margin-start">12</property>
+            <property name="margin-end">12</property>
+            <property name="selection-mode">none</property>
+            <style>
+              <class name="boxed-list"/>
+            </style>
+            <child><!-- Task Row -->
+              <object class="TaskRow" id="task_row">
+              </object>
+            </child><!-- End Task Row -->
+            <child><!-- Description -->
+              <object class="AdwExpanderRow" id="description_expander_row">
+                <property name="title">Description</property>
+                <child>
+                  <object class="GtkTextView">
+                    <property name="height-request">128</property>
+                    <property name="margin-start">3</property>
+                    <property name="margin-end">3</property>
+                    <property name="margin-top">3</property>
+                    <property name="margin-bottom">3</property>
+                    <property name="top-margin">3</property>
+                    <property name="bottom-margin">3</property>
+                    <property name="left-margin">3</property>
+                    <property name="right-margin">3</property>
+                    <property name="buffer">
+                      <object class="GtkTextBuffer" id="description_buffer">
+                        <signal name="changed" handler="handle_description_buffer_changed" swapped="true"/>
+                      </object>
+                    </property>
+                  </object>
+                </child>
+              </object>
+            </child><!-- End Description -->
+          </object>
+        </child><!-- End Task Info -->
+      </object>
+    </child><!-- End Page -->
+  </template>
+</interface>

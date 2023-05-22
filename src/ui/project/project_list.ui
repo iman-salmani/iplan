@@ -57,6 +57,7 @@
         <property name="margin-bottom">9</property>
         <property name="margin-start">15</property>
         <property name="margin-end">15</property>
+        <signal name="row-activated" handler="handle_tasks_box_row_activated" swapped="true"/>
         <style>
           <class name="boxed-list"/>
         </style>

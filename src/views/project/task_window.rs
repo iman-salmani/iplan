@@ -3,24 +3,25 @@ use std::cell::RefCell;
 
 use crate::db::models::Task;
 use crate::db::operations::update_task;
+use crate::views::project::TaskRow;
 
 mod imp {
     use super::*;
 
     #[derive(Default, gtk::CompositeTemplate)]
-    #[template(resource = "/ir/imansalmani/iplan/ui/project/task_detail_window.ui")]
-    pub struct TaskDetailWindow {
+    #[template(resource = "/ir/imansalmani/iplan/ui/project/task_window.ui")]
+    pub struct TaskWindow {
         pub task: RefCell<Task>,
         #[template_child]
-        pub name_entry_row: TemplateChild<adw::EntryRow>,
+        pub task_row: TemplateChild<TaskRow>,
         #[template_child]
         pub description_buffer: TemplateChild<gtk::TextBuffer>,
     }
 
     #[glib::object_subclass]
-    impl ObjectSubclass for TaskDetailWindow {
-        const NAME: &'static str = "TaskDetailWindow";
-        type Type = super::TaskDetailWindow;
+    impl ObjectSubclass for TaskWindow {
+        const NAME: &'static str = "TaskWindow";
+        type Type = super::TaskWindow;
         type ParentType = gtk::Window;
 
         fn class_init(klass: &mut Self::Class) {
@@ -33,7 +34,7 @@ mod imp {
         }
     }
 
-    impl ObjectImpl for TaskDetailWindow {
+    impl ObjectImpl for TaskWindow {
         fn properties() -> &'static [glib::ParamSpec] {
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> =
                 Lazy::new(|| vec![glib::ParamSpecObject::builder::<Task>("task").build()]);
@@ -57,25 +58,26 @@ mod imp {
             }
         }
     }
-    impl WidgetImpl for TaskDetailWindow {}
-    impl WindowImpl for TaskDetailWindow {}
+    impl WidgetImpl for TaskWindow {}
+    impl WindowImpl for TaskWindow {}
 }
 
 glib::wrapper! {
-    pub struct TaskDetailWindow(ObjectSubclass<imp::TaskDetailWindow>)
+    pub struct TaskWindow(ObjectSubclass<imp::TaskWindow>)
         @extends gtk::Widget, gtk::Window,
         @implements gtk::Buildable, gtk::Native, gtk::Root;
 }
 
 #[gtk::template_callbacks]
-impl TaskDetailWindow {
+impl TaskWindow {
     pub fn new(application: &gtk::Application, app_window: &gtk::Window, task: Task) -> Self {
         let win: Self = glib::Object::builder()
             .property("application", application)
             .build();
         win.set_transient_for(Some(app_window));
         let imp = win.imp();
-        imp.name_entry_row.set_text(&task.name());
+        imp.task_row.set_property("task", task.clone());
+        imp.task_row.init_widgets();
         imp.description_buffer.set_text(&task.description());
         imp.task.replace(task);
         win
@@ -83,13 +85,6 @@ impl TaskDetailWindow {
 
     pub fn task(&self) -> Task {
         self.property("task")
-    }
-
-    #[template_callback]
-    fn handle_name_entry_row_apply(&self, entry_row: adw::EntryRow) {
-        let task = self.task();
-        task.set_property("name", entry_row.text());
-        update_task(task).expect("Failed to update task");
     }
 
     #[template_callback]
