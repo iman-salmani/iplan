@@ -16,6 +16,7 @@ pub fn create_project(name: &str) -> Result<Project> {
         false,
         index,
         String::new(),
+        String::new(),
     ))
 }
 
@@ -66,13 +67,14 @@ pub fn update_project(project: &Project) -> Result<()> {
     conn.execute(
         &format!(
             "UPDATE projects SET
-            name = ?2, archive = ?3, icon = ?4 {index_stmt} WHERE id = ?1"
+            name = ?2, archive = ?3, icon = ?4, description = ?5 {index_stmt} WHERE id = ?1"
         ),
         (
             project.id(),
             project.name(),
             project.archive(),
             project.icon(),
+            project.description(),
         ),
     )?;
     Ok(())

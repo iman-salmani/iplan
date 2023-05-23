@@ -178,14 +178,9 @@ impl TaskPage {
 
     fn description_display(&self, text: &str) -> String {
         if let Some(first_line) = text.lines().next() {
-            if first_line.len() > 72 {
-                let text = format!("{}...", first_line.split_at(72).0);
-                return text;
-            } else {
-                return String::from(first_line);
-            }
+            return String::from(first_line);
         }
-        String::new()
+        String::from("")
     }
 
     #[template_callback]

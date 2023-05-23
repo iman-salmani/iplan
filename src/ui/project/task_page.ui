@@ -21,6 +21,7 @@
         <child><!-- Description -->
           <object class="AdwExpanderRow" id="description_expander_row">
             <property name="title">Description</property>
+            <property name="subtitle-lines">1</property>
             <child>
               <object class="GtkTextView">
                 <property name="height-request">128</property>

@@ -18,6 +18,10 @@ mod imp {
         #[template_child]
         pub name_entry_row: TemplateChild<adw::EntryRow>,
         #[template_child]
+        pub description_expander_row: TemplateChild<adw::ExpanderRow>,
+        #[template_child]
+        pub description_buffer: TemplateChild<gtk::TextBuffer>,
+        #[template_child]
         pub archive_switch: TemplateChild<gtk::Switch>,
     }
 
@@ -59,6 +63,10 @@ impl ProjectEditWindow {
         let imp = win.imp();
         imp.icon_label.set_text(&project.icon());
         imp.name_entry_row.set_text(&project.name());
+        let task_description = project.description();
+        imp.description_expander_row
+            .set_subtitle(&win.description_display(&task_description));
+        imp.description_buffer.set_text(&task_description);
         imp.archive_switch.set_active(project.archive());
         imp.archive_switch.connect_state_set(glib::clone!(
         @weak win, @weak project => @default-return gtk::Inhibit(true),
@@ -72,6 +80,13 @@ impl ProjectEditWindow {
         }));
         imp.project.replace(project);
         win
+    }
+
+    fn description_display(&self, text: &str) -> String {
+        if let Some(first_line) = text.lines().next() {
+            return String::from(first_line);
+        }
+        String::from("")
     }
 
     #[template_callback]
@@ -95,6 +110,17 @@ impl ProjectEditWindow {
             .unwrap()
             .activate_action("project.update", None)
             .expect("Failed to send project.update action");
+    }
+
+    #[template_callback]
+    fn handle_description_buffer_changed(&self, buffer: gtk::TextBuffer) {
+        let imp: &imp::ProjectEditWindow = self.imp();
+        let project = self.imp().project.take();
+        let text = buffer.text(&buffer.start_iter(), &buffer.end_iter(), true);
+        imp.description_expander_row
+            .set_subtitle(&self.description_display(&text));
+        project.set_property("description", text);
+        update_project(&project).expect("Failed to update task");
     }
 
     #[template_callback]
