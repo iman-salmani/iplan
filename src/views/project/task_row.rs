@@ -263,7 +263,11 @@ impl TaskRow {
     fn handle_delete_button_clicked(&self, _button: gtk::Button) {
         let task = self.task();
         let mut toast_name = task.name();
-        toast_name.shrink_to(10);
+        if toast_name.chars().count() > 15 {
+            toast_name.truncate(15);
+            toast_name.push_str("...");
+        }
+        let toast_name = format!("\"{}\" is going to delete", toast_name);
         let toast = adw::Toast::builder()
             .title(&toast_name)
             .button_label("Undo")
