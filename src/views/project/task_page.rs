@@ -129,7 +129,8 @@ impl TaskPage {
         imp.task_row.set_property("task", task.clone());
         imp.task_row.init_widgets();
         let task_description = task.description();
-        imp.description_expander_row.set_subtitle(&task_description);
+        imp.description_expander_row
+            .set_subtitle(&page.description_display(&task_description));
         imp.description_buffer.set_text(&task_description);
         imp.subtasks_box.set_sort_func(|row1, _row2| {
             if row1.property::<Task>("task").done() {
@@ -175,13 +176,26 @@ impl TaskPage {
         self.property("task")
     }
 
+    fn description_display(&self, text: &str) -> String {
+        if let Some(first_line) = text.lines().next() {
+            if first_line.len() > 72 {
+                let text = format!("{}...", first_line.split_at(72).0);
+                return text;
+            } else {
+                return String::from(first_line);
+            }
+        }
+        String::new()
+    }
+
     #[template_callback]
     fn handle_description_buffer_changed(&self, buffer: gtk::TextBuffer) {
+        let imp = self.imp();
         let task = self.task();
-        task.set_property(
-            "description",
-            buffer.text(&buffer.start_iter(), &buffer.end_iter(), true),
-        );
+        let text = buffer.text(&buffer.start_iter(), &buffer.end_iter(), true);
+        imp.description_expander_row
+            .set_subtitle(&self.description_display(&text));
+        task.set_property("description", text);
         update_task(task).expect("Failed to update task");
     }
 
