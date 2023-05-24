@@ -1,0 +1,354 @@
+# Brazilian Portuguese translation for ir.imansalmani.IPlan.
+# Copyright (C) 2023 ir.imansalmani.IPlan
+# This file is distributed under the same license as the iplan package.
+# Fúlvio Leo <fulviokaldas@outlook.com>, 2023.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: iplan\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-05-24 16:52+0330\n"
+"PO-Revision-Date: 2023-05-24 20:06-0300\n"
+"Last-Translator: Fúlvio Leo <fulviokaldas@outlook.com>\n"
+"Language-Team: Brazilian Portuguese <https://br.gnome.org/traducao >\n"
+"Language: pt_BR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1)\n"
+"X-Generator: Gtranslator 42.0\n"
+
+#: data/ir.imansalmani.IPlan.desktop.in:3
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:6 src/ui/sidebar/sidebar.ui:17
+msgid "IPlan"
+msgstr "IPlan"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:7
+msgid "Your plan for improving personal life and workflow"
+msgstr "Seu planejador para melhorar a vida pessoal e o fluxo de trabalho"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:9
+msgid ""
+"IPlan goal is to be a user friendly tool for those who want to organize "
+"their personal life or jobs."
+msgstr ""
+"O objetivo do IPlan é ser uma ferramenta amigável para quem deseja organizar "
+"sua vida pessoal ou trabalho"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:10
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:61
+msgid "Features:"
+msgstr "Funcionalidades"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:12
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:63
+msgid "Grouping tasks with project and list"
+msgstr "Agrupamento de tarefas em projetos e listas"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:13
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:64
+msgid "Timer for tasks"
+msgstr "Temporizador para tarefas"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:14
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:65
+msgid "Global search"
+msgstr "Busca global"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:15
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:66
+msgid "Arranging projects, lists, and tasks by drag and drop"
+msgstr "Organização de projetos, listas e tarefas arrastando e soltando"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:20
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:24
+msgid "The IPlan main window"
+msgstr "A janela principal do IPlan"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:31
+msgid "Iman Salmani"
+msgstr "Iman Salmani"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:51
+msgid "Performance improvement and records window"
+msgstr "Janela de melhoria de desempenho e registros"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:53
+msgid "Lazy loading for project tasks and stat"
+msgstr "Carregamento lento para tarefas e estatísticas do projeto"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:54
+msgid "Records window for creating, editing, and deleting records"
+msgstr "Janela de registros para criar, editar e excluir registros"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:60
+msgid "First stable release."
+msgstr "Primeira versão estável"
+
+#: src/ui/window.ui:82
+msgid "_New List"
+msgstr "_Nova Lista"
+
+#: src/ui/window.ui:86
+msgid "_Edit Project"
+msgstr "_Editar Projeto"
+
+#: src/ui/window.ui:96
+msgid "_Keyboard Shortcuts"
+msgstr "_Atalhos de Teclado"
+
+#: src/ui/window.ui:100
+msgid "_About IPlan"
+msgstr "_Sobre o IPlan"
+
+#: src/ui/window.ui:106
+msgid "_Quit"
+msgstr "_Sair"
+
+#: src/ui/shortcuts_window.ui:11
+msgctxt "shortcut window"
+msgid "Application"
+msgstr "Aplicação"
+
+#: src/ui/shortcuts_window.ui:22
+msgctxt "shortcut window"
+msgid "Keyboard Shortcuts"
+msgstr "Atalhos de Teclado"
+
+#: src/ui/shortcuts_window.ui:30
+msgctxt "shortcut window"
+msgid "Primary Menu"
+msgstr "Menu Principal"
+
+#: src/ui/shortcuts_window.ui:37
+msgctxt "shortcut window"
+msgid "Quit"
+msgstr "Sair"
+
+#: src/ui/shortcuts_window.ui:46
+msgctxt "shortcut window"
+msgid "Tasks"
+msgstr "Tarefas"
+
+#: src/ui/shortcuts_window.ui:49
+msgctxt "shortcut window"
+msgid "Search"
+msgstr "Buscar"
+
+#: src/ui/delete_dialog.ui:12
+msgid "_Cancel"
+msgstr "_Cancelar"
+
+#: src/ui/delete_dialog.ui:13
+msgid "_Delete"
+msgstr "_Deletar"
+
+#: src/ui/project/project_done_tasks_window.ui:48
+msgid "no done tasks found"
+msgstr "nenhuma tarefa concluída encontrada"
+
+#: src/ui/project/project_edit_window.ui:19
+msgid "Edit Project"
+msgstr "Editar Projeto"
+
+#: src/ui/project/project_edit_window.ui:42
+msgid "Name"
+msgstr "Nome"
+
+#: src/ui/project/project_edit_window.ui:49
+msgid "Icon"
+msgstr "Ícone"
+
+#: src/ui/project/project_edit_window.ui:66 src/ui/project/task_page.ui:23
+msgid "Description"
+msgstr "Descrição"
+
+#: src/ui/project/project_edit_window.ui:98
+msgid "Archive"
+msgstr "Arquivo"
+
+#: src/ui/project/project_edit_window.ui:109 src/ui/project/task_row.ui:110
+msgid "Delete"
+msgstr "Deletar"
+
+#: src/ui/project/project_header.ui:89
+msgid "Time spent per day"
+msgstr "Tempo gasto por dia"
+
+#: src/ui/project/project_list.ui:68
+msgid "no tasks found"
+msgstr "nenhuma tarefa encontrada"
+
+#: src/ui/project/project_list.ui:69 src/ui/project/task_page.ui:122
+msgid "Use add button up there"
+msgstr "Use o botão adicionar lá em cima"
+
+#: src/ui/project/project_list.ui:104
+msgid "Done tasks"
+msgstr "Tarefas concluídas"
+
+#: src/ui/project/project_list.ui:133
+msgid "Delete list"
+msgstr "Deletar lista"
+
+#: src/ui/project/project_lists.ui:34
+msgid "no lists found"
+msgstr "nenhuma lista encontrada"
+
+#. Translators: The sentence is: Use the primary menu (shortcut_label) for adding new lists
+#: src/ui/project/project_lists.ui:45
+msgid "Use the primary menu"
+msgstr "Use o menu principal"
+
+#. Translators: The sentence is: Use the primary menu (shortcut_label) for adding new lists
+#: src/ui/project/project_lists.ui:56
+msgid "for adding new lists"
+msgstr "para adicionar novas listas"
+
+#: src/ui/project/project_lists.ui:65
+msgid "New list"
+msgstr "Nova lista"
+
+#: src/ui/project/record_create_window.ui:15
+msgid "New Record"
+msgstr "Novo Registro"
+
+#: src/ui/project/record_create_window.ui:23
+msgid "Cancel"
+msgstr "Cancelar"
+
+#: src/ui/project/record_create_window.ui:29
+msgid "Done"
+msgstr "Concluído"
+
+#: src/ui/project/record_create_window.ui:46 src/ui/project/record_row.ui:8
+msgid "start"
+msgstr "começar"
+
+#: src/ui/project/record_create_window.ui:49 src/ui/project/record_row.ui:11
+msgid "date"
+msgstr "data"
+
+#: src/ui/project/record_create_window.ui:65
+#: src/ui/project/record_create_window.ui:124 src/ui/project/record_row.ui:27
+#: src/ui/project/record_row.ui:86
+msgid "hour"
+msgstr "hora"
+
+#: src/ui/project/record_create_window.ui:83
+#: src/ui/project/record_create_window.ui:142 src/ui/project/record_row.ui:45
+#: src/ui/project/record_row.ui:104
+msgid "minute"
+msgstr "minuto"
+
+#: src/ui/project/record_create_window.ui:101
+#: src/ui/project/record_create_window.ui:160 src/ui/project/record_row.ui:63
+#: src/ui/project/record_row.ui:122
+msgid "seconds"
+msgstr "segundos"
+
+#: src/ui/project/record_create_window.ui:121 src/ui/project/record_row.ui:83
+msgid "duration"
+msgstr "duração"
+
+#: src/ui/project/record_row.ui:142
+msgid "delete"
+msgstr "deletar"
+
+#: src/ui/project/task_page.ui:54 src/ui/project/task_page.ui:70
+msgid "Subtasks"
+msgstr "Subtarefas"
+
+#: src/ui/project/task_page.ui:75
+msgid "Records"
+msgstr "Registros"
+
+#: src/ui/project/task_page.ui:121
+msgid "no subtasks found"
+msgstr "nenhuma subtarefa encontrada"
+
+#: src/ui/project/task_page.ui:152
+msgid "no records found"
+msgstr "nenhum registro encontrado"
+
+#: src/ui/project/task_page.ui:153
+msgid "Use add button up there or start a timer"
+msgstr "Use o botão adicionar lá em cima ou inicie um temporizador"
+
+#: src/ui/search/search_window.ui:18
+msgid "Search"
+msgstr "Buscar"
+
+#: src/ui/search/search_window.ui:54
+msgid "no results found"
+msgstr "nenhum resultado encontrado"
+
+#: src/ui/sidebar/sidebar_projects.ui:14
+msgid "Projects"
+msgstr "Projetos"
+
+#: src/ui/sidebar/sidebar_projects.ui:33
+msgid "Show archive projects"
+msgstr "Mostrar projetos de arquivo"
+
+#: src/ui/sidebar/sidebar_projects.ui:40
+msgid "New project"
+msgstr "Novo projeto"
+
+#. Translators: Replace "translator-credits" with your names, one name per line
+#: src/application.rs:145
+msgid "translator-credits"
+msgstr "Fúlvio Leo <fulviokaldas@outlook.com>"
+
+#: src/views/window.rs:96 src/views/window.rs:244
+msgid "Personal"
+msgstr "Pessoal"
+
+#: src/views/window.rs:97 src/views/window.rs:245
+#: src/views/sidebar/sidebar_projects.rs:206
+msgid "Tasks"
+msgstr "Tarefas"
+
+#: src/views/project/project_done_tasks_window.rs:100
+msgid "Done Tasks"
+msgstr "Tarefas Concluídas"
+
+#: src/views/project/project_edit_window.rs:134
+msgid "Delete \"{}\" project?"
+msgstr "Deletar o projeto \"{}\"?"
+
+#: src/views/project/project_edit_window.rs:137
+msgid "The project and its tasks will be permanently lost."
+msgstr "O projeto e suas tarefas associadas serão perdidos permanentemente."
+
+#: src/views/project/project_header.rs:162
+msgid "Today"
+msgstr "Hoje"
+
+#: src/views/project/project_list.rs:361
+msgid "Delete \"{}\" list?"
+msgstr "Deletar a lista \"{}\"?"
+
+#: src/views/project/project_list.rs:363
+msgid "The list and its tasks will be permanently lost."
+msgstr "A lista e suas tarefas associadas serão perdidas permanentemente."
+
+#: src/views/project/project_lists.rs:141
+msgid "New List"
+msgstr "Nova lista"
+
+#: src/views/project/task_row.rs:271
+msgid "\"{}\" is going to delete"
+msgstr "\"{}\" irá deletar"
+
+#: src/views/project/task_row.rs:274
+msgid "Undo"
+msgstr "Desfazer"
+
+#: src/views/search/search_result.rs:55
+msgid "Project"
+msgstr "Projeto"
+
+#: src/views/search/search_result.rs:60
+msgid "Task"
+msgstr "Tarefa"
