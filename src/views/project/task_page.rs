@@ -198,14 +198,14 @@ impl TaskPage {
     fn handle_lists_menu_row_activated(&self, row: gtk::ListBoxRow, _lists_box: gtk::ListBox) {
         let imp = self.imp();
         imp.lists_popover.popdown();
-        let label = row.child().and_downcast::<gtk::Label>().unwrap().label();
-        imp.lists_menu_button.set_label(&label);
-        match label.as_str() {
-            "Subtasks" => {
+        match row.index() {
+            // Subtasks
+            0 => {
                 imp.new_subtask_button.set_visible(true);
                 imp.subtasks_page.set_visible(true);
             }
-            "Records" => {
+            // Records
+            1 => {
                 imp.new_subtask_button.set_visible(false);
                 imp.subtasks_page.set_visible(false);
             }
