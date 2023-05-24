@@ -1,4 +1,5 @@
 use adw::{prelude::*, subclass::prelude::*};
+use gettextrs::gettext;
 use gtk::{glib, glib::once_cell::sync::Lazy};
 use std::cell::RefCell;
 
@@ -96,8 +97,7 @@ impl ProjectDoneTasksWindow {
         win.set_transient_for(Some(app_window));
         let imp = win.imp();
         let list: List = win.property("list");
-        imp.name_label
-            .set_label(&format!("Done tasks in {}", list.name()));
+        imp.name_label.set_label(&gettext("Done Tasks"));
         for task in read_tasks(list.project(), Some(list.id()), Some(true), Some(0))
             .expect("Failed to read tasks")
         {

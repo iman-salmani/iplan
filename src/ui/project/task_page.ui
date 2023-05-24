@@ -20,7 +20,7 @@
         </child><!-- End Task Row -->
         <child><!-- Description -->
           <object class="AdwExpanderRow" id="description_expander_row">
-            <property name="title">Description</property>
+            <property name="title" translatable="true">Description</property>
             <property name="subtitle-lines">1</property>
             <child>
               <object class="GtkTextView">
@@ -51,7 +51,7 @@
         <property name="margin-bottom">6</property>
         <child><!-- Lists menu -->
           <object class="GtkMenuButton" id="lists_menu_button">
-            <property name="label">Subtasks</property>
+            <property name="label" translatable="true">Subtasks</property>
             <property name="hexpand">true</property>
             <property name="halign">start</property>
             <style>
@@ -67,12 +67,12 @@
                     <signal name="row-activated" handler="handle_lists_menu_row_activated" swapped="true"/>
                     <child>
                       <object class="GtkLabel">
-                        <property name="label">Subtasks</property>
+                        <property name="label" translatable="true">Subtasks</property>
                       </object>
                     </child>
                     <child>
                       <object class="GtkLabel">
-                        <property name="label">Records</property>
+                        <property name="label" translatable="true">Records</property>
                       </object>
                     </child>
                   </object>
@@ -118,8 +118,8 @@
             <child type="placeholder">
               <object class="AdwStatusPage">
                 <property name="icon-name">view-list-symbolic</property>
-                <property name="title">no subtasks found</property>
-                <property name="description">Use plus button up there</property>
+                <property name="title" translatable="true">no subtasks found</property>
+                <property name="description" translatable="true">Use add button up there</property>
                 <style>
                   <class name="compact"/>
                 </style>
@@ -149,8 +149,8 @@
             <child type="placeholder">
               <object class="AdwStatusPage" id="search_results_placeholder">
                 <property name="icon-name">preferences-system-time-symbolic</property>
-                <property name="title">no records found</property>
-                <property name="description">Use plus button up there or start a timer</property>
+                <property name="title" translatable="true">no records found</property>
+                <property name="description" translatable="true">Use add button up there or start a timer</property>
                 <style>
                   <class name="compact"/>
                 </style>

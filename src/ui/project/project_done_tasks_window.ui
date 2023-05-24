@@ -33,7 +33,7 @@
                 <property name="hscrollbar-policy">never</property>
                 <child><!-- Task List -->
                   <object class="GtkListBox" id="tasks_box">
-                    <property name="valign">start</property>
+                    <property name="vexpand">true</property>
                     <property name="selection_mode">none</property>
                     <property name="margin-top">3</property>
                     <property name="margin-bottom">9</property>
@@ -43,12 +43,11 @@
                     <class name="boxed-list"/>
                     </style>
                     <child type="placeholder">
-                      <object class="GtkLabel">
-                        <property name="margin-top">22</property>
-                        <property name="margin-bottom">22</property>
-                        <property name="label">Nothing to do 🤔️</property>
+                      <object class="AdwStatusPage">
+                        <property name="icon-name">view-list-symbolic</property>
+                        <property name="title" translatable="true">no done tasks found</property>
                         <style>
-                        <class name="heading"/>
+                          <class name="compact"/>
                         </style>
                       </object>
                     </child>

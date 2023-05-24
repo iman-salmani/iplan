@@ -19,6 +19,7 @@
  */
 
 use adw::subclass::prelude::*;
+use gettextrs::gettext;
 use gtk::prelude::*;
 use gtk::{gio, glib};
 
@@ -140,6 +141,8 @@ impl IPlanApplication {
             .license_type(gtk::License::Lgpl30)
             .website("https://github.com/iman-salmani/iplan")
             .issue_url("https://github.com/iman-salmani/iplan/issues/new/choose")
+            // Translators: Replace "translator-credits" with your names, one name per line
+            .translator_credits(&gettext("translator-credits"))
             .build();
 
         about.present();

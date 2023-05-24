@@ -1,3 +1,4 @@
+use gettextrs::gettext;
 use gtk::{glib, prelude::*, subclass::prelude::*};
 use std::cell::{Cell, RefCell};
 
@@ -136,7 +137,8 @@ impl ProjectLists {
     }
 
     pub fn new_list(&self, project_id: i64) {
-        let list = create_list("New List", project_id).expect("Failed to create new list");
+        let list =
+            create_list(&gettext("New List"), project_id).expect("Failed to create new list");
         let project_list = ProjectList::new(list);
         let imp = self.imp();
         if imp.placeholder.parent().is_some() {

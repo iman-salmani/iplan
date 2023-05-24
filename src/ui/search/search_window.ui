@@ -15,7 +15,7 @@
         <property name="title-widget">
           <object class="GtkSearchEntry" id="search_entry">
             <property name="hexpand">true</property>
-            <property name="placeholder-text">Search</property>
+            <property name="placeholder-text" translatable="true">Search</property>
             <signal name="activate" handler="handle_search_entry_activate" swapped="true"/>
             <signal name="search-changed" handler="handle_search_entry_search_changed" swapped="true"/>
           </object>
@@ -51,8 +51,7 @@
                 <child type="placeholder">
                   <object class="AdwStatusPage" id="search_results_placeholder">
                     <property name="icon-name">system-search-symbolic</property>
-                    <property name="title">No Results Found</property>
-                    <property name="description">Try a different search</property>
+                    <property name="title" translatable="true">no results found</property>
                     <property name="visible">false</property>
                   </object>
                 </child>

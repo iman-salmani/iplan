@@ -1,4 +1,5 @@
 use adw::prelude::*;
+use gettextrs::gettext;
 use gtk::{gdk, glib, glib::once_cell::sync::Lazy, subclass::prelude::*};
 use std::cell::RefCell;
 
@@ -357,8 +358,10 @@ impl ProjectList {
             .object::<adw::MessageDialog>("dialog")
             .unwrap();
         dialog.set_transient_for(self.root().and_downcast::<gtk::Window>().as_ref());
-        dialog.set_heading(Some(&format!("Delete \"{}\" List?", self.list().name())));
-        dialog.set_body("List and tasks will be permanently lost.");
+        let dialog_heading = gettext("Delete \"{}\" list?");
+        dialog.set_heading(Some(&dialog_heading.replace("{}", &self.list().name())));
+        dialog.set_body(&gettext("The list and its tasks will be permanently lost."));
+
         dialog.connect_response(
             Some("delete"),
             glib::clone!(

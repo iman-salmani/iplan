@@ -1,3 +1,4 @@
+use gettextrs::gettext;
 use gtk::{gdk, gio, glib, prelude::*, subclass::prelude::*};
 use std::cell::RefCell;
 
@@ -202,7 +203,7 @@ impl SidebarProjects {
     #[template_callback]
     fn handle_new_button_clicked(&self, _button: gtk::Button) {
         let project = create_project("").expect("Failed to create project");
-        create_list("Tasks", project.id()).expect("Failed to create list");
+        create_list(&gettext("Tasks"), project.id()).expect("Failed to create list");
         let row = SidebarProject::new(project.clone());
         let imp = self.imp();
         imp.projects_box.append(&row);

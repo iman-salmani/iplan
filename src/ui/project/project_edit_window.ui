@@ -39,7 +39,7 @@
             <property name="margin-end">12</property>
             <child><!-- Name -->
               <object class="AdwEntryRow" id="name_entry_row">
-                <property name="title">Name</property>
+                <property name="title" translatable="true">Name</property>
                 <property name="show-apply-button">true</property>
                 <signal name="apply" handler="handle_name_entry_row_apply" swapped="true"/>
               </object>
@@ -63,7 +63,7 @@
             </child><!-- End Icon Row -->
             <child><!-- Description -->
               <object class="AdwExpanderRow" id="description_expander_row">
-                <property name="title">Description</property>
+                <property name="title" translatable="true">Description</property>
                 <property name="subtitle-lines">1</property>
                 <child>
                   <object class="GtkTextView">
@@ -95,7 +95,7 @@
             <property name="margin-end">12</property>
             <child><!-- Archive -->
               <object class="AdwActionRow">
-                <property name="title">Archive</property>
+                <property name="title" translatable="true">Archive</property>
                 <property name="activatable-widget">archive_switch</property>
                 <child type="suffix">
                   <object class="GtkSwitch" id="archive_switch">
@@ -106,7 +106,7 @@
             </child><!-- End Archive-->
             <child><!-- Delete -->
               <object class="AdwActionRow" >
-                <property name="title">Delete</property>
+                <property name="title" translatable="true">Delete</property>
                 <property name="activatable-widget">delete_button</property>
                 <child type="suffix">
                   <object class="GtkButton" id="delete_button">

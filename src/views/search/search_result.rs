@@ -1,3 +1,4 @@
+use gettextrs::gettext;
 use gtk::{glib, prelude::*, subclass::prelude::*};
 use std::cell::RefCell;
 
@@ -51,12 +52,12 @@ impl SearchResult {
         let imp = win.imp();
         if let Some(project) = project {
             imp.name_label.set_label(&project.name());
-            imp.type_label.set_label("Project");
+            imp.type_label.set_label(&gettext("Project"));
             imp.done_check_button.set_visible(false);
             imp.project.replace(Some(project));
         } else if let Some(task) = task {
             imp.name_label.set_label(&task.name());
-            imp.type_label.set_label("Project");
+            imp.type_label.set_label(&gettext("Task"));
             imp.done_check_button.set_active(task.done());
             imp.task.replace(Some(task));
         }

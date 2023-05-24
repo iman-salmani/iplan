@@ -62,13 +62,11 @@
           <class name="boxed-list"/>
         </style>
         <child type="placeholder">
-          <object class="GtkLabel">
-            <property name="margin-top">22</property>
-            <property name="margin-bottom">22</property>
-            <property name="label">Nothing to do 🤔️</property>
-            <style>
-              <class name="heading"/>
-            </style>
+          <object class="AdwStatusPage">
+            <property name="icon-name">view-list-symbolic</property>
+            <property name="height-request">320</property>
+            <property name="title" translatable="true">no tasks found</property>
+            <property name="description" translatable="true">Use add button up there</property>
           </object>
         </child>
       </object>
@@ -87,7 +85,7 @@
       <object class="GtkBox">
         <property name="orientation">vertical</property>
         <property name="spacing">6</property>
-        <child><!-- Toggle Completed Tasks -->
+        <child><!-- Done Tasks Button -->
           <object class="GtkButton" id="show_done_tasks_button">
             <signal name="clicked" handler="handle_show_done_tasks_button_clicked" swapped="true"/>
             <style>
@@ -103,7 +101,7 @@
                 </child>
                 <child>
                   <object class="GtkLabel">
-                    <property name="label">Done tasks</property>
+                    <property name="label" translatable="true">Done tasks</property>
                     <attributes>
                       <attribute name="weight" value="PANGO_WEIGHT_NORMAL"/>
                     </attributes>
@@ -112,7 +110,7 @@
               </object>
             </child>
           </object>
-        </child><!-- End Toggle Completed Tasks -->
+        </child><!-- End Done Tasks Button -->
         <child>
           <object class="GtkSeparator"/>
         </child>
@@ -132,7 +130,7 @@
                 </child>
                 <child>
                   <object class="GtkLabel">
-                    <property name="label">Delete list</property>
+                    <property name="label" translatable="true">Delete list</property>
                     <attributes>
                       <attribute name="weight" value="PANGO_WEIGHT_NORMAL"/>
                     </attributes>

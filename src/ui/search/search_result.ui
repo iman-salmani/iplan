@@ -4,7 +4,6 @@
   <requires lib="Adw" version="1.0"/>
   <template class="SearchResult" parent="GtkListBoxRow">
     <property name="activatable">true</property>
-    <!--<signal name="activate" handler="on_activated"/>-->
     <child>
       <object class="GtkBox">
         <property name="margin-top">12</property>

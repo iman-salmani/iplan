@@ -1,4 +1,5 @@
 use adw;
+use gettextrs::gettext;
 use gtk::{glib, prelude::*, subclass::prelude::*};
 use std::thread;
 
@@ -158,7 +159,7 @@ impl ProjectHeader {
                 let (i, date, duration) = data;
                 let stat_item = gtk::Box::new(gtk::Orientation::Horizontal, 8);
                 let date_label = if i == 0 {
-                    String::from("Today")
+                    gettext("Today")
                 } else {
                     date.format("%A").unwrap().to_string()
                 };

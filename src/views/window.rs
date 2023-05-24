@@ -19,6 +19,7 @@
  */
 
 use adw::subclass::prelude::*;
+use gettextrs::gettext;
 use gtk::{gio, glib, glib::once_cell::sync::Lazy, prelude::*};
 use std::cell::RefCell;
 
@@ -91,8 +92,9 @@ mod imp {
                 let home_project = if let Some(project) = projects.get(0) {
                     project.clone()
                 } else {
-                    let project = create_project("🙂 Personal").expect("Failed to create project");
-                    create_list("Tasks", project.id()).expect("Failed to create list");
+                    let project =
+                        create_project(&gettext("Personal")).expect("Failed to create project");
+                    create_list(&gettext("Tasks"), project.id()).expect("Failed to create list");
                     project
                 };
                 win.set_property("project", home_project);
@@ -238,8 +240,9 @@ impl IPlanWindow {
         let home_project = if let Some(project) = projects.get(0) {
             project.clone()
         } else {
-            let project = create_project("🙂 Personal").expect("Failed to create project");
-            create_list("Tasks", project.id()).expect("Failed to create list");
+            let project: Project =
+                create_project(&gettext("Personal")).expect("Failed to create project");
+            create_list(&gettext("Tasks"), project.id()).expect("Failed to create list");
             project
         };
         let settings = gio::Settings::new("ir.imansalmani.IPlan.State");

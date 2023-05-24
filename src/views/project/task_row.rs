@@ -1,3 +1,4 @@
+use gettextrs::gettext;
 use gtk::{gdk, glib, glib::once_cell::sync::Lazy, prelude::*, subclass::prelude::*};
 use std::cell::{Cell, RefCell};
 use std::thread;
@@ -267,10 +268,10 @@ impl TaskRow {
             toast_name.truncate(15);
             toast_name.push_str("...");
         }
-        let toast_name = format!("\"{}\" is going to delete", toast_name);
+        let toast_name = gettext("\"{}\" is going to delete");
         let toast = adw::Toast::builder()
-            .title(&toast_name)
-            .button_label("Undo")
+            .title(&toast_name.replace("{}", &toast_name))
+            .button_label(&gettext("Undo"))
             .build();
 
         toast.connect_button_clicked(glib::clone!(

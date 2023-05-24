@@ -1,4 +1,5 @@
 use adw::{prelude::*, subclass::prelude::*};
+use gettextrs::gettext;
 use gtk::glib;
 use std::cell::RefCell;
 
@@ -130,8 +131,11 @@ impl ProjectEditWindow {
             .unwrap();
         dialog.set_transient_for(self.transient_for().as_ref());
         let project = self.imp().project.take();
-        dialog.set_heading(Some(&format!("Delete \"{}\" List?", project.name())));
-        dialog.set_body("Project and tasks will be permanently lost.");
+        let dialog_heading = gettext("Delete \"{}\" project?");
+        dialog.set_heading(Some(&dialog_heading.replace("{}", &project.name())));
+        dialog.set_body(&gettext(
+            "The project and its tasks will be permanently lost.",
+        ));
         dialog.connect_response(Some("delete"), move |dialog, response| {
             if response == "delete" {
                 delete_project(project.id(), project.index()).expect("Failed to delete list");
