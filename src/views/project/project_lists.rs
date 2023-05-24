@@ -95,7 +95,7 @@ impl ProjectLists {
         let lists = imp.lists_box.observe_children();
         for _i in 0..lists.n_items() {
             imp.lists_box
-                .remove(&lists.item(0).and_downcast::<ProjectList>().unwrap());
+                .remove(&lists.item(0).and_downcast::<gtk::Widget>().unwrap());
         }
 
         // let tasks_per_page = self.allocated_height() / 72;   // TODO: update by window resize
