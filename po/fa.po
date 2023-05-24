@@ -1,0 +1,354 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the iplan package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: iplan\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-05-24 16:52+0330\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Iman Salmani <contact.imansalmani@gmail.com>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: data/ir.imansalmani.IPlan.desktop.in:3
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:6 src/ui/sidebar/sidebar.ui:17
+msgid "IPlan"
+msgstr "آیپلن"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:7
+msgid "Your plan for improving personal life and workflow"
+msgstr "برنامه شما برای بهبود زندگی شخصی و کاری"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:9
+msgid ""
+"IPlan goal is to be a user friendly tool for those who want to organize "
+"their personal life or jobs."
+msgstr ""
+"هدف IPlan این است که یک ابزار کاربر پسند برای کسانی باشد که می خواهند زندگی "
+"شخصی یا شغل خود را سازماندهی کنند."
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:10
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:61
+msgid "Features:"
+msgstr "ویژگی ها:"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:12
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:63
+msgid "Grouping tasks with project and list"
+msgstr "گروه بندی وظایف با پروژه و لیست"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:13
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:64
+msgid "Timer for tasks"
+msgstr "تایمر برای وظایف"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:14
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:65
+msgid "Global search"
+msgstr "جستجوی سراسری"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:15
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:66
+msgid "Arranging projects, lists, and tasks by drag and drop"
+msgstr "مرتب سازی پروژه ها، فهرست ها و وظایف با کشیدن و رها کردن"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:20
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:24
+msgid "The IPlan main window"
+msgstr "پنجره ی آیپلن"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:31
+msgid "Iman Salmani"
+msgstr "ایمان سلمانی"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:51
+msgid "Performance improvement and records window"
+msgstr "بهبود عملکرد و پنجره سوابق"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:53
+msgid "Lazy loading for project tasks and stat"
+msgstr "پیاده سازی Lazy loading برای وظایف پروژه و آمار"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:54
+#, fuzzy
+msgid "Records window for creating, editing, and deleting records"
+msgstr "پنجره رکوردها برای ایجاد، ویرایش و حذف رکوردها"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:60
+msgid "First stable release."
+msgstr "اولین انتشار پایدار."
+
+#: src/ui/window.ui:82
+msgid "_New List"
+msgstr "_فهرست جدید"
+
+#: src/ui/window.ui:86
+msgid "_Edit Project"
+msgstr "_ویرایش پروژه"
+
+#: src/ui/window.ui:96
+msgid "_Keyboard Shortcuts"
+msgstr "_میانبرهای صفحه کلید"
+
+#: src/ui/window.ui:100
+msgid "_About IPlan"
+msgstr "_درباره آیپلن"
+
+#: src/ui/window.ui:106
+msgid "_Quit"
+msgstr "_خروج"
+
+#: src/ui/shortcuts_window.ui:11
+msgctxt "shortcut window"
+msgid "Application"
+msgstr "برنامه"
+
+#: src/ui/shortcuts_window.ui:22
+msgctxt "shortcut window"
+msgid "Keyboard Shortcuts"
+msgstr "میانبرهای صفحه کلید"
+
+#: src/ui/shortcuts_window.ui:30
+msgctxt "shortcut window"
+msgid "Primary Menu"
+msgstr "منو اصلی"
+
+#: src/ui/shortcuts_window.ui:37
+msgctxt "shortcut window"
+msgid "Quit"
+msgstr "خروج"
+
+#: src/ui/shortcuts_window.ui:46
+msgctxt "shortcut window"
+msgid "Tasks"
+msgstr "وظایف"
+
+#: src/ui/shortcuts_window.ui:49
+msgctxt "shortcut window"
+msgid "Search"
+msgstr "جستجو"
+
+#: src/ui/delete_dialog.ui:12
+msgid "_Cancel"
+msgstr "لغو"
+
+#: src/ui/delete_dialog.ui:13
+msgid "_Delete"
+msgstr "حذف"
+
+#: src/ui/project/project_done_tasks_window.ui:48
+msgid "no done tasks found"
+msgstr "هیچ کار انجام شده ای پیدا نشد"
+
+#: src/ui/project/project_edit_window.ui:19
+msgid "Edit Project"
+msgstr "ویرایش پروژه"
+
+#: src/ui/project/project_edit_window.ui:42
+msgid "Name"
+msgstr "نام"
+
+#: src/ui/project/project_edit_window.ui:49
+msgid "Icon"
+msgstr "نماد"
+
+#: src/ui/project/project_edit_window.ui:66 src/ui/project/task_page.ui:23
+msgid "Description"
+msgstr "شرح"
+
+#: src/ui/project/project_edit_window.ui:98
+msgid "Archive"
+msgstr "بایگانی"
+
+#: src/ui/project/project_edit_window.ui:109 src/ui/project/task_row.ui:110
+msgid "Delete"
+msgstr "حذف"
+
+#: src/ui/project/project_header.ui:89
+msgid "Time spent per day"
+msgstr "زمان صرف شده در روز"
+
+#: src/ui/project/project_list.ui:68
+msgid "no tasks found"
+msgstr "هیچ کاری پیدا نشد"
+
+#: src/ui/project/project_list.ui:69 src/ui/project/task_page.ui:122
+msgid "Use add button up there"
+msgstr "از دکمه افزودن در بالا استفاده کنید"
+
+#: src/ui/project/project_list.ui:104
+msgid "Done tasks"
+msgstr "وظایف انجام شده"
+
+#: src/ui/project/project_list.ui:133
+msgid "Delete list"
+msgstr "حذف فهرست"
+
+#: src/ui/project/project_lists.ui:34
+msgid "no lists found"
+msgstr "فهرستی پیدا نشد"
+
+#. Translators: The sentence is: Use the primary menu (shortcut_label) for adding new lists
+#: src/ui/project/project_lists.ui:45
+msgid "Use the primary menu"
+msgstr "از منوی اصلی"
+
+#. Translators: The sentence is: Use the primary menu (shortcut_label) for adding new lists
+#: src/ui/project/project_lists.ui:56
+msgid "for adding new lists"
+msgstr "برای افزودن لیست های جدید استفاده کنید"
+
+#: src/ui/project/project_lists.ui:65
+msgid "New list"
+msgstr "فهرست جدید"
+
+#: src/ui/project/record_create_window.ui:15
+msgid "New Record"
+msgstr "رکورد جدید"
+
+#: src/ui/project/record_create_window.ui:23
+msgid "Cancel"
+msgstr "لغو"
+
+#: src/ui/project/record_create_window.ui:29
+msgid "Done"
+msgstr "انجام شد"
+
+#: src/ui/project/record_create_window.ui:46 src/ui/project/record_row.ui:8
+msgid "start"
+msgstr "شروع"
+
+#: src/ui/project/record_create_window.ui:49 src/ui/project/record_row.ui:11
+msgid "date"
+msgstr "تاریخ"
+
+#: src/ui/project/record_create_window.ui:65
+#: src/ui/project/record_create_window.ui:124 src/ui/project/record_row.ui:27
+#: src/ui/project/record_row.ui:86
+msgid "hour"
+msgstr "ساعت"
+
+#: src/ui/project/record_create_window.ui:83
+#: src/ui/project/record_create_window.ui:142 src/ui/project/record_row.ui:45
+#: src/ui/project/record_row.ui:104
+msgid "minute"
+msgstr "دقیقه"
+
+#: src/ui/project/record_create_window.ui:101
+#: src/ui/project/record_create_window.ui:160 src/ui/project/record_row.ui:63
+#: src/ui/project/record_row.ui:122
+msgid "seconds"
+msgstr "ثانیه"
+
+#: src/ui/project/record_create_window.ui:121 src/ui/project/record_row.ui:83
+msgid "duration"
+msgstr "مدت"
+
+#: src/ui/project/record_row.ui:142
+msgid "delete"
+msgstr "حذف"
+
+#: src/ui/project/task_page.ui:54 src/ui/project/task_page.ui:70
+msgid "Subtasks"
+msgstr "وظایف فرعی"
+
+#: src/ui/project/task_page.ui:75
+msgid "Records"
+msgstr "سوابق"
+
+#: src/ui/project/task_page.ui:121
+msgid "no subtasks found"
+msgstr "هیچ کار فرعی پیدا نشد"
+
+#: src/ui/project/task_page.ui:152
+msgid "no records found"
+msgstr "هیچ رکوردی پیدا نشد"
+
+#: src/ui/project/task_page.ui:153
+msgid "Use add button up there or start a timer"
+msgstr "از دکمه افزودن در بالا استفاده کنید یا تایمر را شروع کنید"
+
+#: src/ui/search/search_window.ui:18
+msgid "Search"
+msgstr "جستجو"
+
+#: src/ui/search/search_window.ui:54
+msgid "no results found"
+msgstr "نتیجه ای پیدا نشد"
+
+#: src/ui/sidebar/sidebar_projects.ui:14
+msgid "Projects"
+msgstr "پروژه ها"
+
+#: src/ui/sidebar/sidebar_projects.ui:33
+msgid "Show archive projects"
+msgstr "نمایش پروژه های بایگانی شده"
+
+#: src/ui/sidebar/sidebar_projects.ui:40
+msgid "New project"
+msgstr "پروژه جدید"
+
+#. Translators: Replace "translator-credits" with your names, one name per line
+#: src/application.rs:145
+msgid "translator-credits"
+msgstr "ایمان سلمانی <contact.imansalmani@gmail.com>"
+
+#: src/views/window.rs:96 src/views/window.rs:244
+msgid "Personal"
+msgstr "شخصی"
+
+#: src/views/window.rs:97 src/views/window.rs:245
+#: src/views/sidebar/sidebar_projects.rs:206
+msgid "Tasks"
+msgstr "وظایف"
+
+#: src/views/project/project_done_tasks_window.rs:100
+msgid "Done Tasks"
+msgstr "کارهای انجام شده"
+
+#: src/views/project/project_edit_window.rs:134
+msgid "Delete \"{}\" project?"
+msgstr "پروژه \"{}\" حذف شود؟"
+
+#: src/views/project/project_edit_window.rs:137
+msgid "The project and its tasks will be permanently lost."
+msgstr "پروژه و وظایف آن برای همیشه از بین خواهد رفت."
+
+#: src/views/project/project_header.rs:162
+msgid "Today"
+msgstr "امروز"
+
+#: src/views/project/project_list.rs:361
+msgid "Delete \"{}\" list?"
+msgstr "پروژه \"{}\" لیست شود؟"
+
+#: src/views/project/project_list.rs:363
+msgid "The list and its tasks will be permanently lost."
+msgstr "فهرست و وظایف آن برای همیشه از بین خواهد رفت."
+
+#: src/views/project/project_lists.rs:141
+msgid "New List"
+msgstr "فهرست جدید"
+
+#: src/views/project/task_row.rs:271
+msgid "\"{}\" is going to delete"
+msgstr "درحال حذف \"{}\""
+
+#: src/views/project/task_row.rs:274
+msgid "Undo"
+msgstr "برگرد"
+
+#: src/views/search/search_result.rs:55
+msgid "Project"
+msgstr "پروژه"
+
+#: src/views/search/search_result.rs:60
+msgid "Task"
+msgstr "وظیفه"

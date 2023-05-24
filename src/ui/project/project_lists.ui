@@ -31,7 +31,7 @@
     </child>
     <child>
       <object class="GtkLabel">
-        <property name="label">no lists found</property>
+        <property name="label" translatable="true">no lists found</property>
         <style>
           <class name="title-2"/>
         </style>
@@ -53,7 +53,7 @@
         </child>
         <child>
           <object class="GtkLabel">
-            <property name="label" comments="Translators: The sentence is: Use the primary menu (shortcut_label) for adding new lists">for adding new lists</property>
+            <property name="label" translatable="true" comments="Translators: The sentence is: Use the primary menu (shortcut_label) for adding new lists">for adding new lists</property>
             <property name="hexpand">true</property>
             <property name="margin-start">6</property>
           </object>
