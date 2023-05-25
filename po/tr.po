@@ -1,0 +1,357 @@
+# Turkish translation for ir.imansalmani.IPlan.
+# Copyright (C) 2023 ir.imansalmani.IPlan's COPYRIGHT HOLDER
+# This file is distributed under the same license as the ir.imansalmani.IPlan package.
+#
+# Sabri Ünal <libreajans@gmail.com>, 2023.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: ir.imansalmani.IPlan\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-05-25 13:43+0300\n"
+"PO-Revision-Date: 2023-05-25 13:48+0300\n"
+"Last-Translator: Sabri Ünal <libreajans@gmail.com>\n"
+"Language-Team: Türkçe <takim@gnome.org.tr>\n"
+"Language: tr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Poedit 3.2.2\n"
+
+#: data/ir.imansalmani.IPlan.desktop.in:3
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:6 src/ui/sidebar/sidebar.ui:17
+msgid "IPlan"
+msgstr "IPlan"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:7
+msgid "Your plan for improving personal life and workflow"
+msgstr "Kişisel yaşamınızı ve iş akışınızı iyileştirme planınız"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:9
+msgid ""
+"IPlan goal is to be a user friendly tool for those who want to organize "
+"their personal life or jobs."
+msgstr ""
+"Iplanʼın amacı, kişisel hayatını veya işlerini düzenlemek isteyenler için "
+"kullanıcı dostu bir araç olmaktır."
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:10
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:61
+msgid "Features:"
+msgstr "Özellikler:"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:12
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:63
+msgid "Grouping tasks with project and list"
+msgstr "Proje ve listelerle görev gruplama"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:13
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:64
+msgid "Timer for tasks"
+msgstr "Görev zamanlayıcısı"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:14
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:65
+msgid "Global search"
+msgstr "Genel Arama"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:15
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:66
+msgid "Arranging projects, lists, and tasks by drag and drop"
+msgstr "Projeleri, listeleri ve görevleri sürükleyip bırakarak düzenleme"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:20
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:24
+msgid "The IPlan main window"
+msgstr "IPlan ana penceresi"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:31
+msgid "Iman Salmani"
+msgstr "Iman Salmani"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:51
+msgid "Performance improvement and records window"
+msgstr "Performans iyileştirmesi ve kayıtlar penceresi"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:53
+msgid "Lazy loading for project tasks and stat"
+msgstr "Proje görevleri ve istatistikler için geç yükleme"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:54
+msgid "Records window for creating, editing, and deleting records"
+msgstr "Kayıt oluşturmak, düzenlemek ve silmek için kayıtlar penceresi"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:60
+msgid "First stable release."
+msgstr "İlk stabil sürüm."
+
+#: src/ui/window.ui:82
+msgid "_New List"
+msgstr "_Yeni Liste"
+
+#: src/ui/window.ui:86
+msgid "_Edit Project"
+msgstr "Projeyi _Düzenle"
+
+#: src/ui/window.ui:96
+msgid "_Keyboard Shortcuts"
+msgstr "_Klavye Kısayolları"
+
+#: src/ui/window.ui:100
+msgid "_About IPlan"
+msgstr "IPlan _Hakkında"
+
+#: src/ui/window.ui:106
+msgid "_Quit"
+msgstr "_Çık"
+
+#: src/ui/shortcuts_window.ui:11
+msgctxt "shortcut window"
+msgid "Application"
+msgstr "Uygulama"
+
+#: src/ui/shortcuts_window.ui:21
+msgctxt "shortcut window"
+msgid "Keyboard Shortcuts"
+msgstr "Klavye Kısayolları"
+
+#: src/ui/shortcuts_window.ui:28
+msgctxt "shortcut window"
+msgid "Primary Menu"
+msgstr "Birincil Menü"
+
+#: src/ui/shortcuts_window.ui:34
+msgctxt "shortcut window"
+msgid "Quit"
+msgstr "Çık"
+
+#: src/ui/shortcuts_window.ui:43
+msgctxt "shortcut window"
+msgid "Tasks"
+msgstr "Görevler"
+
+#: src/ui/shortcuts_window.ui:46
+msgctxt "shortcut window"
+msgid "Search"
+msgstr "Ara"
+
+#: src/ui/delete_dialog.ui:12
+msgid "_Cancel"
+msgstr "_İptal"
+
+#: src/ui/delete_dialog.ui:13
+msgid "_Delete"
+msgstr "_Sil"
+
+# Başlık düzeni tercih edildi.
+#: src/ui/project/project_done_tasks_window.ui:48
+msgid "no done tasks found"
+msgstr "Tamamlanmış Görev Bulunamadı"
+
+#: src/ui/project/project_edit_window.ui:19
+msgid "Edit Project"
+msgstr "Projeyi Düzenle"
+
+#: src/ui/project/project_edit_window.ui:42
+msgid "Name"
+msgstr "Ad"
+
+#: src/ui/project/project_edit_window.ui:49
+msgid "Icon"
+msgstr "Simge"
+
+#: src/ui/project/project_edit_window.ui:66 src/ui/project/task_page.ui:23
+msgid "Description"
+msgstr "Açıklama"
+
+#: src/ui/project/project_edit_window.ui:98
+msgid "Archive"
+msgstr "Arşivle"
+
+#: src/ui/project/project_edit_window.ui:109 src/ui/project/task_row.ui:110
+msgid "Delete"
+msgstr "Sil"
+
+#: src/ui/project/project_header.ui:89
+msgid "Time spent per day"
+msgstr "Günlük harcanan zaman"
+
+# Başlık düzeni tercih edildi.
+#: src/ui/project/project_list.ui:68
+msgid "no tasks found"
+msgstr "Görev Bulunamadı"
+
+#: src/ui/project/project_list.ui:69 src/ui/project/task_page.ui:122
+msgid "Use add button up there"
+msgstr "Yukarıdaki ekle düğmesini kullanın"
+
+#: src/ui/project/project_list.ui:104
+msgid "Done tasks"
+msgstr "Tamamlanan görevler"
+
+#: src/ui/project/project_list.ui:133
+msgid "Delete list"
+msgstr "Listeyi sil"
+
+# Başlık düzeni tercih edildi.
+#: src/ui/project/project_lists.ui:34
+msgid "no lists found"
+msgstr "Liste Bulunamadı"
+
+#: src/ui/project/project_lists.ui:63
+msgid "New list"
+msgstr "Yeni liste"
+
+#: src/ui/project/record_create_window.ui:15
+msgid "New Record"
+msgstr "Yeni Kayıt"
+
+#: src/ui/project/record_create_window.ui:23
+msgid "Cancel"
+msgstr "İptal"
+
+#: src/ui/project/record_create_window.ui:29
+msgid "Done"
+msgstr "Tamamlandı"
+
+#: src/ui/project/record_create_window.ui:46 src/ui/project/record_row.ui:8
+msgid "start"
+msgstr "başlangıç"
+
+#: src/ui/project/record_create_window.ui:49 src/ui/project/record_row.ui:11
+msgid "date"
+msgstr "tarih"
+
+#: src/ui/project/record_create_window.ui:65
+#: src/ui/project/record_create_window.ui:124 src/ui/project/record_row.ui:27
+#: src/ui/project/record_row.ui:86
+msgid "hour"
+msgstr "saat"
+
+#: src/ui/project/record_create_window.ui:83
+#: src/ui/project/record_create_window.ui:142 src/ui/project/record_row.ui:45
+#: src/ui/project/record_row.ui:104
+msgid "minute"
+msgstr "dakika"
+
+#: src/ui/project/record_create_window.ui:101
+#: src/ui/project/record_create_window.ui:160 src/ui/project/record_row.ui:63
+#: src/ui/project/record_row.ui:122
+msgid "seconds"
+msgstr "saniye"
+
+#: src/ui/project/record_create_window.ui:121 src/ui/project/record_row.ui:83
+msgid "duration"
+msgstr "süre"
+
+#: src/ui/project/record_row.ui:142
+msgid "delete"
+msgstr "sil"
+
+#: src/ui/project/task_page.ui:54 src/ui/project/task_page.ui:70
+msgid "Subtasks"
+msgstr "Alt görevler"
+
+#: src/ui/project/task_page.ui:75
+msgid "Records"
+msgstr "Kayıtlar"
+
+# Başlık düzeni tercih edildi.
+#: src/ui/project/task_page.ui:121
+msgid "no subtasks found"
+msgstr "Alt Görev Bulunamadı"
+
+# Başlık düzeni tercih edildi.
+#: src/ui/project/task_page.ui:152
+msgid "no records found"
+msgstr "Kayıt Bulunamadı"
+
+#: src/ui/project/task_page.ui:153
+msgid "Use add button up there or start a timer"
+msgstr "Yukarıdaki ekle düğmesini ya da zamanlayıcı başlatı kullanın"
+
+#: src/ui/search/search_window.ui:18
+msgid "Search"
+msgstr "Ara"
+
+# Başlık düzeni tercih edildi.
+#: src/ui/search/search_window.ui:54
+msgid "no results found"
+msgstr "Sonuç Bulunamadı"
+
+#: src/ui/sidebar/sidebar_projects.ui:14
+msgid "Projects"
+msgstr "Projeler"
+
+#: src/ui/sidebar/sidebar_projects.ui:33
+msgid "Show archive projects"
+msgstr "Arşivlenmiş projeleri göster"
+
+#: src/ui/sidebar/sidebar_projects.ui:40
+msgid "New project"
+msgstr "Yeni proje"
+
+#: src/application.rs:145
+msgid "translator-credits"
+msgstr "Sabri Ünal <libreajans@gmail.com>"
+
+#: src/views/window.rs:96 src/views/window.rs:244
+msgid "Personal"
+msgstr "Kişisel"
+
+#: src/views/window.rs:97 src/views/window.rs:245
+#: src/views/sidebar/sidebar_projects.rs:206
+msgid "Tasks"
+msgstr "Görevler"
+
+#: src/views/project/project_done_tasks_window.rs:100
+msgid "Done Tasks"
+msgstr "Tamamlanan Görevler"
+
+#: src/views/project/project_edit_window.rs:134
+msgid "Delete \"{}\" project?"
+msgstr "“{}” projesi silinsin mi?"
+
+#: src/views/project/project_edit_window.rs:137
+msgid "The project and its tasks will be permanently lost."
+msgstr "Proje ve görevleri kalıcı olarak kaybedilecek."
+
+#: src/views/project/project_header.rs:162
+msgid "Today"
+msgstr "Bugün"
+
+#: src/views/project/project_list.rs:361
+msgid "Delete \"{}\" list?"
+msgstr "“{}” listesi silinsin mi?"
+
+#: src/views/project/project_list.rs:363
+msgid "The list and its tasks will be permanently lost."
+msgstr "Liste ve görevleri kalıcı olarak kaybedilecek."
+
+#: src/views/project/project_lists.rs:60
+msgid "Use the primary menu {} for adding new lists"
+msgstr "Yeni listeler eklemek için {} ana menüyü kullan"
+
+#: src/views/project/project_lists.rs:154
+msgid "New List"
+msgstr "Yeni Liste"
+
+#: src/views/project/task_row.rs:271
+msgid "\"{}\" is going to delete"
+msgstr "“{}” silinecek"
+
+#: src/views/project/task_row.rs:274
+msgid "Undo"
+msgstr "Geri Al"
+
+#: src/views/search/search_result.rs:55
+msgid "Project"
+msgstr "Proje"
+
+#: src/views/search/search_result.rs:60
+msgid "Task"
+msgstr "Görev"
+
+#~ msgid "for adding new lists"
+#~ msgstr "yeni listeler eklemek için"
