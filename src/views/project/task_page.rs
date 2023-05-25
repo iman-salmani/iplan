@@ -72,6 +72,18 @@ mod imp {
                     imp.records_box.append(&row);
                 }
             });
+            klass.install_action("record.delete", None, move |obj, _, _value| {
+                let task = obj.task();
+                let imp = obj.imp();
+                let task_imp = imp.task_row.imp();
+                if !task_imp.timer_toggle_button.is_active() {
+                    if let Some(duration) = task.duration() {
+                        task_imp
+                            .timer_button_content
+                            .set_label(&Record::duration_display(duration));
+                    }
+                }
+            });
         }
 
         fn instance_init(obj: &glib::subclass::InitializingObject<Self>) {
