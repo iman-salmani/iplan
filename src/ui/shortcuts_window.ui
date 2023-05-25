@@ -13,14 +13,14 @@
             <!--   <object class="GtkShortcutsShortcut"> -->
             <!--     <property name="title" translatable="yes" context="shortcut window">Preferences</property> -->
             <!--     <property name="action-name">app.preferences</property> -->
-            <!--     <property name="accelerator">Control_L+comma</property> -->
+            <!--     <property name="accelerator">&lt;Primary&gt;comma</property> -->
             <!--   </object> -->
             <!-- </child> -->
             <child>
               <object class="GtkShortcutsShortcut">
                 <property name="title" translatable="yes" context="shortcut window">Keyboard Shortcuts</property>
                 <property name="action-name">app.shortcuts</property>
-                <property name="accelerator">Control_L+question</property>
+                <property name="accelerator">&lt;Primary&gt;question</property>
               </object>
             </child>
             <child>
@@ -33,7 +33,7 @@
               <object class="GtkShortcutsShortcut">
                 <property name="title" translatable="yes" context="shortcut window">Quit</property>
                 <property name="action-name">app.quit</property>
-                <property name="accelerator">Control_L+q</property>
+                <property name="accelerator">&lt;Primary&gt;q</property>
               </object>
             </child>
           </object>
@@ -45,7 +45,7 @@
               <object class="GtkShortcutsShortcut">
                 <property name="title" translatable="yes" context="shortcut window">Search</property>
                 <property name="action-name">app.search</property>
-                <property name="accelerator">Control_L+f</property>
+                <property name="accelerator">&lt;Primary&gt;f</property>
               </object>
             </child>
           </object>
