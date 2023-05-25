@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: iplan\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-25 11:54+0330\n"
+"POT-Creation-Date: 2023-05-25 12:01+0330\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Iman Salmani <contact.imansalmani@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -77,7 +77,6 @@ msgid "Lazy loading for project tasks and stat"
 msgstr "پیاده سازی Lazy loading برای وظایف پروژه و آمار"
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:54
-#, fuzzy
 msgid "Records window for creating, editing, and deleting records"
 msgstr "پنجره رکوردها برای ایجاد، ویرایش و حذف رکوردها"
 
@@ -110,44 +109,30 @@ msgctxt "shortcut window"
 msgid "Application"
 msgstr "برنامه"
 
-#: src/ui/shortcuts_window.ui:22
+#: src/ui/shortcuts_window.ui:21
 msgctxt "shortcut window"
 msgid "Keyboard Shortcuts"
 msgstr "میانبرهای صفحه کلید"
 
-#: src/ui/shortcuts_window.ui:25
-#, fuzzy
-msgid "Show keyboard shortcuts"
-msgstr "میانبرهای صفحه کلید"
-
-#: src/ui/shortcuts_window.ui:30
+#: src/ui/shortcuts_window.ui:28
 msgctxt "shortcut window"
 msgid "Primary Menu"
 msgstr "منو اصلی"
 
-#: src/ui/shortcuts_window.ui:31
-#, fuzzy
-msgid "Show primary menu"
-msgstr "منو اصلی"
-
-#: src/ui/shortcuts_window.ui:37
+#: src/ui/shortcuts_window.ui:34
 msgctxt "shortcut window"
 msgid "Quit"
 msgstr "خروج"
 
-#: src/ui/shortcuts_window.ui:46
+#: src/ui/shortcuts_window.ui:43
 msgctxt "shortcut window"
 msgid "Tasks"
 msgstr "وظایف"
 
-#: src/ui/shortcuts_window.ui:49
+#: src/ui/shortcuts_window.ui:46
 msgctxt "shortcut window"
 msgid "Search"
 msgstr "جستجو"
-
-#: src/ui/shortcuts_window.ui:50
-msgid "Search for tasks and projects"
-msgstr ""
 
 #: src/ui/delete_dialog.ui:12
 msgid "_Cancel"
@@ -312,7 +297,8 @@ msgstr "پروژه جدید"
 #. Translators: Replace "translator-credits" with your names, one name per line
 #: src/application.rs:145
 msgid "translator-credits"
-msgstr "ایمان سلمانی <contact.imansalmani@gmail.com>"
+msgstr ""
+"ایمان سلمانی <contact.imansalmani@gmail.com>"
 
 #: src/views/window.rs:96 src/views/window.rs:244
 msgid "Personal"

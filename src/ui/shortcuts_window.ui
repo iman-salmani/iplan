@@ -12,7 +12,6 @@
             <!-- <child> -->
             <!--   <object class="GtkShortcutsShortcut"> -->
             <!--     <property name="title" translatable="yes" context="shortcut window">Preferences</property> -->
-            <!--     <property name="subtitle" translatable="yes">Change application preferences</property> -->
             <!--     <property name="action-name">app.preferences</property> -->
             <!--     <property name="accelerator">Control_L+comma</property> -->
             <!--   </object> -->
@@ -22,13 +21,11 @@
                 <property name="title" translatable="yes" context="shortcut window">Keyboard Shortcuts</property>
                 <property name="action-name">app.shortcuts</property>
                 <property name="accelerator">Control_L+question</property>
-                <property name="subtitle" translatable="yes">Show keyboard shortcuts</property>
               </object>
             </child>
             <child>
               <object class="GtkShortcutsShortcut">
                 <property name="title" translatable="yes" context="shortcut window">Primary Menu</property>
-                <property name="subtitle" translatable="yes">Show primary menu</property>
                 <property name="accelerator">F10</property>
               </object>
             </child>
@@ -47,7 +44,6 @@
             <child>
               <object class="GtkShortcutsShortcut">
                 <property name="title" translatable="yes" context="shortcut window">Search</property>
-                <property name="subtitle" translatable="yes">Search for tasks and projects</property>
                 <property name="action-name">app.search</property>
                 <property name="accelerator">Control_L+f</property>
               </object>
