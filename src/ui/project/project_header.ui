@@ -86,7 +86,7 @@
             </child>
             <child>
               <object class="GtkLabel">
-                <property name="label" translatable="true">Time spent per day</property>
+                <property name="label" translatable="yes">Time spent per day</property>
               </object>
             </child>
           </object>

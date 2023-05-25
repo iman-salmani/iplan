@@ -11,7 +11,7 @@
         </style>
         <child>
           <object class="GtkLabel">
-            <property name="label" translatable="true">Projects</property>
+            <property name="label" translatable="yes">Projects</property>
             <property name="margin-start">6</property>
             <style>
               <class name="heading"/>
@@ -30,14 +30,14 @@
           <object class="GtkToggleButton" id="archive_toggle_button">
             <property name="icon_name">shoe-box-symbolic</property>
             <property name="active">false</property>
-            <property name="tooltip_text" translatable="true">Show archive projects</property>
+            <property name="tooltip_text" translatable="yes">Show archive projects</property>
             <signal name="toggled" handler="handle_archive_toggle_button_toggled" swapped="true"></signal>
           </object>
         </child>
         <child>
           <object class="GtkButton">
             <property name="icon-name">tab-new-symbolic</property>
-            <property name="tooltip_text" translatable="true">New project</property>
+            <property name="tooltip_text" translatable="yes">New project</property>
             <signal name="clicked" handler="handle_new_button_clicked" swapped="true"/>
           </object>
           </child>

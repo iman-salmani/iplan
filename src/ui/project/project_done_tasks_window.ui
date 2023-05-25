@@ -45,7 +45,7 @@
                     <child type="placeholder">
                       <object class="AdwStatusPage">
                         <property name="icon-name">view-list-symbolic</property>
-                        <property name="title" translatable="true">no done tasks found</property>
+                        <property name="title" translatable="yes">no done tasks found</property>
                         <style>
                           <class name="compact"/>
                         </style>
