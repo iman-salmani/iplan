@@ -32,12 +32,6 @@ mod imp {
         fn class_init(klass: &mut Self::Class) {
             klass.bind_template();
             klass.bind_template_instance_callbacks();
-            klass.install_action("project.update", None, move |obj, _, _value| {
-                obj.transient_for()
-                    .unwrap()
-                    .activate_action("project.update", None)
-                    .expect("Failed to send project.update action");
-            });
             klass.install_action("subtask.open", Some("i"), move |obj, _, value| {
                 let imp = obj.imp();
                 let value = value.unwrap().get().unwrap();

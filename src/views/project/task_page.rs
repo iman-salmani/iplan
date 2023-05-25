@@ -62,6 +62,16 @@ mod imp {
                     }
                 }
             });
+            klass.install_action("project.update", None, move |obj, _, _value| {
+                let task = obj.task();
+                let imp = obj.imp();
+                let records =
+                    read_records(task.id(), false, None, None).expect("Failed to read records");
+                if imp.records_box.observe_children().n_items() != (records.len() + 1) as u32 {
+                    let row = RecordRow::new(records.first().unwrap().to_owned());
+                    imp.records_box.append(&row);
+                }
+            });
         }
 
         fn instance_init(obj: &glib::subclass::InitializingObject<Self>) {
