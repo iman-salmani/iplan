@@ -5,10 +5,10 @@
   <template class="RecordRow" parent="AdwExpanderRow">
     <child>
       <object class="AdwExpanderRow" id="start_row">
-        <property name="title" translatable="true">start</property>
+        <property name="title" translatable="yes">start</property>
         <child>
           <object class="AdwEntryRow" id="start_date_entry">
-            <property name="title" translatable="true">date</property>
+            <property name="title" translatable="yes">date</property>
             <signal name="changed" handler="handle_start_date_entry_changed" swapped="true"/>
             <child type="suffix">
               <object class="GtkMenuButton" id="date_picker_menu_button">
@@ -24,7 +24,7 @@
         </child>
         <child>
           <object class="AdwActionRow">
-            <property name="title" translatable="true">hour</property>
+            <property name="title" translatable="yes">hour</property>
             <child type="suffix">
               <object class="GtkSpinButton" id="start_hour_spin_button">
                 <property name="valign">center</property>
@@ -42,7 +42,7 @@
         </child>
         <child>
           <object class="AdwActionRow">
-            <property name="title" translatable="true">minute</property>
+            <property name="title" translatable="yes">minute</property>
             <child type="suffix">
               <object class="GtkSpinButton" id="start_minute_spin_button">
                 <property name="valign">center</property>
@@ -60,7 +60,7 @@
         </child>
         <child>
           <object class="AdwActionRow">
-            <property name="title" translatable="true">seconds</property>
+            <property name="title" translatable="yes">seconds</property>
             <child type="suffix">
               <object class="GtkSpinButton" id="start_seconds_spin_button">
                 <property name="valign">center</property>
@@ -80,10 +80,10 @@
     </child>
     <child>
       <object class="AdwExpanderRow" id="duration_row">
-        <property name="title" translatable="true">duration</property>
+        <property name="title" translatable="yes">duration</property>
         <child>
           <object class="AdwActionRow">
-            <property name="title" translatable="true">hour</property>
+            <property name="title" translatable="yes">hour</property>
             <child type="suffix">
               <object class="GtkSpinButton" id="duration_hour_spin_button">
                 <property name="valign">center</property>
@@ -101,7 +101,7 @@
         </child>
         <child>
           <object class="AdwActionRow">
-            <property name="title" translatable="true">minute</property>
+            <property name="title" translatable="yes">minute</property>
             <child type="suffix">
               <object class="GtkSpinButton" id="duration_minute_spin_button">
                 <property name="valign">center</property>
@@ -119,7 +119,7 @@
         </child>
         <child>
           <object class="AdwActionRow">
-            <property name="title" translatable="true">seconds</property>
+            <property name="title" translatable="yes">seconds</property>
             <child type="suffix">
               <object class="GtkSpinButton" id="duration_seconds_spin_button">
                 <property name="valign">center</property>
@@ -139,7 +139,7 @@
     </child>
     <child>
       <object class="AdwActionRow" >
-        <property name="title" translatable="true">delete</property>
+        <property name="title" translatable="yes">delete</property>
         <property name="activatable-widget">delete_button</property>
         <child type="suffix">
           <object class="GtkButton" id="delete_button">

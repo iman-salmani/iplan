@@ -31,7 +31,7 @@
     </child>
     <child>
       <object class="GtkLabel">
-        <property name="label" translatable="true">no lists found</property>
+        <property name="label" translatable="yes">no lists found</property>
         <style>
           <class name="title-2"/>
         </style>
@@ -42,7 +42,7 @@
         <property name="halign">center</property>
         <child>
           <object class="GtkLabel">
-            <property name="label" translatable="true" comments="Translators: The sentence is: Use the primary menu (shortcut_label) for adding new lists">Use the primary menu</property>
+            <property name="label" translatable="yes" comments="Translators: The sentence is: Use the primary menu (shortcut_label) for adding new lists">Use the primary menu</property>
             <property name="margin-end">6</property>
           </object>
         </child>
@@ -53,7 +53,7 @@
         </child>
         <child>
           <object class="GtkLabel">
-            <property name="label" translatable="true" comments="Translators: The sentence is: Use the primary menu (shortcut_label) for adding new lists">for adding new lists</property>
+            <property name="label" translatable="yes" comments="Translators: The sentence is: Use the primary menu (shortcut_label) for adding new lists">for adding new lists</property>
             <property name="hexpand">true</property>
             <property name="margin-start">6</property>
           </object>
@@ -62,7 +62,7 @@
     </child>
     <child>
       <object class="GtkButton">
-        <property name="label" translatable="true">New list</property>
+        <property name="label" translatable="yes">New list</property>
         <property name="action-name">list.new</property>
         <property name="halign">center</property>
         <property name="margin-top">12</property>

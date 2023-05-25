@@ -107,7 +107,7 @@
                 </child>
                 <child>
                   <object class="GtkLabel">
-                    <property name="label" translatable="true">Delete</property>
+                    <property name="label" translatable="yes">Delete</property>
                     <attributes>
                       <attribute name="weight" value="PANGO_WEIGHT_NORMAL"/>
                     </attributes>
