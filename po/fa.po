@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: iplan\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-25 12:01+0330\n"
+"POT-Creation-Date: 2023-05-25 12:33+0330\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Iman Salmani <contact.imansalmani@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -194,17 +194,7 @@ msgstr "حذف فهرست"
 msgid "no lists found"
 msgstr "فهرستی پیدا نشد"
 
-#. Translators: The sentence is: Use the primary menu (shortcut_label) for adding new lists
-#: src/ui/project/project_lists.ui:45
-msgid "Use the primary menu"
-msgstr "از منوی اصلی"
-
-#. Translators: The sentence is: Use the primary menu (shortcut_label) for adding new lists
-#: src/ui/project/project_lists.ui:56
-msgid "for adding new lists"
-msgstr "برای افزودن لیست های جدید استفاده کنید"
-
-#: src/ui/project/project_lists.ui:65
+#: src/ui/project/project_lists.ui:63
 msgid "New list"
 msgstr "فهرست جدید"
 
@@ -297,8 +287,7 @@ msgstr "پروژه جدید"
 #. Translators: Replace "translator-credits" with your names, one name per line
 #: src/application.rs:145
 msgid "translator-credits"
-msgstr ""
-"ایمان سلمانی <contact.imansalmani@gmail.com>"
+msgstr "ایمان سلمانی <contact.imansalmani@gmail.com>"
 
 #: src/views/window.rs:96 src/views/window.rs:244
 msgid "Personal"
@@ -333,7 +322,12 @@ msgstr "پروژه \"{}\" لیست شود؟"
 msgid "The list and its tasks will be permanently lost."
 msgstr "فهرست و وظایف آن برای همیشه از بین خواهد رفت."
 
-#: src/views/project/project_lists.rs:141
+#. Translators: {} Will be replaced with a shortcut label.
+#: src/views/project/project_lists.rs:60
+msgid "Use the primary menu {} for adding new lists"
+msgstr "از منوی اصلی {} برای افزودن لیست های جدید استفاده کنید"
+
+#: src/views/project/project_lists.rs:154
 msgid "New List"
 msgstr "فهرست جدید"
 

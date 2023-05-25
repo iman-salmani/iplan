@@ -41,8 +41,7 @@
       <object class="GtkBox">
         <property name="halign">center</property>
         <child>
-          <object class="GtkLabel">
-            <property name="label" translatable="yes" comments="Translators: The sentence is: Use the primary menu (shortcut_label) for adding new lists">Use the primary menu</property>
+          <object class="GtkLabel" id="placeholder_subtitle_start">
             <property name="margin-end">6</property>
           </object>
         </child>
@@ -52,8 +51,7 @@
           </object>
         </child>
         <child>
-          <object class="GtkLabel">
-            <property name="label" translatable="yes" comments="Translators: The sentence is: Use the primary menu (shortcut_label) for adding new lists">for adding new lists</property>
+          <object class="GtkLabel" id="placeholder_subtitle_end">
             <property name="hexpand">true</property>
             <property name="margin-start">6</property>
           </object>
