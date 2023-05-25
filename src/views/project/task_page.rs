@@ -62,24 +62,6 @@ mod imp {
                     }
                 }
             });
-            klass.install_action("record.created", Some("x"), move |obj, _, value| {
-                let record_id = value.unwrap().get::<i64>().unwrap();
-                let imp = obj.imp();
-                let task_row_imp = imp.task_row.imp();
-                if !task_row_imp.timer_toggle_button.is_active() {
-                    task_row_imp
-                        .timer_button_content
-                        .set_label(&Record::duration_display(
-                            imp.task_row
-                                .task()
-                                .duration()
-                                .expect("Task duration cant be 0 at this point"),
-                        ));
-                }
-                let record = read_record(record_id).expect("Failed to read record");
-                let row = RecordRow::new(record);
-                imp.records_box.append(&row);
-            });
         }
 
         fn instance_init(obj: &glib::subclass::InitializingObject<Self>) {
@@ -174,6 +156,24 @@ impl TaskPage {
 
     pub fn task(&self) -> Task {
         self.property("task")
+    }
+
+    pub fn add_record(&self, record_id: i64) {
+        let imp = self.imp();
+        let task_row_imp = imp.task_row.imp();
+        if !task_row_imp.timer_toggle_button.is_active() {
+            task_row_imp
+                .timer_button_content
+                .set_label(&Record::duration_display(
+                    imp.task_row
+                        .task()
+                        .duration()
+                        .expect("Task duration cant be 0 at this point"),
+                ));
+        }
+        let record = read_record(record_id).expect("Failed to read record");
+        let row = RecordRow::new(record);
+        imp.records_box.append(&row);
     }
 
     fn description_display(&self, text: &str) -> String {

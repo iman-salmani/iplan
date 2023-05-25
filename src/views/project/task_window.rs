@@ -57,6 +57,15 @@ mod imp {
                 imp.back_button_content.set_label(&parent_task.name());
                 imp.back_button.set_visible(true);
             });
+            klass.install_action("record.created", Some("x"), move |obj, _, value| {
+                let record_id = value.unwrap().get::<i64>().unwrap();
+                let imp = obj.imp();
+                imp.task_pages_stack
+                    .visible_child()
+                    .and_downcast::<TaskPage>()
+                    .unwrap()
+                    .add_record(record_id);
+            });
         }
 
         fn instance_init(obj: &glib::subclass::InitializingObject<Self>) {
