@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: iplan\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-24 16:52+0330\n"
+"POT-Creation-Date: 2023-05-25 11:54+0330\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Iman Salmani <contact.imansalmani@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -115,9 +115,19 @@ msgctxt "shortcut window"
 msgid "Keyboard Shortcuts"
 msgstr "میانبرهای صفحه کلید"
 
+#: src/ui/shortcuts_window.ui:25
+#, fuzzy
+msgid "Show keyboard shortcuts"
+msgstr "میانبرهای صفحه کلید"
+
 #: src/ui/shortcuts_window.ui:30
 msgctxt "shortcut window"
 msgid "Primary Menu"
+msgstr "منو اصلی"
+
+#: src/ui/shortcuts_window.ui:31
+#, fuzzy
+msgid "Show primary menu"
 msgstr "منو اصلی"
 
 #: src/ui/shortcuts_window.ui:37
@@ -134,6 +144,10 @@ msgstr "وظایف"
 msgctxt "shortcut window"
 msgid "Search"
 msgstr "جستجو"
+
+#: src/ui/shortcuts_window.ui:50
+msgid "Search for tasks and projects"
+msgstr ""
 
 #: src/ui/delete_dialog.ui:12
 msgid "_Cancel"
