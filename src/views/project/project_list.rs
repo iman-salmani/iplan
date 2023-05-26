@@ -71,7 +71,9 @@ mod imp {
                     toast_name.push_str("...");
                 }
                 let toast = adw::Toast::builder()
-                    .title(&gettext("\"{}\" is marked as done").replace("{}", &toast_name))
+                    .title(
+                        &gettext("\"{}\" moved to the done tasks list").replace("{}", &toast_name),
+                    )
                     .button_label(&gettext("Undo"))
                     .build();
                 toast.connect_button_clicked(glib::clone!(
