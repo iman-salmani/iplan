@@ -162,9 +162,12 @@ impl ProjectDoneTasksWindow {
                     main_window.activate_action("project.open", None) // TODO: just add task to list (consider the task duration could be changed)
                         .expect("Failed to activate project.open action");
                 } else {
-                    if let Some(duration) = task.duration() {
-                        row_imp.timer_button_content.set_label(&Record::duration_display(duration));
-                    }
+                    let duration_text = if let Some(duration) = task.duration() {
+                        Record::duration_display(duration)
+                    } else {
+                        String::new()
+                    };
+                    row_imp.timer_button_content.set_label(&duration_text);
                     let task_name = task.name();
                     row_imp.name_button
                         .child()

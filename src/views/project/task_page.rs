@@ -67,13 +67,14 @@ mod imp {
                 let imp = obj.imp();
                 let records =
                     read_records(task.id(), false, None, None).expect("Failed to read records");
-                if let Some(duration) = task.duration() {
-                    let task_row_imp = imp.task_row.imp();
-                    if !task_row_imp.timer_toggle_button.is_active() {
-                        task_row_imp
-                            .timer_button_content
-                            .set_label(&Record::duration_display(duration));
-                    }
+                let duration_text = if let Some(duration) = task.duration() {
+                    Record::duration_display(duration)
+                } else {
+                    String::new()
+                };
+                let task_row_imp = imp.task_row.imp();
+                if !task_row_imp.timer_toggle_button.is_active() {
+                    task_row_imp.timer_button_content.set_label(&duration_text);
                 }
                 if imp.records_box.observe_children().n_items() != (records.len() + 1) as u32 {
                     let row = RecordRow::new(records.first().unwrap().to_owned());
@@ -85,11 +86,12 @@ mod imp {
                 let imp = obj.imp();
                 let task_imp = imp.task_row.imp();
                 if !task_imp.timer_toggle_button.is_active() {
-                    if let Some(duration) = task.duration() {
-                        task_imp
-                            .timer_button_content
-                            .set_label(&Record::duration_display(duration));
-                    }
+                    let duration_text = if let Some(duration) = task.duration() {
+                        Record::duration_display(duration)
+                    } else {
+                        String::new()
+                    };
+                    task_imp.timer_button_content.set_label(&duration_text);
                 }
             });
         }

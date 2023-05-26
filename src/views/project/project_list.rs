@@ -5,8 +5,8 @@ use std::cell::RefCell;
 
 use crate::db::models::{List, Record, Task};
 use crate::db::operations::{
-    create_task, delete_list, new_position, read_list, read_task, read_tasks, update_list,
-    update_task,
+    create_task, delete_list, new_position, read_list, read_records, read_task, read_tasks,
+    update_list, update_task,
 };
 use crate::views::{
     project::ProjectDoneTasksWindow, project::ProjectLayout, project::TaskRow, project::TaskWindow,
@@ -323,13 +323,7 @@ impl ProjectList {
         modal.connect_close_request(glib::clone!(
             @weak row as obj => @default-return gtk::Inhibit(false),
             move |_| {
-                let task = obj.task();
                 let imp = obj.imp();
-                if let Some(duration) = task.duration() {
-                    if !imp.timer_toggle_button.is_active() {
-                        imp.timer_button_content.set_label(&Record::duration_display(duration));
-                    }
-                }
                 let task = read_task(obj.task().id()).expect("Failed to read the task");
                 let task_name = task.name();
                 imp.name_button
@@ -340,6 +334,26 @@ impl ProjectList {
                     .set_text(&task_name);
                 imp.name_button.set_tooltip_text(Some(&task_name));
                 imp.name_entry.buffer().set_text(&task_name);
+                let records =
+                read_records(task.id(), true, None, None).expect("Failed to read records");
+                if !records.is_empty() {
+                    imp.timer_toggle_button.set_active(true)
+                } else {
+                    if imp.timer_toggle_button.is_active() {
+                        imp.timer_toggle_button.remove_css_class("destructive-action");
+                        let handler_id = imp.timer_toggle_button_handler_id.borrow();
+                        let handler_id = handler_id.as_ref().unwrap();
+                        imp.timer_toggle_button.block_signal(handler_id);
+                        imp.timer_toggle_button.set_active(false);
+                        imp.timer_toggle_button.unblock_signal(handler_id)
+                    }
+                    let duration_text = if let Some(duration) = task.duration() {
+                        Record::duration_display(duration)
+                    } else {
+                        String::new()
+                    };
+                    imp.timer_button_content.set_label(&duration_text);
+                }
                 imp.task.replace(task);
                 obj.changed();
                 obj.activate_action("project.update", None).expect("Failed to send project.update signal");
