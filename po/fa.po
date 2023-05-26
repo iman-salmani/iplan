@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: iplan\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-26 12:11+0330\n"
+"POT-Creation-Date: 2023-05-26 19:13+0330\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Iman Salmani <contact.imansalmani@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -35,52 +35,90 @@ msgstr ""
 "شخصی یا شغل خود را سازماندهی کنند."
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:10
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:61
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:82
 msgid "Features:"
 msgstr "ویژگی ها:"
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:12
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:63
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:84
 msgid "Grouping tasks with project and list"
 msgstr "گروه بندی وظایف با پروژه و لیست"
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:13
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:64
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:85
 msgid "Timer for tasks"
 msgstr "تایمر برای وظایف"
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:14
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:65
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:14 src/ui/project/task_page.ui:54
+#: src/ui/project/task_page.ui:70
+msgid "Subtasks"
+msgstr "وظایف فرعی"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:15
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:86
 msgid "Global search"
 msgstr "جستجوی سراسری"
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:15
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:66
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:16
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:87
 msgid "Arranging projects, lists, and tasks by drag and drop"
 msgstr "مرتب سازی پروژه ها، فهرست ها و وظایف با کشیدن و رها کردن"
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:20
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:24
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:21
 msgid "The IPlan main window"
 msgstr "پنجره ی آیپلن"
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:31
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:25
+#, fuzzy
+msgid "The IPlan main window (dark mode)"
+msgstr "پنجره ی آیپلن"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:29
+msgid "Task window"
+msgstr "پنجره وظیفه"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:33
+msgid "The IPlan main window (small size)"
+msgstr "پنجره ی آیپلن (سایز کوچک)"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:40
 msgid "Iman Salmani"
 msgstr "ایمان سلمانی"
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:51
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:60
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:72
 msgid "Performance improvement and records window"
 msgstr "بهبود عملکرد و پنجره سوابق"
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:53
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:62
+msgid "Task Window which contains task info, subtasks, and records"
+msgstr "پنجره وظیفه که حاوی اطلاعات کار، وظایف فرعی و سوابق است"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:63
+msgid "Translation to Persian and Turkish languages thanks to Sabri Ünal"
+msgstr "ترجمه به زبان های فارسی و ترکی با تشکر از صبری اونال"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:64
+msgid "New toast message for moving back task from the tasks done list"
+msgstr "پیام نان تست جدید برای برگرداندن کار از لیست کارهای انجام شده"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:65
+msgid "Users are now able to pick emojis for their projects in the edit window"
+msgstr "کاربران اکنون می‌توانند شکلک‌هایی را برای پروژه‌های خود در پنجره ویرایش انتخاب کنند"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:66
+msgid "Projects and Tasks now can have descriptions"
+msgstr ""
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:74
 msgid "Lazy loading for project tasks and stat"
 msgstr "پیاده سازی Lazy loading برای وظایف پروژه و آمار"
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:54
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:75
 msgid "Records window for creating, editing, and deleting records"
 msgstr "پنجره رکوردها برای ایجاد، ویرایش و حذف رکوردها"
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:60
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:81
 msgid "First stable release."
 msgstr "اولین انتشار پایدار."
 
@@ -244,10 +282,6 @@ msgstr "مدت"
 msgid "delete"
 msgstr "حذف"
 
-#: src/ui/project/task_page.ui:54 src/ui/project/task_page.ui:70
-msgid "Subtasks"
-msgstr "وظایف فرعی"
-
 #: src/ui/project/task_page.ui:75
 msgid "Records"
 msgstr "سوابق"
@@ -314,15 +348,15 @@ msgstr "پروژه و وظایف آن برای همیشه از بین خواهد
 msgid "\"{}\" moved to the done tasks list"
 msgstr "\"{}\" به فهرست کارهای انجام شده منتقل شد"
 
-#: src/views/project/project_list.rs:77 src/views/project/task_row.rs:273
+#: src/views/project/project_list.rs:77 src/views/project/task_row.rs:274
 msgid "Undo"
 msgstr "برگرد"
 
-#: src/views/project/project_list.rs:388
+#: src/views/project/project_list.rs:407
 msgid "Delete \"{}\" list?"
 msgstr "پروژه \"{}\" لیست شود؟"
 
-#: src/views/project/project_list.rs:390
+#: src/views/project/project_list.rs:409
 msgid "The list and its tasks will be permanently lost."
 msgstr "فهرست و وظایف آن برای همیشه از بین خواهد رفت."
 
@@ -335,7 +369,7 @@ msgstr "از منوی اصلی {} برای افزودن لیست های جدید
 msgid "New List"
 msgstr "فهرست جدید"
 
-#: src/views/project/task_row.rs:272
+#: src/views/project/task_row.rs:273
 msgid "\"{}\" is going to delete"
 msgstr "درحال حذف \"{}\""
 
