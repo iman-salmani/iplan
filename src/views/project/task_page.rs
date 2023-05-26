@@ -138,6 +138,7 @@ impl TaskPage {
     pub fn new(task: Task) -> Self {
         let page: Self = glib::Object::builder().build();
         let imp = page.imp();
+        imp.task.replace(task.clone());
         imp.task_row.set_property("task", task.clone());
         imp.task_row.init_widgets();
         let task_description = task.description();
@@ -184,7 +185,6 @@ impl TaskPage {
             let row = RecordRow::new(record);
             imp.records_box.append(&row);
         }
-        imp.task.replace(task);
         page
     }
 
@@ -222,10 +222,12 @@ impl TaskPage {
         let imp = self.imp();
         let task = self.task();
         let text = buffer.text(&buffer.start_iter(), &buffer.end_iter(), true);
-        imp.description_expander_row
-            .set_subtitle(&self.description_display(&text));
-        task.set_property("description", text);
-        update_task(task).expect("Failed to update task");
+        if task.description() != text {
+            imp.description_expander_row
+                .set_subtitle(&self.description_display(&text));
+            task.set_property("description", text);
+            update_task(task).expect("Failed to update task");
+        }
     }
 
     #[template_callback]
