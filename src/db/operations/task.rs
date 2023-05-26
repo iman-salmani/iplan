@@ -118,6 +118,7 @@ pub fn delete_task(task_id: i64, list_id: i64, position: i32) -> Result<()> {
     let conn = get_connection();
     // Notify: Not return error when id not exists
     conn.execute("DELETE FROM tasks WHERE id = ?", (task_id,))?;
+    conn.execute("DELETE FROM tasks WHERE parent = ?", (task_id,))?;
     // Decrease upper tasks position
     conn.execute(
         "UPDATE tasks SET position = position - 1 WHERE position > ?1 AND list = ?2",
