@@ -54,11 +54,37 @@ mod imp {
                 let imp = obj.imp();
                 let value = value.unwrap().get().unwrap();
                 let upper_row = imp.tasks_box.row_at_index(value - 1);
-                let row = imp.tasks_box.row_at_index(value).unwrap();
+                let row = imp
+                    .tasks_box
+                    .row_at_index(value)
+                    .and_downcast::<TaskRow>()
+                    .unwrap();
+                let task = row.task();
                 if let Some(upper_row) = upper_row {
                     upper_row.grab_focus();
                 }
                 imp.tasks_box.remove(&row);
+
+                let mut toast_name = task.name();
+                if toast_name.chars().count() > 15 {
+                    toast_name.truncate(15);
+                    toast_name.push_str("...");
+                }
+                let toast = adw::Toast::builder()
+                    .title(&gettext("\"{}\" is marked as done").replace("{}", &toast_name))
+                    .button_label(&gettext("Undo"))
+                    .build();
+                toast.connect_button_clicked(glib::clone!(
+                    @weak obj, @weak task =>
+                    move |_toast| {
+                        task.set_property("done", false);
+                        update_task(task.clone()).expect("Failed to update task");
+                        let row = TaskRow::new(task);
+                        obj.imp().tasks_box.append(&row);
+                        row.init_widgets();
+                }));
+                let window = obj.root().and_downcast::<IPlanWindow>().unwrap();
+                window.imp().toast_overlay.add_toast(&toast);
             });
         }
 
