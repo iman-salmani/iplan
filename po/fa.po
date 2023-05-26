@@ -316,7 +316,7 @@ msgstr "امروز"
 
 #: src/views/project/project_list.rs:75
 msgid "\"{}\" moved to the done tasks list"
-msgstr ""
+msgstr "\"{}\" به فهرست کارهای انجام شده منتقل شد"
 
 #: src/views/project/project_list.rs:77 src/views/project/task_row.rs:274
 msgid "Undo"
