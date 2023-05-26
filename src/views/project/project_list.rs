@@ -292,7 +292,6 @@ impl ProjectList {
         let row = row.downcast::<TaskRow>().unwrap();
         let modal = TaskWindow::new(&win.application().unwrap(), &win, row.task());
         modal.present();
-        self.imp().options_popover.popdown();
         modal.connect_close_request(glib::clone!(
             @weak row as obj => @default-return gtk::Inhibit(false),
             move |_| {
