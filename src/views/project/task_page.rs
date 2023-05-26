@@ -148,12 +148,10 @@ impl TaskPage {
         imp.subtasks_box.set_sort_func(|row1, row2| {
             let task1 = row1.property::<Task>("task");
             let task2 = row2.property::<Task>("task");
-            if task1.done() {
+            if task1.position() < task2.position() {
                 gtk::Ordering::Larger
-            } else if task1.position() > task2.position() {
-                gtk::Ordering::Smaller
             } else {
-                gtk::Ordering::Larger
+                gtk::Ordering::Smaller
             }
         });
         imp.subtasks_box.set_filter_func(glib::clone!(
