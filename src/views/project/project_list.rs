@@ -315,7 +315,7 @@ impl ProjectList {
     }
 
     #[template_callback]
-    fn handle_tasks_box_row_activated(&self, row: gtk::ListBoxRow, _tasks_box: gtk::ListBox) {
+    fn handle_tasks_box_row_activated(&self, row: gtk::ListBoxRow, tasks_box: gtk::ListBox) {
         let win = self.root().and_downcast::<gtk::Window>().unwrap();
         let row = row.downcast::<TaskRow>().unwrap();
         let modal = TaskWindow::new(&win.application().unwrap(), &win, row.task());
@@ -325,6 +325,10 @@ impl ProjectList {
             move |_| {
                 let imp = obj.imp();
                 let task = read_task(obj.task().id()).expect("Failed to read the task");
+                if task.done() {
+                    tasks_box.remove(&obj);
+                    return gtk::Inhibit(false);
+                }
                 let task_name = task.name();
                 imp.name_button
                     .child()
