@@ -4,9 +4,10 @@
 
 Your plan for improving personal life and workflow
 
-<div align="center">
-  <img src="data/screenshots/window.png">
-</div>
+<picture align="center">
+  <source media="(prefers-color-scheme: dark)" srcset="data/screenshots/window-dark.png">
+  <img alt="IPlan Window" src="data/screenshots/window.png">
+</picture>
 
 ## Features
 
