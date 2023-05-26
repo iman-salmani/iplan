@@ -57,7 +57,7 @@
   <releases>
     <release version="1.1.2" date="2023-05-26">
       <description>
-        <p>Performance improvement and records window</p>
+        <p>Subtasks, Bug fixes, and UI improvements</p>
         <ul>
           <li>Task Window which contains task info, subtasks, and records</li>
           <li>Translation to Persian and Turkish languages thanks to Sabri Ünal</li>
