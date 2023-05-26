@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ir.imansalmani.IPlan\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-25 13:43+0300\n"
+"POT-Creation-Date: 2023-05-26 11:29+0330\n"
 "PO-Revision-Date: 2023-05-25 13:48+0300\n"
 "Last-Translator: Sabri Ünal <libreajans@gmail.com>\n"
 "Language-Team: Türkçe <takim@gnome.org.tr>\n"
@@ -145,7 +145,7 @@ msgid "_Delete"
 msgstr "_Sil"
 
 # Başlık düzeni tercih edildi.
-#: src/ui/project/project_done_tasks_window.ui:48
+#: src/ui/project/project_done_tasks_window.ui:49
 msgid "no done tasks found"
 msgstr "Tamamlanmış Görev Bulunamadı"
 
@@ -292,6 +292,7 @@ msgstr "Arşivlenmiş projeleri göster"
 msgid "New project"
 msgstr "Yeni proje"
 
+#. Translators: Replace "translator-credits" with your names, one name per line
 #: src/application.rs:145
 msgid "translator-credits"
 msgstr "Sabri Ünal <libreajans@gmail.com>"
@@ -321,14 +322,23 @@ msgstr "Proje ve görevleri kalıcı olarak kaybedilecek."
 msgid "Today"
 msgstr "Bugün"
 
-#: src/views/project/project_list.rs:361
+#: src/views/project/project_list.rs:74
+msgid "\"{}\" is marked as done"
+msgstr ""
+
+#: src/views/project/project_list.rs:75 src/views/project/task_row.rs:274
+msgid "Undo"
+msgstr "Geri Al"
+
+#: src/views/project/project_list.rs:386
 msgid "Delete \"{}\" list?"
 msgstr "“{}” listesi silinsin mi?"
 
-#: src/views/project/project_list.rs:363
+#: src/views/project/project_list.rs:388
 msgid "The list and its tasks will be permanently lost."
 msgstr "Liste ve görevleri kalıcı olarak kaybedilecek."
 
+#. Translators: {} Will be replaced with a shortcut label.
 #: src/views/project/project_lists.rs:60
 msgid "Use the primary menu {} for adding new lists"
 msgstr "Yeni listeler eklemek için {} ana menüyü kullan"
@@ -340,10 +350,6 @@ msgstr "Yeni Liste"
 #: src/views/project/task_row.rs:271
 msgid "\"{}\" is going to delete"
 msgstr "“{}” silinecek"
-
-#: src/views/project/task_row.rs:274
-msgid "Undo"
-msgstr "Geri Al"
 
 #: src/views/search/search_result.rs:55
 msgid "Project"

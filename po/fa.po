@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: iplan\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-25 12:33+0330\n"
+"POT-Creation-Date: 2023-05-26 11:29+0330\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Iman Salmani <contact.imansalmani@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -142,7 +142,7 @@ msgstr "لغو"
 msgid "_Delete"
 msgstr "حذف"
 
-#: src/ui/project/project_done_tasks_window.ui:48
+#: src/ui/project/project_done_tasks_window.ui:49
 msgid "no done tasks found"
 msgstr "هیچ کار انجام شده ای پیدا نشد"
 
@@ -314,11 +314,19 @@ msgstr "پروژه و وظایف آن برای همیشه از بین خواهد
 msgid "Today"
 msgstr "امروز"
 
-#: src/views/project/project_list.rs:361
+#: src/views/project/project_list.rs:74
+msgid "\"{}\" is marked as done"
+msgstr ""
+
+#: src/views/project/project_list.rs:75 src/views/project/task_row.rs:274
+msgid "Undo"
+msgstr "برگرد"
+
+#: src/views/project/project_list.rs:386
 msgid "Delete \"{}\" list?"
 msgstr "پروژه \"{}\" لیست شود؟"
 
-#: src/views/project/project_list.rs:363
+#: src/views/project/project_list.rs:388
 msgid "The list and its tasks will be permanently lost."
 msgstr "فهرست و وظایف آن برای همیشه از بین خواهد رفت."
 
@@ -334,10 +342,6 @@ msgstr "فهرست جدید"
 #: src/views/project/task_row.rs:271
 msgid "\"{}\" is going to delete"
 msgstr "درحال حذف \"{}\""
-
-#: src/views/project/task_row.rs:274
-msgid "Undo"
-msgstr "برگرد"
 
 #: src/views/search/search_result.rs:55
 msgid "Project"
