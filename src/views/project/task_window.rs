@@ -180,6 +180,7 @@ impl TaskWindow {
                             .set_label(&Record::duration_display(duration));
                     }
                 }
+                row.changed();
                 break;
             }
         }

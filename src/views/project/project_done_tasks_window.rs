@@ -175,6 +175,7 @@ impl ProjectDoneTasksWindow {
                     row_imp.name_button.set_tooltip_text(Some(&task_name));
                     row_imp.name_entry.buffer().set_text(&task_name);
                     row_imp.task.replace(task);
+                    row.changed();
                     main_window.activate_action("project.update", None).expect("Failed to send project.update signal");
                 }
                 gtk::Inhibit(false)

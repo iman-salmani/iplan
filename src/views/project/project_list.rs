@@ -341,6 +341,7 @@ impl ProjectList {
                 imp.name_button.set_tooltip_text(Some(&task_name));
                 imp.name_entry.buffer().set_text(&task_name);
                 imp.task.replace(task);
+                obj.changed();
                 obj.activate_action("project.update", None).expect("Failed to send project.update signal");
                 gtk::Inhibit(false)
             }

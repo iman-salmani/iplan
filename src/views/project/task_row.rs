@@ -6,7 +6,8 @@ use std::time::Duration;
 
 use crate::db::models::{Record, Task};
 use crate::db::operations::{create_record, delete_task, read_records, update_record, update_task};
-use crate::views::{project::ProjectDoneTasksWindow, project::TaskWindow, IPlanWindow};
+use crate::views::project::{ProjectDoneTasksWindow, TaskPage, TaskWindow};
+use crate::views::IPlanWindow;
 
 mod imp {
     use super::*;
@@ -274,15 +275,15 @@ impl TaskRow {
             .build();
 
         toast.connect_button_clicked(glib::clone!(
-        @weak self as obj =>
-        move |_toast| {
-            let task = obj.task();
-            task.set_property("suspended", false);
-            update_task(task).expect("Failed to update task");
-            if obj.parent().is_some() {
-                obj.changed();
-                obj.grab_focus();
-            }
+            @weak self as obj =>
+            move |_toast| {
+                let task = obj.task();
+                task.set_property("suspended", false);
+                update_task(task).expect("Failed to update task");
+                if obj.parent().is_some() {
+                    obj.changed();
+                    obj.grab_focus();
+                }
         }));
         toast.connect_dismissed(glib::clone!(
             @strong self as obj =>
@@ -308,32 +309,92 @@ impl TaskRow {
                 }
             }
         ));
-        let win_name = self.root().unwrap().widget_name();
-        if win_name == "IPlanWindow" {
-            let window = self.root().and_downcast::<IPlanWindow>().unwrap();
-            window.imp().toast_overlay.add_toast(&toast);
-        } else if win_name == "ProjectDoneTasksWindow" {
-            let window = self
-                .root()
-                .and_downcast::<ProjectDoneTasksWindow>()
-                .unwrap();
-            window.imp().toast_overlay.add_toast(&toast);
-        } else if win_name == "TaskWindow" {
-            let window = self.root().and_downcast::<TaskWindow>().unwrap();
-            window.imp().toast_overlay.add_toast(&toast);
-        }
         task.set_property("suspended", true);
         self.set_property("task", &task);
-        update_task(task).expect("Failed to update task");
-        let upper_row = self
-            .parent()
-            .and_downcast::<gtk::ListBox>()
-            .unwrap()
-            .row_at_index(self.index() - 1);
-        if let Some(upper_row) = upper_row {
-            upper_row.grab_focus();
+        update_task(task.clone()).expect("Failed to update task");
+        if let Some(list_box) = self.parent().and_downcast::<gtk::ListBox>() {
+            let upper_row = list_box.row_at_index(self.index() - 1);
+            if let Some(upper_row) = upper_row {
+                upper_row.grab_focus();
+            }
         }
         self.changed();
+        let window = self.root().unwrap();
+        let window_name = window.widget_name();
+        if window_name == "IPlanWindow" {
+            window
+                .downcast::<IPlanWindow>()
+                .unwrap()
+                .imp()
+                .toast_overlay
+                .add_toast(&toast);
+        } else if window_name == "ProjectDoneTasksWindow" {
+            window
+                .downcast::<ProjectDoneTasksWindow>()
+                .unwrap()
+                .imp()
+                .toast_overlay
+                .add_toast(&toast);
+        } else if window_name == "TaskWindow" {
+            let window = window.downcast::<TaskWindow>().unwrap();
+            let task_parent = task.parent();
+            if window.imp().parent_task.get() != task_parent {
+                window.imp().toast_overlay.add_toast(&toast);
+                return;
+            }
+            if task_parent == 0 {
+                let transient_for = window.transient_for().unwrap();
+                let transient_for_name = transient_for.widget_name();
+                if transient_for_name == "IPlanWindow" {
+                    let transient_for = transient_for.downcast::<IPlanWindow>().unwrap();
+                    transient_for.imp().toast_overlay.add_toast(&toast);
+                    toast.connect_button_clicked(glib::clone!(
+                        @weak transient_for =>
+                        move |_toast| {
+                            transient_for.activate_action("project.open", None).expect("Failed to sebd project.open action");
+                    }));
+                } else if transient_for_name == "ProjectDoneTasksWindow" {
+                    let transient_for = transient_for.downcast::<ProjectDoneTasksWindow>().unwrap();
+                    transient_for.imp().toast_overlay.add_toast(&toast);
+                    toast.connect_button_clicked(glib::clone!(
+                        @weak self as obj =>
+                        move |_toast| {
+                            let task = obj.task();
+                            task.set_property("suspended", false);
+                            let tasks_rows = transient_for.imp().tasks_box.observe_children();
+                            for i in 0..tasks_rows.n_items() {
+                                let row = tasks_rows.item(i).and_downcast::<TaskRow>().unwrap();
+                                if row.task().id() == task.id() {
+                                    row.set_property("task", task);
+                                    row.changed();
+                                    break;
+                                }
+                            }
+                    }));
+                }
+                window.close();
+            } else {
+                window.imp().toast_overlay.add_toast(&toast);
+                window.imp().back_button.emit_clicked();
+
+                toast.connect_button_clicked(glib::clone!(
+                    @weak self as obj =>
+                    move |_toast| {
+                        let task = obj.task();
+                        task.set_property("suspended", false);
+                        let task_page = window.imp().task_pages_stack.visible_child().and_downcast::<TaskPage>().unwrap();
+                        let subtasks_rows = task_page.imp().subtasks_box.observe_children();
+                        for i in 0..subtasks_rows.n_items() {
+                            let row = subtasks_rows.item(i).and_downcast::<TaskRow>().unwrap();
+                            if row.task().id() == task.id() {
+                                row.set_property("task", task);
+                                row.changed();
+                                break;
+                            }
+                        }
+                }));
+            }
+        }
     }
 
     #[template_callback]
