@@ -28,6 +28,7 @@ flatpak install flathub ir.imansalmani.IPlan
 <a href="https://flathub.org/apps/details/ir.imansalmani.IPlan"><img src="https://flathub.org/assets/badges/flathub-badge-en.png" alt="Flathub IPlan" width="200"></a>
 
 ## Contributing
+
 Please, see the [contribution guide](https://github.com/iman-salmani/iplan/blob/a0d66bc99494b798357b64b04c811899e4238025/CONTRIBUTING.md) if you wish to translate.
 
 ## Build
