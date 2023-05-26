@@ -136,11 +136,15 @@ impl TaskPage {
         imp.description_expander_row
             .set_subtitle(&page.description_display(&task_description));
         imp.description_buffer.set_text(&task_description);
-        imp.subtasks_box.set_sort_func(|row1, _row2| {
-            if row1.property::<Task>("task").done() {
+        imp.subtasks_box.set_sort_func(|row1, row2| {
+            let task1 = row1.property::<Task>("task");
+            let task2 = row2.property::<Task>("task");
+            if task1.done() {
                 gtk::Ordering::Larger
-            } else {
+            } else if task1.position() > task2.position() {
                 gtk::Ordering::Smaller
+            } else {
+                gtk::Ordering::Larger
             }
         });
         imp.subtasks_box.set_filter_func(glib::clone!(
