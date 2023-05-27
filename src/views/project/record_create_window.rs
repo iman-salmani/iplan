@@ -100,6 +100,10 @@ impl RecordCreateWindow {
         imp.record
             .replace(Record::new(0, start.to_unix(), 0, task_id));
         imp.start_date_entry.set_text(&start.format("%F").unwrap());
+        imp.start_hour_spin_button.set_value(start.hour() as f64);
+        imp.start_minute_spin_button
+            .set_value(start.minute() as f64);
+        imp.start_seconds_spin_button.set_value(start.seconds());
         win
     }
 

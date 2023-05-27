@@ -253,6 +253,8 @@ impl RecordRow {
     #[template_callback]
     fn handle_delete_button_clicked(&self, _button: gtk::Button) {
         delete_record(self.record().id()).expect("Failed to delete record");
+        self.activate_action("record.delete", None)
+            .expect("Failed to send record.delete action");
         let records_box = self.parent().and_downcast::<gtk::ListBox>().unwrap();
         records_box.remove(self);
     }

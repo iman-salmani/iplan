@@ -11,6 +11,7 @@
 	  <ul>
 	    <li>Grouping tasks with project and list</li>
 	    <li>Timer for tasks</li>
+      <li>Subtasks</li>
 	    <li>Global search</li>
 	    <li>Arranging projects, lists, and tasks by drag and drop</li>
 	  </ul>
@@ -18,11 +19,19 @@
   <screenshots>
     <screenshot type="default">
       <caption>The IPlan main window</caption>
-      <image type="source" width="800" height="450">https://github.com/iman-salmani/iplan/blob/ddc568765732dafbc5399f407bfe7807730030e4/data/screenshots/window.png?raw=true</image>
+      <image type="source" width="800" height="450">https://github.com/iman-salmani/iplan/blob/aef51101e346cf9a0d61c27c5a2d6f2106b7beaf/data/screenshots/window.png?raw=true</image>
     </screenshot>
     <screenshot type="default">
-      <caption>The IPlan main window</caption>
-      <image type="source" width="450" height="800">https://github.com/iman-salmani/iplan/blob/ddc568765732dafbc5399f407bfe7807730030e4/data/screenshots/window-small.png?raw=true</image>
+      <caption>The IPlan main window (dark mode)</caption>
+      <image type="source" width="800" height="450">https://github.com/iman-salmani/iplan/blob/aef51101e346cf9a0d61c27c5a2d6f2106b7beaf/data/screenshots/window-dark.png?raw=true</image>
+    </screenshot>
+    <screenshot type="default">
+      <caption>Task window</caption>
+      <image type="source" width="450" height="800">https://github.com/iman-salmani/iplan/blob/aef51101e346cf9a0d61c27c5a2d6f2106b7beaf/data/screenshots/task-window.png?raw=true</image>
+    </screenshot>
+    <screenshot type="default">
+      <caption>The IPlan main window (small size)</caption>
+      <image type="source" width="450" height="800">https://github.com/iman-salmani/iplan/blob/aef51101e346cf9a0d61c27c5a2d6f2106b7beaf/data/screenshots/window-small.png?raw=true</image>
     </screenshot>
   </screenshots>
   <launchable type="desktop-id">ir.imansalmani.IPlan.desktop</launchable>
@@ -46,6 +55,18 @@
   </categories>
   <content_rating type="oars-1.1"/>
   <releases>
+    <release version="1.1.2" date="2023-05-26">
+      <description>
+        <p>Subtasks, Bug fixes, and UI improvements</p>
+        <ul>
+          <li>Task Window which contains task info, subtasks, and records</li>
+          <li>Translation to Persian and Turkish languages thanks to Sabri Ünal</li>
+          <li>New toast message for moving back task from the tasks done list</li>
+          <li>Users are now able to pick emojis for their projects in the edit window</li>
+          <li>Projects and Tasks now can have descriptions</li>
+        </ul>
+      </description>
+    </release>
     <release version="1.1.1" date="2023-05-19">
       <description>
         <p>Performance improvement and records window</p>

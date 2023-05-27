@@ -33,6 +33,10 @@ mod imp {
         pub lists_box: TemplateChild<gtk::Box>,
         #[template_child]
         pub placeholder: TemplateChild<gtk::Box>,
+        #[template_child]
+        pub placeholder_subtitle_start: TemplateChild<gtk::Label>,
+        #[template_child]
+        pub placeholder_subtitle_end: TemplateChild<gtk::Label>,
     }
 
     #[glib::object_subclass]
@@ -51,6 +55,15 @@ mod imp {
     }
 
     impl ObjectImpl for ProjectLists {
+        fn constructed(&self) {
+            // Translators: {} Will be replaced with a shortcut label.
+            let placeholder_subtitle = gettext("Use the primary menu {} for adding new lists");
+            let placeholder_subtitle = placeholder_subtitle.split_once("{}").unwrap();
+            self.placeholder_subtitle_start
+                .set_label(placeholder_subtitle.0);
+            self.placeholder_subtitle_end
+                .set_label(placeholder_subtitle.1);
+        }
         fn dispose(&self) {
             self.obj().first_child().unwrap().unparent();
         }

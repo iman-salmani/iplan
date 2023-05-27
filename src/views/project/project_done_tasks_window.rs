@@ -3,9 +3,9 @@ use gettextrs::gettext;
 use gtk::{glib, glib::once_cell::sync::Lazy};
 use std::cell::RefCell;
 
-use crate::db::models::{List, Task};
+use crate::db::models::{List, Record, Task};
 use crate::db::operations::{read_task, read_tasks};
-use crate::views::{project::TaskRow, IPlanWindow};
+use crate::views::{project::TaskRow, project::TaskWindow, IPlanWindow};
 
 mod imp {
     use super::*;
@@ -142,5 +142,47 @@ impl ProjectDoneTasksWindow {
                 }
             }
         }
+    }
+
+    #[template_callback]
+    fn handle_tasks_box_row_activated(&self, row: gtk::ListBoxRow, _tasks_box: gtk::ListBox) {
+        let win = self.root().and_downcast::<gtk::Window>().unwrap();
+        let row = row.downcast::<TaskRow>().unwrap();
+        let modal = TaskWindow::new(&win.application().unwrap(), &win, row.task());
+        modal.present();
+        modal.connect_close_request(glib::clone!(
+            @weak self as win, @weak row => @default-return gtk::Inhibit(false),
+            move |_| {
+                let task = read_task(row.task().id()).expect("Failed to read the task");
+                let win_imp = win.imp();
+                let row_imp = row.imp();
+                let main_window = win.transient_for().unwrap();
+                if !task.done() {
+                    win_imp.tasks_box.remove(&row);
+                    main_window.activate_action("project.open", None) // TODO: just add task to list (consider the task duration could be changed)
+                        .expect("Failed to activate project.open action");
+                } else {
+                    let duration_text = if let Some(duration) = task.duration() {
+                        Record::duration_display(duration)
+                    } else {
+                        String::new()
+                    };
+                    row_imp.timer_button_content.set_label(&duration_text);
+                    let task_name = task.name();
+                    row_imp.name_button
+                        .child()
+                        .unwrap()
+                        .downcast::<gtk::Label>()
+                        .unwrap()
+                        .set_text(&task_name);
+                    row_imp.name_button.set_tooltip_text(Some(&task_name));
+                    row_imp.name_entry.buffer().set_text(&task_name);
+                    row_imp.task.replace(task);
+                    row.changed();
+                    main_window.activate_action("project.update", None).expect("Failed to send project.update signal");
+                }
+                gtk::Inhibit(false)
+            }
+        ));
     }
 }

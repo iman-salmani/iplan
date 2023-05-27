@@ -65,8 +65,8 @@
           <object class="AdwStatusPage">
             <property name="icon-name">view-list-symbolic</property>
             <property name="height-request">320</property>
-            <property name="title" translatable="true">no tasks found</property>
-            <property name="description" translatable="true">Use add button up there</property>
+            <property name="title" translatable="yes">no tasks found</property>
+            <property name="description" translatable="yes">Use add button up there</property>
           </object>
         </child>
       </object>
@@ -101,7 +101,7 @@
                 </child>
                 <child>
                   <object class="GtkLabel">
-                    <property name="label" translatable="true">Done tasks</property>
+                    <property name="label" translatable="yes">Done tasks</property>
                     <attributes>
                       <attribute name="weight" value="PANGO_WEIGHT_NORMAL"/>
                     </attributes>
@@ -130,7 +130,7 @@
                 </child>
                 <child>
                   <object class="GtkLabel">
-                    <property name="label" translatable="true">Delete list</property>
+                    <property name="label" translatable="yes">Delete list</property>
                     <attributes>
                       <attribute name="weight" value="PANGO_WEIGHT_NORMAL"/>
                     </attributes>

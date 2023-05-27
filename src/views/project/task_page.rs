@@ -62,23 +62,37 @@ mod imp {
                     }
                 }
             });
-            klass.install_action("record.created", Some("x"), move |obj, _, value| {
-                let record_id = value.unwrap().get::<i64>().unwrap();
+            klass.install_action("project.update", None, move |obj, _, _value| {
+                let task = obj.task();
                 let imp = obj.imp();
+                let records =
+                    read_records(task.id(), false, None, None).expect("Failed to read records");
+                let duration_text = if let Some(duration) = task.duration() {
+                    Record::duration_display(duration)
+                } else {
+                    String::new()
+                };
                 let task_row_imp = imp.task_row.imp();
                 if !task_row_imp.timer_toggle_button.is_active() {
-                    task_row_imp
-                        .timer_button_content
-                        .set_label(&Record::duration_display(
-                            imp.task_row
-                                .task()
-                                .duration()
-                                .expect("Task duration cant be 0 at this point"),
-                        ));
+                    task_row_imp.timer_button_content.set_label(&duration_text);
                 }
-                let record = read_record(record_id).expect("Failed to read record");
-                let row = RecordRow::new(record);
-                imp.records_box.append(&row);
+                if imp.records_box.observe_children().n_items() != (records.len() + 1) as u32 {
+                    let row = RecordRow::new(records.first().unwrap().to_owned());
+                    imp.records_box.append(&row);
+                }
+            });
+            klass.install_action("record.delete", None, move |obj, _, _value| {
+                let task = obj.task();
+                let imp = obj.imp();
+                let task_imp = imp.task_row.imp();
+                if !task_imp.timer_toggle_button.is_active() {
+                    let duration_text = if let Some(duration) = task.duration() {
+                        Record::duration_display(duration)
+                    } else {
+                        String::new()
+                    };
+                    task_imp.timer_button_content.set_label(&duration_text);
+                }
             });
         }
 
@@ -126,14 +140,17 @@ impl TaskPage {
     pub fn new(task: Task) -> Self {
         let page: Self = glib::Object::builder().build();
         let imp = page.imp();
+        imp.task.replace(task.clone());
         imp.task_row.set_property("task", task.clone());
         imp.task_row.init_widgets();
         let task_description = task.description();
         imp.description_expander_row
             .set_subtitle(&page.description_display(&task_description));
         imp.description_buffer.set_text(&task_description);
-        imp.subtasks_box.set_sort_func(|row1, _row2| {
-            if row1.property::<Task>("task").done() {
+        imp.subtasks_box.set_sort_func(|row1, row2| {
+            let task1 = row1.property::<Task>("task");
+            let task2 = row2.property::<Task>("task");
+            if task1.position() < task2.position() {
                 gtk::Ordering::Larger
             } else {
                 gtk::Ordering::Smaller
@@ -168,12 +185,29 @@ impl TaskPage {
             let row = RecordRow::new(record);
             imp.records_box.append(&row);
         }
-        imp.task.replace(task);
         page
     }
 
     pub fn task(&self) -> Task {
         self.property("task")
+    }
+
+    pub fn add_record(&self, record_id: i64) {
+        let imp = self.imp();
+        let task_row_imp = imp.task_row.imp();
+        if !task_row_imp.timer_toggle_button.is_active() {
+            task_row_imp
+                .timer_button_content
+                .set_label(&Record::duration_display(
+                    imp.task_row
+                        .task()
+                        .duration()
+                        .expect("Task duration cant be 0 at this point"),
+                ));
+        }
+        let record = read_record(record_id).expect("Failed to read record");
+        let row = RecordRow::new(record);
+        imp.records_box.append(&row);
     }
 
     fn description_display(&self, text: &str) -> String {
@@ -188,26 +222,31 @@ impl TaskPage {
         let imp = self.imp();
         let task = self.task();
         let text = buffer.text(&buffer.start_iter(), &buffer.end_iter(), true);
-        imp.description_expander_row
-            .set_subtitle(&self.description_display(&text));
-        task.set_property("description", text);
-        update_task(task).expect("Failed to update task");
+        if task.description() != text {
+            imp.description_expander_row
+                .set_subtitle(&self.description_display(&text));
+            task.set_property("description", text);
+            update_task(task).expect("Failed to update task");
+        }
     }
 
     #[template_callback]
     fn handle_lists_menu_row_activated(&self, row: gtk::ListBoxRow, _lists_box: gtk::ListBox) {
         let imp = self.imp();
         imp.lists_popover.popdown();
+        let label = row.child().and_downcast::<gtk::Label>().unwrap();
         match row.index() {
             // Subtasks
             0 => {
                 imp.new_subtask_button.set_visible(true);
                 imp.subtasks_page.set_visible(true);
+                imp.lists_menu_button.set_label(&label.label());
             }
             // Records
             1 => {
                 imp.new_subtask_button.set_visible(false);
                 imp.subtasks_page.set_visible(false);
+                imp.lists_menu_button.set_label(&label.label());
             }
             _ => unimplemented!(),
         }

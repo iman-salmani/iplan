@@ -1,0 +1,346 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the iplan package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: iplan\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-05-27 00:13-0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: data/ir.imansalmani.IPlan.desktop.in:3
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:6 src/ui/sidebar/sidebar.ui:17
+msgid "IPlan"
+msgstr ""
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:7
+msgid "Your plan for improving personal life and workflow"
+msgstr ""
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:9
+msgid ""
+"IPlan goal is to be a user friendly tool for those who want to organize "
+"their personal life or jobs."
+msgstr ""
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:10
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:61
+msgid "Features:"
+msgstr ""
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:12
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:63
+msgid "Grouping tasks with project and list"
+msgstr ""
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:13
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:64
+msgid "Timer for tasks"
+msgstr ""
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:14
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:65
+msgid "Global search"
+msgstr ""
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:15
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:66
+msgid "Arranging projects, lists, and tasks by drag and drop"
+msgstr ""
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:20
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:24
+msgid "The IPlan main window"
+msgstr ""
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:31
+msgid "Iman Salmani"
+msgstr ""
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:51
+msgid "Performance improvement and records window"
+msgstr ""
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:53
+msgid "Lazy loading for project tasks and stat"
+msgstr ""
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:54
+msgid "Records window for creating, editing, and deleting records"
+msgstr ""
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:60
+msgid "First stable release."
+msgstr ""
+
+#: src/ui/window.ui:82
+msgid "_New List"
+msgstr ""
+
+#: src/ui/window.ui:86
+msgid "_Edit Project"
+msgstr ""
+
+#: src/ui/window.ui:96
+msgid "_Keyboard Shortcuts"
+msgstr ""
+
+#: src/ui/window.ui:100
+msgid "_About IPlan"
+msgstr ""
+
+#: src/ui/window.ui:106
+msgid "_Quit"
+msgstr ""
+
+#: src/ui/shortcuts_window.ui:11
+msgctxt "shortcut window"
+msgid "Application"
+msgstr ""
+
+#: src/ui/shortcuts_window.ui:21
+msgctxt "shortcut window"
+msgid "Keyboard Shortcuts"
+msgstr ""
+
+#: src/ui/shortcuts_window.ui:28
+msgctxt "shortcut window"
+msgid "Primary Menu"
+msgstr ""
+
+#: src/ui/shortcuts_window.ui:34
+msgctxt "shortcut window"
+msgid "Quit"
+msgstr ""
+
+#: src/ui/shortcuts_window.ui:43
+msgctxt "shortcut window"
+msgid "Tasks"
+msgstr ""
+
+#: src/ui/shortcuts_window.ui:46
+msgctxt "shortcut window"
+msgid "Search"
+msgstr ""
+
+#: src/ui/delete_dialog.ui:12
+msgid "_Cancel"
+msgstr ""
+
+#: src/ui/delete_dialog.ui:13
+msgid "_Delete"
+msgstr ""
+
+#: src/ui/project/project_done_tasks_window.ui:48
+msgid "no done tasks found"
+msgstr ""
+
+#: src/ui/project/project_edit_window.ui:19
+msgid "Edit Project"
+msgstr ""
+
+#: src/ui/project/project_edit_window.ui:42
+msgid "Name"
+msgstr ""
+
+#: src/ui/project/project_edit_window.ui:49
+msgid "Icon"
+msgstr ""
+
+#: src/ui/project/project_edit_window.ui:66 src/ui/project/task_page.ui:23
+msgid "Description"
+msgstr ""
+
+#: src/ui/project/project_edit_window.ui:98
+msgid "Archive"
+msgstr ""
+
+#: src/ui/project/project_edit_window.ui:109 src/ui/project/task_row.ui:110
+msgid "Delete"
+msgstr ""
+
+#: src/ui/project/project_header.ui:89
+msgid "Time spent per day"
+msgstr ""
+
+#: src/ui/project/project_list.ui:68
+msgid "no tasks found"
+msgstr ""
+
+#: src/ui/project/project_list.ui:69 src/ui/project/task_page.ui:122
+msgid "Use add button up there"
+msgstr ""
+
+#: src/ui/project/project_list.ui:104
+msgid "Done tasks"
+msgstr ""
+
+#: src/ui/project/project_list.ui:133
+msgid "Delete list"
+msgstr ""
+
+#: src/ui/project/project_lists.ui:34
+msgid "no lists found"
+msgstr ""
+
+#: src/ui/project/project_lists.ui:63
+msgid "New list"
+msgstr ""
+
+#: src/ui/project/record_create_window.ui:15
+msgid "New Record"
+msgstr ""
+
+#: src/ui/project/record_create_window.ui:23
+msgid "Cancel"
+msgstr ""
+
+#: src/ui/project/record_create_window.ui:29
+msgid "Done"
+msgstr ""
+
+#: src/ui/project/record_create_window.ui:46 src/ui/project/record_row.ui:8
+msgid "start"
+msgstr ""
+
+#: src/ui/project/record_create_window.ui:49 src/ui/project/record_row.ui:11
+msgid "date"
+msgstr ""
+
+#: src/ui/project/record_create_window.ui:65
+#: src/ui/project/record_create_window.ui:124 src/ui/project/record_row.ui:27
+#: src/ui/project/record_row.ui:86
+msgid "hour"
+msgstr ""
+
+#: src/ui/project/record_create_window.ui:83
+#: src/ui/project/record_create_window.ui:142 src/ui/project/record_row.ui:45
+#: src/ui/project/record_row.ui:104
+msgid "minute"
+msgstr ""
+
+#: src/ui/project/record_create_window.ui:101
+#: src/ui/project/record_create_window.ui:160 src/ui/project/record_row.ui:63
+#: src/ui/project/record_row.ui:122
+msgid "seconds"
+msgstr ""
+
+#: src/ui/project/record_create_window.ui:121 src/ui/project/record_row.ui:83
+msgid "duration"
+msgstr ""
+
+#: src/ui/project/record_row.ui:142
+msgid "delete"
+msgstr ""
+
+#: src/ui/project/task_page.ui:54 src/ui/project/task_page.ui:70
+msgid "Subtasks"
+msgstr ""
+
+#: src/ui/project/task_page.ui:75
+msgid "Records"
+msgstr ""
+
+#: src/ui/project/task_page.ui:121
+msgid "no subtasks found"
+msgstr ""
+
+#: src/ui/project/task_page.ui:152
+msgid "no records found"
+msgstr ""
+
+#: src/ui/project/task_page.ui:153
+msgid "Use add button up there or start a timer"
+msgstr ""
+
+#: src/ui/search/search_window.ui:18
+msgid "Search"
+msgstr ""
+
+#: src/ui/search/search_window.ui:54
+msgid "no results found"
+msgstr ""
+
+#: src/ui/sidebar/sidebar_projects.ui:14
+msgid "Projects"
+msgstr ""
+
+#: src/ui/sidebar/sidebar_projects.ui:33
+msgid "Show archive projects"
+msgstr ""
+
+#: src/ui/sidebar/sidebar_projects.ui:40
+msgid "New project"
+msgstr ""
+
+#. Translators: Replace "translator-credits" with your names, one name per line
+#: src/application.rs:145
+msgid "translator-credits"
+msgstr ""
+
+#: src/views/window.rs:96 src/views/window.rs:244
+msgid "Personal"
+msgstr ""
+
+#: src/views/window.rs:97 src/views/window.rs:245
+#: src/views/sidebar/sidebar_projects.rs:206
+msgid "Tasks"
+msgstr ""
+
+#: src/views/project/project_done_tasks_window.rs:100
+msgid "Done Tasks"
+msgstr ""
+
+#: src/views/project/project_edit_window.rs:134
+msgid "Delete \"{}\" project?"
+msgstr ""
+
+#: src/views/project/project_edit_window.rs:137
+msgid "The project and its tasks will be permanently lost."
+msgstr ""
+
+#: src/views/project/project_header.rs:162
+msgid "Today"
+msgstr ""
+
+#: src/views/project/project_list.rs:361
+msgid "Delete \"{}\" list?"
+msgstr ""
+
+#: src/views/project/project_list.rs:363
+msgid "The list and its tasks will be permanently lost."
+msgstr ""
+
+#. Translators: {} Will be replaced with a shortcut label.
+#: src/views/project/project_lists.rs:60
+msgid "Use the primary menu {} for adding new lists"
+msgstr ""
+
+#: src/views/project/project_lists.rs:154
+msgid "New List"
+msgstr ""
+
+#: src/views/project/task_row.rs:271
+msgid "\"{}\" is going to delete"
+msgstr ""
+
+#: src/views/project/task_row.rs:274
+msgid "Undo"
+msgstr ""
+
+#: src/views/search/search_result.rs:55
+msgid "Project"
+msgstr ""
+
+#: src/views/search/search_result.rs:60
+msgid "Task"
+msgstr ""

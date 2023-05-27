@@ -1,5 +1,4 @@
 use adw;
-use gettextrs::gettext;
 use gtk::{glib, prelude::*, subclass::prelude::*};
 use std::thread;
 
@@ -146,7 +145,7 @@ impl ProjectHeader {
                     }
                 }
                 if duration != 0 {
-                    if let Err(_) = tx.send((i, date, duration)) {}
+                    if let Err(_) = tx.send((date, duration)) {}
                 }
                 dates.push(date_unix);
             }
@@ -156,13 +155,9 @@ impl ProjectHeader {
             glib::clone!(
             @weak imp => @default-return glib::Continue(false),
             move |data| {
-                let (i, date, duration) = data;
+                let (date, duration) = data;
                 let stat_item = gtk::Box::new(gtk::Orientation::Horizontal, 8);
-                let date_label = if i == 0 {
-                    gettext("Today")
-                } else {
-                    date.format("%A").unwrap().to_string()
-                };
+                let date_label = date.format("%A").unwrap().to_string();
                 let stat_item_date = gtk::Label::builder().label(&date_label).build();
                 stat_item.append(&stat_item_date);
                 let stat_item_duration = gtk::Label::builder()

@@ -12,23 +12,20 @@
             <!-- <child> -->
             <!--   <object class="GtkShortcutsShortcut"> -->
             <!--     <property name="title" translatable="yes" context="shortcut window">Preferences</property> -->
-            <!--     <property name="subtitle">Change application preferences</property> -->
             <!--     <property name="action-name">app.preferences</property> -->
-            <!--     <property name="accelerator">Control_L+comma</property> -->
+            <!--     <property name="accelerator">&lt;Primary&gt;comma</property> -->
             <!--   </object> -->
             <!-- </child> -->
             <child>
               <object class="GtkShortcutsShortcut">
                 <property name="title" translatable="yes" context="shortcut window">Keyboard Shortcuts</property>
                 <property name="action-name">app.shortcuts</property>
-                <property name="subtitle">Find keyboard shortcuts</property>
-                <property name="accelerator">Control_L+question</property>
+                <property name="accelerator">&lt;Primary&gt;question</property>
               </object>
             </child>
             <child>
               <object class="GtkShortcutsShortcut">
                 <property name="title" translatable="yes" context="shortcut window">Primary Menu</property>
-                <property name="subtitle">Popup primary menu</property>
                 <property name="accelerator">F10</property>
               </object>
             </child>
@@ -36,7 +33,7 @@
               <object class="GtkShortcutsShortcut">
                 <property name="title" translatable="yes" context="shortcut window">Quit</property>
                 <property name="action-name">app.quit</property>
-                <property name="accelerator">Control_L+q</property>
+                <property name="accelerator">&lt;Primary&gt;q</property>
               </object>
             </child>
           </object>
@@ -47,9 +44,8 @@
             <child>
               <object class="GtkShortcutsShortcut">
                 <property name="title" translatable="yes" context="shortcut window">Search</property>
-                <property name="subtitle">Search on tasks and projects</property>
                 <property name="action-name">app.search</property>
-                <property name="accelerator">Control_L+f</property>
+                <property name="accelerator">&lt;Primary&gt;f</property>
               </object>
             </child>
           </object>

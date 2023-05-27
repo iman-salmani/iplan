@@ -5,8 +5,8 @@ use std::cell::RefCell;
 
 use crate::db::models::{List, Record, Task};
 use crate::db::operations::{
-    create_task, delete_list, new_position, read_list, read_task, read_tasks, update_list,
-    update_task,
+    create_task, delete_list, new_position, read_list, read_records, read_task, read_tasks,
+    update_list, update_task,
 };
 use crate::views::{
     project::ProjectDoneTasksWindow, project::ProjectLayout, project::TaskRow, project::TaskWindow,
@@ -54,11 +54,39 @@ mod imp {
                 let imp = obj.imp();
                 let value = value.unwrap().get().unwrap();
                 let upper_row = imp.tasks_box.row_at_index(value - 1);
-                let row = imp.tasks_box.row_at_index(value).unwrap();
+                let row = imp
+                    .tasks_box
+                    .row_at_index(value)
+                    .and_downcast::<TaskRow>()
+                    .unwrap();
+                let task = row.task();
                 if let Some(upper_row) = upper_row {
                     upper_row.grab_focus();
                 }
                 imp.tasks_box.remove(&row);
+
+                let mut toast_name = task.name();
+                if toast_name.chars().count() > 15 {
+                    toast_name.truncate(15);
+                    toast_name.push_str("...");
+                }
+                let toast = adw::Toast::builder()
+                    .title(
+                        &gettext("\"{}\" moved to the done tasks list").replace("{}", &toast_name),
+                    )
+                    .button_label(&gettext("Undo"))
+                    .build();
+                toast.connect_button_clicked(glib::clone!(
+                    @weak obj, @weak task =>
+                    move |_toast| {
+                        task.set_property("done", false);
+                        update_task(task.clone()).expect("Failed to update task");
+                        let row = TaskRow::new(task);
+                        obj.imp().tasks_box.append(&row);
+                        row.init_widgets();
+                }));
+                let window = obj.root().and_downcast::<IPlanWindow>().unwrap();
+                window.imp().toast_overlay.add_toast(&toast);
             });
         }
 
@@ -287,23 +315,20 @@ impl ProjectList {
     }
 
     #[template_callback]
-    fn handle_tasks_box_row_activated(&self, row: gtk::ListBoxRow, _tasks_box: gtk::ListBox) {
+    fn handle_tasks_box_row_activated(&self, row: gtk::ListBoxRow, tasks_box: gtk::ListBox) {
         let win = self.root().and_downcast::<gtk::Window>().unwrap();
         let row = row.downcast::<TaskRow>().unwrap();
         let modal = TaskWindow::new(&win.application().unwrap(), &win, row.task());
         modal.present();
-        self.imp().options_popover.popdown();
         modal.connect_close_request(glib::clone!(
             @weak row as obj => @default-return gtk::Inhibit(false),
             move |_| {
-                let task = obj.task();
                 let imp = obj.imp();
-                if let Some(duration) = task.duration() {
-                    if !imp.timer_toggle_button.is_active() {
-                        imp.timer_button_content.set_label(&Record::duration_display(duration));
-                    }
-                }
                 let task = read_task(obj.task().id()).expect("Failed to read the task");
+                if task.done() {
+                    tasks_box.remove(&obj);
+                    return gtk::Inhibit(false);
+                }
                 let task_name = task.name();
                 imp.name_button
                     .child()
@@ -313,7 +338,28 @@ impl ProjectList {
                     .set_text(&task_name);
                 imp.name_button.set_tooltip_text(Some(&task_name));
                 imp.name_entry.buffer().set_text(&task_name);
+                let records =
+                read_records(task.id(), true, None, None).expect("Failed to read records");
+                if !records.is_empty() {
+                    imp.timer_toggle_button.set_active(true)
+                } else {
+                    if imp.timer_toggle_button.is_active() {
+                        imp.timer_toggle_button.remove_css_class("destructive-action");
+                        let handler_id = imp.timer_toggle_button_handler_id.borrow();
+                        let handler_id = handler_id.as_ref().unwrap();
+                        imp.timer_toggle_button.block_signal(handler_id);
+                        imp.timer_toggle_button.set_active(false);
+                        imp.timer_toggle_button.unblock_signal(handler_id)
+                    }
+                    let duration_text = if let Some(duration) = task.duration() {
+                        Record::duration_display(duration)
+                    } else {
+                        String::new()
+                    };
+                    imp.timer_button_content.set_label(&duration_text);
+                }
                 imp.task.replace(task);
+                obj.changed();
                 obj.activate_action("project.update", None).expect("Failed to send project.update signal");
                 gtk::Inhibit(false)
             }
