@@ -18,7 +18,7 @@ Your plan for improving personal life and workflow
 
 ## Installation
 
-The recommended way of installing Amberol is through Flatpak. If you don't have
+The recommended way of installing IPlan is through Flatpak. If you don't have
 Flatpak installed, you can get it from [the Flatpak website](https://flatpak.org/setup).
 
 ```bash
