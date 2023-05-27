@@ -7,10 +7,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: iplan\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-24 16:52+0330\n"
+"POT-Creation-Date: 2023-05-27 00:13-0300\n"
 "PO-Revision-Date: 2023-05-24 20:06-0300\n"
 "Last-Translator: Fúlvio Leo <fulviokaldas@outlook.com>\n"
-"Language-Team: Brazilian Portuguese <https://br.gnome.org/traducao >\n"
+"Language-Team: \n"
 "Language: pt_BR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -110,27 +110,27 @@ msgctxt "shortcut window"
 msgid "Application"
 msgstr "Aplicação"
 
-#: src/ui/shortcuts_window.ui:22
+#: src/ui/shortcuts_window.ui:21
 msgctxt "shortcut window"
 msgid "Keyboard Shortcuts"
 msgstr "Atalhos de Teclado"
 
-#: src/ui/shortcuts_window.ui:30
+#: src/ui/shortcuts_window.ui:28
 msgctxt "shortcut window"
 msgid "Primary Menu"
 msgstr "Menu Principal"
 
-#: src/ui/shortcuts_window.ui:37
+#: src/ui/shortcuts_window.ui:34
 msgctxt "shortcut window"
 msgid "Quit"
 msgstr "Sair"
 
-#: src/ui/shortcuts_window.ui:46
+#: src/ui/shortcuts_window.ui:43
 msgctxt "shortcut window"
 msgid "Tasks"
 msgstr "Tarefas"
 
-#: src/ui/shortcuts_window.ui:49
+#: src/ui/shortcuts_window.ui:46
 msgctxt "shortcut window"
 msgid "Search"
 msgstr "Buscar"
@@ -195,17 +195,7 @@ msgstr "Deletar lista"
 msgid "no lists found"
 msgstr "nenhuma lista encontrada"
 
-#. Translators: The sentence is: Use the primary menu (shortcut_label) for adding new lists
-#: src/ui/project/project_lists.ui:45
-msgid "Use the primary menu"
-msgstr "Use o menu principal"
-
-#. Translators: The sentence is: Use the primary menu (shortcut_label) for adding new lists
-#: src/ui/project/project_lists.ui:56
-msgid "for adding new lists"
-msgstr "para adicionar novas listas"
-
-#: src/ui/project/project_lists.ui:65
+#: src/ui/project/project_lists.ui:63
 msgid "New list"
 msgstr "Nova lista"
 
@@ -333,7 +323,13 @@ msgstr "Deletar a lista \"{}\"?"
 msgid "The list and its tasks will be permanently lost."
 msgstr "A lista e suas tarefas associadas serão perdidas permanentemente."
 
-#: src/views/project/project_lists.rs:141
+#. Translators: {} Will be replaced with a shortcut label.
+#: src/views/project/project_lists.rs:60
+#, fuzzy
+msgid "Use the primary menu {} for adding new lists"
+msgstr "Use o menu principal"
+
+#: src/views/project/project_lists.rs:154
 msgid "New List"
 msgstr "Nova lista"
 
@@ -352,3 +348,6 @@ msgstr "Projeto"
 #: src/views/search/search_result.rs:60
 msgid "Task"
 msgstr "Tarefa"
+
+#~ msgid "for adding new lists"
+#~ msgstr "para adicionar novas listas"
