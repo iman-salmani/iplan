@@ -350,7 +350,7 @@ impl ProjectList {
                         imp.timer_toggle_button.set_active(false);
                         imp.timer_toggle_button.unblock_signal(handler_id)
                     }
-                    imp.timer_button_content.set_label(&Record::duration_display(task.duration()));
+                    imp.timer_button_content.set_label(&task.duration_display());
                 }
                 imp.task.replace(task);
                 obj.changed();

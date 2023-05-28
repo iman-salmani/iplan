@@ -2,6 +2,7 @@ use gtk::{glib, glib::once_cell::sync::Lazy, prelude::*, subclass::prelude::*};
 use rusqlite::{Error, Result, Row};
 use std::cell::{Cell, RefCell};
 
+use crate::db::models::Record;
 use crate::db::operations::{read_records, read_tasks};
 
 mod imp {
@@ -123,6 +124,10 @@ impl Task {
             total += subtask.duration();
         }
         total
+    }
+
+    pub fn duration_display(&self) -> String {
+        Record::duration_display(self.duration())
     }
 
     pub fn id(&self) -> i64 {

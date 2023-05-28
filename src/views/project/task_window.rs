@@ -176,7 +176,7 @@ impl TaskWindow {
                     }
                     row_imp
                         .timer_button_content
-                        .set_label(&Record::duration_display(from_task.duration()));
+                        .set_label(&from_task.duration_display());
                 }
                 row.changed();
                 break;
@@ -189,7 +189,7 @@ impl TaskWindow {
         if !task_row_imp.timer_toggle_button.is_active() {
             task_row_imp
                 .timer_button_content
-                .set_label(&Record::duration_display(task.duration()));
+                .set_label(&task.duration_display());
         }
         self.set_property("parent-task", parent_id);
         if parent_id == 0 {

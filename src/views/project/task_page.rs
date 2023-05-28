@@ -57,7 +57,7 @@ mod imp {
                 if !task_row_imp.timer_toggle_button.is_active() {
                     task_row_imp
                         .timer_button_content
-                        .set_label(&Record::duration_display(imp.task_row.task().duration()));
+                        .set_label(&imp.task_row.task().duration_display());
                 }
             });
             klass.install_action("project.update", None, move |obj, _, _value| {
@@ -69,7 +69,7 @@ mod imp {
                 if !task_row_imp.timer_toggle_button.is_active() {
                     task_row_imp
                         .timer_button_content
-                        .set_label(&Record::duration_display(task.duration()));
+                        .set_label(&task.duration_display());
                 }
                 if imp.records_box.observe_children().n_items() != (records.len() + 1) as u32 {
                     let row = RecordRow::new(records.first().unwrap().to_owned());
@@ -83,7 +83,7 @@ mod imp {
                 if !task_imp.timer_toggle_button.is_active() {
                     task_imp
                         .timer_button_content
-                        .set_label(&Record::duration_display(task.duration()));
+                        .set_label(&task.duration_display());
                 }
             });
         }
@@ -190,7 +190,7 @@ impl TaskPage {
         if !task_row_imp.timer_toggle_button.is_active() {
             task_row_imp
                 .timer_button_content
-                .set_label(&Record::duration_display(imp.task_row.task().duration()));
+                .set_label(&imp.task_row.task().duration_display());
         }
         let record = read_record(record_id).expect("Failed to read record");
         let row = RecordRow::new(record);

@@ -113,8 +113,7 @@ impl TaskRow {
             }
         }));
         imp.name_entry.add_controller(&name_entry_controller);
-        imp.timer_button_content
-            .set_label(&Record::duration_display(task.duration()));
+        imp.timer_button_content.set_label(&task.duration_display());
         if task.done() {
             imp.timer_toggle_button.set_sensitive(false);
         } else {
@@ -250,7 +249,7 @@ impl TaskRow {
             update_record(&record).expect("Failed to update record");
             self.imp()
                 .timer_button_content
-                .set_label(&Record::duration_display(task.duration()));
+                .set_label(&task.duration_display());
             self.activate_action("project.update", None)
                 .expect("Failed to send project.update");
         }
