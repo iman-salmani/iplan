@@ -1,7 +1,7 @@
 use gtk::{glib, glib::once_cell::sync::Lazy, prelude::*, subclass::prelude::*};
 use rusqlite::{Error, Result, Row};
 use std::cell::Cell;
-use std::fmt;
+
 mod imp {
     use super::*;
     #[derive(Default, Debug)]
@@ -80,6 +80,9 @@ impl Record {
     }
 
     pub fn duration_display(duration: i64) -> String {
+        if duration == 0 {
+            return String::new();
+        }
         let (min, sec) = (duration / 60, duration % 60);
         if min > 60 {
             let (hour, min) = (min / 60, min % 60);
@@ -122,21 +125,5 @@ impl TryFrom<&Row<'_>> for Record {
 impl Default for Record {
     fn default() -> Self {
         Record::new(1, 0, 0, 1)
-    }
-}
-
-impl fmt::Display for Record {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        let duration = self.duration();
-        if duration != 0 {
-            let (min, sec) = (duration / 60, duration % 60);
-            if min > 60 {
-                let (hour, min) = (duration / 60, duration % 60);
-                return write!(f, "{}:{}:{}", hour, min, sec);
-            } else {
-                return write!(f, "{}:{}", min, sec);
-            }
-        }
-        fmt::Result::Err(fmt::Error)
     }
 }

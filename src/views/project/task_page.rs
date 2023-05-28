@@ -54,12 +54,10 @@ mod imp {
             klass.install_action("task.duration-update", None, move |obj, _, _value| {
                 let imp = obj.imp();
                 let task_row_imp = imp.task_row.imp();
-                if let Some(duration) = imp.task_row.task().duration() {
-                    if !task_row_imp.timer_toggle_button.is_active() {
-                        task_row_imp
-                            .timer_button_content
-                            .set_label(&Record::duration_display(duration));
-                    }
+                if !task_row_imp.timer_toggle_button.is_active() {
+                    task_row_imp
+                        .timer_button_content
+                        .set_label(&Record::duration_display(imp.task_row.task().duration()));
                 }
             });
             klass.install_action("project.update", None, move |obj, _, _value| {
@@ -67,14 +65,11 @@ mod imp {
                 let imp = obj.imp();
                 let records =
                     read_records(task.id(), false, None, None).expect("Failed to read records");
-                let duration_text = if let Some(duration) = task.duration() {
-                    Record::duration_display(duration)
-                } else {
-                    String::new()
-                };
                 let task_row_imp = imp.task_row.imp();
                 if !task_row_imp.timer_toggle_button.is_active() {
-                    task_row_imp.timer_button_content.set_label(&duration_text);
+                    task_row_imp
+                        .timer_button_content
+                        .set_label(&Record::duration_display(task.duration()));
                 }
                 if imp.records_box.observe_children().n_items() != (records.len() + 1) as u32 {
                     let row = RecordRow::new(records.first().unwrap().to_owned());
@@ -86,12 +81,9 @@ mod imp {
                 let imp = obj.imp();
                 let task_imp = imp.task_row.imp();
                 if !task_imp.timer_toggle_button.is_active() {
-                    let duration_text = if let Some(duration) = task.duration() {
-                        Record::duration_display(duration)
-                    } else {
-                        String::new()
-                    };
-                    task_imp.timer_button_content.set_label(&duration_text);
+                    task_imp
+                        .timer_button_content
+                        .set_label(&Record::duration_display(task.duration()));
                 }
             });
         }
@@ -198,12 +190,7 @@ impl TaskPage {
         if !task_row_imp.timer_toggle_button.is_active() {
             task_row_imp
                 .timer_button_content
-                .set_label(&Record::duration_display(
-                    imp.task_row
-                        .task()
-                        .duration()
-                        .expect("Task duration cant be 0 at this point"),
-                ));
+                .set_label(&Record::duration_display(imp.task_row.task().duration()));
         }
         let record = read_record(record_id).expect("Failed to read record");
         let row = RecordRow::new(record);

@@ -73,12 +73,8 @@ impl ProjectHeader {
         imp.name_label.set_text(&project.name());
         imp.name_entry.buffer().set_text(&project.name());
 
-        if let Some(duration) = project.duration() {
-            imp.duration_button_content
-                .set_label(&Record::duration_display(duration));
-        } else {
-            imp.duration_button_content.set_label("");
-        }
+        imp.duration_button_content
+            .set_label(&Record::duration_display(project.duration()));
 
         let lists = imp.stat_box.observe_children();
         for _i in 0..lists.n_items() {

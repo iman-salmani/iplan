@@ -174,12 +174,9 @@ impl TaskWindow {
                         row_imp.timer_toggle_button.set_active(false);
                         row_imp.timer_toggle_button.unblock_signal(handler_id)
                     }
-                    let duration_text = if let Some(duration) = from_task.duration() {
-                        Record::duration_display(duration)
-                    } else {
-                        String::new()
-                    };
-                    row_imp.timer_button_content.set_label(&duration_text);
+                    row_imp
+                        .timer_button_content
+                        .set_label(&Record::duration_display(from_task.duration()));
                 }
                 row.changed();
                 break;
@@ -190,12 +187,9 @@ impl TaskWindow {
         let target_page_imp = target_page.imp();
         let task_row_imp = target_page_imp.task_row.imp();
         if !task_row_imp.timer_toggle_button.is_active() {
-            let duration_text = if let Some(duration) = task.duration() {
-                Record::duration_display(duration)
-            } else {
-                String::new()
-            };
-            task_row_imp.timer_button_content.set_label(&duration_text);
+            task_row_imp
+                .timer_button_content
+                .set_label(&Record::duration_display(task.duration()));
         }
         self.set_property("parent-task", parent_id);
         if parent_id == 0 {

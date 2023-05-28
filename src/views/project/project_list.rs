@@ -350,12 +350,7 @@ impl ProjectList {
                         imp.timer_toggle_button.set_active(false);
                         imp.timer_toggle_button.unblock_signal(handler_id)
                     }
-                    let duration_text = if let Some(duration) = task.duration() {
-                        Record::duration_display(duration)
-                    } else {
-                        String::new()
-                    };
-                    imp.timer_button_content.set_label(&duration_text);
+                    imp.timer_button_content.set_label(&Record::duration_display(task.duration()));
                 }
                 imp.task.replace(task);
                 obj.changed();

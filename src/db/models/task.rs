@@ -112,7 +112,7 @@ impl Task {
         glib::Object::new::<Self>(properties)
     }
 
-    pub fn duration(&self) -> Option<i64> {
+    pub fn duration(&self) -> i64 {
         let mut total = 0;
         for record in read_records(self.id(), false, None, None).expect("Failed to read records") {
             total += record.duration();
@@ -120,15 +120,9 @@ impl Task {
         for subtask in read_tasks(self.project(), None, None, Some(self.id()))
             .expect("Failed to read subtasks")
         {
-            if let Some(duration) = subtask.duration() {
-                total += duration;
-            }
+            total += subtask.duration();
         }
-        if total == 0 {
-            None
-        } else {
-            Some(total)
-        }
+        total
     }
 
     pub fn id(&self) -> i64 {

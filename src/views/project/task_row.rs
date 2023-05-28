@@ -113,10 +113,8 @@ impl TaskRow {
             }
         }));
         imp.name_entry.add_controller(&name_entry_controller);
-        if let Some(duration) = task.duration() {
-            imp.timer_button_content
-                .set_label(&Record::duration_display(duration));
-        }
+        imp.timer_button_content
+            .set_label(&Record::duration_display(task.duration()));
         if task.done() {
             imp.timer_toggle_button.set_sensitive(false);
         } else {
@@ -252,10 +250,7 @@ impl TaskRow {
             update_record(&record).expect("Failed to update record");
             self.imp()
                 .timer_button_content
-                .set_label(&Record::duration_display(
-                    task.duration()
-                        .expect("Task duration cannot be 0 at this point"),
-                ));
+                .set_label(&Record::duration_display(task.duration()));
             self.activate_action("project.update", None)
                 .expect("Failed to send project.update");
         }

@@ -105,18 +105,12 @@ impl Project {
             .build()
     }
 
-    pub fn duration(&self) -> Option<i64> {
+    pub fn duration(&self) -> i64 {
         let mut total = 0;
         for task in read_tasks(self.id(), None, None, Some(0)).expect("Failed to read tasks") {
-            if let Some(task_duration) = task.duration() {
-                total += task_duration;
-            }
+            total += task.duration();
         }
-        if total == 0 {
-            None
-        } else {
-            Some(total)
-        }
+        total
     }
 
     pub fn id(&self) -> i64 {
