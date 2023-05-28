@@ -7,7 +7,7 @@ use crate::db::operations::{
     create_list, create_project, new_position, read_lists, read_project, read_projects,
     update_project, update_task,
 };
-use crate::views::{project::TaskRow, sidebar::SidebarProject, IPlanWindow};
+use crate::views::{project::TaskRow, sidebar::ProjectRow, IPlanWindow};
 mod imp {
     use super::*;
 
@@ -70,7 +70,7 @@ impl SidebarProjects {
             .id();
         let projects_box = &self.imp().projects_box;
         for project_row in projects_box.observe_children().into_iter() {
-            let project_row: SidebarProject = project_row.unwrap().downcast().unwrap();
+            let project_row: ProjectRow = project_row.unwrap().downcast().unwrap();
             if project_id == project_row.project().id() {
                 projects_box.select_row(Some(&project_row));
                 break;
@@ -83,7 +83,7 @@ impl SidebarProjects {
             .imp()
             .projects_box
             .row_at_index(project.index())
-            .and_downcast::<SidebarProject>()
+            .and_downcast::<ProjectRow>()
             .unwrap();
         let row_imp = row.imp();
         row_imp.icon_label.set_label(&project.icon());
@@ -111,7 +111,7 @@ impl SidebarProjects {
             let row = imp
                 .projects_box
                 .row_at_index(i)
-                .and_downcast::<SidebarProject>()
+                .and_downcast::<ProjectRow>()
                 .unwrap();
             let project = row.project();
             project.set_property("index", project.index() - 1);
@@ -133,7 +133,7 @@ impl SidebarProjects {
         // Fetch
         let projects = read_projects(true).expect("Failed to read projects");
         for project in projects {
-            imp.projects_box.append(&SidebarProject::new(project));
+            imp.projects_box.append(&ProjectRow::new(project));
         }
 
         // Projcets box filter
@@ -155,7 +155,7 @@ impl SidebarProjects {
 
         // Project drop target
         let project_drop_target =
-            gtk::DropTarget::new(SidebarProject::static_type(), gdk::DragAction::MOVE);
+            gtk::DropTarget::new(ProjectRow::static_type(), gdk::DragAction::MOVE);
         project_drop_target.set_preload(true);
         project_drop_target.connect_drop(glib::clone!(
             @weak self as obj => @default-return false,
@@ -166,7 +166,7 @@ impl SidebarProjects {
         project_drop_target.connect_enter(glib::clone!(
         @weak self as obj => @default-return gdk::DragAction::empty(),
         move |target, _x, _y| {
-            let source_row: Option<SidebarProject> = target.value_as();
+            let source_row: Option<ProjectRow> = target.value_as();
             obj.imp().projects_box.select_row(source_row.as_ref());
             gdk::DragAction::MOVE
         }));
@@ -192,7 +192,7 @@ impl SidebarProjects {
     #[template_callback]
     fn handle_projects_box_row_activated(&self, row: gtk::ListBoxRow) {
         let window = self.root().unwrap().downcast::<IPlanWindow>().unwrap();
-        let row = row.downcast::<SidebarProject>().unwrap();
+        let row = row.downcast::<ProjectRow>().unwrap();
         if window.project().id() != row.project().id() {
             window.set_property("project", row.project().to_value());
             self.activate_action("project.open", None)
@@ -204,7 +204,7 @@ impl SidebarProjects {
     fn handle_new_button_clicked(&self, _button: gtk::Button) {
         let project = create_project("").expect("Failed to create project");
         create_list(&gettext("Tasks"), project.id()).expect("Failed to create list");
-        let row = SidebarProject::new(project.clone());
+        let row = ProjectRow::new(project.clone());
         let imp = self.imp();
         imp.projects_box.append(&row);
         imp.projects_box.select_row(Some(&row));
@@ -246,7 +246,7 @@ impl SidebarProjects {
         _y: f64,
     ) -> bool {
         // Source_row moved by motion signal so it should drop on itself
-        let row: SidebarProject = target.value_as().unwrap();
+        let row: ProjectRow = target.value_as().unwrap();
         let project = row.project();
         let project_db = read_project(project.id()).expect("Failed to read project");
         if project_db.index() != project.index() {
@@ -263,7 +263,7 @@ impl SidebarProjects {
         y: f64,
     ) -> gdk::DragAction {
         let imp = self.imp();
-        let source_row: Option<SidebarProject> = target.value_as();
+        let source_row: Option<ProjectRow> = target.value_as();
         let target_row = imp.projects_box.row_at_y(y as i32);
 
         if source_row.is_none() || target_row.is_none() {
@@ -271,7 +271,7 @@ impl SidebarProjects {
         }
 
         let source_row = source_row.unwrap();
-        let target_row: SidebarProject = target_row.unwrap().downcast().unwrap();
+        let target_row: ProjectRow = target_row.unwrap().downcast().unwrap();
 
         if source_row != target_row {
             let source_i = source_row.index();
@@ -285,7 +285,7 @@ impl SidebarProjects {
                 // source_row.set_property(proj, value)
             } else if source_i > target_i {
                 for i in target_i..source_i {
-                    let row: SidebarProject = imp
+                    let row: ProjectRow = imp
                         .projects_box
                         .row_at_index(i)
                         .unwrap()
@@ -299,7 +299,7 @@ impl SidebarProjects {
                 target_project.set_property("index", target_i - 1);
             } else if source_i < target_i {
                 for i in target_i + 1..source_i + 1 {
-                    let row: SidebarProject = imp
+                    let row: ProjectRow = imp
                         .projects_box
                         .row_at_index(i)
                         .unwrap()

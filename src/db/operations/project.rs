@@ -1,3 +1,5 @@
+use std::cmp::Ordering;
+
 use rusqlite::Result;
 
 use crate::db::get_connection;
@@ -49,18 +51,22 @@ pub fn update_project(project: &Project) -> Result<()> {
 
     if project.index() != old_project.index() {
         index_stmt.push_str(&format!(", i = {}", project.index()));
-        if project.index() > old_project.index() {
-            conn.execute(
-                "UPDATE projects SET i = i - 1
-                WHERE i > ?1 AND i <= ?2",
-                (old_project.index(), project.index()),
-            )?;
-        } else if project.index() < old_project.index() {
-            conn.execute(
-                "UPDATE projects SET i = i + 1
-                WHERE i < ?1 AND i >= ?2",
-                (old_project.index(), project.index()),
-            )?;
+        match project.index().cmp(&old_project.index()) {
+            Ordering::Greater => {
+                conn.execute(
+                    "UPDATE projects SET i = i - 1
+                    WHERE i > ?1 AND i <= ?2",
+                    (old_project.index(), project.index()),
+                )?;
+            }
+            Ordering::Less => {
+                conn.execute(
+                    "UPDATE projects SET i = i + 1
+                    WHERE i < ?1 AND i >= ?2",
+                    (old_project.index(), project.index()),
+                )?;
+            }
+            Ordering::Equal => {}
         }
     }
 
@@ -95,7 +101,7 @@ pub fn find_projects(text: &str, archive: bool) -> Result<Vec<Project>> {
     let filters = if archive { "" } else { "AND archive = false" };
     // Replace % and _ with \% and \_ because they have meaning
     // FIXME: do this without copy string
-    let text = text.replace("%", r"\%").replace("_", r"\_");
+    let text = text.replace('%', r"\%").replace('_', r"\_");
     let conn = get_connection();
     let mut stmt = conn.prepare(&format!(
         "SELECT * FROM projects WHERE name LIKE ? ESCAPE '\\' {filters}"
@@ -115,7 +121,7 @@ fn new_index() -> i32 {
         .expect("Failed to find new index");
     let first_row = stmt.query_row([], |row| row.get::<_, i32>(0));
     match first_row {
-        Ok(first_row) => return first_row + 1,
-        Err(_) => return 0,
-    };
+        Ok(first_row) => first_row + 1,
+        Err(_) => 0,
+    }
 }

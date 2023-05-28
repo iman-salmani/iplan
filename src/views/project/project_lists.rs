@@ -6,16 +6,11 @@ use crate::db::operations::{create_list, read_list, read_lists, read_task};
 use crate::views::project::{ProjectList, TaskRow};
 use crate::views::IPlanWindow;
 
-#[derive(Clone, Copy, PartialEq)]
+#[derive(Default, Clone, Copy, PartialEq)]
 pub enum ProjectLayout {
     Horizontal,
+    #[default]
     Vertical,
-}
-
-impl Default for ProjectLayout {
-    fn default() -> Self {
-        ProjectLayout::Vertical
-    }
 }
 
 mod imp {
@@ -97,9 +92,15 @@ glib::wrapper! {
         @implements gtk::Buildable;
 }
 
+impl Default for ProjectLists {
+    fn default() -> Self {
+        glib::Object::builder().build()
+    }
+}
+
 impl ProjectLists {
     pub fn new() -> Self {
-        glib::Object::builder().build()
+        Self::default()
     }
 
     pub fn open_project(&self, project_id: i64) {
@@ -135,16 +136,14 @@ impl ProjectLists {
                 .and_downcast::<ProjectList>()
                 .unwrap();
             project_list.select_task(task);
-        } else {
-            if let Some(first_list) = imp.lists_box.first_child().and_downcast::<ProjectList>() {
-                if let Some(first_row) = first_list
-                    .imp()
-                    .tasks_box
-                    .first_child()
-                    .and_downcast::<TaskRow>()
-                {
-                    first_row.grab_focus();
-                }
+        } else if let Some(first_list) = imp.lists_box.first_child().and_downcast::<ProjectList>() {
+            if let Some(first_row) = first_list
+                .imp()
+                .tasks_box
+                .first_child()
+                .and_downcast::<TaskRow>()
+            {
+                first_row.grab_focus();
             }
         }
     }

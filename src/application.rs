@@ -119,12 +119,9 @@ impl IPlanApplication {
         let shortcuts_window: Option<gtk::ShortcutsWindow> =
             gtk::Builder::from_resource("/ir/imansalmani/iplan/ui/shortcuts_window.ui")
                 .object("shortcuts_window");
-        match shortcuts_window {
-            Some(shortcuts_window) => {
-                shortcuts_window.set_transient_for(Some(&active_window));
-                shortcuts_window.present();
-            }
-            None => {}
+        if let Some(shortcuts_window) = shortcuts_window {
+            shortcuts_window.set_transient_for(Some(&active_window));
+            shortcuts_window.present();
         }
     }
 

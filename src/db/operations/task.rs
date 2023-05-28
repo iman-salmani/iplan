@@ -132,7 +132,7 @@ pub fn find_tasks(text: &str, done: bool) -> Result<Vec<Task>> {
     let filters = if done { "" } else { "AND done = false" };
     // Replace % and _ with \% and \_ because they have meaning
     // FIXME: do this without copy string
-    let text = text.replace("%", r"\%").replace("_", r"\_");
+    let text = text.replace('%', r"\%").replace('_', r"\_");
     let conn = get_connection();
     let mut stmt = conn.prepare(&format!(
         "SELECT * FROM tasks WHERE name LIKE ? ESCAPE '\\' {filters}"
@@ -152,7 +152,7 @@ pub fn new_position(list_id: i64) -> i32 {
         .expect("Failed to find new task position");
     let first_row = stmt.query_row([list_id], |row| row.get::<_, i32>(0));
     match first_row {
-        Ok(first_row) => return first_row + 1,
-        Err(_) => return 0,
-    };
+        Ok(first_row) => first_row + 1,
+        Err(_) => 0,
+    }
 }

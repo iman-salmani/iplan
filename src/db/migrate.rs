@@ -36,15 +36,15 @@ fn to1() -> Result<()> {
         (),
     )?;
 
-    let mut stmt = conn.prepare(&format!("SELECT * FROM tasks"))?;
+    let mut stmt = conn.prepare("SELECT * FROM tasks")?;
     let mut rows = stmt.query(())?;
     while let Some(row) = rows.next()? {
         let mut duration_column = row.get::<usize, String>(5)?;
         if !duration_column.is_empty() {
             duration_column.pop();
-            for raw_record in duration_column.split(";") {
-                let start = &raw_record[0..raw_record.find(".").unwrap()];
-                let duration_int = &raw_record[raw_record.find(",").unwrap() + 1..];
+            for raw_record in duration_column.split(';') {
+                let start = &raw_record[0..raw_record.find('.').unwrap()];
+                let duration_int = &raw_record[raw_record.find(',').unwrap() + 1..];
                 conn.execute(
                     "INSERT INTO records(start, duration, task) VALUES (?1, ?2, ?3)",
                     (start, duration_int, row.get::<usize, i64>(0)?),

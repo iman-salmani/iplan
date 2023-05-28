@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE interface SYSTEM "../schema.dtd">
 <interface>
-  <requires lib="gtk" version="4.0"/>
-  <requires lib="Adw" version="1.0"/>
+  <requires lib="gtk" version="4.0" />
+  <requires lib="Adw" version="1.0" />
   <template class="ProjectEditWindow" parent="AdwWindow">
     <property name="width-request">480</property>
     <property name="modal">true</property>
@@ -11,26 +12,28 @@
         <property name="orientation">vertical</property>
         <child><!-- Header -->
           <object class="AdwHeaderBar">
-            <style>
-              <class name="flat"/>
-            </style>
             <property name="title-widget">
               <object class="GtkLabel">
                 <property name="label" translatable="yes">Edit Project</property>
                 <style>
-                  <class name="heading"/>
+                  <class name="heading" />
                 </style>
               </object>
             </property>
+            <style>
+              <class name="flat" />
+            </style>
           </object>
-        </child><!-- End Header -->
+        </child>
+        <!-- End Header -->
         <child><!-- Icon -->
           <object class="GtkLabel" id="icon_label">
             <style>
-              <class name="title-1"/>
+              <class name="title-1" />
             </style>
           </object>
-        </child><!-- End Icon -->
+        </child>
+        <!-- End Icon -->
         <child><!-- Profile -->
           <object class="AdwPreferencesGroup">
             <property name="margin-top">12</property>
@@ -41,9 +44,10 @@
               <object class="AdwEntryRow" id="name_entry_row">
                 <property name="title" translatable="yes">Name</property>
                 <property name="show-apply-button">true</property>
-                <signal name="apply" handler="handle_name_entry_row_apply" swapped="true"/>
+                <signal name="apply" handler="handle_name_entry_row_apply" swapped="true" />
               </object>
-            </child><!-- End Name -->
+            </child>
+            <!-- End Name -->
             <child><!-- Icon Row -->
               <object class="AdwActionRow">
                 <property name="title" translatable="yes">Icon</property>
@@ -54,13 +58,15 @@
                     <property name="valign">center</property>
                     <property name="popover">
                       <object class="GtkEmojiChooser">
-                        <signal name="emoji-picked" handler="handle_project_emoji_picked" swapped="true"/>
+                        <signal name="emoji-picked" handler="handle_project_emoji_picked"
+                          swapped="true" />
                       </object>
                     </property>
                   </object>
                 </child>
               </object>
-            </child><!-- End Icon Row -->
+            </child>
+            <!-- End Icon Row -->
             <child><!-- Description -->
               <object class="AdwExpanderRow" id="description_expander_row">
                 <property name="title" translatable="yes">Description</property>
@@ -78,15 +84,18 @@
                     <property name="right-margin">3</property>
                     <property name="buffer">
                       <object class="GtkTextBuffer" id="description_buffer">
-                        <signal name="changed" handler="handle_description_buffer_changed" swapped="true"/>
+                        <signal name="changed" handler="handle_description_buffer_changed"
+                          swapped="true" />
                       </object>
                     </property>
                   </object>
                 </child>
               </object>
-            </child><!-- End Description -->
+            </child>
+            <!-- End Description -->
           </object>
-        </child><!-- End Profile -->
+        </child>
+        <!-- End Profile -->
         <child><!-- Delete & Archive -->
           <object class="AdwPreferencesGroup">
             <property name="margin-top">12</property>
@@ -103,26 +112,30 @@
                   </object>
                 </child>
               </object>
-            </child><!-- End Archive-->
+            </child>
+            <!-- End Archive-->
             <child><!-- Delete -->
-              <object class="AdwActionRow" >
+              <object class="AdwActionRow">
                 <property name="title" translatable="yes">Delete</property>
                 <property name="activatable-widget">delete_button</property>
                 <child type="suffix">
                   <object class="GtkButton" id="delete_button">
                     <property name="valign">center</property>
                     <property name="icon-name">user-trash-symbolic</property>
-                    <signal name="clicked" handler="handle_delete_button_clicked" swapped="true"/>
+                    <signal name="clicked" handler="handle_delete_button_clicked" swapped="true" />
                     <style>
-                      <class name="flat"/>
+                      <class name="flat" />
                     </style>
                   </object>
                 </child>
               </object>
-            </child><!-- Delete -->
+            </child>
+            <!-- Delete -->
           </object>
-        </child><!-- End Delete & Archive -->
+        </child>
+        <!-- End Delete & Archive -->
       </object>
-    </property><!-- End Content -->
+    </property>
+    <!-- End Content -->
   </template>
 </interface>

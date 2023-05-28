@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE interface SYSTEM "../schema.dtd">
 <interface>
-  <requires lib="gtk" version="4.0"/>
-  <requires lib="Adw" version="1.0"/>
+  <requires lib="gtk" version="4.0" />
+  <requires lib="Adw" version="1.0" />
   <template class="ProjectHeader" parent="GtkBox">
     <child><!-- Name Button -->
       <object class="GtkButton" id="name_button">
@@ -9,29 +10,32 @@
         <property name="margin-start">3</property>
         <property name="hexpand">true</property>
         <property name="halign">start</property>
-        <signal name="clicked" handler="handle_name_button_clicked" swapped="true"/>
+        <signal name="clicked" handler="handle_name_button_clicked" swapped="true" />
         <child>
           <object class="GtkBox">
             <property name="orientation">horizontal</property>
             <child><!-- Icon -->
               <object class="GtkLabel" id="icon_label">
                 <style>
-                  <class name="title-2"/>
+                  <class name="title-2" />
                 </style>
               </object>
-            </child><!-- End Icon -->
+            </child>
+            <!-- End Icon -->
             <child><!-- Icon -->
               <object class="GtkLabel" id="name_label">
                 <property name="margin-start">3</property>
                 <style>
-                  <class name="heading"/>
+                  <class name="heading" />
                 </style>
               </object>
-            </child><!-- End Icon -->
+            </child>
+            <!-- End Icon -->
           </object>
         </child>
       </object>
-    </child><!-- End Name Button -->
+    </child>
+    <!-- End Name Button -->
     <child><!-- Name Entry -->
       <object class="GtkEntry" id="name_entry">
         <property name="margin-start">10</property>
@@ -40,18 +44,19 @@
           bind-source="name_button"
           bind-property="visible"
           bind-flags="invert-boolean">false</property>
-        <signal name="activate" handler="handle_name_entry_activate" swapped="true"/>
+        <signal name="activate" handler="handle_name_entry_activate" swapped="true" />
         <attributes>
-          <attribute name="weight" value="PANGO_WEIGHT_BOLD"/>
+          <attribute name="weight" value="PANGO_WEIGHT_BOLD" />
         </attributes>
       </object>
-    </child><!-- End Name Entry -->
+    </child>
+    <!-- End Name Entry -->
     <child><!-- Project Duration button -->
       <object class="GtkMenuButton">
         <property name="popover">duration_popover</property>
         <property name="margin-start">3</property>
         <style>
-          <class name="flat"/>
+          <class name="flat" />
         </style>
         <child>
           <object class="AdwButtonContent" id="duration_button_content">
@@ -59,13 +64,14 @@
           </object>
         </child>
       </object>
-    </child><!-- End Project Duration button -->
+    </child>
+    <!-- End Project Duration button -->
   </template>
   <!-- Project duration Popover -->
   <object class="GtkPopover" id="duration_popover">
-    <signal name="show" handler="handle_duration_popover_show" swapped="true"/>
+    <signal name="show" handler="handle_duration_popover_show" swapped="true" />
     <style>
-      <class name="menu"/>
+      <class name="menu" />
     </style>
     <child>
       <object class="GtkListBox" id="stat_box">
@@ -96,5 +102,3 @@
   </object>
   <!-- End Project duration Popover -->
 </interface>
-
-

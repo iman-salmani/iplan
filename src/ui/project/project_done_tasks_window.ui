@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE interface SYSTEM "../schema.dtd">
 <interface>
-  <requires lib="gtk" version="4.0"/>
-  <requires lib="Adw" version="1.0"/>
+  <requires lib="gtk" version="4.0" />
+  <requires lib="Adw" version="1.0" />
   <template class="ProjectDoneTasksWindow" parent="AdwWindow">
     <property name="width-request">320</property>
     <property name="modal">true</property>
@@ -11,18 +12,19 @@
         <property name="orientation">vertical</property>
         <child><!-- Header -->
           <object class="AdwHeaderBar">
-            <style>
-              <class name="flat"/>
-            </style>
             <property name="title-widget">
               <object class="GtkLabel" id="name_label">
                 <style>
-                  <class name="heading"/>
+                  <class name="heading" />
                 </style>
               </object>
             </property>
+            <style>
+              <class name="flat" />
+            </style>
           </object>
-        </child><!-- End Header -->
+        </child>
+        <!-- End Header -->
         <child>
           <object class="AdwToastOverlay" id="toast_overlay">
             <child><!-- Scrolled Window -->
@@ -39,26 +41,30 @@
                     <property name="margin-bottom">9</property>
                     <property name="margin-start">15</property>
                     <property name="margin-end">15</property>
-                    <signal name="row-activated" handler="handle_tasks_box_row_activated" swapped="true"/>
+                    <signal name="row-activated" handler="handle_tasks_box_row_activated"
+                      swapped="true" />
                     <style>
-                    <class name="boxed-list"/>
+                      <class name="boxed-list" />
                     </style>
                     <child type="placeholder">
                       <object class="AdwStatusPage">
                         <property name="icon-name">view-list-symbolic</property>
                         <property name="title" translatable="yes">no done tasks found</property>
                         <style>
-                          <class name="compact"/>
+                          <class name="compact" />
                         </style>
                       </object>
                     </child>
                   </object>
-                </child><!-- End Task List -->
+                </child>
+                <!-- End Task List -->
               </object>
-            </child><!-- Scrolled Window -->
+            </child>
+            <!-- Scrolled Window -->
           </object>
         </child>
       </object>
-    </property><!-- End Content -->
+    </property>
+    <!-- End Content -->
   </template>
 </interface>

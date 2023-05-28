@@ -218,7 +218,7 @@ impl TaskRow {
             let (tx, rx) = glib::MainContext::channel(glib::PRIORITY_DEFAULT);
             let mut duration = record.duration();
             thread::spawn(move || loop {
-                if let Err(_) = tx.send(duration.to_string()) {
+                if tx.send(duration.to_string()).is_err() {
                     break;
                 }
                 thread::sleep(Duration::from_secs(1));

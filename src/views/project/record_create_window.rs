@@ -138,7 +138,7 @@ impl RecordCreateWindow {
     fn handle_start_date_entry_changed(&self, entry: adw::EntryRow) {
         let text = entry.text();
         let mut date: Vec<i32> = vec![];
-        for num in text.split("-") {
+        for num in text.split('-') {
             let num = num.trim();
             if let Ok(num) = num.parse::<i32>() {
                 date.push(num);

@@ -1,3 +1,5 @@
+use std::cmp::Ordering;
+
 use rusqlite::Result;
 
 use crate::db::get_connection;
@@ -42,18 +44,22 @@ pub fn update_list(list: &List) -> Result<()> {
 
     if list.index() != old_list.index() {
         index_stmt.push_str(&format!(", i = {}", list.index()));
-        if list.index() > old_list.index() {
-            conn.execute(
-                "UPDATE lists SET i = i - 1
-                WHERE i > ?1 AND i <= ?2",
-                (old_list.index(), list.index()),
-            )?;
-        } else if list.index() < old_list.index() {
-            conn.execute(
-                "UPDATE lists SET i = i + 1
-                WHERE i < ?1 AND i >= ?2",
-                (old_list.index(), list.index()),
-            )?;
+        match list.index().cmp(&old_list.index()) {
+            Ordering::Greater => {
+                conn.execute(
+                    "UPDATE lists SET i = i - 1
+                    WHERE i > ?1 AND i <= ?2",
+                    (old_list.index(), list.index()),
+                )?;
+            }
+            Ordering::Less => {
+                conn.execute(
+                    "UPDATE lists SET i = i + 1
+                    WHERE i < ?1 AND i >= ?2",
+                    (old_list.index(), list.index()),
+                )?;
+            }
+            Ordering::Equal => {}
         }
     }
 
@@ -82,7 +88,7 @@ fn new_index(project_id: i64) -> i32 {
         .expect("Failed to find new index");
     let first_row = stmt.query_row([project_id], |row| row.get::<_, i32>(0));
     match first_row {
-        Ok(first_row) => return first_row + 1,
-        Err(_) => return 0,
-    };
+        Ok(first_row) => first_row + 1,
+        Err(_) => 0,
+    }
 }

@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE interface SYSTEM "../schema.dtd">
 <interface>
-  <requires lib="gtk" version="4.0"/>
-  <requires lib="Adw" version="1.0"/>
+  <requires lib="gtk" version="4.0" />
+  <requires lib="Adw" version="1.0" />
   <template class="RecordCreateWindow" parent="GtkWindow">
     <property name="width-request">480</property>
     <property name="height-request">480</property>
@@ -14,22 +15,22 @@
           <object class="GtkLabel">
             <property name="label" translatable="yes">New Record</property>
             <style>
-              <class name="heading"/>
+              <class name="heading" />
             </style>
           </object>
         </property>
         <child type="start">
           <object class="GtkButton">
             <property name="label" translatable="yes">Cancel</property>
-            <signal name="clicked" handler="handle_cancel_button_clicked" swapped="true"/>
+            <signal name="clicked" handler="handle_cancel_button_clicked" swapped="true" />
           </object>
         </child>
         <child type="end">
           <object class="GtkButton">
             <property name="label" translatable="yes">Done</property>
-            <signal name="clicked" handler="handle_done_button_clicked" swapped="true"/>
+            <signal name="clicked" handler="handle_done_button_clicked" swapped="true" />
             <style>
-              <class name="suggested-action"/>
+              <class name="suggested-action" />
             </style>
           </object>
         </child>
@@ -37,7 +38,7 @@
     </property>
     <child>
       <object class="AdwToastOverlay" id="toast_overlay">
-        <child>  
+        <child>
           <object class="GtkScrolledWindow">
             <child>
               <object class="AdwPreferencesPage">
@@ -47,14 +48,15 @@
                     <child>
                       <object class="AdwEntryRow" id="start_date_entry">
                         <property name="title" translatable="yes">date</property>
-                        <signal name="changed" handler="handle_start_date_entry_changed" swapped="true"/>
+                        <signal name="changed" handler="handle_start_date_entry_changed"
+                          swapped="true" />
                         <child type="suffix">
                           <object class="GtkMenuButton" id="date_picker_menu_button">
                             <property name="icon-name">pan-down-symbolic</property>
                             <property name="popover">date_picker_popover</property>
                             <property name="valign">center</property>
                             <style>
-                              <class name="flat"/>
+                              <class name="flat" />
                             </style>
                           </object>
                         </child>
@@ -73,7 +75,8 @@
                                 <property name="step-increment">1</property>
                               </object>
                             </property>
-                            <signal name="value-changed" handler="handle_start_time_spin_button_value_changed" swapped="true"/>
+                            <signal name="value-changed"
+                              handler="handle_start_time_spin_button_value_changed" swapped="true" />
                           </object>
                         </child>
                       </object>
@@ -91,7 +94,8 @@
                                 <property name="step-increment">1</property>
                               </object>
                             </property>
-                            <signal name="value-changed" handler="handle_start_time_spin_button_value_changed" swapped="true"/>
+                            <signal name="value-changed"
+                              handler="handle_start_time_spin_button_value_changed" swapped="true" />
                           </object>
                         </child>
                       </object>
@@ -109,13 +113,15 @@
                                 <property name="step-increment">1</property>
                               </object>
                             </property>
-                            <signal name="value-changed" handler="handle_start_time_spin_button_value_changed" swapped="true"/>
+                            <signal name="value-changed"
+                              handler="handle_start_time_spin_button_value_changed" swapped="true" />
                           </object>
                         </child>
                       </object>
                     </child>
                   </object>
-                </child><!-- End Start -->
+                </child>
+                <!-- End Start -->
                 <child><!-- Duration -->
                   <object class="AdwPreferencesGroup">
                     <property name="title" translatable="yes">duration</property>
@@ -132,7 +138,9 @@
                                 <property name="step-increment">1</property>
                               </object>
                             </property>
-                            <signal name="value-changed" handler="handle_duration_time_spin_button_value_changed" swapped="true"/>
+                            <signal name="value-changed"
+                              handler="handle_duration_time_spin_button_value_changed"
+                              swapped="true" />
                           </object>
                         </child>
                       </object>
@@ -150,7 +158,9 @@
                                 <property name="step-increment">1</property>
                               </object>
                             </property>
-                            <signal name="value-changed" handler="handle_duration_time_spin_button_value_changed" swapped="true"/>
+                            <signal name="value-changed"
+                              handler="handle_duration_time_spin_button_value_changed"
+                              swapped="true" />
                           </object>
                         </child>
                       </object>
@@ -168,13 +178,16 @@
                                 <property name="step-increment">1</property>
                               </object>
                             </property>
-                            <signal name="value-changed" handler="handle_duration_time_spin_button_value_changed" swapped="true"/>
+                            <signal name="value-changed"
+                              handler="handle_duration_time_spin_button_value_changed"
+                              swapped="true" />
                           </object>
                         </child>
                       </object>
                     </child>
                   </object>
-                </child><!-- End Duration -->
+                </child>
+                <!-- End Duration -->
               </object>
             </child>
           </object>
@@ -185,7 +198,7 @@
   <object class="GtkPopover" id="date_picker_popover">
     <child>
       <object class="GtkCalendar" id="date_picker">
-        <signal name="day-selected" handler="handle_date_picker_day_selected" swapped="true"/>
+        <signal name="day-selected" handler="handle_date_picker_day_selected" swapped="true" />
       </object>
     </child>
   </object>

@@ -1,0 +1,40 @@
+<!ELEMENT interface (requires+,template?,object*,menu*)>
+<!ELEMENT requires EMPTY>
+<!ATTLIST requires lib NMTOKEN #REQUIRED>
+<!ATTLIST requires version NMTOKEN #REQUIRED>
+<!ELEMENT template (property*,child*)>
+<!ATTLIST template class NMTOKEN #REQUIRED>
+<!ATTLIST template parent NMTOKEN #REQUIRED>
+<!ELEMENT property (#PCDATA|object)*>
+<!ATTLIST property name NMTOKEN #REQUIRED>
+<!ATTLIST property bind-source NMTOKEN #IMPLIED>
+<!ATTLIST property bind-property NMTOKEN #IMPLIED>
+<!ATTLIST property bind-flags CDATA #IMPLIED>
+<!ATTLIST property translatable NMTOKEN #IMPLIED>
+<!ATTLIST property context CDATA #IMPLIED>
+<!ELEMENT object (property*,signal*,style?,child*,responses?,attributes?)>
+<!ATTLIST object class NMTOKEN #REQUIRED>
+<!ATTLIST object id NMTOKEN #IMPLIED>
+<!ELEMENT style (class)>
+<!ELEMENT class EMPTY>
+<!ATTLIST class name NMTOKEN #REQUIRED>
+<!ELEMENT child (object)>
+<!ATTLIST child type NMTOKEN #IMPLIED>
+<!ELEMENT signal EMPTY>
+<!ATTLIST signal name NMTOKEN #REQUIRED>
+<!ATTLIST signal handler NMTOKEN #REQUIRED>
+<!ATTLIST signal swapped NMTOKEN #REQUIRED>
+<!ELEMENT menu (section+)>
+<!ATTLIST menu id NMTOKEN #REQUIRED>
+<!ELEMENT section (item+)>
+<!ELEMENT item (attribute+)>
+<!ELEMENT attributes (attribute+)>
+<!ELEMENT attribute (#PCDATA)>
+<!ATTLIST attribute name NMTOKEN #REQUIRED>
+<!ATTLIST attribute translatable NMTOKEN #IMPLIED>
+<!ATTLIST attribute value NMTOKEN #IMPLIED>
+<!ELEMENT responses (response+)>
+<!ELEMENT response (#PCDATA)>
+<!ATTLIST response id NMTOKEN #IMPLIED>
+<!ATTLIST response translatable NMTOKEN #IMPLIED>
+<!ATTLIST response appearance NMTOKEN #IMPLIED>

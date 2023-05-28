@@ -28,7 +28,7 @@ use crate::db::operations::{create_list, create_project, read_list, read_project
 use crate::views::project::{
     ProjectDoneTasksWindow, ProjectEditWindow, ProjectHeader, ProjectLayout, ProjectLists,
 };
-use crate::views::sidebar::Sidebar;
+use crate::views::sidebar::SidebarProjects;
 
 mod imp {
     use super::*;
@@ -41,7 +41,7 @@ mod imp {
         #[template_child]
         pub project_layout_button: TemplateChild<gtk::Button>,
         #[template_child]
-        pub sidebar: TemplateChild<Sidebar>,
+        pub sidebar_projects: TemplateChild<SidebarProjects>,
         #[template_child]
         pub project_header: TemplateChild<ProjectHeader>,
         #[template_child]
@@ -65,7 +65,7 @@ mod imp {
                 imp.project_header.open_project(&project);
                 imp.project_lists.open_project(project.id());
                 imp.project_lists.select_task(None);
-                imp.sidebar.imp().projects_section.check_archive_hidden();
+                imp.sidebar_projects.check_archive_hidden();
             });
             klass.install_action("project.new", None, move |win, _, _| {
                 let imp = win.imp();
@@ -73,7 +73,7 @@ mod imp {
                 imp.project_header.open_project(&project);
                 imp.project_lists.open_project(project.id());
                 imp.project_header.imp().name_button.emit_clicked();
-                imp.sidebar.imp().projects_section.check_archive_hidden();
+                imp.sidebar_projects.check_archive_hidden();
             });
             klass.install_action("project.edit", None, move |win, _, _| {
                 let window = ProjectEditWindow::new(win.application().unwrap(), win, win.project());
@@ -83,10 +83,10 @@ mod imp {
                 let imp = win.imp();
                 let project = win.project();
                 imp.project_header.open_project(&project);
-                imp.sidebar.imp().projects_section.update_project(&project);
+                imp.sidebar_projects.update_project(&project);
             });
             klass.install_action("project.delete", None, move |win, _, _| {
-                let projects_section = &win.imp().sidebar.imp().projects_section;
+                let projects_section = &win.imp().sidebar_projects;
                 projects_section.delete_project(win.project().index());
                 let projects = read_projects(true).expect("Failed to read projects");
                 let home_project = if let Some(project) = projects.get(0) {
@@ -112,9 +112,8 @@ mod imp {
                 imp.project_header.open_project(&project);
                 imp.project_lists.open_project(project.id());
                 imp.project_lists.select_task(None);
-                let sidebar_imp = imp.sidebar.imp();
-                sidebar_imp.projects_section.select_active_project();
-                sidebar_imp.projects_section.check_archive_hidden();
+                imp.sidebar_projects.select_active_project();
+                imp.sidebar_projects.check_archive_hidden();
             });
             klass.install_action("search.task", Some("(bx)"), move |win, _, value| {
                 let imp = win.imp();
@@ -123,9 +122,8 @@ mod imp {
                     let project = win.project();
                     imp.project_header.open_project(&project);
                     imp.project_lists.open_project(project.id());
-                    let sidebar_imp = imp.sidebar.imp();
-                    sidebar_imp.projects_section.select_active_project();
-                    sidebar_imp.projects_section.check_archive_hidden();
+                    imp.sidebar_projects.select_active_project();
+                    imp.sidebar_projects.check_archive_hidden();
                 }
                 let (tx, rx) = glib::MainContext::channel(glib::PRIORITY_DEFAULT);
                 glib::idle_add_once(move || {
@@ -150,9 +148,8 @@ mod imp {
                     let project = win.project();
                     imp.project_header.open_project(&project);
                     imp.project_lists.open_project(project.id());
-                    let sidebar_imp = imp.sidebar.imp();
-                    sidebar_imp.projects_section.select_active_project();
-                    sidebar_imp.projects_section.check_archive_hidden();
+                    imp.sidebar_projects.select_active_project();
+                    imp.sidebar_projects.check_archive_hidden();
                 }
                 let (tx, rx) = glib::MainContext::channel(glib::PRIORITY_DEFAULT);
                 glib::idle_add_once(move || {
@@ -265,7 +262,7 @@ impl IPlanWindow {
         window
             .activate_action("project.open", None)
             .expect("Failed to open project");
-        imp.sidebar.imp().projects_section.select_active_project();
+        imp.sidebar_projects.select_active_project();
         imp.project_lists.open_project(window.project().id());
 
         window

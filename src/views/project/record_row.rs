@@ -123,8 +123,7 @@ impl RecordRow {
         imp.start_hour_spin_button.set_value(start.hour() as f64);
         imp.start_minute_spin_button
             .set_value(start.minute() as f64);
-        imp.start_seconds_spin_button
-            .set_value(start.seconds() as f64);
+        imp.start_seconds_spin_button.set_value(start.seconds());
         row
     }
 
@@ -162,7 +161,7 @@ impl RecordRow {
     fn handle_start_date_entry_changed(&self, entry: adw::EntryRow) {
         let text = entry.text();
         let mut date: Vec<i32> = vec![];
-        for num in text.split("-") {
+        for num in text.split('-') {
             let num = num.trim();
             if let Ok(num) = num.parse::<i32>() {
                 date.push(num);

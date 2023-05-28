@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE interface SYSTEM "schema.dtd">
 <interface>
+  <requires lib="gtk" version="4.0" />
   <object class="GtkShortcutsWindow" id="shortcuts_window">
     <property name="modal">True</property>
     <child>
@@ -10,15 +12,17 @@
           <object class="GtkShortcutsGroup">
             <property name="title" translatable="yes" context="shortcut window">Application</property>
             <!-- <child> -->
-            <!--   <object class="GtkShortcutsShortcut"> -->
-            <!--     <property name="title" translatable="yes" context="shortcut window">Preferences</property> -->
-            <!--     <property name="action-name">app.preferences</property> -->
-            <!--     <property name="accelerator">&lt;Primary&gt;comma</property> -->
-            <!--   </object> -->
+            <!-- <object class="GtkShortcutsShortcut"> -->
+            <!-- <property name="title" translatable="yes" context="shortcut
+            window">Preferences</property> -->
+            <!-- <property name="action-name">app.preferences</property> -->
+            <!-- <property name="accelerator">&lt;Primary&gt;comma</property> -->
+            <!-- </object> -->
             <!-- </child> -->
             <child>
               <object class="GtkShortcutsShortcut">
-                <property name="title" translatable="yes" context="shortcut window">Keyboard Shortcuts</property>
+                <property name="title" translatable="yes" context="shortcut window">Keyboard
+                  Shortcuts</property>
                 <property name="action-name">app.shortcuts</property>
                 <property name="accelerator">&lt;Primary&gt;question</property>
               </object>
@@ -37,7 +41,8 @@
               </object>
             </child>
           </object>
-        </child><!-- End Application -->
+        </child>
+        <!-- End Application -->
         <child><!-- Tasks -->
           <object class="GtkShortcutsGroup">
             <property name="title" translatable="yes" context="shortcut window">Tasks</property>
@@ -49,9 +54,9 @@
               </object>
             </child>
           </object>
-        </child><!-- End Tasks -->
+        </child>
+        <!-- End Tasks -->
       </object>
     </child>
   </object>
 </interface>
-

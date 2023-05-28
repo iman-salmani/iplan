@@ -53,10 +53,16 @@ glib::wrapper! {
         @implements gtk::Buildable;
 }
 
+impl Default for ProjectHeader {
+    fn default() -> Self {
+        glib::Object::builder().build()
+    }
+}
+
 #[gtk::template_callbacks]
 impl ProjectHeader {
     pub fn new() -> Self {
-        glib::Object::builder().build()
+        Self::default()
     }
 
     // open_project - used by handle_project_open and handle_project_update in window
@@ -98,11 +104,7 @@ impl ProjectHeader {
         imp.name_button.set_visible(true);
         project.set_property("name", name);
         update_project(&project).expect("Failed to update project");
-        win.imp()
-            .sidebar
-            .imp()
-            .projects_section
-            .update_project(&project);
+        win.imp().sidebar_projects.update_project(&project);
     }
 
     #[template_callback]
@@ -145,7 +147,7 @@ impl ProjectHeader {
                     }
                 }
                 if duration != 0 {
-                    if let Err(_) = tx.send((date, duration)) {}
+                    tx.send((date, duration)).unwrap();
                 }
                 dates.push(date_unix);
             }

@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE interface SYSTEM "schema.dtd">
 <interface>
-  <requires lib="gtk" version="4.0"/>
-  <requires lib="Adw" version="1.0"/>
+  <requires lib="gtk" version="4.0" />
+  <requires lib="Adw" version="1.0" />
   <template class="IPlanWindow" parent="AdwApplicationWindow">
     <property name="width-request">480</property>
     <property name="height-request">480</property>
@@ -10,13 +11,38 @@
         <property name="reveal-flap"
           bind-source="toggle_pane_button"
           bind-property="active"
-          bind-flags="sync-create|bidirectional"/>
-        <property name="flap"><!-- Sidebar -->
-          <object class="Sidebar" id="sidebar"></object>
-        </property><!-- Sidebar -->
-        <property name="separator"><!-- Separator -->
-          <object class="GtkSeparator"/>
-        </property><!-- End Separator -->
+          bind-flags="sync-create|bidirectional" />
+        <!-- Sidebar -->
+        <property name="flap">
+          <object class="GtkBox" id="sidebar">
+            <property name="orientation">vertical</property>
+            <property name="width-request">240</property>
+            <property name="hexpand">False</property>
+            <style>
+              <class name="background" />
+            </style>
+            <child>
+              <object class="AdwHeaderBar">
+                <property name="show-end-title-buttons">false</property>
+                <property name="title-widget">
+                  <object class="GtkLabel">
+                    <property name="label" translatable="yes">IPlan</property>
+                    <style>
+                      <class name="heading" />
+                    </style>
+                  </object>
+                </property>
+              </object>
+            </child>
+            <child>
+              <object class="SidebarProjects" id="sidebar_projects" />
+            </child>
+          </object>
+        </property>
+        <!-- End Sidebar -->
+        <property name="separator">
+          <object class="GtkSeparator" />
+        </property>
         <property name="content"><!-- Content -->
           <object class="GtkBox">
             <property name="orientation">vertical</property>
@@ -31,14 +57,14 @@
                     <property name="icon-name">sidebar-show-symbolic</property>
                     <property name="active">True</property>
                     <property name="visible"
-                              bind-source="flap"
-                              bind-property="folded"
-                              bind-flags="sync-create"/>
+                      bind-source="flap"
+                      bind-property="folded"
+                      bind-flags="sync-create" />
                   </object>
                 </child>
                 <!-- End Toggle Pane Button -->
                 <child>
-                  <object class="ProjectHeader" id="project_header"/>
+                  <object class="ProjectHeader" id="project_header" />
                 </child>
                 <!-- Primary Menu Button -->
                 <child type="end">
@@ -58,22 +84,26 @@
                 <child type="end">
                   <object class="GtkButton" id="project_layout_button">
                     <property name="icon-name">list-symbolic</property>
-                    <signal name="clicked" handler="handle_project_layout_button_clicked" swapped="true"/>
+                    <signal name="clicked" handler="handle_project_layout_button_clicked"
+                      swapped="true" />
                   </object>
                 </child>
               </object>
-            </child><!-- End Header -->
+            </child>
+            <!-- End Header -->
             <child>
               <object class="AdwToastOverlay" id="toast_overlay">
                 <child>
-                  <object class="ProjectLists" id="project_lists"/>
+                  <object class="ProjectLists" id="project_lists" />
                 </child>
               </object>
             </child>
           </object>
-        </property><!-- End Content -->
+        </property>
+        <!-- End Content -->
       </object>
-    </property><!-- End Flap -->
+    </property>
+    <!-- End Flap -->
   </template>
   <!-- Primary Menu Model -->
   <menu id='primary_menu_model'>
@@ -89,8 +119,8 @@
     </section>
     <section>
       <!-- <item> -->
-      <!--   <attribute name='label' translatable='yes'>_Preferences</attribute> -->
-      <!--   <attribute name='action'>app.preferences</attribute> -->
+      <!-- <attribute name='label' translatable='yes'>_Preferences</attribute> -->
+      <!-- <attribute name='action'>app.preferences</attribute> -->
       <!-- </item> -->
       <item>
         <attribute name='label' translatable='yes'>_Keyboard Shortcuts</attribute>

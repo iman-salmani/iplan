@@ -171,9 +171,8 @@ impl ProjectList {
                 }
             }));
             imp.scrolled_window.add_controller(&scroll_controller);
-
             imp.scrolled_window.connect_edge_reached(glib::clone!(
-            @weak self as obj @weak imp => @default-return (),
+            @weak imp => @default-return (),
             move |_obj, pos| {
                 if pos == gtk::PositionType::Bottom {
                     let next = imp.tasks_box.observe_children().n_items() as usize - 1;
@@ -242,7 +241,7 @@ impl ProjectList {
                 Some(gdk::ContentProvider::for_value(&obj.to_value()))
             }}));
         list_drag_source.connect_drag_begin(|_drag_source, drag| {
-            let drag_icon: gtk::DragIcon = gtk::DragIcon::for_drag(&drag).downcast().unwrap();
+            let drag_icon: gtk::DragIcon = gtk::DragIcon::for_drag(drag).downcast().unwrap();
             let label = gtk::Label::builder().label("").build();
             drag_icon.set_child(Some(&label));
             drag.set_hotspot(0, 0);
@@ -288,7 +287,7 @@ impl ProjectList {
         for i in 0..task_rows.n_items() - 1 {
             if let Some(project_list_task) = task_rows.item(i).and_downcast::<TaskRow>() {
                 let list_task = project_list_task.task();
-                if list_task.position() == target_task.position() as i32 {
+                if list_task.position() == target_task.position() {
                     project_list_task.grab_focus();
                     loaded = true;
                     break;

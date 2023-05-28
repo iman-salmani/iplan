@@ -136,7 +136,7 @@ impl ProjectDoneTasksWindow {
         for i in 0..tasks.n_items() - 1 {
             if let Some(project_list_task) = tasks.item(i).and_downcast::<TaskRow>() {
                 let list_task = project_list_task.task();
-                if list_task.position() == task.position() as i32 {
+                if list_task.position() == task.position() {
                     project_list_task.grab_focus();
                     break;
                 }

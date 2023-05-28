@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE interface SYSTEM "../schema.dtd">
 <interface>
-  <requires lib="gtk" version="4.0"/>
-  <requires lib="Adw" version="1.0"/>
+  <requires lib="gtk" version="4.0" />
+  <requires lib="Adw" version="1.0" />
   <template class="SearchResult" parent="GtkListBoxRow">
     <property name="activatable">true</property>
     <child>
@@ -27,7 +28,7 @@
           <object class="GtkLabel" id="type_label">
             <property name="margin-start">6</property>
             <style>
-              <class name="dim-label"/>
+              <class name="dim-label" />
             </style>
           </object>
         </child>

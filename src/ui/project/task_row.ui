@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE interface SYSTEM "../schema.dtd">
 <interface>
-  <requires lib="gtk" version="4.0"/>
-  <requires lib="Adw" version="1.0"/>
+  <requires lib="gtk" version="4.0" />
+  <requires lib="Adw" version="1.0" />
   <template class="TaskRow" parent="GtkListBoxRow">
     <child><!-- Box -->
       <object class="GtkBox">
@@ -11,30 +12,32 @@
         <property name="margin-top">3</property>
         <property name="margin-bottom">3</property>
         <style>
-          <class name="toolbar"/>
+          <class name="toolbar" />
         </style>
         <child><!-- Check Button -->
           <object class="GtkCheckButton" id="checkbox">
-            <signal name="toggled" handler="handle_done_check_button_toggled" swapped="true"/>
+            <signal name="toggled" handler="handle_done_check_button_toggled" swapped="true" />
           </object>
-        </child><!-- End Check Button -->
+        </child>
+        <!-- End Check Button -->
         <child><!-- Name Button -->
           <object class="GtkButton" id="name_button">
             <property name="margin-start">0</property>
-            <signal name="clicked" handler="handle_name_button_clicked" swapped="true"/>
+            <signal name="clicked" handler="handle_name_button_clicked" swapped="true" />
             <style>
-              <class name="flat"/>
+              <class name="flat" />
             </style>
             <child>
               <object class="GtkLabel">
                 <property name="ellipsize">end</property>
                 <attributes>
-                  <attribute name="weight" value="PANGO_WEIGHT_NORMAL"/>
+                  <attribute name="weight" value="PANGO_WEIGHT_NORMAL" />
                 </attributes>
               </object>
             </child>
           </object>
-        </child><!-- End Name Button -->
+        </child>
+        <!-- End Name Button -->
         <child><!-- Name Entry -->
           <object class="GtkEntry" id="name_entry">
             <property name="margin-start">1</property>
@@ -45,15 +48,16 @@
               bind-property="visible"
               bind-flags="invert-boolean">false</property>
             <property name="secondary-icon-name">window-close-symbolic</property>
-            <signal name="activate" handler="handle_name_entry_activate" swapped="true"/>
-            <signal name="icon-press" handler="handle_name_entry_icon_press" swapped="true"/>
+            <signal name="activate" handler="handle_name_entry_activate" swapped="true" />
+            <signal name="icon-press" handler="handle_name_entry_icon_press" swapped="true" />
           </object>
-        </child><!-- End Name Entry -->
+        </child>
+        <!-- End Name Entry -->
         <child>
           <object class="GtkSeparator">
             <property name="hexpand">true</property>
             <style>
-              <class name="spacer"/>
+              <class name="spacer" />
             </style>
           </object>
         </child>
@@ -65,25 +69,29 @@
               </object>
             </child>
           </object>
-        </child><!-- End Timer -->
+        </child>
+        <!-- End Timer -->
         <child><!-- Task Options Button -->
           <object class="GtkMenuButton" id="options_button">
             <property name="icon_name">view-more-symbolic</property>
             <property name="has_frame">false</property>
             <property name="popover">options_popover</property>
           </object>
-        </child><!-- End Task Options Button -->
+        </child>
+        <!-- End Task Options Button -->
       </object>
-    </child><!-- End Box -->
+    </child>
+    <!-- End Box -->
     <child><!-- Drag Source -->
       <object class="GtkDragSource">
         <property name="actions">move</property>
         <property name="propagation-phase">capture</property>
-        <signal name="prepare" handler="handle_drag_prepare" swapped="true"/>
-        <signal name="drag-begin" handler="handle_drag_begin" swapped="true"/>
-        <signal name="drag-cancel" handler="handle_drag_cancel" swapped="true"/>
+        <signal name="prepare" handler="handle_drag_prepare" swapped="true" />
+        <signal name="drag-begin" handler="handle_drag_begin" swapped="true" />
+        <signal name="drag-cancel" handler="handle_drag_cancel" swapped="true" />
       </object>
-    </child><!-- End Drag Source -->
+    </child>
+    <!-- End Drag Source -->
   </template>
   <!-- Options Popover -->
   <object class="GtkPopover" id="options_popover">
@@ -93,9 +101,9 @@
         <property name="spacing">6</property>
         <child><!-- Delete Task -->
           <object class="GtkButton">
-            <signal name="clicked" handler="handle_delete_button_clicked" swapped="true"/>
+            <signal name="clicked" handler="handle_delete_button_clicked" swapped="true" />
             <style>
-              <class name="flat"/>
+              <class name="flat" />
             </style>
             <child>
               <object class="GtkBox">
@@ -109,14 +117,15 @@
                   <object class="GtkLabel">
                     <property name="label" translatable="yes">Delete</property>
                     <attributes>
-                      <attribute name="weight" value="PANGO_WEIGHT_NORMAL"/>
+                      <attribute name="weight" value="PANGO_WEIGHT_NORMAL" />
                     </attributes>
                   </object>
                 </child>
               </object>
             </child>
           </object>
-        </child><!-- End Delete Task -->
+        </child>
+        <!-- End Delete Task -->
       </object>
     </child>
   </object>

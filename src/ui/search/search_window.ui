@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE interface SYSTEM "../schema.dtd">
 <interface>
-  <requires lib="gtk" version="4.0"/>
-  <requires lib="Adw" version="1.0"/>
+  <requires lib="gtk" version="4.0" />
+  <requires lib="Adw" version="1.0" />
   <template class="SearchWindow" parent="GtkWindow">
     <property name="width-request">480</property>
     <property name="height-request">480</property>
@@ -9,21 +10,23 @@
     <property name="destroy-with-parent">true</property>
     <property name="titlebar">
       <object class="AdwHeaderBar">
-        <style>
-          <class name="flat"/>
-        </style>
         <property name="title-widget">
           <object class="GtkSearchEntry" id="search_entry">
             <property name="hexpand">true</property>
             <property name="placeholder-text" translatable="yes">Search</property>
-            <signal name="activate" handler="handle_search_entry_activate" swapped="true"/>
-            <signal name="search-changed" handler="handle_search_entry_search_changed" swapped="true"/>
+            <signal name="activate" handler="handle_search_entry_activate" swapped="true" />
+            <signal name="search-changed" handler="handle_search_entry_search_changed"
+              swapped="true" />
           </object>
         </property>
+        <style>
+          <class name="flat" />
+        </style>
         <child type="start">
           <object class="GtkToggleButton" id="show_done_tasks_toggle_button">
             <property name="icon-name">object-select-symbolic</property>
-            <signal name="toggled" handler="handle_show_done_tasks_toggle_button_toggled" swapped="true"/>
+            <signal name="toggled" handler="handle_show_done_tasks_toggle_button_toggled"
+              swapped="true" />
           </object>
         </child>
       </object>
@@ -44,9 +47,10 @@
                 <property name="margin-bottom">3</property>
                 <property name="margin-start">12</property>
                 <property name="margin-end">12</property>
-                <signal name="row-activated" handler="handle_search_results_row_activated" swapped="true"/>
+                <signal name="row-activated" handler="handle_search_results_row_activated"
+                  swapped="true" />
                 <style>
-                  <class name="boxed-list"/>
+                  <class name="boxed-list" />
                 </style>
                 <child type="placeholder">
                   <object class="AdwStatusPage" id="search_results_placeholder">

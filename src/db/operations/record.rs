@@ -56,10 +56,7 @@ pub fn read_record(record_id: i64) -> Result<Record> {
 pub fn update_record(record: &Record) -> Result<()> {
     let conn = get_connection();
     conn.execute(
-        &format!(
-            "UPDATE records SET
-            start = ?2, duration = ?3, task = ?4 WHERE id = ?1"
-        ),
+        "UPDATE records SET start = ?2, duration = ?3, task = ?4 WHERE id = ?1",
         (
             record.id(),
             record.start(),

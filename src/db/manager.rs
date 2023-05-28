@@ -1,5 +1,6 @@
 use gtk::glib;
 use rusqlite::{Connection, Result};
+use std::cmp::Ordering;
 
 use crate::db::migrate::MIGRATIONS;
 
@@ -74,16 +75,20 @@ pub fn check_database() -> Result<()> {
         // conn.pragma(schema_name, pragma_name, pragma_value, f)
         let mut stmt = conn.prepare("PRAGMA user_version")?;
         let version = stmt.query_row([], |row| row.get::<usize, u8>(0)).unwrap();
-        if DB_VERSION > version {
-            for i in version..DB_VERSION {
-                MIGRATIONS[i as usize]().expect("Failed to migrate database");
-                conn.execute(&format!("PRAGMA user_version={}", DB_VERSION), ())?;
+        match DB_VERSION.cmp(&version) {
+            Ordering::Greater => {
+                for i in version..DB_VERSION {
+                    MIGRATIONS[i as usize]().expect("Failed to migrate database");
+                    conn.execute(&format!("PRAGMA user_version={}", DB_VERSION), ())?;
+                }
             }
-        } else if DB_VERSION < version {
-            panic!(
-                "Database version is {}. please update application.",
-                version
-            );
+            Ordering::Less => {
+                panic!(
+                    "Database version is {}. please update application.",
+                    version
+                );
+            }
+            Ordering::Equal => {}
         }
     }
     Ok(())

@@ -9,8 +9,8 @@ mod imp {
     use super::*;
 
     #[derive(Default, gtk::CompositeTemplate)]
-    #[template(resource = "/ir/imansalmani/iplan/ui/sidebar/sidebar_project.ui")]
-    pub struct SidebarProject {
+    #[template(resource = "/ir/imansalmani/iplan/ui/sidebar/project_row.ui")]
+    pub struct ProjectRow {
         pub project: RefCell<Project>,
         #[template_child]
         pub icon_label: TemplateChild<gtk::Label>,
@@ -19,9 +19,9 @@ mod imp {
     }
 
     #[glib::object_subclass]
-    impl ObjectSubclass for SidebarProject {
-        const NAME: &'static str = "SidebarProject";
-        type Type = super::SidebarProject;
+    impl ObjectSubclass for ProjectRow {
+        const NAME: &'static str = "ProjectRow";
+        type Type = super::ProjectRow;
         type ParentType = gtk::ListBoxRow;
 
         fn class_init(klass: &mut Self::Class) {
@@ -34,7 +34,7 @@ mod imp {
         }
     }
 
-    impl ObjectImpl for SidebarProject {
+    impl ObjectImpl for ProjectRow {
         fn constructed(&self) {
             self.parent_constructed();
         }
@@ -62,20 +62,20 @@ mod imp {
             }
         }
     }
-    impl WidgetImpl for SidebarProject {}
-    impl ListBoxRowImpl for SidebarProject {}
+    impl WidgetImpl for ProjectRow {}
+    impl ListBoxRowImpl for ProjectRow {}
 }
 
 glib::wrapper! {
-    pub struct SidebarProject(ObjectSubclass<imp::SidebarProject>)
+    pub struct ProjectRow(ObjectSubclass<imp::ProjectRow>)
         @extends gtk::Widget, gtk::ListBoxRow,
         @implements gtk::Buildable;
 }
 
 #[gtk::template_callbacks]
-impl SidebarProject {
+impl ProjectRow {
     pub fn new(project: Project) -> Self {
-        let obj = glib::Object::new::<SidebarProject>(&[("project", &project)]);
+        let obj = glib::Object::new::<ProjectRow>(&[("project", &project)]);
 
         let imp = obj.imp();
 
@@ -117,7 +117,7 @@ impl SidebarProject {
         let projects = read_projects(true).expect("Failed to read projects");
         let rows = projects_box.observe_children();
         for row in rows.into_iter() {
-            let row: SidebarProject = row.unwrap().downcast().unwrap();
+            let row: ProjectRow = row.unwrap().downcast().unwrap();
             let row_project = row.project();
             for project in &projects {
                 if project.id() == row_project.id() {

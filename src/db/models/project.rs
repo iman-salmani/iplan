@@ -109,7 +109,7 @@ impl Project {
         let mut total = 0;
         for task in read_tasks(self.id(), None, None, Some(0)).expect("Failed to read tasks") {
             if let Some(task_duration) = task.duration() {
-                total = total + task_duration;
+                total += task_duration;
             }
         }
         if total == 0 {

@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE interface SYSTEM "../schema.dtd">
 <interface>
-  <requires lib="gtk" version="4.0"/>
-  <requires lib="Adw" version="1.0"/>
+  <requires lib="gtk" version="4.0" />
+  <requires lib="Adw" version="1.0" />
   <template class="TaskWindow" parent="GtkWindow">
     <property name="width-request">480</property>
     <property name="height-request">480</property>
@@ -13,21 +14,22 @@
           <object class="GtkLabel">
             <property name="label"></property>
             <style>
-              <class name="heading"/>
+              <class name="heading" />
             </style>
           </object>
         </property>
         <child type="start"><!-- Back Button -->
           <object class="GtkButton" id="back_button">
             <property name="visible">false</property>
-            <signal name="clicked" handler="handle_back_button_clicked" swapped="true"/>
+            <signal name="clicked" handler="handle_back_button_clicked" swapped="true" />
             <child>
               <object class="AdwButtonContent" id="back_button_content">
                 <property name="icon-name">go-previous-symbolic</property>
               </object>
             </child>
           </object>
-        </child><!-- End Back Button -->
+        </child>
+        <!-- End Back Button -->
       </object>
     </property>
     <child><!-- Toast Overlay -->
@@ -36,7 +38,7 @@
           <object class="GtkStack" id="task_pages_stack">
           </object>
         </child><!-- Stack -->
-      </object> 
+      </object>
     </child><!-- End Toast Overlay -->
   </template>
 </interface>

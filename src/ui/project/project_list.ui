@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE interface SYSTEM "../schema.dtd">
 <interface>
-  <requires lib="gtk" version="4.0"/>
-  <requires lib="Adw" version="1.0"/>
+  <requires lib="gtk" version="4.0" />
+  <requires lib="Adw" version="1.0" />
   <template class="ProjectList" parent="GtkBox">
     <property name="orientation">vertical</property>
     <property name="width-request">480</property>
@@ -15,9 +16,10 @@
             <property name="margin-start">4</property>
             <property name="hexpand">true</property>
             <property name="halign">start</property>
-            <signal name="clicked" handler="handle_name_button_clicked" swapped="true"/>
+            <signal name="clicked" handler="handle_name_button_clicked" swapped="true" />
           </object>
-        </child><!-- End Name Button -->
+        </child>
+        <!-- End Name Button -->
         <child><!-- Name Entry -->
           <object class="GtkEntry" id="name_entry">
             <property name="margin-start">12</property>
@@ -27,28 +29,32 @@
               bind-source="name_button"
               bind-property="visible"
               bind-flags="invert-boolean">false</property>
-            <signal name="activate" handler="handle_name_entry_activate" swapped="true"/>
+            <signal name="activate" handler="handle_name_entry_activate" swapped="true" />
             <attributes>
-              <attribute name="weight" value="PANGO_WEIGHT_BOLD"/>
+              <attribute name="weight" value="PANGO_WEIGHT_BOLD" />
             </attributes>
           </object>
-        </child><!-- End Name Entry -->
+        </child>
+        <!-- End Name Entry -->
         <child><!-- New Task Button -->
           <object class="GtkButton" id="new_task_button">
             <property name="icon-name">list-add-symbolic</property>
             <property name="has_frame">false</property>
-            <signal name="clicked" handler="handle_new_button_clicked" swapped="true"/>
+            <signal name="clicked" handler="handle_new_button_clicked" swapped="true" />
           </object>
-        </child><!-- End New Task Button -->
+        </child>
+        <!-- End New Task Button -->
         <child><!-- Project Options Button -->
           <object class="GtkMenuButton" id="options_button">
             <property name="icon_name">view-more-symbolic</property>
             <property name="has_frame">false</property>
             <property name="popover">options_popover</property>
           </object>
-        </child><!-- End Project Options Button -->
+        </child>
+        <!-- End Project Options Button -->
       </object>
-    </child><!-- End Header -->
+    </child>
+    <!-- End Header -->
     <child><!-- Task List -->
       <object class="GtkListBox" id="tasks_box">
         <property name="valign">start</property>
@@ -57,9 +63,9 @@
         <property name="margin-bottom">9</property>
         <property name="margin-start">15</property>
         <property name="margin-end">15</property>
-        <signal name="row-activated" handler="handle_tasks_box_row_activated" swapped="true"/>
+        <signal name="row-activated" handler="handle_tasks_box_row_activated" swapped="true" />
         <style>
-          <class name="boxed-list"/>
+          <class name="boxed-list" />
         </style>
         <child type="placeholder">
           <object class="AdwStatusPage">
@@ -70,14 +76,16 @@
           </object>
         </child>
       </object>
-    </child><!-- End Task List -->
+    </child>
+    <!-- End Task List -->
     <child><!-- Scrolled Window - Its for horizontal layout-->
       <object class="GtkScrolledWindow" id="scrolled_window">
         <property name="vexpand">true</property>
         <property name="visible">false</property>
         <property name="hscrollbar-policy">never</property>
       </object>
-    </child><!-- Scrolled Window -->
+    </child><!-- Scrolled
+    Window -->
   </template>
   <!-- Options Popover -->
   <object class="GtkPopover" id="options_popover">
@@ -87,9 +95,9 @@
         <property name="spacing">6</property>
         <child><!-- Done Tasks Button -->
           <object class="GtkButton" id="show_done_tasks_button">
-            <signal name="clicked" handler="handle_show_done_tasks_button_clicked" swapped="true"/>
+            <signal name="clicked" handler="handle_show_done_tasks_button_clicked" swapped="true" />
             <style>
-              <class name="flat"/>
+              <class name="flat" />
             </style>
             <child>
               <object class="GtkBox">
@@ -103,22 +111,23 @@
                   <object class="GtkLabel">
                     <property name="label" translatable="yes">Done tasks</property>
                     <attributes>
-                      <attribute name="weight" value="PANGO_WEIGHT_NORMAL"/>
+                      <attribute name="weight" value="PANGO_WEIGHT_NORMAL" />
                     </attributes>
                   </object>
                 </child>
               </object>
             </child>
           </object>
-        </child><!-- End Done Tasks Button -->
+        </child>
+        <!-- End Done Tasks Button -->
         <child>
-          <object class="GtkSeparator"/>
+          <object class="GtkSeparator" />
         </child>
         <child><!-- Delete List -->
           <object class="GtkButton">
-            <signal name="clicked" handler="handle_delete_button_clicked" swapped="true"/>
+            <signal name="clicked" handler="handle_delete_button_clicked" swapped="true" />
             <style>
-              <class name="flat"/>
+              <class name="flat" />
             </style>
             <child>
               <object class="GtkBox">
@@ -132,14 +141,15 @@
                   <object class="GtkLabel">
                     <property name="label" translatable="yes">Delete list</property>
                     <attributes>
-                      <attribute name="weight" value="PANGO_WEIGHT_NORMAL"/>
+                      <attribute name="weight" value="PANGO_WEIGHT_NORMAL" />
                     </attributes>
                   </object>
                 </child>
               </object>
             </child>
           </object>
-        </child><!-- End Delete List -->
+        </child>
+        <!-- End Delete List -->
       </object>
     </child>
   </object>
