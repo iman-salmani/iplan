@@ -80,7 +80,7 @@ mod imp {
                     @weak obj, @weak task =>
                     move |_toast| {
                         task.set_property("done", false);
-                        update_task(task.clone()).expect("Failed to update task");
+                        update_task(&task).expect("Failed to update task");
                         let row = TaskRow::new(task);
                         obj.imp().tasks_box.append(&row);
                         row.init_widgets();
@@ -525,7 +525,7 @@ impl ProjectList {
         let task = row.task();
         let task_db = read_task(task.id()).expect("Failed to read task");
         if task_db.position() != task.position() || task_db.list() != task.list() {
-            update_task(task).expect("Failed to update task");
+            update_task(&task).expect("Failed to update task");
         }
         row.grab_focus();
         true

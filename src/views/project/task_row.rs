@@ -147,7 +147,7 @@ impl TaskRow {
             // This happens in fetch done tasks
             task.set_property("done", is_active);
             self.set_property("task", task);
-            update_task(self.task()).expect("Failed to update task");
+            update_task(&self.task()).expect("Failed to update task");
 
             if is_active {
                 imp.timer_toggle_button.set_active(false);
@@ -187,7 +187,7 @@ impl TaskRow {
         imp.name_button.set_visible(true);
         imp.name_button.set_tooltip_text(Some(&name));
         task.set_property("name", name);
-        update_task(task).expect("Failed to update task");
+        update_task(&task).expect("Failed to update task");
     }
 
     #[template_callback]
@@ -279,7 +279,7 @@ impl TaskRow {
             move |_toast| {
                 let task = obj.task();
                 task.set_property("suspended", false);
-                update_task(task).expect("Failed to update task");
+                update_task(&task).expect("Failed to update task");
                 if obj.parent().is_some() {
                     obj.changed();
                     obj.grab_focus();
@@ -311,7 +311,7 @@ impl TaskRow {
         ));
         task.set_property("suspended", true);
         self.set_property("task", &task);
-        update_task(task.clone()).expect("Failed to update task");
+        update_task(&task).expect("Failed to update task");
         if let Some(list_box) = self.parent().and_downcast::<gtk::ListBox>() {
             let upper_row = list_box.row_at_index(self.index() - 1);
             if let Some(upper_row) = upper_row {

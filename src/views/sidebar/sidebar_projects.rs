@@ -339,7 +339,7 @@ impl SidebarProjects {
             .and_downcast::<gtk::ListBox>()
             .unwrap()
             .remove(&row);
-        update_task(task).expect("Failed to update task");
+        update_task(&task).expect("Failed to update task");
         self.select_active_project();
         true
     }

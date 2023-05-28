@@ -57,7 +57,7 @@ pub fn read_task(task_id: i64) -> Result<Task> {
     stmt.query_row([task_id], |row| Task::try_from(row))
 }
 
-pub fn update_task(task: Task) -> Result<()> {
+pub fn update_task(task: &Task) -> Result<()> {
     let conn = get_connection();
     let old_task = read_task(task.id())?;
     let position_stmt = &mut String::new();

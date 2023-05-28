@@ -226,7 +226,7 @@ impl TaskPage {
             imp.description_expander_row
                 .set_subtitle(&self.description_display(&text));
             task.set_property("description", text);
-            update_task(task).expect("Failed to update task");
+            update_task(&task).expect("Failed to update task");
         }
     }
 
