@@ -2,7 +2,7 @@ use gtk::{glib, glib::once_cell::sync::Lazy, prelude::*, subclass::prelude::*};
 use std::cell::Cell;
 use std::unimplemented;
 
-use crate::db::models::{Record, Task};
+use crate::db::models::Task;
 use crate::db::operations::read_task;
 use crate::views::project::{TaskPage, TaskRow};
 

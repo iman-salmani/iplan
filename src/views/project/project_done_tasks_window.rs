@@ -3,7 +3,7 @@ use gettextrs::gettext;
 use gtk::{glib, glib::once_cell::sync::Lazy};
 use std::cell::RefCell;
 
-use crate::db::models::{List, Record, Task};
+use crate::db::models::{List, Task};
 use crate::db::operations::{read_task, read_tasks};
 use crate::views::{project::TaskRow, project::TaskWindow, IPlanWindow};
 
