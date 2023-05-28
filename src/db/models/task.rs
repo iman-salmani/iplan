@@ -108,28 +108,8 @@ glib::wrapper! {
 }
 
 impl Task {
-    pub fn new(
-        id: i64,
-        name: String,
-        done: bool,
-        project: i64,
-        list: i64,
-        position: i32,
-        suspended: bool,
-        parent: i64,
-        description: String,
-    ) -> Self {
-        glib::Object::builder()
-            .property("id", id)
-            .property("name", name)
-            .property("done", done)
-            .property("project", project)
-            .property("list", list)
-            .property("position", position)
-            .property("suspended", suspended)
-            .property("parent", parent)
-            .property("description", description)
-            .build()
+    pub fn new(properties: &[(&str, &dyn ToValue)]) -> Self {
+        glib::Object::new::<Self>(properties)
     }
 
     pub fn duration(&self) -> Option<i64> {
@@ -192,22 +172,22 @@ impl TryFrom<&Row<'_>> for Task {
     type Error = Error;
 
     fn try_from(row: &Row) -> Result<Self, Self::Error> {
-        Ok(Task::new(
-            row.get(0)?,
-            row.get(1)?,
-            row.get(2)?,
-            row.get(3)?,
-            row.get(4)?,
-            row.get(5)?,
-            row.get(6)?,
-            row.get(7)?,
-            row.get(8)?,
-        ))
+        Ok(Task::new(&[
+            ("id", &row.get::<usize, i64>(0)?),
+            ("name", &row.get::<usize, String>(1)?),
+            ("done", &row.get::<usize, bool>(2)?),
+            ("project", &row.get::<usize, i64>(3)?),
+            ("list", &row.get::<usize, i64>(4)?),
+            ("position", &row.get::<usize, i32>(5)?),
+            ("suspended", &row.get::<usize, bool>(6)?),
+            ("parent", &row.get::<usize, i64>(7)?),
+            ("description", &row.get::<usize, String>(8)?),
+        ]))
     }
 }
 
 impl Default for Task {
     fn default() -> Self {
-        Task::new(1, String::new(), false, 1, 1, 0, false, 0, String::new())
+        Task::new(&[])
     }
 }

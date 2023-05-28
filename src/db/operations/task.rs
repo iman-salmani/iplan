@@ -10,17 +10,14 @@ pub fn create_task(name: &str, project_id: i64, list_id: i64, parent: i64) -> Re
         "INSERT INTO tasks(name, project, list, position, parent) VALUES (?1,?2,?3,?4,?5)",
         (name, project_id, list_id, position, parent),
     )?;
-    Ok(Task::new(
-        conn.last_insert_rowid(),
-        String::from(name),
-        false,
-        project_id,
-        list_id,
-        position,
-        false,
-        parent,
-        String::new(),
-    ))
+    Ok(Task::new(&[
+        ("id", &conn.last_insert_rowid()),
+        ("name", &name),
+        ("project", &project_id),
+        ("list", &list_id),
+        ("position", &position),
+        ("parent", &parent),
+    ]))
 }
 
 pub fn read_tasks(
