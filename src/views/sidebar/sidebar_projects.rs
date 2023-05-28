@@ -53,10 +53,16 @@ glib::wrapper! {
         @implements gtk::Buildable;
 }
 
+impl Default for SidebarProjects {
+    fn default() -> Self {
+        glib::Object::new::<SidebarProjects>(&[])
+    }
+}
+
 #[gtk::template_callbacks]
 impl SidebarProjects {
     pub fn new() -> Self {
-        glib::Object::new::<SidebarProjects>(&[])
+        Self::default()
     }
 
     pub fn select_active_project(&self) {
