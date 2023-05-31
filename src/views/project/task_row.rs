@@ -267,21 +267,6 @@ impl TaskRow {
                 if task.suspended() {    // Checking Undo button
                     delete_task(task.id(), task.list(), task.position())
                         .expect("Failed to delete task");
-                    if let Some(tasks_box) = obj.parent() {    // check for project active changed
-                        let tasks_box = tasks_box.downcast::<gtk::ListBox>().unwrap();
-                        // for i in 0..obj.index() {
-                        //     let row = tasks_box.row_at_index(i).unwrap();
-                        //     let row_task: Task = row.property("task");
-                        //     row_task.set_property("position", row_task.position() - 1);
-                        // }
-                        // if let Some(upper_row) = obj.parent()
-                        //     .and_downcast::<gtk::ListBox>()
-                        //     .unwrap()
-                        //     .row_at_index(obj.index() - 1) {
-                        //         upper_row.grab_focus();
-                        // }
-                        tasks_box.remove(&obj); // FIXME: remove task form ProjectList::Task (make problem for add task per scroll)
-                    }
                 }
             }
         ));
