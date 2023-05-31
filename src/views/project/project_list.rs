@@ -1,6 +1,6 @@
 use adw::prelude::*;
 use gettextrs::gettext;
-use gtk::{gdk, glib, glib::once_cell::sync::Lazy, subclass::prelude::*};
+use gtk::{gdk, glib, glib::Properties, subclass::prelude::*};
 use std::cell::RefCell;
 
 use crate::db::models::{List, Task};
@@ -8,17 +8,17 @@ use crate::db::operations::{
     create_task, delete_list, new_position, read_list, read_task, read_tasks, update_list,
     update_task,
 };
-use crate::views::{
-    project::ProjectDoneTasksWindow, project::ProjectLayout, project::TaskRow, project::TaskWindow,
-    IPlanWindow,
-};
+use crate::views::project::{ProjectDoneTasksWindow, ProjectLayout, TaskRow, TaskWindow};
+use crate::views::IPlanWindow;
 
 mod imp {
     use super::*;
 
-    #[derive(Default, gtk::CompositeTemplate)]
+    #[derive(Default, gtk::CompositeTemplate, Properties)]
     #[template(resource = "/ir/imansalmani/iplan/ui/project/project_list.ui")]
+    #[properties(wrapper_type=super::ProjectList)]
     pub struct ProjectList {
+        #[property(get, set)]
         pub list: RefCell<List>,
         pub tasks: RefCell<Vec<Task>>,
         #[template_child]
@@ -95,27 +95,22 @@ mod imp {
     }
 
     impl ObjectImpl for ProjectList {
+        fn constructed(&self) {
+            self.parent_constructed();
+            let obj = self.obj();
+            obj.set_tasks_box_funcs();
+            obj.add_drag_drop_controllers();
+        }
         fn properties() -> &'static [glib::ParamSpec] {
-            static PROPERTIES: Lazy<Vec<glib::ParamSpec>> =
-                Lazy::new(|| vec![glib::ParamSpecObject::builder::<List>("list").build()]);
-            PROPERTIES.as_ref()
+            Self::derived_properties()
         }
 
-        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
-            match pspec.name() {
-                "list" => {
-                    let value = value.get::<List>().expect("value must be a List");
-                    self.list.replace(value);
-                }
-                _ => unimplemented!(),
-            }
+        fn property(&self, id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+            self.derived_property(id, pspec)
         }
 
-        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
-            match pspec.name() {
-                "list" => self.list.borrow().to_value(),
-                _ => unimplemented!(),
-            }
+        fn set_property(&self, id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
+            self.derived_set_property(id, value, pspec)
         }
     }
     impl WidgetImpl for ProjectList {}
@@ -130,150 +125,34 @@ glib::wrapper! {
 
 #[gtk::template_callbacks]
 impl ProjectList {
-    pub fn new(list: List) -> Self {
-        glib::Object::builder().property("list", list).build()
-    }
-
-    pub fn init_widgets(&self, project_id: i64, layout: ProjectLayout, tasks_per_page: usize) {
-        // TODO: check why project_id needed
-        let imp = self.imp();
-        let list = self.list();
+    pub fn new(list: List, layout: ProjectLayout, page_size: usize) -> Self {
+        let obj = glib::Object::new::<Self>();
+        obj.set_list(list);
+        let imp = obj.imp();
+        let list = obj.list();
 
         if layout == ProjectLayout::Horizontal {
-            imp.tasks_box.unparent();
-            imp.scrolled_window.set_child(Some(&imp.tasks_box.get()));
-            imp.scrolled_window.set_visible(true);
-            let scroll_controller = gtk::EventControllerScroll::builder()
-                .flags(gtk::EventControllerScrollFlags::VERTICAL)
-                .build();
-            scroll_controller.connect_scroll(glib::clone!(
-            @weak self as obj => @default-return gtk::Inhibit(false),
-                move |_controller, _dx, dy| {
-                let project_lists = obj.root()
-                    .and_downcast::<IPlanWindow>()
-                    .unwrap()
-                    .imp()
-                    .project_lists
-                    .get();
-                let project_lists_imp = project_lists.imp();
-                let viewport = project_lists_imp.scrolled_window.get().first_child()
-                    .and_downcast::<gtk::Viewport>()
-                    .unwrap();
-                if project_lists_imp.shift_pressed.get() {
-                    let adjustment = viewport.hadjustment().unwrap();
-                    adjustment.set_value(
-                        adjustment.value() + (adjustment.step_increment() * dy)
-                    );
-                    gtk::Inhibit(true)
-                } else {
-                    gtk::Inhibit(false)
-                }
-            }));
-            imp.scrolled_window.add_controller(scroll_controller);
-            imp.scrolled_window
-                .connect_edge_reached(glib::clone!(@weak imp =>
-                    move |_obj, pos| {
-                        if pos == gtk::PositionType::Bottom {
-                            let next = imp.tasks_box.observe_children().n_items() as usize - 1;
-                            let tasks = imp.tasks.borrow();
-                            if next < tasks.len() {
-                                let project_list_task = TaskRow::new(tasks.get(next).unwrap().clone());
-                                imp.tasks_box.append(&project_list_task);
-                            }
-                        }
-            }));
+            obj.transform_horizontal_layout();
         }
 
-        imp.name_button.set_label(&list.name());
         imp.name_entry.buffer().set_text(&list.name());
 
-        let tasks = read_tasks(project_id, Some(self.list().id()), Some(false), Some(0))
+        let tasks = read_tasks(list.project(), Some(list.id()), Some(false), Some(0))
             .expect("Failed to read tasks");
         imp.tasks.replace(tasks);
-        let tasks = imp.tasks.borrow();
-        if tasks.len() > tasks_per_page && layout == ProjectLayout::Horizontal {
-            for task in tasks.split_at(tasks_per_page).0 {
-                let project_list_task = TaskRow::new(task.clone());
+        let tasks = imp.tasks.borrow().to_owned();
+        if tasks.len() > page_size && layout == ProjectLayout::Horizontal {
+            for task in tasks.split_at(page_size).0 {
+                let project_list_task = TaskRow::new(task.to_owned());
                 imp.tasks_box.append(&project_list_task);
             }
         } else {
-            for task in tasks.clone() {
+            for task in tasks {
                 let project_list_task = TaskRow::new(task);
                 imp.tasks_box.append(&project_list_task);
             }
         }
-
-        imp.tasks_box.set_sort_func(|row1, row2| {
-            let row1_p = row1.property::<Task>("task").position();
-            let row2_p = row2.property::<Task>("task").position();
-
-            if row1_p < row2_p {
-                gtk::Ordering::Larger
-            } else {
-                gtk::Ordering::Smaller
-            }
-        });
-
-        imp.tasks_box.set_filter_func(glib::clone!(
-        @weak imp => @default-return false,
-        move |row| {
-            let row = row.downcast_ref::<TaskRow>().unwrap();
-            if row.task().suspended() {
-                false
-            } else {
-                !row.imp().moving_out.get()
-            }
-        }));
-
-        let list_drag_source = gtk::DragSource::builder()
-            .actions(gdk::DragAction::MOVE)
-            .build();
-        list_drag_source.connect_prepare(glib::clone!(
-        @weak self as obj => @default-return None,
-        move |_drag_source, _x, _y| {
-            if obj.imp().name_entry.get_visible() {
-                None
-            } else {
-                Some(gdk::ContentProvider::for_value(&obj.to_value()))
-            }}));
-        list_drag_source.connect_drag_begin(|_drag_source, drag| {
-            let drag_icon: gtk::DragIcon = gtk::DragIcon::for_drag(drag).downcast().unwrap();
-            let label = gtk::Label::builder().label("").build();
-            drag_icon.set_child(Some(&label));
-            drag.set_hotspot(0, 0);
-        });
-        imp.header.add_controller(list_drag_source);
-
-        let list_drop_target =
-            gtk::DropTarget::new(ProjectList::static_type(), gdk::DragAction::MOVE);
-        list_drop_target.set_preload(true);
-        list_drop_target.connect_drop(glib::clone!(
-            @weak self as obj => @default-return false,
-            move |target, value, x, y| obj.list_drop_target_drop(target, value, x, y)));
-        list_drop_target.connect_motion(glib::clone!(
-            @weak self as obj => @default-return gdk::DragAction::empty(),
-            move |target, x, y| obj.list_drop_target_motion(target, x, y)));
-        self.add_controller(list_drop_target);
-
-        let task_drop_target = gtk::DropTarget::new(TaskRow::static_type(), gdk::DragAction::MOVE);
-        task_drop_target.set_preload(true);
-        task_drop_target.connect_drop(glib::clone!(
-            @weak self as obj => @default-return false,
-            move |target, value, x, y| obj.task_drop_target_drop(target, value, x, y)));
-        task_drop_target.connect_motion(glib::clone!(
-            @weak self as obj => @default-return gdk::DragAction::empty(),
-            move |target, x, y| obj.task_drop_target_motion(target, x, y)));
-        task_drop_target.connect_enter(glib::clone!(
-            @weak self as obj => @default-return gdk::DragAction::empty(),
-            move |target, x, y| obj.task_drop_target_enter(target, x, y)));
-        task_drop_target.connect_leave(glib::clone!(
-            @weak self as obj =>
-            move |target| obj.task_drop_target_leave(target)));
-        imp.tasks_box.add_controller(task_drop_target);
-    }
-
-    pub fn list(&self) -> List {
-        self.property("list")
+        obj
     }
 
     pub fn select_task(&self, target_task: Task) {
@@ -308,6 +187,127 @@ impl ProjectList {
         }
     }
 
+    fn set_tasks_box_funcs(&self) {
+        let imp = self.imp();
+        imp.tasks_box.set_sort_func(|row1, row2| {
+            let row1_p = row1.property::<Task>("task").position();
+            let row2_p = row2.property::<Task>("task").position();
+
+            if row1_p < row2_p {
+                gtk::Ordering::Larger
+            } else {
+                gtk::Ordering::Smaller
+            }
+        });
+
+        imp.tasks_box.set_filter_func(|row| {
+            let row = row.downcast_ref::<TaskRow>().unwrap();
+            if row.task().suspended() {
+                false
+            } else {
+                !row.imp().moving_out.get()
+            }
+        });
+    }
+
+    fn transform_horizontal_layout(&self) {
+        let imp: &imp::ProjectList = self.imp();
+        imp.tasks_box.unparent();
+        imp.scrolled_window.set_child(Some(&imp.tasks_box.get()));
+        imp.scrolled_window.set_visible(true);
+        let scroll_controller = gtk::EventControllerScroll::builder()
+            .flags(gtk::EventControllerScrollFlags::VERTICAL)
+            .build();
+        scroll_controller.connect_scroll(
+            glib::clone!(@weak self as obj => @default-return gtk::Inhibit(false),
+                move |_controller, _dx, dy| {
+                    let project_lists = obj.root()
+                        .and_downcast::<IPlanWindow>()
+                        .unwrap()
+                        .imp()
+                        .project_lists
+                        .get();
+                    let project_lists_imp = project_lists.imp();
+                    let viewport = project_lists_imp.scrolled_window.get().first_child()
+                        .and_downcast::<gtk::Viewport>()
+                        .unwrap();
+                    if project_lists_imp.shift_pressed.get() {
+                        let adjustment = viewport.hadjustment().unwrap();
+                        adjustment.set_value(
+                            adjustment.value() + (adjustment.step_increment() * dy)
+                        );
+                        gtk::Inhibit(true)
+                    } else {
+                        gtk::Inhibit(false)
+                    }
+                }
+            ),
+        );
+        imp.scrolled_window.add_controller(scroll_controller);
+        imp.scrolled_window
+            .connect_edge_reached(glib::clone!(@weak imp =>
+                move |_obj, pos| {
+                    if pos == gtk::PositionType::Bottom {
+                        let next = imp.tasks_box.observe_children().n_items() as usize - 1;
+                        let tasks = imp.tasks.borrow();
+                        if next < tasks.len() {
+                            let project_list_task = TaskRow::new(tasks.get(next).unwrap().clone());
+                            imp.tasks_box.append(&project_list_task);
+                        }
+                    }
+                }
+            ));
+    }
+
+    fn add_drag_drop_controllers(&self) {
+        let imp = self.imp();
+        let list_drag_source = gtk::DragSource::builder()
+            .actions(gdk::DragAction::MOVE)
+            .build();
+        list_drag_source.connect_prepare(glib::clone!(@weak self as obj => @default-return None,
+        move |_drag_source, _x, _y| {
+            if obj.imp().name_entry.get_visible() {
+                None
+            } else {
+                Some(gdk::ContentProvider::for_value(&obj.to_value()))
+            }
+        }));
+        list_drag_source.connect_drag_begin(|_drag_source, drag| {
+            let drag_icon: gtk::DragIcon = gtk::DragIcon::for_drag(drag).downcast().unwrap();
+            let label = gtk::Label::builder().label("").build();
+            drag_icon.set_child(Some(&label));
+            drag.set_hotspot(0, 0);
+        });
+        imp.header.add_controller(list_drag_source);
+
+        let list_drop_target =
+            gtk::DropTarget::new(ProjectList::static_type(), gdk::DragAction::MOVE);
+        list_drop_target.set_preload(true);
+        list_drop_target.connect_drop(glib::clone!(@weak self as obj => @default-return false,
+            move |target, value, x, y| obj.list_drop_target_drop(target, value, x, y)));
+        list_drop_target.connect_motion(
+            glib::clone!(@weak self as obj => @default-return gdk::DragAction::empty(),
+            move |target, x, y| obj.list_drop_target_motion(target, x, y)),
+        );
+        self.add_controller(list_drop_target);
+
+        let task_drop_target = gtk::DropTarget::new(TaskRow::static_type(), gdk::DragAction::MOVE);
+        task_drop_target.set_preload(true);
+        task_drop_target.connect_drop(glib::clone!(@weak self as obj => @default-return false,
+            move |target, value, x, y| obj.task_drop_target_drop(target, value, x, y)));
+        task_drop_target.connect_motion(
+            glib::clone!(@weak self as obj => @default-return gdk::DragAction::empty(),
+            move |target, x, y| obj.task_drop_target_motion(target, x, y)),
+        );
+        task_drop_target.connect_enter(
+            glib::clone!(@weak self as obj => @default-return gdk::DragAction::empty(),
+            move |target, x, y| obj.task_drop_target_enter(target, x, y)),
+        );
+        task_drop_target.connect_leave(glib::clone!(@weak self as obj =>
+            move |target| obj.task_drop_target_leave(target)));
+        imp.tasks_box.add_controller(task_drop_target);
+    }
+
     #[template_callback]
     fn handle_tasks_box_row_activated(&self, row: gtk::ListBoxRow, tasks_box: gtk::ListBox) {
         let win = self.root().and_downcast::<gtk::Window>().unwrap();
@@ -340,10 +340,8 @@ impl ProjectList {
     fn handle_name_entry_activate(&self, entry: gtk::Entry) {
         let name = entry.buffer().text();
         let list = self.list();
-        let imp = self.imp();
-        imp.name_button.set_label(&name);
-        imp.name_button.set_visible(true);
-        list.set_property("name", name);
+        self.imp().name_button.set_visible(true);
+        list.set_name(name);
         update_list(&list).expect("Failed to update list");
     }
 
@@ -374,8 +372,7 @@ impl ProjectList {
         dialog.connect_response(
             Some("delete"),
             glib::clone!(
-            @weak self as obj =>
-            move |_dialog, response| {
+            @weak self as obj => move |_dialog, response| {
                 if response == "delete" {
                     delete_list(obj.list().id()).expect("Failed to delete list");
                     let lists_box = obj.parent().and_downcast::<gtk::Box>().unwrap();

@@ -16,6 +16,10 @@
             <property name="margin-start">4</property>
             <property name="hexpand">true</property>
             <property name="halign">start</property>
+            <property name="label"
+              bind-source="name_entry_buffer"
+              bind-property="text"
+              bind-flags="sync-create" />
             <signal name="clicked" handler="handle_name_button_clicked" swapped="true" />
           </object>
         </child>
@@ -29,6 +33,9 @@
               bind-source="name_button"
               bind-property="visible"
               bind-flags="invert-boolean">false</property>
+            <property name="buffer">
+              <object class="GtkEntryBuffer" id="name_entry_buffer" />
+            </property>
             <signal name="activate" handler="handle_name_entry_activate" swapped="true" />
             <attributes>
               <attribute name="weight" value="PANGO_WEIGHT_BOLD" />

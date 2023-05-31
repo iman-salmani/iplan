@@ -16,7 +16,6 @@
         </style>
         <child><!-- Check Button -->
           <object class="GtkCheckButton" id="checkbox">
-            <!-- <signal name="toggled" handler="handle_done_check_button_toggled" swapped="true" /> -->
           </object>
         </child>
         <!-- End Check Button -->

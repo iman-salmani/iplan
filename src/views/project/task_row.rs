@@ -64,6 +64,25 @@ mod imp {
     }
 
     impl ObjectImpl for TaskRow {
+        fn constructed(&self) {
+            self.parent_constructed();
+            let obj = self.obj();
+            let imp = obj.imp();
+
+            // Cancel name entry on Escape key pressed
+            let name_entry_controller = gtk::EventControllerKey::new();
+            name_entry_controller.connect_key_released(
+                glib::clone!(@weak obj => move |_controller, _keyval, keycode, _state| {
+                    if keycode == 9 {   // Escape key
+                        let imp = obj.imp();
+                        imp.name_button.set_visible(true);
+                        imp.name_entry.buffer().set_text(obj.task().name());
+                    }
+                }),
+            );
+            imp.name_entry.add_controller(name_entry_controller);
+        }
+
         fn properties() -> &'static [glib::ParamSpec] {
             Self::derived_properties()
         }
@@ -90,14 +109,9 @@ glib::wrapper! {
 impl TaskRow {
     pub fn new(task: Task) -> Self {
         let obj = glib::Object::new::<Self>();
-        obj.set_property("task", task);
-        obj.init_widgets();
-        obj
-    }
-
-    fn init_widgets(&self) {
-        let imp = self.imp();
-        let task = self.task();
+        obj.set_task(task);
+        let imp = obj.imp();
+        let task = obj.task();
 
         task.bind_property("done", &imp.checkbox.get(), "active")
             .flags(glib::BindingFlags::SYNC_CREATE | glib::BindingFlags::BIDIRECTIONAL)
@@ -105,7 +119,7 @@ impl TaskRow {
         task.bind_property("done", &imp.timer_button.get(), "sensitive")
             .flags(glib::BindingFlags::SYNC_CREATE | glib::BindingFlags::INVERT_BOOLEAN)
             .build();
-        task.connect_done_notify(glib::clone!(@weak self as obj => move |task| {
+        task.connect_done_notify(glib::clone!(@weak obj => move |task| {
             update_task(task).expect("Failed to update task");
             if task.done() {
                 obj.imp().timer_status.set(TimerStatus::Off);
@@ -115,18 +129,8 @@ impl TaskRow {
         }));
 
         imp.name_entry.buffer().set_text(task.name());
-        let name_entry_controller = gtk::EventControllerKey::new();
-        name_entry_controller.connect_key_released(
-            glib::clone!(@weak self as obj => move |_controller, _keyval, keycode, _state| {
-                if keycode == 9 {   // Escape key
-                    let imp = obj.imp();
-                    imp.name_button.set_visible(true);
-                    imp.name_entry.buffer().set_text(obj.task().name());
-                }
-            }),
-        );
-        imp.name_entry.add_controller(name_entry_controller);
-        self.reset_timer();
+        obj.reset_timer();
+        obj
     }
 
     pub fn reset(&self, task: Task) {

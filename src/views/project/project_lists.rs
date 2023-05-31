@@ -113,11 +113,10 @@ impl ProjectLists {
         }
 
         // let tasks_per_page = self.allocated_height() / 72;   // TODO: update by window resize
-        let tasks_per_page = 18;
+        let page_size: i32 = 18;
         for list in read_lists(project_id).expect("Failed to read lists") {
-            let project_list = ProjectList::new(list);
+            let project_list = ProjectList::new(list, imp.layout.get(), page_size as usize);
             imp.lists_box.append(&project_list);
-            project_list.init_widgets(project_id, imp.layout.get(), tasks_per_page as usize);
         }
         if imp.lists_box.first_child().is_none() {
             imp.lists_box.append(&imp.placeholder.get());
@@ -149,10 +148,10 @@ impl ProjectLists {
     }
 
     pub fn new_list(&self, project_id: i64) {
+        let imp = self.imp();
         let list =
             create_list(&gettext("New List"), project_id).expect("Failed to create new list");
-        let project_list = ProjectList::new(list);
-        let imp = self.imp();
+        let project_list = ProjectList::new(list, imp.layout.get(), 18);
         if imp.placeholder.parent().is_some() {
             imp.lists_box.remove(&imp.placeholder.get());
         }
