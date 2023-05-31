@@ -55,7 +55,7 @@ glib::wrapper! {
 
 impl Default for SidebarProjects {
     fn default() -> Self {
-        glib::Object::new::<SidebarProjects>(&[])
+        glib::Object::new::<SidebarProjects>()
     }
 }
 
@@ -176,7 +176,7 @@ impl SidebarProjects {
             obj.imp().projects_box.select_row(source_row.as_ref());
             gdk::DragAction::MOVE
         }));
-        imp.projects_box.add_controller(&project_drop_target);
+        imp.projects_box.add_controller(project_drop_target);
 
         // Task drop target
         let task_drop_target = gtk::DropTarget::new(TaskRow::static_type(), gdk::DragAction::MOVE);
@@ -192,7 +192,7 @@ impl SidebarProjects {
             if target.value_as::<TaskRow>().is_some() {
                 obj.select_active_project();
             }}));
-        imp.projects_box.add_controller(&task_drop_target);
+        imp.projects_box.add_controller(task_drop_target);
     }
 
     #[template_callback]

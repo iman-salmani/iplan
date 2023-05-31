@@ -43,7 +43,7 @@ mod imp {
     impl ObjectImpl for IPlanApplication {
         fn constructed(&self) {
             self.parent_constructed();
-            let obj = self.instance();
+            let obj = self.obj();
             obj.setup_gactions();
             obj.set_accels_for_action("app.quit", &["<primary>q"]);
             obj.set_accels_for_action("app.shortcuts", &["<primary>question"]);
@@ -57,7 +57,7 @@ mod imp {
         // tries to launch a "second instance" of the application. When they try
         // to do that, we'll just present any existing window.
         fn activate(&self) {
-            let application = self.instance();
+            let application = self.obj();
             // Get the current window or create one if necessary
             let window = if let Some(window) = application.active_window() {
                 window
@@ -86,7 +86,10 @@ glib::wrapper! {
 
 impl IPlanApplication {
     pub fn new(application_id: &str, flags: &gio::ApplicationFlags) -> Self {
-        glib::Object::new(&[("application-id", &application_id), ("flags", flags)])
+        glib::Object::builder()
+            .property("application-id", application_id)
+            .property("flags", flags)
+            .build()
     }
 
     fn setup_gactions(&self) {
@@ -102,8 +105,7 @@ impl IPlanApplication {
         let search_action = gio::ActionEntry::builder("search")
             .activate(move |app: &Self, _, _| app.show_search())
             .build();
-        self.add_action_entries([quit_action, about_action, shortcuts_action, search_action])
-            .unwrap();
+        self.add_action_entries([quit_action, about_action, shortcuts_action, search_action]);
     }
 
     fn show_search(&self) {
@@ -133,13 +135,13 @@ impl IPlanApplication {
             .application_icon("ir.imansalmani.IPlan")
             .developer_name("Iman Salmani")
             .version(VERSION)
-            .developers(vec!["Iman Salmani".into()])
+            .developers(vec!["Iman Salmani"])
             .copyright("© 2023 Iman Salmani")
             .license_type(gtk::License::Lgpl30)
             .website("https://github.com/iman-salmani/iplan")
             .issue_url("https://github.com/iman-salmani/iplan/issues/new/choose")
             // Translators: Replace "translator-credits" with your names, one name per line
-            .translator_credits(&gettext("translator-credits"))
+            .translator_credits(gettext("translator-credits"))
             .build();
 
         about.present();

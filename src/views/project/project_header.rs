@@ -156,10 +156,10 @@ impl ProjectHeader {
                 let (date, duration) = data;
                 let stat_item = gtk::Box::new(gtk::Orientation::Horizontal, 8);
                 let date_label = date.format("%A").unwrap().to_string();
-                let stat_item_date = gtk::Label::builder().label(&date_label).build();
+                let stat_item_date = gtk::Label::builder().label(date_label).build();
                 stat_item.append(&stat_item_date);
                 let stat_item_duration = gtk::Label::builder()
-                    .label(&Record::duration_display(duration))
+                    .label(Record::duration_display(duration))
                     .hexpand(true)
                     .halign(gtk::Align::End)
                     .build();

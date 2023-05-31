@@ -103,7 +103,6 @@ impl ProjectDoneTasksWindow {
         {
             let project_list_task = TaskRow::new(task);
             imp.tasks_box.append(&project_list_task);
-            project_list_task.init_widgets();
         }
         imp.tasks_box.set_sort_func(|row1, row2| {
             let row1_p = row1.property::<Task>("task").position();

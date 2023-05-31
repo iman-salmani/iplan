@@ -4,8 +4,8 @@ use std::unimplemented;
 
 use crate::db::models::Task;
 use crate::db::operations::read_task;
-use crate::views::project::{TaskPage, TaskRow};
-
+use crate::views::project::{ProjectDoneTasksWindow, TaskPage, TaskRow};
+use crate::views::IPlanWindow;
 mod imp {
     use super::*;
 
@@ -119,6 +119,60 @@ impl TaskWindow {
         self.property("parent-task")
     }
 
+    pub fn add_toast(&self, task: Task, toast: adw::Toast) {
+        let imp = self.imp();
+        let task_parent = task.parent();
+        if imp.parent_task.get() != task_parent {
+            imp.toast_overlay.add_toast(toast);
+            return;
+        }
+        if task_parent == 0 {
+            let transient_for = self.transient_for().unwrap();
+            let transient_for_name = transient_for.widget_name();
+            if transient_for_name == "IPlanWindow" {
+                let transient_for = transient_for.downcast::<IPlanWindow>().unwrap();
+                toast.connect_button_clicked(glib::clone!(
+                    @weak transient_for =>
+                    move |_toast| {
+                        transient_for.activate_action("project.open", None).expect("Failed to sebd project.open action");
+                }));
+                transient_for.imp().toast_overlay.add_toast(toast);
+            } else if transient_for_name == "ProjectDoneTasksWindow" {
+                let transient_for = transient_for.downcast::<ProjectDoneTasksWindow>().unwrap();
+                toast.connect_button_clicked(glib::clone!(@weak task, @weak transient_for =>
+                    move |_toast| {
+                        let tasks_rows = transient_for.imp().tasks_box.observe_children();
+                        for i in 0..tasks_rows.n_items() {
+                            let row = tasks_rows.item(i).and_downcast::<TaskRow>().unwrap();
+                            if row.task().id() == task.id() {
+                                row.task().set_suspended(false);
+                                row.changed();
+                                break;
+                            }
+                        }
+                }));
+                transient_for.imp().toast_overlay.add_toast(toast);
+            }
+            self.close();
+        } else {
+            imp.back_button.emit_clicked();
+            toast.connect_button_clicked(glib::clone!(@weak imp, @weak task =>
+                move |_toast| {
+                    let task_page = imp.task_pages_stack.visible_child().and_downcast::<TaskPage>().unwrap();
+                    let subtasks_rows = task_page.imp().subtasks_box.observe_children();
+                    for i in 0..subtasks_rows.n_items() {
+                        let row = subtasks_rows.item(i).and_downcast::<TaskRow>().unwrap();
+                        if row.task().id() == task.id() {
+                            row.task().set_suspended(false);
+                            row.changed();
+                            break;
+                        }
+                    }
+            }));
+            self.imp().toast_overlay.add_toast(toast);
+        }
+    }
+
     #[template_callback]
     fn handle_back_button_clicked(&self, _button: gtk::Button) {
         let imp = self.imp();
@@ -142,42 +196,7 @@ impl TaskWindow {
         for i in 0..subtasks_rows.n_items() {
             let row = subtasks_rows.item(i).and_downcast::<TaskRow>().unwrap();
             if row.task().position() == from_task.position() {
-                row.set_property("task", from_task.clone());
-                let row_imp = row.imp();
-                row_imp.checkbox.set_active(from_task.done());
-                let task_name = from_task.name();
-                row_imp
-                    .name_button
-                    .child()
-                    .unwrap()
-                    .downcast::<gtk::Label>()
-                    .unwrap()
-                    .set_text(&task_name);
-                row_imp.name_button.set_tooltip_text(Some(&task_name));
-                row_imp.name_entry.buffer().set_text(&task_name);
-                if from_page
-                    .imp()
-                    .task_row
-                    .imp()
-                    .timer_toggle_button
-                    .is_active()
-                {
-                    row_imp.timer_toggle_button.set_active(true)
-                } else {
-                    if row_imp.timer_toggle_button.is_active() {
-                        row_imp
-                            .timer_toggle_button
-                            .remove_css_class("destructive-action");
-                        let handler_id = row_imp.timer_toggle_button_handler_id.borrow();
-                        let handler_id = handler_id.as_ref().unwrap();
-                        row_imp.timer_toggle_button.block_signal(handler_id);
-                        row_imp.timer_toggle_button.set_active(false);
-                        row_imp.timer_toggle_button.unblock_signal(handler_id)
-                    }
-                    row_imp
-                        .timer_button_content
-                        .set_label(&from_task.duration_display());
-                }
+                row.reset(from_task);
                 row.changed();
                 break;
             }
@@ -185,12 +204,7 @@ impl TaskWindow {
         let task = target_page.task();
         let parent_id = task.parent();
         let target_page_imp = target_page.imp();
-        let task_row_imp = target_page_imp.task_row.imp();
-        if !task_row_imp.timer_toggle_button.is_active() {
-            task_row_imp
-                .timer_button_content
-                .set_label(&task.duration_display());
-        }
+        target_page_imp.task_row.refresh_timer();
         self.set_property("parent-task", parent_id);
         if parent_id == 0 {
             imp.back_button.set_visible(false);

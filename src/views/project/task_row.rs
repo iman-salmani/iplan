@@ -1,31 +1,46 @@
 use gettextrs::gettext;
-use gtk::{gdk, glib, glib::once_cell::sync::Lazy, prelude::*, subclass::prelude::*};
+use gtk::{gdk, glib, glib::Properties, prelude::*, subclass::prelude::*};
 use std::cell::{Cell, RefCell};
 use std::thread;
-use std::time::Duration;
+use std::time::{Duration, SystemTime};
 
 use crate::db::models::{Record, Task};
-use crate::db::operations::{create_record, delete_task, read_records, update_record, update_task};
-use crate::views::project::{ProjectDoneTasksWindow, TaskPage, TaskWindow};
+use crate::db::operations::{create_record, delete_task, update_record, update_task};
+use crate::views::project::{ProjectDoneTasksWindow, TaskWindow};
 use crate::views::IPlanWindow;
+
+#[derive(Default, PartialEq, Clone, Copy)]
+pub enum TimerStatus {
+    On,
+    #[default]
+    Off,
+    Cancel,
+}
 
 mod imp {
     use super::*;
 
-    #[derive(Default, gtk::CompositeTemplate)]
+    #[derive(Default, gtk::CompositeTemplate, Properties)]
     #[template(resource = "/ir/imansalmani/iplan/ui/project/task_row.ui")]
+    #[properties(wrapper_type=super::TaskRow)]
     pub struct TaskRow {
+        #[property(get, set)]
         pub task: RefCell<Task>,
+        #[property(get, set)]
         pub moving_out: Cell<bool>,
         #[template_child]
         pub checkbox: TemplateChild<gtk::CheckButton>,
         #[template_child]
         pub name_button: TemplateChild<gtk::Button>,
         #[template_child]
+        pub name_label: TemplateChild<gtk::Label>,
+        #[template_child]
         pub name_entry: TemplateChild<gtk::Entry>,
         #[template_child]
-        pub timer_toggle_button: TemplateChild<gtk::ToggleButton>,
-        pub timer_toggle_button_handler_id: RefCell<Option<gtk::glib::SignalHandlerId>>,
+        pub name_entry_buffer: TemplateChild<gtk::EntryBuffer>,
+        pub timer_status: Cell<TimerStatus>,
+        #[template_child]
+        pub timer_button: TemplateChild<gtk::Button>,
         #[template_child]
         pub timer_button_content: TemplateChild<adw::ButtonContent>,
         #[template_child]
@@ -50,26 +65,15 @@ mod imp {
 
     impl ObjectImpl for TaskRow {
         fn properties() -> &'static [glib::ParamSpec] {
-            static PROPERTIES: Lazy<Vec<glib::ParamSpec>> =
-                Lazy::new(|| vec![glib::ParamSpecObject::builder::<Task>("task").build()]);
-            PROPERTIES.as_ref()
+            Self::derived_properties()
         }
 
-        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
-            match pspec.name() {
-                "task" => {
-                    let value = value.get::<Task>().expect("value must be a Task");
-                    self.task.replace(value);
-                }
-                _ => unimplemented!(),
-            }
+        fn property(&self, id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+            self.derived_property(id, pspec)
         }
 
-        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
-            match pspec.name() {
-                "task" => self.task.borrow().to_value(),
-                _ => unimplemented!(),
-            }
+        fn set_property(&self, id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
+            self.derived_set_property(id, value, pspec)
         }
     }
     impl WidgetImpl for TaskRow {}
@@ -85,82 +89,69 @@ glib::wrapper! {
 #[gtk::template_callbacks]
 impl TaskRow {
     pub fn new(task: Task) -> Self {
-        glib::Object::builder().property("task", task).build()
+        let obj = glib::Object::new::<Self>();
+        obj.set_property("task", task);
+        obj.init_widgets();
+        obj
     }
 
-    pub fn init_widgets(&self) {
+    fn init_widgets(&self) {
         let imp = self.imp();
         let task = self.task();
-        let task_name = task.name();
 
-        imp.checkbox.set_active(task.done());
-        imp.name_button
-            .child()
-            .unwrap()
-            .downcast::<gtk::Label>()
-            .unwrap()
-            .set_text(&task_name);
-        imp.name_button.set_tooltip_text(Some(&task_name));
-        imp.name_entry.buffer().set_text(&task_name);
-        let name_entry_controller = gtk::EventControllerKey::new();
-        name_entry_controller.connect_key_released(glib::clone!(
-        @weak self as obj =>
-        move |_controller, _keyval, keycode, _state| {
-            if keycode == 9 {   // Escape
-                let imp = obj.imp();
-                imp.name_button.set_visible(true);
-                imp.name_entry.buffer().set_text(&obj.task().name());
+        task.bind_property("done", &imp.checkbox.get(), "active")
+            .flags(glib::BindingFlags::SYNC_CREATE | glib::BindingFlags::BIDIRECTIONAL)
+            .build();
+        task.bind_property("done", &imp.timer_button.get(), "sensitive")
+            .flags(glib::BindingFlags::SYNC_CREATE | glib::BindingFlags::INVERT_BOOLEAN)
+            .build();
+        task.connect_done_notify(glib::clone!(@weak self as obj => move |task| {
+            update_task(task).expect("Failed to update task");
+            if task.done() {
+                obj.imp().timer_status.set(TimerStatus::Off);
             }
+            obj.activate_action("task.check", Some(&obj.index().to_variant()))
+                .expect("Failed to activate task.check action");
         }));
-        imp.name_entry.add_controller(&name_entry_controller);
-        imp.timer_button_content.set_label(&task.duration_display());
-        if task.done() {
-            imp.timer_toggle_button.set_sensitive(false);
+
+        imp.name_entry.buffer().set_text(task.name());
+        let name_entry_controller = gtk::EventControllerKey::new();
+        name_entry_controller.connect_key_released(
+            glib::clone!(@weak self as obj => move |_controller, _keyval, keycode, _state| {
+                if keycode == 9 {   // Escape key
+                    let imp = obj.imp();
+                    imp.name_button.set_visible(true);
+                    imp.name_entry.buffer().set_text(obj.task().name());
+                }
+            }),
+        );
+        imp.name_entry.add_controller(name_entry_controller);
+        self.reset_timer();
+    }
+
+    pub fn reset(&self, task: Task) {
+        let imp = self.imp();
+        imp.name_entry_buffer.set_text(task.name());
+        self.set_task(task);
+        self.reset_timer();
+    }
+
+    pub fn reset_timer(&self) {
+        let imp = self.imp();
+        let task = self.task();
+        imp.timer_status.set(TimerStatus::Cancel);
+        if let Some(record) = task.incomplete_record() {
+            self.start_timer(record);
         } else {
-            let handler_id = imp.timer_toggle_button.connect_toggled(glib::clone!(
-                @weak self as obj =>
-                move |button| obj.handle_timer_toggle_button_toggled(button)));
-            imp.timer_toggle_button_handler_id.replace(Some(handler_id));
-            // Starting timer if have not finished record
-            let records =
-                read_records(task.id(), true, None, None).expect("Failed to read records");
-            if !records.is_empty() {
-                imp.timer_toggle_button.set_active(true)
-            }
+            imp.timer_button_content.set_label(&task.duration_display());
         }
     }
 
-    pub fn task(&self) -> Task {
-        self.property("task")
-    }
-
-    #[template_callback]
-    fn handle_done_check_button_toggled(&self, button: gtk::CheckButton) {
+    pub fn refresh_timer(&self) {
         let imp = self.imp();
-        let task = self.task();
-        let is_active = button.is_active();
-
-        if task.done() != is_active {
-            // This happens in fetch done tasks
-            task.set_property("done", is_active);
-            self.set_property("task", task);
-            update_task(&self.task()).expect("Failed to update task");
-
-            if is_active {
-                imp.timer_toggle_button.set_active(false);
-                imp.timer_toggle_button.set_sensitive(false);
-            } else {
-                imp.timer_toggle_button.set_sensitive(true);
-                if imp.timer_toggle_button_handler_id.borrow().is_none() {
-                    let handler_id = imp.timer_toggle_button.connect_toggled(glib::clone!(
-                        @weak self as obj =>
-                        move |button| obj.handle_timer_toggle_button_toggled(button)));
-                    imp.timer_toggle_button_handler_id.replace(Some(handler_id));
-                }
-            }
-
-            self.activate_action("task.check", Some(&self.index().to_variant()))
-                .expect("Failed to activate task.check action");
+        if imp.timer_status.get() == TimerStatus::Off {
+            imp.timer_button_content
+                .set_label(&self.task().duration_display());
         }
     }
 
@@ -172,86 +163,76 @@ impl TaskRow {
 
     #[template_callback]
     fn handle_name_entry_activate(&self, entry: gtk::Entry) {
-        let name = entry.buffer().text();
         let task = self.task();
-        let imp = self.imp();
-        imp.name_button
-            .child()
-            .unwrap()
-            .downcast::<gtk::Label>()
-            .unwrap()
-            .set_text(&name);
-        imp.name_button.set_visible(true);
-        imp.name_button.set_tooltip_text(Some(&name));
-        task.set_property("name", name);
+        self.imp().name_button.set_visible(true);
+        task.set_name(entry.buffer().text());
         update_task(&task).expect("Failed to update task");
     }
 
     #[template_callback]
     fn handle_name_entry_icon_press(&self, _: gtk::EntryIconPosition) {
         let imp = self.imp();
+        imp.name_entry.buffer().set_text(self.task().name());
         imp.name_button.set_visible(true);
-        imp.name_entry.buffer().set_text(&self.task().name());
     }
 
-    fn handle_timer_toggle_button_toggled(&self, button: &gtk::ToggleButton) {
+    fn start_timer(&self, record: Record) {
+        let imp = self.imp();
+        let button = imp.timer_button.get();
+        imp.timer_status.set(TimerStatus::On);
+        button.add_css_class("destructive-action");
+
+        let (tx, rx) = glib::MainContext::channel(glib::PRIORITY_DEFAULT);
+        let now = SystemTime::now();
+        thread::spawn(move || loop {
+            if tx.send(now.elapsed().unwrap().as_secs()).is_err() {
+                break;
+            }
+            thread::sleep(Duration::from_secs_f32(0.3));
+        });
+        rx.attach(None,glib::clone!(@weak button, @weak self as obj => @default-return glib::Continue(false),
+            move |duration| {
+                let imp = obj.imp();
+                match imp.timer_status.get() {
+                    TimerStatus::On => {
+                        let button_content = button.child()
+                        .and_downcast::<adw::ButtonContent>()
+                        .unwrap();
+                        button_content.set_label(
+                            &Record::duration_display(duration as i64)
+                        );
+                        glib::Continue(true)
+                    },
+                    TimerStatus::Off => {
+                        button.remove_css_class("destructive-action");
+                        record.set_duration(glib::DateTime::now_local().unwrap().to_unix() - record.start());
+                        update_record(&record).expect("Failed to update record");
+                        imp.timer_button_content.set_label(&obj.task().duration_display());
+                        obj.activate_action("project.update", None)
+                            .expect("Failed to send project.update");
+                        glib::Continue(false)
+                    },
+                    TimerStatus::Cancel => {
+                        button.remove_css_class("destructive-action");
+                        glib::Continue(false)
+                    }
+                }
+            }
+            ),
+        );
+    }
+
+    #[template_callback]
+    fn handle_timer_button_clicked(&self, _button: &gtk::Button) {
         let task = self.task();
-        let records = read_records(task.id(), true, None, None).expect("Failed to read records");
-        let record = if records.is_empty() {
+        let record = task.incomplete_record().unwrap_or_else(|| {
             create_record(glib::DateTime::now_local().unwrap().to_unix(), task.id(), 0)
                 .expect("Failed to create record")
+        });
+        if self.imp().timer_status.get() != TimerStatus::On {
+            self.start_timer(record);
         } else {
-            let record = records.get(0).unwrap().clone();
-            record.set_property(
-                "duration",
-                glib::DateTime::now_local().unwrap().to_unix() - record.start(),
-            );
-            record
-        };
-
-        if button.is_active() {
-            button.add_css_class("destructive-action");
-
-            let (tx, rx) = glib::MainContext::channel(glib::PRIORITY_DEFAULT);
-            let mut duration = record.duration();
-            thread::spawn(move || loop {
-                if tx.send(duration.to_string()).is_err() {
-                    break;
-                }
-                thread::sleep(Duration::from_secs(1));
-                duration += 1;
-            });
-            rx.attach(
-                None,
-                glib::clone!(
-                    @weak button => @default-return glib::Continue(false),
-                    move |text| {
-                        if button.is_active() {
-                            let button_content = button.child()
-                                .and_downcast::<adw::ButtonContent>()
-                                .unwrap();
-                            button_content.set_label(
-                                &Record::duration_display(text.parse::<i64>().unwrap())
-                            );
-                            glib::Continue(true)
-                        } else {
-                            glib::Continue(false)
-                        }
-                    }
-                ),
-            );
-        } else {
-            button.remove_css_class("destructive-action");
-            record.set_property(
-                "duration",
-                glib::DateTime::now_local().unwrap().to_unix() - record.start(),
-            );
-            update_record(&record).expect("Failed to update record");
-            self.imp()
-                .timer_button_content
-                .set_label(&task.duration_display());
-            self.activate_action("project.update", None)
-                .expect("Failed to send project.update");
+            self.imp().timer_status.set(TimerStatus::Off);
         }
     }
 
@@ -264,8 +245,8 @@ impl TaskRow {
             toast_name.push_str("...");
         }
         let toast = adw::Toast::builder()
-            .title(&gettext("\"{}\" is going to delete").replace("{}", &toast_name))
-            .button_label(&gettext("Undo"))
+            .title(gettext("\"{}\" is going to delete").replace("{}", &toast_name))
+            .button_label(gettext("Undo"))
             .build();
 
         toast.connect_button_clicked(glib::clone!(
@@ -288,113 +269,57 @@ impl TaskRow {
                         .expect("Failed to delete task");
                     if let Some(tasks_box) = obj.parent() {    // check for project active changed
                         let tasks_box = tasks_box.downcast::<gtk::ListBox>().unwrap();
-                        for i in 0..obj.index() {
-                            let row = tasks_box.row_at_index(i).unwrap();
-                            let row_task: Task = row.property("task");
-                            row_task.set_property("position", row_task.position() - 1);
-                        }
-                        let upper_row = obj.parent()
-                            .and_downcast::<gtk::ListBox>()
-                            .unwrap()
-                            .row_at_index(obj.index() - 1);
-                        if let Some(upper_row) = upper_row {upper_row.grab_focus();}
-                        tasks_box.remove(&obj);
+                        // for i in 0..obj.index() {
+                        //     let row = tasks_box.row_at_index(i).unwrap();
+                        //     let row_task: Task = row.property("task");
+                        //     row_task.set_property("position", row_task.position() - 1);
+                        // }
+                        // if let Some(upper_row) = obj.parent()
+                        //     .and_downcast::<gtk::ListBox>()
+                        //     .unwrap()
+                        //     .row_at_index(obj.index() - 1) {
+                        //         upper_row.grab_focus();
+                        // }
+                        tasks_box.remove(&obj); // FIXME: remove task form ProjectList::Task (make problem for add task per scroll)
                     }
                 }
             }
         ));
-        task.set_property("suspended", true);
-        self.set_property("task", &task);
+        task.set_suspended(true);
+        self.set_task(&task);
         update_task(&task).expect("Failed to update task");
-        if let Some(list_box) = self.parent().and_downcast::<gtk::ListBox>() {
-            let upper_row = list_box.row_at_index(self.index() - 1);
-            if let Some(upper_row) = upper_row {
-                upper_row.grab_focus();
-            }
-        }
         self.changed();
         let window = self.root().unwrap();
-        let window_name = window.widget_name();
-        if window_name == "IPlanWindow" {
-            window
-                .downcast::<IPlanWindow>()
-                .unwrap()
-                .imp()
-                .toast_overlay
-                .add_toast(&toast);
-        } else if window_name == "ProjectDoneTasksWindow" {
-            window
-                .downcast::<ProjectDoneTasksWindow>()
-                .unwrap()
-                .imp()
-                .toast_overlay
-                .add_toast(&toast);
-        } else if window_name == "TaskWindow" {
-            let window = window.downcast::<TaskWindow>().unwrap();
-            let task_parent = task.parent();
-            if window.imp().parent_task.get() != task_parent {
-                window.imp().toast_overlay.add_toast(&toast);
-                return;
+        match window.widget_name().as_str() {
+            "IPlanWindow" => {
+                window
+                    .downcast::<IPlanWindow>()
+                    .unwrap()
+                    .imp()
+                    .toast_overlay
+                    .add_toast(toast);
             }
-            if task_parent == 0 {
-                let transient_for = window.transient_for().unwrap();
-                let transient_for_name = transient_for.widget_name();
-                if transient_for_name == "IPlanWindow" {
-                    let transient_for = transient_for.downcast::<IPlanWindow>().unwrap();
-                    transient_for.imp().toast_overlay.add_toast(&toast);
-                    toast.connect_button_clicked(glib::clone!(
-                        @weak transient_for =>
-                        move |_toast| {
-                            transient_for.activate_action("project.open", None).expect("Failed to sebd project.open action");
-                    }));
-                } else if transient_for_name == "ProjectDoneTasksWindow" {
-                    let transient_for = transient_for.downcast::<ProjectDoneTasksWindow>().unwrap();
-                    transient_for.imp().toast_overlay.add_toast(&toast);
-                    toast.connect_button_clicked(glib::clone!(
-                        @weak self as obj =>
-                        move |_toast| {
-                            let task = obj.task();
-                            task.set_property("suspended", false);
-                            let tasks_rows = transient_for.imp().tasks_box.observe_children();
-                            for i in 0..tasks_rows.n_items() {
-                                let row = tasks_rows.item(i).and_downcast::<TaskRow>().unwrap();
-                                if row.task().id() == task.id() {
-                                    row.set_property("task", task);
-                                    row.changed();
-                                    break;
-                                }
-                            }
-                    }));
-                }
-                window.close();
-            } else {
-                window.imp().toast_overlay.add_toast(&toast);
-                window.imp().back_button.emit_clicked();
-
-                toast.connect_button_clicked(glib::clone!(
-                    @weak self as obj =>
-                    move |_toast| {
-                        let task = obj.task();
-                        task.set_property("suspended", false);
-                        let task_page = window.imp().task_pages_stack.visible_child().and_downcast::<TaskPage>().unwrap();
-                        let subtasks_rows = task_page.imp().subtasks_box.observe_children();
-                        for i in 0..subtasks_rows.n_items() {
-                            let row = subtasks_rows.item(i).and_downcast::<TaskRow>().unwrap();
-                            if row.task().id() == task.id() {
-                                row.set_property("task", task);
-                                row.changed();
-                                break;
-                            }
-                        }
-                }));
+            "ProjectDoneTasksWindow" => {
+                window
+                    .downcast::<ProjectDoneTasksWindow>()
+                    .unwrap()
+                    .imp()
+                    .toast_overlay
+                    .add_toast(toast);
             }
+            "TaskWindow" => {
+                window
+                    .downcast::<TaskWindow>()
+                    .unwrap()
+                    .add_toast(task, toast);
+            }
+            _ => unimplemented!(),
         }
     }
 
     #[template_callback]
     fn handle_drag_prepare(&self, _x: f64, _y: f64) -> Option<gdk::ContentProvider> {
-        let name_entry = self.imp().name_entry.get();
-        if WidgetExt::is_visible(&name_entry) {
+        if self.imp().name_entry.get_visible() {
             None
         } else {
             Some(gdk::ContentProvider::for_value(&self.to_value()))
@@ -415,7 +340,7 @@ impl TaskRow {
 
     #[template_callback]
     fn handle_drag_cancel(&self, _drag: gdk::Drag) -> bool {
-        self.imp().moving_out.set(false);
+        self.set_moving_out(false);
         self.changed();
         false
     }

@@ -5,8 +5,8 @@ use std::cell::RefCell;
 
 use crate::db::models::{List, Task};
 use crate::db::operations::{
-    create_task, delete_list, new_position, read_list, read_records, read_task, read_tasks,
-    update_list, update_task,
+    create_task, delete_list, new_position, read_list, read_task, read_tasks, update_list,
+    update_task,
 };
 use crate::views::{
     project::ProjectDoneTasksWindow, project::ProjectLayout, project::TaskRow, project::TaskWindow,
@@ -72,9 +72,9 @@ mod imp {
                 }
                 let toast = adw::Toast::builder()
                     .title(
-                        &gettext("\"{}\" moved to the done tasks list").replace("{}", &toast_name),
+                        gettext("\"{}\" moved to the done tasks list").replace("{}", &toast_name),
                     )
-                    .button_label(&gettext("Undo"))
+                    .button_label(gettext("Undo"))
                     .build();
                 toast.connect_button_clicked(glib::clone!(
                     @weak obj, @weak task =>
@@ -83,10 +83,9 @@ mod imp {
                         update_task(&task).expect("Failed to update task");
                         let row = TaskRow::new(task);
                         obj.imp().tasks_box.append(&row);
-                        row.init_widgets();
                 }));
                 let window = obj.root().and_downcast::<IPlanWindow>().unwrap();
-                window.imp().toast_overlay.add_toast(&toast);
+                window.imp().toast_overlay.add_toast(toast);
             });
         }
 
@@ -170,19 +169,18 @@ impl ProjectList {
                     gtk::Inhibit(false)
                 }
             }));
-            imp.scrolled_window.add_controller(&scroll_controller);
-            imp.scrolled_window.connect_edge_reached(glib::clone!(
-            @weak imp => @default-return (),
-            move |_obj, pos| {
-                if pos == gtk::PositionType::Bottom {
-                    let next = imp.tasks_box.observe_children().n_items() as usize - 1;
-                    let tasks = imp.tasks.borrow();
-                    if next < tasks.len() {
-                        let project_list_task = TaskRow::new(tasks.get(next).unwrap().clone());
-                        imp.tasks_box.append(&project_list_task);
-                        project_list_task.init_widgets();
-                    }
-                }
+            imp.scrolled_window.add_controller(scroll_controller);
+            imp.scrolled_window
+                .connect_edge_reached(glib::clone!(@weak imp =>
+                    move |_obj, pos| {
+                        if pos == gtk::PositionType::Bottom {
+                            let next = imp.tasks_box.observe_children().n_items() as usize - 1;
+                            let tasks = imp.tasks.borrow();
+                            if next < tasks.len() {
+                                let project_list_task = TaskRow::new(tasks.get(next).unwrap().clone());
+                                imp.tasks_box.append(&project_list_task);
+                            }
+                        }
             }));
         }
 
@@ -197,13 +195,11 @@ impl ProjectList {
             for task in tasks.split_at(tasks_per_page).0 {
                 let project_list_task = TaskRow::new(task.clone());
                 imp.tasks_box.append(&project_list_task);
-                project_list_task.init_widgets();
             }
         } else {
             for task in tasks.clone() {
                 let project_list_task = TaskRow::new(task);
                 imp.tasks_box.append(&project_list_task);
-                project_list_task.init_widgets();
             }
         }
 
@@ -246,7 +242,7 @@ impl ProjectList {
             drag_icon.set_child(Some(&label));
             drag.set_hotspot(0, 0);
         });
-        imp.header.add_controller(&list_drag_source);
+        imp.header.add_controller(list_drag_source);
 
         let list_drop_target =
             gtk::DropTarget::new(ProjectList::static_type(), gdk::DragAction::MOVE);
@@ -257,7 +253,7 @@ impl ProjectList {
         list_drop_target.connect_motion(glib::clone!(
             @weak self as obj => @default-return gdk::DragAction::empty(),
             move |target, x, y| obj.list_drop_target_motion(target, x, y)));
-        self.add_controller(&list_drop_target);
+        self.add_controller(list_drop_target);
 
         let task_drop_target = gtk::DropTarget::new(TaskRow::static_type(), gdk::DragAction::MOVE);
         task_drop_target.set_preload(true);
@@ -273,7 +269,7 @@ impl ProjectList {
         task_drop_target.connect_leave(glib::clone!(
             @weak self as obj =>
             move |target| obj.task_drop_target_leave(target)));
-        imp.tasks_box.add_controller(&task_drop_target);
+        imp.tasks_box.add_controller(task_drop_target);
     }
 
     pub fn list(&self) -> List {
@@ -303,7 +299,6 @@ impl ProjectList {
                     let task_p = task.position();
                     let project_list_task = TaskRow::new(task);
                     imp.tasks_box.append(&project_list_task);
-                    project_list_task.init_widgets();
                     if task_p == target_task.position() {
                         project_list_task.grab_focus();
                         break;
@@ -322,39 +317,14 @@ impl ProjectList {
         modal.connect_close_request(glib::clone!(
             @weak row as obj => @default-return gtk::Inhibit(false),
             move |_| {
-                let imp = obj.imp();
                 let task = read_task(obj.task().id()).expect("Failed to read the task");
                 if task.done() {
                     tasks_box.remove(&obj);
-                    return gtk::Inhibit(false);
-                }
-                let task_name = task.name();
-                imp.name_button
-                    .child()
-                    .unwrap()
-                    .downcast::<gtk::Label>()
-                    .unwrap()
-                    .set_text(&task_name);
-                imp.name_button.set_tooltip_text(Some(&task_name));
-                imp.name_entry.buffer().set_text(&task_name);
-                let records =
-                read_records(task.id(), true, None, None).expect("Failed to read records");
-                if !records.is_empty() {
-                    imp.timer_toggle_button.set_active(true)
                 } else {
-                    if imp.timer_toggle_button.is_active() {
-                        imp.timer_toggle_button.remove_css_class("destructive-action");
-                        let handler_id = imp.timer_toggle_button_handler_id.borrow();
-                        let handler_id = handler_id.as_ref().unwrap();
-                        imp.timer_toggle_button.block_signal(handler_id);
-                        imp.timer_toggle_button.set_active(false);
-                        imp.timer_toggle_button.unblock_signal(handler_id)
-                    }
-                    imp.timer_button_content.set_label(&task.duration_display());
+                    obj.reset(task);
+                    obj.changed();
+                    obj.activate_action("project.update", None).expect("Failed to send project.update signal");
                 }
-                imp.task.replace(task);
-                obj.changed();
-                obj.activate_action("project.update", None).expect("Failed to send project.update signal");
                 gtk::Inhibit(false)
             }
         ));
@@ -384,7 +354,6 @@ impl ProjectList {
         let task_ui = TaskRow::new(task);
         let imp = self.imp();
         imp.tasks_box.prepend(&task_ui);
-        task_ui.init_widgets();
         let task_imp = task_ui.imp();
         task_imp.name_button.set_visible(false);
         task_imp.name_entry.grab_focus();

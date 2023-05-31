@@ -130,7 +130,7 @@ impl RecordCreateWindow {
             self.close();
         } else {
             let toast = adw::Toast::builder().title("duration cannot be 0").build();
-            self.imp().toast_overlay.add_toast(&toast);
+            self.imp().toast_overlay.add_toast(toast);
         }
     }
 

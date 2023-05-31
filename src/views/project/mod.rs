@@ -8,7 +8,7 @@ mod project_list;
 pub use project_list::ProjectList;
 
 mod task_row;
-pub use task_row::TaskRow;
+pub use task_row::{TaskRow, TimerStatus};
 
 mod project_edit_window;
 pub use project_edit_window::ProjectEditWindow;

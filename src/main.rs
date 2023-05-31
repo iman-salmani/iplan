@@ -44,106 +44,6 @@ fn main() {
     // Check database
     db::check_database().expect("Database check failed");
 
-    // Test create list
-    // let list = db::operations::create_list("INSERT';", 1)
-    //     .expect("Failed to create list");
-    // println!("{list}");
-
-    // Test read lists
-    // let lists = db::operations::read_lists(1)
-    //     .expect("Failed to read lists");
-    // if let Some(list) = lists.get(0) {
-    //     println!("{}", list);
-    // }
-
-    // Test read list
-    // let list = db::operations::read_list(8)
-    //     .expect("Failed to read list");
-    // println!("{list}");
-
-    // Test update list
-    // db::operations::update_list(db::models::List{
-    //         id: 8,
-    //         name: "New Name".to_string(),
-    //         project: 1,
-    //         index: 1
-    //     }).expect("Failed to update list");
-
-    // Test delete list
-    // db::operations::delete_list(9)
-    //     .expect("Failed to delete list");
-
-    // Test create task
-    // let task = db::operations::create_task("Test Task;", 1, 1).expect("Failed to create task");
-    // println!("{task:?}");
-
-    // Test read tasks
-    // let tasks = db::operations::read_tasks(1, None, None).expect("Failed to read tasks");
-    // println!("{}", tasks.len());
-
-    // Test read task
-    // let task = db::operations::read_task(1)
-    //     .expect("Failed to read list");
-    // println!("{task}");
-
-    // Test update task
-    // db::operations::update_task(db::models::Task{
-    //     id: 2,
-    //     name: String::from("task 3"),
-    //     done: false,
-    //     project: 1,
-    //     list: 2,
-    //     duration: String::new(),
-    //     position: 0,
-    //     suspended: false,
-    // }).expect("Failed to update list");
-
-    // Test delete task
-    // db::operations::delete_task(3, 1, 1)
-    //     .expect("Failed to delete task");
-
-    // Test find tasks
-    // let tasks = db::operations::find_tasks(r"task 1_\%", false)
-    //     .expect("Failed to find tasks");
-    // println!("{}", tasks.len());
-
-    // Test create project
-    // let project = db::operations::create_project("Test Project 2")
-    //     .expect("Failed to create project");
-    // println!("{project}");
-
-    // Test read projects
-    // let projects = db::operations::read_projects(false)
-    //     .expect("Failed to read projects");
-    // println!("{}", projects.len());
-
-    // Test read project
-    // let project = db::operations::read_project(1)
-    //     .expect("Failed to read project");
-    // println!("{project}");
-
-    // Test update project
-    // db::operations::update_project(db::models::Project{
-    //     id: 2,
-    //     name: String::from("Test Project"),
-    //     archive: false,
-    //     index: 2,
-    // }).expect("Failed to update project");
-
-    // Test delete project
-    // db::operations::delete_project(1, 0)
-    //     .expect("Failed to delete project");
-
-    // Test find projects
-    // let projects = db::operations::find_projects(r"2", false)
-    //     .expect("Failed to find projects");
-    // println!("{}", projects.len());
-
-    // Test timespan
-    // 1676361384.32708
-    // let time = glib::DateTime::from_unix_local(1676361384).unwrap();
-    // println!("{:?}, {}, {}", time.ymd(), time.hour(), time.second());
-
     // Create a new GtkApplication. The application manages our main loop,
     // application windows, integration with the window manager/compositor, and
     // desktop features such as file opening and single-instance applications.
@@ -154,5 +54,5 @@ fn main() {
     // exits. Upon return, we have our exit code to return to the shell. (This
     // is the code you see when you do `echo $?` after running a command in a
     // terminal.
-    std::process::exit(app.run());
+    std::process::exit(app.run().into());
 }

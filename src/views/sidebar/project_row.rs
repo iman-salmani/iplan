@@ -75,7 +75,9 @@ glib::wrapper! {
 #[gtk::template_callbacks]
 impl ProjectRow {
     pub fn new(project: Project) -> Self {
-        let obj = glib::Object::new::<ProjectRow>(&[("project", &project)]);
+        let obj = glib::Object::builder::<ProjectRow>()
+            .property("project", project)
+            .build();
 
         let imp = obj.imp();
 

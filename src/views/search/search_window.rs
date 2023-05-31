@@ -83,7 +83,7 @@ impl SearchWindow {
                 }
                 gtk::Inhibit(false)
         }));
-        imp.search_entry.add_controller(&search_entry_controller);
+        imp.search_entry.add_controller(search_entry_controller);
         win
     }
 

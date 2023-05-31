@@ -173,8 +173,8 @@ impl ProjectLists {
         match layout {
             ProjectLayout::Horizontal => {
                 imp.lists_box.set_orientation(gtk::Orientation::Horizontal);
-                let mut shift_controller = imp.shift_controller.borrow_mut();
-                if let Some(shift_controller) = shift_controller.as_ref() {
+                let mut shift_controller = imp.shift_controller.borrow().to_owned();
+                if let Some(shift_controller) = shift_controller {
                     window.add_controller(shift_controller);
                 } else {
                     let new_shift_controller = gtk::EventControllerKey::new();
@@ -211,7 +211,7 @@ impl ProjectLists {
                                     .vscrollbar()
                                     .set_sensitive(true);
                             }}}));
-                    window.add_controller(&new_shift_controller);
+                    window.add_controller(new_shift_controller.clone());
                     shift_controller.replace(new_shift_controller);
                 }
             }

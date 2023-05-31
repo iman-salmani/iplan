@@ -1,15 +1,20 @@
-use gtk::{glib, glib::once_cell::sync::Lazy, prelude::*, subclass::prelude::*};
+use gtk::{glib, glib::Properties, prelude::*, subclass::prelude::*};
 use rusqlite::{Error, Result, Row};
 use std::cell::{Cell, RefCell};
 
 mod imp {
     use super::*;
 
-    #[derive(Default, Debug)]
+    #[derive(Default, Debug, Properties)]
+    #[properties(wrapper_type=super::List)]
     pub struct List {
+        #[property(get, set)]
         pub id: Cell<i64>,
+        #[property(get, set)]
         pub name: RefCell<String>,
+        #[property(get, set)]
         pub project: Cell<i64>,
+        #[property(get, set)]
         pub index: Cell<i32>,
     }
 
@@ -21,47 +26,15 @@ mod imp {
 
     impl ObjectImpl for List {
         fn properties() -> &'static [glib::ParamSpec] {
-            static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
-                vec![
-                    glib::ParamSpecInt64::builder("id").build(),
-                    glib::ParamSpecString::builder("name").build(),
-                    glib::ParamSpecInt64::builder("project").build(),
-                    glib::ParamSpecInt::builder("index").build(),
-                ]
-            });
-            PROPERTIES.as_ref()
+            Self::derived_properties()
         }
 
-        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
-            match pspec.name() {
-                "id" => {
-                    let value = value.get::<i64>().expect("Value must be a i64");
-                    self.id.set(value);
-                }
-                "name" => {
-                    let value = value.get::<String>().expect("Value must be a String");
-                    self.name.replace(value);
-                }
-                "project" => {
-                    let value = value.get::<i64>().expect("Value must be a i64");
-                    self.project.set(value);
-                }
-                "index" => {
-                    let value = value.get::<i32>().expect("Value must be a i32");
-                    self.index.set(value);
-                }
-                _ => unimplemented!(),
-            }
+        fn set_property(&self, id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
+            self.derived_set_property(id, value, pspec)
         }
 
-        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
-            match pspec.name() {
-                "id" => self.id.get().to_value(),
-                "name" => self.name.borrow().to_string().to_value(),
-                "project" => self.project.get().to_value(),
-                "index" => self.index.get().to_value(),
-                _ => unimplemented!(),
-            }
+        fn property(&self, id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+            self.derived_property(id, pspec)
         }
     }
 }
@@ -78,22 +51,6 @@ impl List {
             .property("project", project)
             .property("index", index)
             .build()
-    }
-
-    pub fn id(&self) -> i64 {
-        self.property("id")
-    }
-
-    pub fn name(&self) -> String {
-        self.property("name")
-    }
-
-    pub fn project(&self) -> i64 {
-        self.property("project")
-    }
-
-    pub fn index(&self) -> i32 {
-        self.property("index")
     }
 }
 
