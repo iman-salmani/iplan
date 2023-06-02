@@ -127,11 +127,16 @@ impl TaskRow {
         self.reset_timer();
     }
 
+    pub fn cancel_timer(&self) {
+        self.imp().timer_status.set(TimerStatus::Cancel);
+    }
+
     pub fn reset_timer(&self) {
         let imp = self.imp();
         let task = self.task();
-        imp.timer_status.set(TimerStatus::Cancel);
+        imp.timer_status.set(TimerStatus::Cancel); // FIXME: Check for removing this
         if let Some(record) = task.incomplete_record() {
+            record.set_duration(glib::DateTime::now_local().unwrap().to_unix() - record.start());
             self.start_timer(record);
         } else {
             imp.timer_button_content.set_label(&task.duration_display());
@@ -203,9 +208,10 @@ impl TaskRow {
         button.add_css_class("destructive-action");
 
         let (tx, rx) = glib::MainContext::channel(glib::PRIORITY_DEFAULT);
-        let now = SystemTime::now();
+        let duration = Duration::from_secs(record.duration() as u64);
+        let start = SystemTime::now().checked_sub(duration).unwrap();
         thread::spawn(move || loop {
-            if tx.send(now.elapsed().unwrap().as_secs()).is_err() {
+            if tx.send(start.elapsed().unwrap().as_secs()).is_err() {
                 break;
             }
             thread::sleep(Duration::from_secs_f32(0.3));
@@ -216,8 +222,8 @@ impl TaskRow {
                 match imp.timer_status.get() {
                     TimerStatus::On => {
                         let button_content = button.child()
-                        .and_downcast::<adw::ButtonContent>()
-                        .unwrap();
+                            .and_downcast::<adw::ButtonContent>()
+                            .unwrap();
                         button_content.set_label(
                             &Record::duration_display(duration as i64)
                         );

@@ -1,6 +1,7 @@
 use adw::prelude::*;
 use gettextrs::gettext;
 use gtk::{gdk, glib, glib::Properties, subclass::prelude::*};
+use std::borrow::BorrowMut;
 use std::cell::RefCell;
 
 use crate::db::models::{List, Task};
@@ -314,6 +315,7 @@ impl ProjectList {
         let row = row.downcast::<TaskRow>().unwrap();
         let modal = TaskWindow::new(&win.application().unwrap(), &win, row.task());
         modal.present();
+        row.cancel_timer();
         modal.connect_close_request(glib::clone!(
             @weak row as obj => @default-return gtk::Inhibit(false),
             move |_| {

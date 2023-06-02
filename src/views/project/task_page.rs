@@ -230,6 +230,7 @@ impl TaskPage {
     #[template_callback]
     fn handle_subtasks_box_row_activated(&self, row: gtk::ListBoxRow, _tasks_box: gtk::ListBox) {
         let row = row.downcast::<TaskRow>().unwrap();
+        row.cancel_timer();
         self.activate_action("subtask.open", Some(&row.task().id().to_variant()))
             .expect("Failed to send subtask.open action");
     }
