@@ -1,0 +1,8 @@
+row.expander textview {
+  border-radius: 0 0 9px 9px;
+}
+.timerow menubutton spinbutton,
+.timerow menubutton label {
+  font-size: 24px;
+  margin: 3px;
+}

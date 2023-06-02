@@ -2,7 +2,7 @@
 <!ELEMENT requires EMPTY>
 <!ATTLIST requires lib NMTOKEN #REQUIRED>
 <!ATTLIST requires version NMTOKEN #REQUIRED>
-<!ELEMENT template (property*,child*)>
+<!ELEMENT template (property*, style?,child*)>
 <!ATTLIST template class NMTOKEN #REQUIRED>
 <!ATTLIST template parent NMTOKEN #REQUIRED>
 <!ELEMENT property (#PCDATA|object)*>
@@ -15,7 +15,7 @@
 <!ELEMENT object (property*,signal*,style?,child*,responses?,attributes?)>
 <!ATTLIST object class NMTOKEN #REQUIRED>
 <!ATTLIST object id NMTOKEN #IMPLIED>
-<!ELEMENT style (class)>
+<!ELEMENT style (class+)>
 <!ELEMENT class EMPTY>
 <!ATTLIST class name NMTOKEN #REQUIRED>
 <!ELEMENT child (object)>

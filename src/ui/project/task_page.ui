@@ -26,10 +26,6 @@
             <child>
               <object class="GtkTextView">
                 <property name="height-request">128</property>
-                <property name="margin-start">3</property>
-                <property name="margin-end">3</property>
-                <property name="margin-top">3</property>
-                <property name="margin-bottom">3</property>
                 <property name="top-margin">3</property>
                 <property name="bottom-margin">3</property>
                 <property name="left-margin">3</property>
@@ -161,8 +157,7 @@
               <object class="AdwStatusPage" id="search_results_placeholder">
                 <property name="icon-name">preferences-system-time-symbolic</property>
                 <property name="title" translatable="yes">no records found</property>
-                <property name="description" translatable="yes">Use add button up there or start a
-                  timer</property>
+                <property name="description" translatable="yes">Use add button up there or start a timer</property>
                 <style>
                   <class name="compact" />
                 </style>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE interface SYSTEM "schema.dtd">
+<interface>
+  <requires lib="gtk" version="4.0" />
+  <requires lib="Adw" version="1.0" />
+  <template class="DateRow" parent="AdwActionRow">
+    <property name="activatable-widget">menu_button</property>
+    <child type="suffix">
+      <object class="GtkMenuButton" id="menu_button">
+        <property name="valign">center</property>
+        <property name="popover">
+          <object class="GtkPopover">
+            <child>
+              <object class="GtkCalendar" id="calendar">
+                <signal name="day-selected" handler="handle_day_selected" swapped="true" />
+              </object>
+            </child>
+          </object>
+        </property><!--
+        End Popover -->
+        <style>
+          <class name="flat" />
+        </style>
+      </object>
+    </child><!--
+    End MenuButton -->
+  </template>
+</interface>

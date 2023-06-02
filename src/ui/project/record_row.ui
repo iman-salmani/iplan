@@ -5,143 +5,22 @@
   <requires lib="Adw" version="1.0" />
   <template class="RecordRow" parent="AdwExpanderRow">
     <child>
-      <object class="AdwExpanderRow" id="start_row">
-        <property name="title" translatable="yes">start</property>
-        <child>
-          <object class="AdwEntryRow" id="start_date_entry">
-            <property name="title" translatable="yes">date</property>
-            <signal name="changed" handler="handle_start_date_entry_changed" swapped="true" />
-            <child type="suffix">
-              <object class="GtkMenuButton" id="date_picker_menu_button">
-                <property name="icon-name">pan-down-symbolic</property>
-                <property name="popover">date_picker_popover</property>
-                <property name="valign">center</property>
-                <style>
-                  <class name="flat" />
-                </style>
-              </object>
-            </child>
-          </object>
-        </child>
-        <child>
-          <object class="AdwActionRow">
-            <property name="title" translatable="yes">hour</property>
-            <child type="suffix">
-              <object class="GtkSpinButton" id="start_hour_spin_button">
-                <property name="valign">center</property>
-                <property name="adjustment">
-                  <object class="GtkAdjustment">
-                    <property name="lower">0</property>
-                    <property name="upper">23</property>
-                    <property name="step-increment">1</property>
-                  </object>
-                </property>
-                <signal name="value-changed" handler="handle_start_time_spin_button_value_changed"
-                  swapped="true" />
-              </object>
-            </child>
-          </object>
-        </child>
-        <child>
-          <object class="AdwActionRow">
-            <property name="title" translatable="yes">minute</property>
-            <child type="suffix">
-              <object class="GtkSpinButton" id="start_minute_spin_button">
-                <property name="valign">center</property>
-                <property name="adjustment">
-                  <object class="GtkAdjustment">
-                    <property name="lower">0</property>
-                    <property name="upper">59</property>
-                    <property name="step-increment">1</property>
-                  </object>
-                </property>
-                <signal name="value-changed" handler="handle_start_time_spin_button_value_changed"
-                  swapped="true" />
-              </object>
-            </child>
-          </object>
-        </child>
-        <child>
-          <object class="AdwActionRow">
-            <property name="title" translatable="yes">seconds</property>
-            <child type="suffix">
-              <object class="GtkSpinButton" id="start_seconds_spin_button">
-                <property name="valign">center</property>
-                <property name="adjustment">
-                  <object class="GtkAdjustment">
-                    <property name="lower">0</property>
-                    <property name="upper">59</property>
-                    <property name="step-increment">1</property>
-                  </object>
-                </property>
-                <signal name="value-changed" handler="handle_start_time_spin_button_value_changed"
-                  swapped="true" />
-              </object>
-            </child>
-          </object>
-        </child>
+      <object class="DateRow" id="start_date_row">
+        <property name="title" translatable="yes">start date</property>
+        <signal name="date-changed" handler="handle_start_date_changed"
+          swapped="true" />
       </object>
     </child>
     <child>
-      <object class="AdwExpanderRow" id="duration_row">
+      <object class="TimeRow" id="start_time_row">
+        <property name="title" translatable="yes">start time</property>
+        <signal name="time-changed" handler="handle_start_time_changed" swapped="true" />
+      </object>
+    </child>
+    <child>
+      <object class="TimeRow" id="duration_row">
         <property name="title" translatable="yes">duration</property>
-        <child>
-          <object class="AdwActionRow">
-            <property name="title" translatable="yes">hour</property>
-            <child type="suffix">
-              <object class="GtkSpinButton" id="duration_hour_spin_button">
-                <property name="valign">center</property>
-                <property name="adjustment">
-                  <object class="GtkAdjustment">
-                    <property name="lower">0</property>
-                    <property name="upper">23</property>
-                    <property name="step-increment">1</property>
-                  </object>
-                </property>
-                <signal name="value-changed"
-                  handler="handle_duration_time_spin_button_value_changed" swapped="true" />
-              </object>
-            </child>
-          </object>
-        </child>
-        <child>
-          <object class="AdwActionRow">
-            <property name="title" translatable="yes">minute</property>
-            <child type="suffix">
-              <object class="GtkSpinButton" id="duration_minute_spin_button">
-                <property name="valign">center</property>
-                <property name="adjustment">
-                  <object class="GtkAdjustment">
-                    <property name="lower">0</property>
-                    <property name="upper">59</property>
-                    <property name="step-increment">1</property>
-                  </object>
-                </property>
-                <signal name="value-changed"
-                  handler="handle_duration_time_spin_button_value_changed" swapped="true" />
-              </object>
-            </child>
-          </object>
-        </child>
-        <child>
-          <object class="AdwActionRow">
-            <property name="title" translatable="yes">seconds</property>
-            <child type="suffix">
-              <object class="GtkSpinButton" id="duration_seconds_spin_button">
-                <property name="valign">center</property>
-                <property name="adjustment">
-                  <object class="GtkAdjustment">
-                    <property name="lower">0</property>
-                    <property name="upper">59</property>
-                    <property name="step-increment">1</property>
-                  </object>
-                </property>
-                <signal name="value-changed"
-                  handler="handle_duration_time_spin_button_value_changed" swapped="true" />
-              </object>
-            </child>
-          </object>
-        </child>
+        <signal name="time-changed" handler="handle_duration_time_changed" swapped="true" />
       </object>
     </child>
     <child>
@@ -161,12 +40,4 @@
       </object>
     </child>
   </template>
-  <object class="GtkPopover" id="date_picker_popover">
-    <signal name="show" handler="handle_date_picker_popover_show" swapped="true" />
-    <child>
-      <object class="GtkCalendar" id="date_picker">
-        <signal name="day-selected" handler="handle_date_picker_day_selected" swapped="true" />
-      </object>
-    </child>
-  </object>
 </interface>

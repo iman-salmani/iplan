@@ -4,6 +4,9 @@
     <file preprocess="xml-stripblanks">ui/window.ui</file>
     <file preprocess="xml-stripblanks">ui/shortcuts_window.ui</file>
     <file preprocess="xml-stripblanks">ui/delete_dialog.ui</file>
+    <file preprocess="xml-stripblanks">ui/date_row.ui</file>
+    <file preprocess="xml-stripblanks">ui/time_row.ui</file>
+    <file>ui/style.css</file>
 
     <file preprocess="xml-stripblanks">ui/sidebar/sidebar_projects.ui</file>
     <file preprocess="xml-stripblanks">ui/sidebar/project_row.ui</file>

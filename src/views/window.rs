@@ -20,7 +20,7 @@
 
 use adw::subclass::prelude::*;
 use gettextrs::gettext;
-use gtk::{gio, glib, glib::once_cell::sync::Lazy, prelude::*};
+use gtk::{gdk, gio, glib, glib::once_cell::sync::Lazy, prelude::*};
 use std::cell::RefCell;
 
 use crate::db::models::Project;
@@ -264,6 +264,12 @@ impl IPlanWindow {
             .expect("Failed to open project");
         imp.sidebar_projects.select_active_project();
         imp.project_lists.open_project(window.project().id());
+
+        if let Some(display) = gdk::Display::default() {
+            let provider = gtk::CssProvider::new();
+            provider.load_from_resource("/ir/imansalmani/iplan/ui/style.css");
+            gtk::style_context_add_provider_for_display(&display, &provider, 400)
+        }
 
         window
     }

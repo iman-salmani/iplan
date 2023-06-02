@@ -15,7 +15,6 @@ src/ui/project/task_page.ui
 src/ui/project/task_row.ui
 src/ui/search/search_window.ui
 src/ui/sidebar/sidebar_projects.ui
-src/ui/sidebar/sidebar.ui
 src/application.rs
 src/views/window.rs
 src/views/project/project_done_tasks_window.rs
@@ -23,6 +22,8 @@ src/views/project/project_edit_window.rs
 src/views/project/project_header.rs
 src/views/project/project_list.rs
 src/views/project/project_lists.rs
+src/views/project/record_create_window.rs
+src/views/project/record_row.rs
 src/views/project/task_row.rs
 src/views/search/search_result.rs
 src/views/sidebar/sidebar_projects.rs

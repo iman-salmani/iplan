@@ -1,43 +1,29 @@
 use adw;
 use adw::subclass::prelude::*;
 use adw::traits::{ExpanderRowExt, PreferencesRowExt};
-use gtk::{glib, glib::once_cell::sync::Lazy, prelude::*};
+use gettextrs::gettext;
+use gtk::{glib, glib::Properties, prelude::*};
 use std::cell::RefCell;
 
 use crate::db::models::Record;
 use crate::db::operations::{delete_record, update_record};
+use crate::views::{project::TaskWindow, DateRow, TimeRow};
 
 mod imp {
     use super::*;
 
-    #[derive(Default, gtk::CompositeTemplate)]
+    #[derive(Default, gtk::CompositeTemplate, Properties)]
     #[template(resource = "/ir/imansalmani/iplan/ui/project/record_row.ui")]
+    #[properties(wrapper_type=super::RecordRow)]
     pub struct RecordRow {
+        #[property(get, set)]
         pub record: RefCell<Record>,
         #[template_child]
-        pub start_row: TemplateChild<adw::ExpanderRow>,
+        pub start_date_row: TemplateChild<DateRow>,
         #[template_child]
-        pub start_date_entry: TemplateChild<adw::EntryRow>,
+        pub start_time_row: TemplateChild<TimeRow>,
         #[template_child]
-        pub date_picker_menu_button: TemplateChild<gtk::MenuButton>,
-        #[template_child]
-        pub date_picker_popover: TemplateChild<gtk::Popover>,
-        #[template_child]
-        pub date_picker: TemplateChild<gtk::Calendar>,
-        #[template_child]
-        pub start_hour_spin_button: TemplateChild<gtk::SpinButton>,
-        #[template_child]
-        pub start_minute_spin_button: TemplateChild<gtk::SpinButton>,
-        #[template_child]
-        pub start_seconds_spin_button: TemplateChild<gtk::SpinButton>,
-        #[template_child]
-        pub duration_row: TemplateChild<adw::ExpanderRow>,
-        #[template_child]
-        pub duration_hour_spin_button: TemplateChild<gtk::SpinButton>,
-        #[template_child]
-        pub duration_minute_spin_button: TemplateChild<gtk::SpinButton>,
-        #[template_child]
-        pub duration_seconds_spin_button: TemplateChild<gtk::SpinButton>,
+        pub duration_row: TemplateChild<TimeRow>,
     }
 
     #[glib::object_subclass]
@@ -58,26 +44,15 @@ mod imp {
 
     impl ObjectImpl for RecordRow {
         fn properties() -> &'static [glib::ParamSpec] {
-            static PROPERTIES: Lazy<Vec<glib::ParamSpec>> =
-                Lazy::new(|| vec![glib::ParamSpecObject::builder::<Record>("record").build()]);
-            PROPERTIES.as_ref()
+            Self::derived_properties()
         }
 
-        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
-            match pspec.name() {
-                "record" => {
-                    let value = value.get::<Record>().expect("value must be a Record");
-                    self.record.replace(value);
-                }
-                _ => unimplemented!(),
-            }
+        fn property(&self, id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+            self.derived_property(id, pspec)
         }
 
-        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
-            match pspec.name() {
-                "record" => self.record.borrow().to_value(),
-                _ => unimplemented!(),
-            }
+        fn set_property(&self, id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
+            self.derived_set_property(id, value, pspec)
         }
     }
     impl WidgetImpl for RecordRow {}
@@ -96,61 +71,50 @@ glib::wrapper! {
 impl RecordRow {
     pub fn new(record: Record) -> Self {
         let duration = record.duration();
-        let duration_text = Record::duration_display(duration);
         let start = glib::DateTime::from_unix_local(record.start())
             .expect("Failed to create glib::DateTime from Record::start");
-        let row: Self = glib::Object::builder().property("record", record).build();
-        let imp = row.imp();
-        row.set_title(&duration_text);
-        imp.duration_row.set_subtitle(&duration_text);
-        let (min, sec) = (duration / 60, duration % 60);
-        let (hour, min) = (min / 60, min % 60);
-        imp.duration_hour_spin_button.set_value(hour as f64);
-        imp.duration_minute_spin_button.set_value(min as f64);
-        imp.duration_seconds_spin_button.set_value(sec as f64);
-        row.set_subtitle(&format!(
-            "{} > {}",
-            start.format("%B %e - %H:%M").unwrap(),
-            start
-                .add_seconds(duration as f64)
-                .unwrap()
-                .format("%H:%M")
-                .unwrap()
-        ));
-        imp.start_row
-            .set_subtitle(&start.format("%F %H:%M:%S").unwrap());
-        imp.start_date_entry.set_text(&start.format("%F").unwrap());
-        imp.start_hour_spin_button.set_value(start.hour() as f64);
-        imp.start_minute_spin_button
-            .set_value(start.minute() as f64);
-        imp.start_seconds_spin_button.set_value(start.seconds());
-        row
+        let obj: Self = glib::Object::builder().property("record", record).build();
+        let imp = obj.imp();
+        obj.set_labels();
+        imp.start_date_row.set_date(
+            start.year() as u16,
+            start.month() as u8,
+            start.day_of_month() as u8,
+        );
+        imp.start_time_row
+            .set_time_from_digits(start.hour(), start.minute(), start.seconds());
+        imp.duration_row.set_time(duration as i32);
+        obj
     }
 
-    pub fn record(&self) -> Record {
-        self.property("record")
-    }
-
-    fn refresh(&self) {
-        let imp = self.imp();
+    fn set_labels(&self) {
         let record = self.record();
         let start = glib::DateTime::from_unix_local(record.start())
             .expect("Failed to create glib::DateTime from Record::start");
         let duration = record.duration();
-        let duration_text = Record::duration_display(duration);
-        self.set_title(&duration_text);
-        imp.duration_row.set_subtitle(&duration_text);
+
+        self.set_title(&Record::duration_display(duration));
+
+        let start_date_text = start.format("%B %e").unwrap();
+        let end = start.add_seconds(duration as f64).unwrap();
+        let mut end_date_text = end.format("%B %e").unwrap().to_string();
+        end_date_text = if start_date_text == end_date_text {
+            String::new()
+        } else {
+            format!("{end_date_text}, ")
+        };
         self.set_subtitle(&format!(
-            "{} > {}",
-            start.format("%B %e - %H:%M").unwrap(),
-            start
-                .add_seconds(duration as f64)
-                .unwrap()
-                .format("%H:%M")
-                .unwrap()
+            "{}, {} {} {}{}",
+            start_date_text,
+            start.format("%H:%M").unwrap(),
+            gettext("until"),
+            end_date_text,
+            end.format("%H:%M").unwrap()
         ));
-        imp.start_row
-            .set_subtitle(&start.format("%F %H:%M:%S").unwrap());
+    }
+
+    fn refresh(&self) {
+        self.set_labels();
         if self.parent().is_some() {
             self.activate_action("task.duration-update", None)
                 .expect("Failed to send task.duration-update action");
@@ -158,94 +122,55 @@ impl RecordRow {
     }
 
     #[template_callback]
-    fn handle_start_date_entry_changed(&self, entry: adw::EntryRow) {
-        let text = entry.text();
-        let mut date: Vec<i32> = vec![];
-        for num in text.split('-') {
-            let num = num.trim();
-            if let Ok(num) = num.parse::<i32>() {
-                date.push(num);
-            } else {
-                return;
-            }
-        }
-        if date.len() != 3 {
-            return;
-        }
+    fn handle_start_date_changed(&self, datetime: glib::DateTime, _date_row: DateRow) {
+        let imp = self.imp();
+        let datetime = datetime
+            .add_seconds(imp.start_time_row.time() as f64)
+            .unwrap();
+        let record = self.record();
+        record.set_start(datetime.to_unix());
+        self.set_labels();
+        update_record(&record).expect("Failed to update record");
+    }
+
+    #[template_callback]
+    fn handle_start_time_changed(&self, _time: i32, time_picker: TimeRow) {
         let record = self.record();
         let prev_datetime = glib::DateTime::from_unix_local(record.start()).unwrap();
-        if let Ok(datetime) = glib::DateTime::new(
-            &glib::TimeZone::local(),
-            date[0],
-            date[1],
-            date[2],
-            prev_datetime.hour(),
-            prev_datetime.minute(),
-            prev_datetime.seconds(),
-        ) {
-            record.set_property("start", datetime.to_unix());
-            update_record(&record).expect("Failed to update record");
-            self.set_property("record", record);
-            self.refresh();
-        }
-    }
-
-    #[template_callback]
-    fn handle_date_picker_popover_show(&self, _popover: gtk::Popover) {
-        let record = self.record();
-        let datetime = glib::DateTime::from_unix_local(record.start()).unwrap();
-        self.imp().date_picker.select_day(&datetime);
-    }
-
-    #[template_callback]
-    fn handle_date_picker_day_selected(&self, calendar: gtk::Calendar) {
-        calendar.year();
-        let imp = self.imp();
-        imp.date_picker_popover.popdown();
-        let date: glib::DateTime = glib::DateTime::new(
-            &glib::TimeZone::local(),
-            calendar.year(),
-            calendar.month() + 1,
-            calendar.day(),
-            0,
-            0,
-            0.0,
-        )
-        .unwrap();
-        imp.start_date_entry.set_text(&date.format("%F").unwrap());
-    }
-
-    #[template_callback]
-    fn handle_start_time_spin_button_value_changed(&self, _button: gtk::SpinButton) {
-        let imp = self.imp();
-        let record = self.record();
-        let prev_datetime = glib::DateTime::from_unix_local(record.start()).unwrap();
+        let (hour, min, sec) = time_picker.get_digits();
         let datetime = glib::DateTime::new(
             &glib::TimeZone::local(),
             prev_datetime.year(),
             prev_datetime.month(),
             prev_datetime.day_of_month(),
-            imp.start_hour_spin_button.value_as_int(),
-            imp.start_minute_spin_button.value_as_int(),
-            imp.start_seconds_spin_button.value_as_int() as f64,
+            hour,
+            min,
+            sec,
         )
         .unwrap();
-        record.set_property("start", datetime.to_unix());
+        record.set_start(datetime.to_unix());
         update_record(&record).expect("Failed to update record");
-        self.set_property("record", record);
         self.refresh();
     }
 
     #[template_callback]
-    fn handle_duration_time_spin_button_value_changed(&self, _button: gtk::SpinButton) {
-        let imp = self.imp();
-        let duration = (imp.duration_hour_spin_button.value_as_int() * 3600)
-            + (imp.duration_minute_spin_button.value_as_int() * 60)
-            + imp.duration_seconds_spin_button.value_as_int();
+    fn handle_duration_time_changed(&self, time: i32, _: TimeRow) {
+        if time == 0 {
+            let toast = adw::Toast::builder()
+                .title(gettext("Duration can't be 0"))
+                .build();
+            self.root()
+                .and_downcast::<TaskWindow>()
+                .unwrap()
+                .imp()
+                .toast_overlay
+                .add_toast(toast);
+            return;
+        }
+
         let record = self.record();
-        record.set_property("duration", duration as i64);
+        record.set_duration(time as i64);
         update_record(&record).expect("Failed to update record");
-        self.set_property("record", record);
         self.refresh();
     }
 

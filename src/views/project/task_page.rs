@@ -1,5 +1,5 @@
 use adw::traits::ExpanderRowExt;
-use gtk::{glib, glib::once_cell::sync::Lazy, prelude::*, subclass::prelude::*};
+use gtk::{glib, glib::Properties, prelude::*, subclass::prelude::*};
 use std::cell::RefCell;
 use std::unimplemented;
 
@@ -10,9 +10,11 @@ use crate::views::project::{RecordCreateWindow, RecordRow, TaskRow};
 mod imp {
     use super::*;
 
-    #[derive(Default, gtk::CompositeTemplate)]
+    #[derive(Default, gtk::CompositeTemplate, Properties)]
     #[template(resource = "/ir/imansalmani/iplan/ui/project/task_page.ui")]
+    #[properties(wrapper_type=super::TaskPage)]
     pub struct TaskPage {
+        #[property(get, set)]
         pub task: RefCell<Task>,
         #[template_child]
         pub task_row: TemplateChild<TaskRow>,
@@ -77,26 +79,15 @@ mod imp {
 
     impl ObjectImpl for TaskPage {
         fn properties() -> &'static [glib::ParamSpec] {
-            static PROPERTIES: Lazy<Vec<glib::ParamSpec>> =
-                Lazy::new(|| vec![glib::ParamSpecObject::builder::<Task>("task").build()]);
-            PROPERTIES.as_ref()
+            Self::derived_properties()
         }
 
-        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
-            match pspec.name() {
-                "task" => {
-                    let value = value.get::<Task>().expect("value must be a Task");
-                    self.task.replace(value);
-                }
-                _ => unimplemented!(),
-            }
+        fn property(&self, id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+            self.derived_property(id, pspec)
         }
 
-        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
-            match pspec.name() {
-                "task" => self.task.borrow().to_value(),
-                _ => unimplemented!(),
-            }
+        fn set_property(&self, id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
+            self.derived_set_property(id, value, pspec)
         }
     }
     impl WidgetImpl for TaskPage {}
@@ -112,14 +103,16 @@ glib::wrapper! {
 #[gtk::template_callbacks]
 impl TaskPage {
     pub fn new(task: Task) -> Self {
-        let page: Self = glib::Object::builder().build();
-        let imp = page.imp();
-        imp.task.replace(task.clone());
-        imp.task_row.set_property("task", task.clone());
+        let obj: Self = glib::Object::builder().build();
+        let imp = obj.imp();
+        obj.set_task(task.clone());
+        imp.task_row.reset(task.clone());
+
         let task_description = task.description();
         imp.description_expander_row
-            .set_subtitle(&page.description_display(&task_description));
+            .set_subtitle(&obj.description_display(&task_description));
         imp.description_buffer.set_text(&task_description);
+
         imp.subtasks_box.set_sort_func(|row1, row2| {
             let task1 = row1.property::<Task>("task");
             let task2 = row2.property::<Task>("task");
@@ -135,12 +128,14 @@ impl TaskPage {
                 let row = row.downcast_ref::<TaskRow>().unwrap();
                 !row.task().suspended()
         }));
+
         let tasks = read_tasks(task.project(), None, None, Some(task.id()))
             .expect("Failed to read subtasks");
         for task in tasks {
             let row = TaskRow::new(task);
             imp.subtasks_box.append(&row);
         }
+
         imp.records_box
             .set_sort_func(|row1: &gtk::ListBoxRow, row2| {
                 let row1_start = row1.property::<Record>("record").start();
@@ -152,16 +147,14 @@ impl TaskPage {
                     gtk::Ordering::Larger
                 }
             });
+
         let records = read_records(task.id(), false, None, None).expect("Failed to read records");
         for record in records {
             let row = RecordRow::new(record);
             imp.records_box.append(&row);
         }
-        page
-    }
 
-    pub fn task(&self) -> Task {
-        self.property("task")
+        obj
     }
 
     pub fn add_record(&self, record_id: i64) {
