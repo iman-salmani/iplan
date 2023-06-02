@@ -1,7 +1,6 @@
 use adw::prelude::*;
 use gettextrs::gettext;
 use gtk::{gdk, glib, glib::Properties, subclass::prelude::*};
-use std::borrow::BorrowMut;
 use std::cell::RefCell;
 
 use crate::db::models::{List, Task};

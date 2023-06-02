@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component type="desktop">
-	<id>ir.imansalmani.IPlan</id>
-	<metadata_license>CC0-1.0</metadata_license>
+  <id>ir.imansalmani.IPlan</id>
+  <metadata_license>CC0-1.0</metadata_license>
   <project_license>GPL-3.0-or-later</project_license>
   <name>IPlan</name>
   <summary>Your plan for improving personal life and workflow</summary>
   <description>
     <p>IPlan goal is to be a user friendly tool for those who want to organize their personal life or jobs.</p>
-	  <p>Features:</p>
-	  <ul>
-	    <li>Grouping tasks with project and list</li>
-	    <li>Timer for tasks</li>
+    <p>Features:</p>
+    <ul>
+      <li>Grouping tasks with project and list</li>
+      <li>Timer for tasks</li>
       <li>Subtasks</li>
-	    <li>Global search</li>
-	    <li>Arranging projects, lists, and tasks by drag and drop</li>
-	  </ul>
-	</description>
+      <li>Global search</li>
+      <li>Arranging projects, lists, and tasks by drag and drop</li>
+    </ul>
+  </description>
   <screenshots>
     <screenshot type="default">
       <caption>The IPlan main window</caption>
@@ -46,16 +46,26 @@
     <display_length compare="ge">480</display_length>
   </requires>
   <recommends>
-      <control>pointing</control>
-      <control>keyboard</control>
-      <control>touch</control>
+    <control>pointing</control>
+    <control>keyboard</control>
+    <control>touch</control>
   </recommends>
   <categories>
-      <category>Utility</category>
+    <category>Utility</category>
   </categories>
-  <content_rating type="oars-1.1"/>
+  <content_rating type="oars-1.1" />
   <releases>
-    <release version="1.1.2" date="2023-05-26">
+    <release version="1.3.0" date="2023-06-02">
+      <description>
+        <p>Code refactoring, and UI improvements</p>
+        <ul>
+          <li>New widgets for selecting Date and Time</li>
+          <li>Changing duration of the new record by setting end time</li>
+          <li>Add Brazilian Portuguese Translation thanks to Fúlvio Leo</li>
+        </ul>
+      </description>
+    </release>
+    <release version="1.2.0" date="2023-05-26">
       <description>
         <p>Subtasks, Bug fixes, and UI improvements</p>
         <ul>
