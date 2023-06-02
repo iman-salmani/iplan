@@ -86,7 +86,7 @@ msgstr "ایمان سلمانی"
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:60
 msgid "Subtasks, Bug fixes, and UI improvements"
-msgstr ""
+msgstr "وظایف فرعی، رفع اشکال و بهبود رابط کاربری"
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:62
 msgid "Task Window which contains task info, subtasks, and records"
@@ -108,7 +108,7 @@ msgstr ""
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:66
 msgid "Projects and Tasks now can have descriptions"
-msgstr ""
+msgstr "پروژه ها و وظایف اکنون می توانند شرح داشته باشند"
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:72
 msgid "Performance improvement and records window"
@@ -380,11 +380,11 @@ msgstr "فهرست جدید"
 #: src/views/project/record_create_window.rs:182
 #: src/views/project/record_row.rs:160
 msgid "Duration can't be 0"
-msgstr ""
+msgstr "مدت زمان نمی تواند 0 باشد"
 
 #: src/views/project/record_row.rs:110
 msgid "until"
-msgstr ""
+msgstr "تا"
 
 #: src/views/project/task_row.rs:255
 msgid "\"{}\" is going to delete"
