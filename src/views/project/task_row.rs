@@ -69,8 +69,6 @@ mod imp {
             let obj = self.obj();
             let imp = obj.imp();
 
-            obj.add_bindings();
-
             // Cancel name entry on Escape key pressed
             let name_entry_controller = gtk::EventControllerKey::new();
             name_entry_controller.connect_key_released(
@@ -97,8 +95,11 @@ mod imp {
             self.derived_set_property(id, value, pspec)
         }
     }
+
     impl WidgetImpl for TaskRow {}
     impl ListBoxRowImpl for TaskRow {}
+
+    impl TaskRow {}
 }
 
 glib::wrapper! {
@@ -112,6 +113,7 @@ impl TaskRow {
     pub fn new(task: Task) -> Self {
         let obj = glib::Object::new::<Self>();
         obj.set_task(task);
+        obj.add_bindings();
         obj.imp().name_entry.buffer().set_text(obj.task().name());
         obj.reset_timer();
         obj
@@ -121,6 +123,7 @@ impl TaskRow {
         let imp = self.imp();
         imp.name_entry_buffer.set_text(task.name());
         self.set_task(task);
+        self.add_bindings();
         self.reset_timer();
     }
 
@@ -147,19 +150,29 @@ impl TaskRow {
         let imp = self.imp();
         let task = self.task();
         task.bind_property("done", &imp.checkbox.get(), "active")
+            .transform_from(|binding, active: bool| {
+                let checkbox = binding.target().and_downcast::<gtk::CheckButton>().unwrap();
+                let obj = checkbox
+                    .parent()
+                    .unwrap()
+                    .parent()
+                    .and_downcast::<Self>()
+                    .unwrap();
+                let task = obj.task();
+                task.set_done(active);
+                update_task(&task).expect("Failed to update task");
+                if active {
+                    obj.imp().timer_status.set(TimerStatus::Off);
+                }
+                obj.activate_action("task.check", Some(&obj.index().to_variant()))
+                    .expect("Failed to activate task.check action");
+                Some(active)
+            })
             .flags(glib::BindingFlags::SYNC_CREATE | glib::BindingFlags::BIDIRECTIONAL)
             .build();
         task.bind_property("done", &imp.timer_button.get(), "sensitive")
             .flags(glib::BindingFlags::SYNC_CREATE | glib::BindingFlags::INVERT_BOOLEAN)
             .build();
-        task.connect_done_notify(glib::clone!(@weak self as obj => move |task| {
-            update_task(task).expect("Failed to update task");
-            if task.done() {
-                obj.imp().timer_status.set(TimerStatus::Off);
-            }
-            obj.activate_action("task.check", Some(&obj.index().to_variant()))
-                .expect("Failed to activate task.check action");
-        }));
     }
 
     #[template_callback]
