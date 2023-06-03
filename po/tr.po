@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: ir.imansalmani.IPlan\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-06-02 19:48+0330\n"
-"PO-Revision-Date: 2023-05-25 13:48+0300\n"
+"PO-Revision-Date: 2023-06-03 10:00+0300\n"
 "Last-Translator: Sabri Ünal <libreajans@gmail.com>\n"
 "Language-Team: Türkçe <takim@gnome.org.tr>\n"
 "Language: tr\n"
@@ -59,7 +59,7 @@ msgstr "Alt görevler"
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:15
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:96
 msgid "Global search"
-msgstr "Genel Arama"
+msgstr "Genel arama"
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:16
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:97
@@ -71,18 +71,16 @@ msgid "The IPlan main window"
 msgstr "IPlan ana penceresi"
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:25
-#, fuzzy
 msgid "The IPlan main window (dark mode)"
-msgstr "IPlan ana penceresi"
+msgstr "IPlan ana penceresi (koyu kip)"
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:29
 msgid "Task window"
-msgstr ""
+msgstr "Görev penceresi"
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:33
-#, fuzzy
 msgid "The IPlan main window (small size)"
-msgstr "IPlan ana penceresi"
+msgstr "IPlan ana penceresi (küçük boyut)"
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:40
 msgid "Iman Salmani"
@@ -90,43 +88,45 @@ msgstr "Iman Salmani"
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:60
 msgid "Code refactoring, and UI improvements"
-msgstr ""
+msgstr "Kod yeniden düzenleme ve kullanıcı arabirimi iyileştirmeleri"
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:62
 msgid "New widgets for selecting Date and Time"
-msgstr ""
+msgstr "Tarih ve Saat seçimi için yeni parçacık"
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:63
 msgid "Changing duration of the new record by setting end time"
-msgstr ""
+msgstr "Bitiş zamanını ayarlayarak yeni kaydın süresini değiştirme"
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:64
 msgid "Add Brazilian Portuguese Translation thanks to Fúlvio Leo"
-msgstr ""
+msgstr "Brezilya Portekizcesi çevirisi eklendi, teşekkürler Fúlvio Leo"
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:70
 msgid "Subtasks, Bug fixes, and UI improvements"
-msgstr ""
+msgstr "Alt görevler, Hata düzeltmeler ve arayüz iyileştirmeleri"
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:72
 msgid "Task Window which contains task info, subtasks, and records"
-msgstr ""
+msgstr "Görev bilgilerini, alt görevleri ve kayıtları içeren Görev Penceresi"
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:73
 msgid "Translation to Persian and Turkish languages thanks to Sabri Ünal"
-msgstr ""
+msgstr "Farsça ve Türkçe çeviriler eklendi, teşekkürler Sabri Ünal"
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:74
 msgid "New toast message for moving back task from the tasks done list"
 msgstr ""
+"Tamamlanmış görevler listesinden görevi geri alırken yeni bildirim mesajı"
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:75
 msgid "Users are now able to pick emojis for their projects in the edit window"
 msgstr ""
+"Kullanıcılar artık düzenleme penceresinde projeleri için emoji seçebiliyor"
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:76
 msgid "Projects and Tasks now can have descriptions"
-msgstr ""
+msgstr "Projeler ve Görevlere artık açıklama eklenebiliyor"
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:82
 msgid "Performance improvement and records window"
@@ -170,10 +170,9 @@ msgid "Application"
 msgstr "Uygulama"
 
 #: src/ui/shortcuts_window.ui:24
-#, fuzzy
 msgctxt "shortcut window"
 msgid "Keyboard Shortcuts"
-msgstr "_Klavye Kısayolları"
+msgstr "Klavye Kısayolları"
 
 #: src/ui/shortcuts_window.ui:31
 msgctxt "shortcut window"
@@ -247,7 +246,7 @@ msgstr "Yukarıdaki ekle düğmesini kullanın"
 
 #: src/ui/project/project_list.ui:119
 msgid "Done tasks"
-msgstr "Tamamlanan görevler"
+msgstr "Tamamlanmış Görevler"
 
 #: src/ui/project/project_list.ui:149
 msgid "Delete list"
@@ -275,38 +274,34 @@ msgid "Done"
 msgstr "Tamamlandı"
 
 #: src/ui/project/record_create_window.ui:47
-#, fuzzy
 msgid "Starts"
-msgstr "başlangıç"
+msgstr "Başlangıç"
 
 #: src/ui/project/record_create_window.ui:50
 #: src/ui/project/record_create_window.ui:70
 msgid "Date"
-msgstr ""
+msgstr "Tarih"
 
 #: src/ui/project/record_create_window.ui:57
 #: src/ui/project/record_create_window.ui:77
 msgid "Time"
-msgstr ""
+msgstr "Saat"
 
 #: src/ui/project/record_create_window.ui:67
 msgid "Ends"
-msgstr ""
+msgstr "Bitiş"
 
 #: src/ui/project/record_create_window.ui:87
-#, fuzzy
 msgid "Duration"
-msgstr "süre"
+msgstr "Süre"
 
 #: src/ui/project/record_row.ui:9
-#, fuzzy
 msgid "start date"
-msgstr "başlangıç"
+msgstr "başlangıç tarihi"
 
 #: src/ui/project/record_row.ui:16
-#, fuzzy
 msgid "start time"
-msgstr "başlangıç"
+msgstr "başlangıç saati"
 
 #: src/ui/project/record_row.ui:22
 msgid "duration"
@@ -331,9 +326,8 @@ msgid "no records found"
 msgstr "Kayıt Bulunamadı"
 
 #: src/ui/project/task_page.ui:160
-#, fuzzy
 msgid "Use add button up there or start a timer"
-msgstr "Yukarıdaki ekle düğmesini ya da zamanlayıcı başlatı kullanın"
+msgstr "Yukarıdaki ekle düğmesini kullanın ya da bir zamanlayıcı başlatın"
 
 #: src/ui/search/search_window.ui:16
 msgid "Search"
@@ -372,7 +366,7 @@ msgstr "Görevler"
 
 #: src/views/project/project_done_tasks_window.rs:100
 msgid "Done Tasks"
-msgstr "Tamamlanan Görevler"
+msgstr "Tamamlanmış Görevler"
 
 #: src/views/project/project_edit_window.rs:134
 msgid "Delete \"{}\" project?"
@@ -384,7 +378,7 @@ msgstr "Proje ve görevleri kalıcı olarak kaybedilecek."
 
 #: src/views/project/project_list.rs:75
 msgid "\"{}\" moved to the done tasks list"
-msgstr ""
+msgstr "\"{}\" tamamlanmış görevler listesine taşındı"
 
 #: src/views/project/project_list.rs:77 src/views/project/task_row.rs:275
 msgid "Undo"
@@ -410,11 +404,11 @@ msgstr "Yeni Liste"
 #: src/views/project/record_create_window.rs:182
 #: src/views/project/record_row.rs:160
 msgid "Duration can't be 0"
-msgstr ""
+msgstr "Süre 0 olamaz"
 
 #: src/views/project/record_row.rs:110
 msgid "until"
-msgstr ""
+msgstr "şu zamana kadar"
 
 #: src/views/project/task_row.rs:274
 msgid "\"{}\" is going to delete"
@@ -427,28 +421,3 @@ msgstr "Proje"
 #: src/views/search/search_result.rs:60
 msgid "Task"
 msgstr "Görev"
-
-#, fuzzy
-#~ msgctxt "shortcut window"
-#~ msgid ""
-#~ "Keyboard\n"
-#~ "                  Shortcuts"
-#~ msgstr "Klavye Kısayolları"
-
-#~ msgid "date"
-#~ msgstr "tarih"
-
-#~ msgid "hour"
-#~ msgstr "saat"
-
-#~ msgid "minute"
-#~ msgstr "dakika"
-
-#~ msgid "seconds"
-#~ msgstr "saniye"
-
-#~ msgid "Today"
-#~ msgstr "Bugün"
-
-#~ msgid "for adding new lists"
-#~ msgstr "yeni listeler eklemek için"
