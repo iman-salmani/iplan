@@ -174,7 +174,9 @@ impl TaskRow {
                 let task = obj.task();
                 task.set_done(active);
                 update_task(&task).expect("Failed to update task");
-                imp.timer_status.set(TimerStatus::Off);
+                if active {
+                    imp.timer_status.set(TimerStatus::Off);
+                }
                 obj.activate_action("task.check", Some(&obj.index().to_variant()))
                     .expect("Failed to activate task.check action");
                 Some(active)
@@ -243,8 +245,10 @@ impl TaskRow {
                         record.set_duration(glib::DateTime::now_local().unwrap().to_unix() - record.start());
                         update_record(&record).expect("Failed to update record");
                         imp.timer_button_content.set_label(&obj.task().duration_display());
-                        obj.activate_action("project.update", None)
-                            .expect("Failed to send project.update");
+                        if obj.parent().is_some() {
+                            obj.activate_action("project.update", None)
+                                .expect("Failed to send project.update");
+                        }
                         glib::Continue(false)
                     },
                     TimerStatus::Cancel => {
