@@ -54,7 +54,7 @@ impl Record {
 
     pub fn duration_display(duration: i64) -> String {
         if duration == 0 {
-            return String::new();
+            return "0:0".to_string();
         }
         let (min, sec) = (duration / 60, duration % 60);
         if min > 60 {

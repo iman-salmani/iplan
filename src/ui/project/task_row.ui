@@ -5,7 +5,7 @@
   <requires lib="Adw" version="1.0" />
   <template class="TaskRow" parent="GtkListBoxRow">
     <child><!-- Box -->
-      <object class="GtkBox">
+      <object class="GtkBox" id="row_box">
         <property name="orientation">horizontal</property>
         <property name="margin-start">3</property>
         <property name="margin-end">3</property>
@@ -71,25 +71,13 @@
             </style>
           </object>
         </child>
-        <child><!-- Timer -->
-          <object class="GtkButton" id="timer_button">
-            <signal name="clicked" handler="handle_timer_button_clicked" swapped="true" />
-            <child>
-              <object class="AdwButtonContent" id="timer_button_content">
-                <property name="icon-name">preferences-system-time-symbolic</property>
-              </object>
-            </child>
-          </object>
-        </child>
-        <!-- End Timer -->
         <child><!-- Task Options Button -->
           <object class="GtkMenuButton" id="options_button">
             <property name="icon_name">view-more-symbolic</property>
             <property name="has_frame">false</property>
             <property name="popover">options_popover</property>
           </object>
-        </child>
-        <!-- End Task Options Button -->
+        </child><!-- End Task Options Button -->
       </object>
     </child>
     <!-- End Box -->
@@ -107,9 +95,24 @@
   <!-- Options Popover -->
   <object class="GtkPopover" id="options_popover">
     <child>
-      <object class="GtkBox">
+      <object class="GtkBox" id="options_box">
         <property name="orientation">vertical</property>
         <property name="spacing">6</property>
+        <child><!-- Timer -->
+          <object class="GtkButton" id="timer_button">
+            <signal name="clicked" handler="handle_timer_button_clicked" swapped="true" />
+            <style>
+              <class name="flat" />
+            </style>
+            <child>
+              <object class="AdwButtonContent" id="timer_button_content">
+                <property name="halign">start</property>
+                <property name="label" translatable="yes">Timer</property>
+                <property name="icon-name">preferences-system-time-symbolic</property>
+              </object>
+            </child>
+          </object>
+        </child><!-- End Timer -->
         <child><!-- Delete Task -->
           <object class="GtkButton">
             <signal name="clicked" handler="handle_delete_button_clicked" swapped="true" />
@@ -117,21 +120,10 @@
               <class name="flat" />
             </style>
             <child>
-              <object class="GtkBox">
-                <property name="spacing">4</property>
-                <child>
-                  <object class="GtkImage">
-                    <property name="icon-name">user-trash-symbolic</property>
-                  </object>
-                </child>
-                <child>
-                  <object class="GtkLabel">
-                    <property name="label" translatable="yes">Delete</property>
-                    <attributes>
-                      <attribute name="weight" value="PANGO_WEIGHT_NORMAL" />
-                    </attributes>
-                  </object>
-                </child>
+              <object class="AdwButtonContent">
+                <property name="halign">start</property>
+                <property name="label" translatable="yes">Delete</property>
+                <property name="icon-name">user-trash-symbolic</property>
               </object>
             </child>
           </object>

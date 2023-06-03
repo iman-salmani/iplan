@@ -28,8 +28,7 @@
                       </object>
                     </property>
                   </object>
-                </child><!--
-                End Hour SpinButton -->
+                </child><!-- End Hour SpinButton -->
                 <child>
                   <object class="GtkLabel">
                     <property name="label">:</property>

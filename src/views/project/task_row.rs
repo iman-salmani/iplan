@@ -29,6 +29,8 @@ mod imp {
         #[property(get, set)]
         pub moving_out: Cell<bool>,
         #[template_child]
+        pub row_box: TemplateChild<gtk::Box>,
+        #[template_child]
         pub checkbox: TemplateChild<gtk::CheckButton>,
         #[template_child]
         pub name_button: TemplateChild<gtk::Button>,
@@ -44,7 +46,11 @@ mod imp {
         #[template_child]
         pub timer_button_content: TemplateChild<adw::ButtonContent>,
         #[template_child]
+        pub options_button: TemplateChild<gtk::MenuButton>,
+        #[template_child]
         pub options_popover: TemplateChild<gtk::Popover>,
+        #[template_child]
+        pub options_box: TemplateChild<gtk::Box>,
     }
 
     #[glib::object_subclass]
@@ -135,6 +141,7 @@ impl TaskRow {
 
     pub fn cancel_timer(&self) {
         self.imp().timer_status.set(TimerStatus::Cancel);
+        self.move_timer_button(false);
     }
 
     pub fn reset_timer(&self) {
@@ -145,7 +152,11 @@ impl TaskRow {
             record.set_duration(glib::DateTime::now_local().unwrap().to_unix() - record.start());
             self.start_timer(record);
         } else {
-            imp.timer_button_content.set_label(&task.duration_display());
+            let duration = task.duration();
+            if duration != 0 {
+                imp.timer_button_content
+                    .set_label(&Record::duration_display(duration));
+            }
         }
     }
 
@@ -176,6 +187,7 @@ impl TaskRow {
                 update_task(&task).expect("Failed to update task");
                 if active {
                     imp.timer_status.set(TimerStatus::Off);
+                    obj.move_timer_button(false);
                 }
                 obj.activate_action("task.check", Some(&obj.index().to_variant()))
                     .expect("Failed to activate task.check action");
@@ -212,11 +224,30 @@ impl TaskRow {
         imp.name_button.set_visible(true);
     }
 
+    fn move_timer_button(&self, indicate: bool) {
+        let imp = self.imp();
+        let button: &gtk::Button = imp.timer_button.as_ref();
+        let options_box: &gtk::Box = imp.options_box.as_ref();
+        let row_box: &gtk::Box = imp.row_box.as_ref();
+        let options_button: &gtk::MenuButton = imp.options_button.as_ref();
+        if indicate {
+            button.unparent();
+            options_button.popdown();
+            button.remove_css_class("flat");
+            button.insert_before(row_box, Some(options_button));
+        } else {
+            button.unparent();
+            button.add_css_class("flat");
+            options_box.prepend(button);
+        }
+    }
+
     fn start_timer(&self, record: Record) {
         let imp = self.imp();
-        let button = imp.timer_button.get();
+        let button: &gtk::Button = imp.timer_button.as_ref();
         imp.timer_status.set(TimerStatus::On);
         button.add_css_class("destructive-action");
+        self.move_timer_button(true);
 
         let (tx, rx) = glib::MainContext::channel(glib::PRIORITY_DEFAULT);
         let duration = Duration::from_secs(record.duration() as u64);
@@ -271,6 +302,7 @@ impl TaskRow {
         if self.imp().timer_status.get() != TimerStatus::On {
             self.start_timer(record);
         } else {
+            self.move_timer_button(false);
             self.imp().timer_status.set(TimerStatus::Off);
         }
     }
