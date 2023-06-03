@@ -19,19 +19,19 @@
   <screenshots>
     <screenshot type="default">
       <caption>The IPlan main window</caption>
-      <image type="source" width="800" height="450">https://github.com/iman-salmani/iplan/blob/aef51101e346cf9a0d61c27c5a2d6f2106b7beaf/data/screenshots/window.png?raw=true</image>
+      <image type="source" width="1600" height="900">https://github.com/iman-salmani/iplan/blob/aef51101e346cf9a0d61c27c5a2d6f2106b7beaf/data/screenshots/window.png?raw=true</image>
     </screenshot>
-    <screenshot type="default">
+    <screenshot>
       <caption>The IPlan main window (dark mode)</caption>
-      <image type="source" width="800" height="450">https://github.com/iman-salmani/iplan/blob/aef51101e346cf9a0d61c27c5a2d6f2106b7beaf/data/screenshots/window-dark.png?raw=true</image>
+      <image type="source" width="1600" height="900">https://github.com/iman-salmani/iplan/blob/aef51101e346cf9a0d61c27c5a2d6f2106b7beaf/data/screenshots/window-dark.png?raw=true</image>
     </screenshot>
-    <screenshot type="default">
+    <screenshot>
       <caption>Task window</caption>
-      <image type="source" width="450" height="800">https://github.com/iman-salmani/iplan/blob/aef51101e346cf9a0d61c27c5a2d6f2106b7beaf/data/screenshots/task-window.png?raw=true</image>
+      <image type="source" width="900" height="900">https://github.com/iman-salmani/iplan/blob/aef51101e346cf9a0d61c27c5a2d6f2106b7beaf/data/screenshots/task-window.png?raw=true</image>
     </screenshot>
-    <screenshot type="default">
+    <screenshot>
       <caption>The IPlan main window (small size)</caption>
-      <image type="source" width="450" height="800">https://github.com/iman-salmani/iplan/blob/aef51101e346cf9a0d61c27c5a2d6f2106b7beaf/data/screenshots/window-small.png?raw=true</image>
+      <image type="source" width="900" height="900">https://github.com/iman-salmani/iplan/blob/aef51101e346cf9a0d61c27c5a2d6f2106b7beaf/data/screenshots/window-small.png?raw=true</image>
     </screenshot>
   </screenshots>
   <launchable type="desktop-id">ir.imansalmani.IPlan.desktop</launchable>
