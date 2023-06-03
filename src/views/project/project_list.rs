@@ -480,7 +480,9 @@ impl ProjectList {
         _y: f64,
     ) -> bool {
         // Source row moved by motion signal so it should drop on itself
-        self.imp().tasks_box.drag_unhighlight_row();
+        let imp = self.imp();
+        imp.tasks_box.drag_unhighlight_row();
+        imp.tasks_box.set_height_request(-1);
         let row: TaskRow = value.get().unwrap();
         let task = row.task();
         let task_db = read_task(task.id()).expect("Failed to read task");
@@ -501,7 +503,9 @@ impl ProjectList {
         let source_row: Option<TaskRow> = target.value_as();
         let target_row = imp.tasks_box.row_at_y(y as i32);
 
-        if source_row.is_none() || target_row.is_none() {
+        if self.imp().tasks_box.observe_children().n_items() == 2 {
+            return gdk::DragAction::MOVE;
+        } else if source_row.is_none() || target_row.is_none() {
             return gdk::DragAction::empty();
         }
         let source_row = source_row.unwrap();
@@ -596,6 +600,9 @@ impl ProjectList {
                 task.set_property("position", task.position() - 1);
             }
             parent.remove(&row);
+            if tasks_box.observe_children().n_items() == 1 {
+                tasks_box.set_height_request(320);
+            }
             tasks_box.prepend(&row);
             tasks_box.drag_highlight_row(&row);
         }
@@ -605,7 +612,9 @@ impl ProjectList {
     fn task_drop_target_leave(&self, target: &gtk::DropTarget) {
         if let Some(row) = target.value_as::<TaskRow>() {
             row.imp().moving_out.set(true);
-            self.imp().tasks_box.invalidate_filter();
+            let tasks_box: &gtk::ListBox = self.imp().tasks_box.as_ref();
+            tasks_box.invalidate_filter();
+            tasks_box.set_height_request(-1);
         }
     }
 }
