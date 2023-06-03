@@ -74,10 +74,6 @@
                 <child>
                   <object class="GtkTextView">
                     <property name="height-request">128</property>
-                    <property name="margin-start">3</property>
-                    <property name="margin-end">3</property>
-                    <property name="margin-top">3</property>
-                    <property name="margin-bottom">3</property>
                     <property name="top-margin">3</property>
                     <property name="bottom-margin">3</property>
                     <property name="left-margin">3</property>

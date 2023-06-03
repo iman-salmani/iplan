@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: iplan\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-06-03 11:41+0330\n"
+"POT-Creation-Date: 2023-06-03 16:48+0330\n"
 "PO-Revision-Date: 2023-05-27 15:10-0300\n"
 "Last-Translator: Fúlvio Leo <fulviokaldas@outlook.com>\n"
 "Language: pt_BR\n"
@@ -159,14 +159,18 @@ msgid "_Edit Project"
 msgstr "_Editar Projeto"
 
 #: src/ui/window.ui:126
+msgid "_Backup"
+msgstr ""
+
+#: src/ui/window.ui:130
 msgid "_Keyboard Shortcuts"
 msgstr "_Atalhos de Teclado"
 
-#: src/ui/window.ui:130
+#: src/ui/window.ui:134
 msgid "_About IPlan"
 msgstr "_Sobre o IPlan"
 
-#: src/ui/window.ui:136
+#: src/ui/window.ui:140
 msgid "_Quit"
 msgstr "_Sair"
 
@@ -201,6 +205,30 @@ msgctxt "shortcut window"
 msgid "Search"
 msgstr "Buscar"
 
+#: src/ui/backup_window.ui:19
+msgid "Backup"
+msgstr ""
+
+#: src/ui/backup_window.ui:35 src/views/backup_window.rs:60
+msgid "Export"
+msgstr ""
+
+#: src/ui/backup_window.ui:47
+msgid "Data folder path"
+msgstr ""
+
+#: src/ui/backup_window.ui:48
+msgid "Add this path to your backup application"
+msgstr ""
+
+#: src/ui/backup_window.ui:68 src/views/backup_window.rs:96
+msgid "Import"
+msgstr ""
+
+#: src/ui/backup_window.ui:69
+msgid "While importing, previous data will be cached"
+msgstr ""
+
 #: src/ui/delete_dialog.ui:13
 msgid "_Cancel"
 msgstr "_Cancelar"
@@ -229,11 +257,11 @@ msgstr "Ícone"
 msgid "Description"
 msgstr "Descrição"
 
-#: src/ui/project/project_edit_window.ui:107
+#: src/ui/project/project_edit_window.ui:103
 msgid "Archive"
 msgstr "Arquivo"
 
-#: src/ui/project/project_edit_window.ui:119 src/ui/project/task_row.ui:129
+#: src/ui/project/project_edit_window.ui:115 src/ui/project/task_row.ui:129
 msgid "Delete"
 msgstr "Deletar"
 
@@ -357,7 +385,7 @@ msgid "New project"
 msgstr "Novo projeto"
 
 #. Translators: Replace "translator-credits" with your names, one name per line
-#: src/application.rs:144
+#: src/application.rs:159
 msgid "translator-credits"
 msgstr "Fúlvio Leo <fulviokaldas@outlook.com>"
 
@@ -369,6 +397,18 @@ msgstr "Pessoal"
 #: src/views/sidebar/sidebar_projects.rs:212
 msgid "Tasks"
 msgstr "Tarefas"
+
+#: src/views/backup_window.rs:89
+msgid "Path copied!"
+msgstr ""
+
+#: src/views/backup_window.rs:109
+msgid "Error while caching previous data"
+msgstr ""
+
+#: src/views/backup_window.rs:112
+msgid "Error while importing data"
+msgstr ""
 
 #: src/views/project/project_done_tasks_window.rs:100
 msgid "Done Tasks"
@@ -386,7 +426,7 @@ msgstr "O projeto e suas tarefas associadas serão perdidos permanentemente."
 msgid "\"{}\" moved to the done tasks list"
 msgstr "\"{}\" movido para a lista de tarefas concluídas"
 
-#: src/views/project/project_list.rs:77 src/views/project/task_row.rs:285
+#: src/views/project/project_list.rs:77 src/views/project/task_row.rs:288
 msgid "Undo"
 msgstr "Desfazer"
 
@@ -416,7 +456,7 @@ msgstr ""
 msgid "until"
 msgstr ""
 
-#: src/views/project/task_row.rs:284
+#: src/views/project/task_row.rs:287
 msgid "\"{}\" is going to delete"
 msgstr "\"{}\" irá deletar"
 

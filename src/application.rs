@@ -25,7 +25,7 @@ use gtk::{gio, glib};
 
 use crate::config::{APPLICATION_ID, VERSION};
 use crate::views::search::SearchWindow;
-use crate::views::IPlanWindow;
+use crate::views::{BackupWindow, IPlanWindow};
 
 mod imp {
     use super::*;
@@ -105,7 +105,16 @@ impl IPlanApplication {
         let search_action = gio::ActionEntry::builder("search")
             .activate(move |app: &Self, _, _| app.show_search())
             .build();
-        self.add_action_entries([quit_action, about_action, shortcuts_action, search_action]);
+        let backup_action = gio::ActionEntry::builder("backup")
+            .activate(move |app: &Self, _, _| app.show_backup())
+            .build();
+        self.add_action_entries([
+            quit_action,
+            about_action,
+            shortcuts_action,
+            search_action,
+            backup_action,
+        ]);
     }
 
     fn show_search(&self) {
@@ -125,6 +134,12 @@ impl IPlanApplication {
             shortcuts_window.set_transient_for(Some(&active_window));
             shortcuts_window.present();
         }
+    }
+
+    fn show_backup(&self) {
+        let active_window = self.active_window().unwrap();
+        let backup_window = BackupWindow::new(self, &active_window);
+        backup_window.present();
     }
 
     fn show_about(&self) {

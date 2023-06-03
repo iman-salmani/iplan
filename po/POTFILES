@@ -3,6 +3,7 @@ data/ir.imansalmani.IPlan.gschema.xml
 data/ir.imansalmani.IPlan.metainfo.xml.in
 src/ui/window.ui
 src/ui/shortcuts_window.ui
+src/ui/backup_window.ui
 src/ui/delete_dialog.ui
 src/ui/project/project_done_tasks_window.ui
 src/ui/project/project_edit_window.ui
@@ -17,6 +18,7 @@ src/ui/search/search_window.ui
 src/ui/sidebar/sidebar_projects.ui
 src/application.rs
 src/views/window.rs
+src/views/backup_window.rs
 src/views/project/project_done_tasks_window.rs
 src/views/project/project_edit_window.rs
 src/views/project/project_header.rs

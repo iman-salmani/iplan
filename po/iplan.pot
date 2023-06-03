@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: iplan\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-06-03 11:41+0330\n"
+"POT-Creation-Date: 2023-06-03 16:48+0330\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -151,14 +151,18 @@ msgid "_Edit Project"
 msgstr ""
 
 #: src/ui/window.ui:126
-msgid "_Keyboard Shortcuts"
+msgid "_Backup"
 msgstr ""
 
 #: src/ui/window.ui:130
+msgid "_Keyboard Shortcuts"
+msgstr ""
+
+#: src/ui/window.ui:134
 msgid "_About IPlan"
 msgstr ""
 
-#: src/ui/window.ui:136
+#: src/ui/window.ui:140
 msgid "_Quit"
 msgstr ""
 
@@ -192,6 +196,30 @@ msgctxt "shortcut window"
 msgid "Search"
 msgstr ""
 
+#: src/ui/backup_window.ui:19
+msgid "Backup"
+msgstr ""
+
+#: src/ui/backup_window.ui:35 src/views/backup_window.rs:60
+msgid "Export"
+msgstr ""
+
+#: src/ui/backup_window.ui:47
+msgid "Data folder path"
+msgstr ""
+
+#: src/ui/backup_window.ui:48
+msgid "Add this path to your backup application"
+msgstr ""
+
+#: src/ui/backup_window.ui:68 src/views/backup_window.rs:96
+msgid "Import"
+msgstr ""
+
+#: src/ui/backup_window.ui:69
+msgid "While importing, previous data will be cached"
+msgstr ""
+
 #: src/ui/delete_dialog.ui:13
 msgid "_Cancel"
 msgstr ""
@@ -220,11 +248,11 @@ msgstr ""
 msgid "Description"
 msgstr ""
 
-#: src/ui/project/project_edit_window.ui:107
+#: src/ui/project/project_edit_window.ui:103
 msgid "Archive"
 msgstr ""
 
-#: src/ui/project/project_edit_window.ui:119 src/ui/project/task_row.ui:129
+#: src/ui/project/project_edit_window.ui:115 src/ui/project/task_row.ui:129
 msgid "Delete"
 msgstr ""
 
@@ -343,7 +371,7 @@ msgid "New project"
 msgstr ""
 
 #. Translators: Replace "translator-credits" with your names, one name per line
-#: src/application.rs:144
+#: src/application.rs:159
 msgid "translator-credits"
 msgstr ""
 
@@ -354,6 +382,18 @@ msgstr ""
 #: src/views/window.rs:97 src/views/window.rs:242
 #: src/views/sidebar/sidebar_projects.rs:212
 msgid "Tasks"
+msgstr ""
+
+#: src/views/backup_window.rs:89
+msgid "Path copied!"
+msgstr ""
+
+#: src/views/backup_window.rs:109
+msgid "Error while caching previous data"
+msgstr ""
+
+#: src/views/backup_window.rs:112
+msgid "Error while importing data"
 msgstr ""
 
 #: src/views/project/project_done_tasks_window.rs:100
@@ -372,7 +412,7 @@ msgstr ""
 msgid "\"{}\" moved to the done tasks list"
 msgstr ""
 
-#: src/views/project/project_list.rs:77 src/views/project/task_row.rs:285
+#: src/views/project/project_list.rs:77 src/views/project/task_row.rs:288
 msgid "Undo"
 msgstr ""
 
@@ -402,7 +442,7 @@ msgstr ""
 msgid "until"
 msgstr ""
 
-#: src/views/project/task_row.rs:284
+#: src/views/project/task_row.rs:287
 msgid "\"{}\" is going to delete"
 msgstr ""
 

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE interface SYSTEM "schema.dtd">
+<interface>
+  <requires lib="gtk" version="4.0" />
+  <requires lib="Adw" version="1.0" />
+  <template class="BackupWindow" parent="AdwWindow">
+    <property name="width-request">480</property>
+    <property name="modal">true</property>
+    <property name="destroy-with-parent">true</property>
+    <property name="content"><!-- Content -->
+      <object class="AdwToastOverlay" id="toast_overlay"><!-- Toast Overlay -->
+        <child>
+          <object class="GtkBox">
+            <property name="orientation">vertical</property>
+            <child><!-- Header -->
+              <object class="AdwHeaderBar">
+                <property name="title-widget">
+                  <object class="GtkLabel">
+                    <property name="label" translatable="yes">Backup</property>
+                    <style>
+                      <class name="heading" />
+                    </style>
+                  </object>
+                </property>
+              </object>
+            </child><!-- End Header -->
+            <child><!-- Export Group -->
+              <object class="AdwPreferencesGroup">
+                <property name="margin-top">12</property>
+                <property name="margin-bottom">12</property>
+                <property name="margin-start">12</property>
+                <property name="margin-end">12</property>
+                <child><!-- Export -->
+                  <object class="AdwActionRow">
+                    <property name="title" translatable="yes">Export</property>
+                    <property name="activatable-widget">export_icon</property>
+                    <signal name="activated" handler="export_activated" swapped="true" />
+                    <child type="suffix">
+                      <object class="GtkImage" id="export_icon">
+                        <property name="icon-name">document-save-symbolic</property>
+                      </object>
+                    </child>
+                  </object>
+                </child><!-- End Export -->
+                <child><!-- Export -->
+                  <object class="AdwActionRow">
+                    <property name="title" translatable="yes">Data folder path</property>
+                    <property name="subtitle" translatable="yes">Add this path to your backup application</property>
+                    <property name="activatable-widget">export_path_icon</property>
+                    <signal name="activated" handler="export_path_activated" swapped="true" />
+                    <child type="suffix">
+                      <object class="GtkImage" id="export_path_icon">
+                        <property name="icon-name">edit-copy-symbolic</property>
+                      </object>
+                    </child>
+                  </object>
+                </child><!-- End Export -->
+              </object>
+            </child><!-- Export Group -->
+            <child><!-- Import Group -->
+              <object class="AdwPreferencesGroup">
+                <property name="margin-top">12</property>
+                <property name="margin-bottom">12</property>
+                <property name="margin-start">12</property>
+                <property name="margin-end">12</property>
+                <child><!-- Import -->
+                  <object class="AdwActionRow">
+                    <property name="title" translatable="yes">Import</property>
+                    <property name="subtitle" translatable="yes">While importing, previous data will be cached</property>
+                    <property name="activatable-widget">import_icon</property>
+                    <signal name="activated" handler="import_activated" swapped="true" />
+                    <child type="suffix">
+                      <object class="GtkImage" id="import_icon">
+                        <property name="icon-name">document-open-symbolic</property>
+                      </object>
+                    </child>
+                  </object>
+                </child><!-- End Import -->
+              </object>
+            </child><!-- Import Group -->
+          </object>
+        </child><!-- End Box -->
+      </object><!-- End Toast Overlay -->
+    </property><!-- End Content -->
+  </template>
+</interface>

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: iplan\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-06-03 11:41+0330\n"
+"POT-Creation-Date: 2023-06-03 16:48+0330\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Iman Salmani <contact.imansalmani@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -154,14 +154,18 @@ msgid "_Edit Project"
 msgstr "_ویرایش پروژه"
 
 #: src/ui/window.ui:126
+msgid "_Backup"
+msgstr "_پشتیبان گیری"
+
+#: src/ui/window.ui:130
 msgid "_Keyboard Shortcuts"
 msgstr "_میانبرهای صفحه کلید"
 
-#: src/ui/window.ui:130
+#: src/ui/window.ui:134
 msgid "_About IPlan"
 msgstr "_درباره آیپلن"
 
-#: src/ui/window.ui:136
+#: src/ui/window.ui:140
 msgid "_Quit"
 msgstr "_خروج"
 
@@ -195,6 +199,30 @@ msgctxt "shortcut window"
 msgid "Search"
 msgstr "جستجو"
 
+#: src/ui/backup_window.ui:19
+msgid "Backup"
+msgstr "پشتیبان گیری"
+
+#: src/ui/backup_window.ui:35 src/views/backup_window.rs:60
+msgid "Export"
+msgstr "صدور"
+
+#: src/ui/backup_window.ui:47
+msgid "Data folder path"
+msgstr "مسیر پوشه داده"
+
+#: src/ui/backup_window.ui:48
+msgid "Add this path to your backup application"
+msgstr "این مسیر را به برنامه پشتیبان خود اضافه کنید"
+
+#: src/ui/backup_window.ui:68 src/views/backup_window.rs:96
+msgid "Import"
+msgstr "ورود نسخه پشتیبان"
+
+#: src/ui/backup_window.ui:69
+msgid "While importing, previous data will be cached"
+msgstr "هنگام وارد کردن، داده های قبلی در حافظه پنهان ذخیره می شوند"
+
 #: src/ui/delete_dialog.ui:13
 msgid "_Cancel"
 msgstr "لغو"
@@ -223,11 +251,11 @@ msgstr "نماد"
 msgid "Description"
 msgstr "شرح"
 
-#: src/ui/project/project_edit_window.ui:107
+#: src/ui/project/project_edit_window.ui:103
 msgid "Archive"
 msgstr "بایگانی"
 
-#: src/ui/project/project_edit_window.ui:119 src/ui/project/task_row.ui:129
+#: src/ui/project/project_edit_window.ui:115 src/ui/project/task_row.ui:129
 msgid "Delete"
 msgstr "حذف"
 
@@ -346,7 +374,7 @@ msgid "New project"
 msgstr "پروژه جدید"
 
 #. Translators: Replace "translator-credits" with your names, one name per line
-#: src/application.rs:144
+#: src/application.rs:159
 msgid "translator-credits"
 msgstr "ایمان سلمانی <contact.imansalmani@gmail.com>"
 
@@ -358,6 +386,18 @@ msgstr "شخصی"
 #: src/views/sidebar/sidebar_projects.rs:212
 msgid "Tasks"
 msgstr "وظایف"
+
+#: src/views/backup_window.rs:89
+msgid "Path copied!"
+msgstr "مسیر کپی شد!"
+
+#: src/views/backup_window.rs:109
+msgid "Error while caching previous data"
+msgstr "خطا هنگام ذخیره داده های قبلی"
+
+#: src/views/backup_window.rs:112
+msgid "Error while importing data"
+msgstr "خطا هنگام وارد کردن داده ها"
 
 #: src/views/project/project_done_tasks_window.rs:100
 msgid "Done Tasks"
@@ -375,7 +415,7 @@ msgstr "پروژه و وظایف آن برای همیشه از بین خواهد
 msgid "\"{}\" moved to the done tasks list"
 msgstr "\"{}\" به فهرست کارهای انجام شده منتقل شد"
 
-#: src/views/project/project_list.rs:77 src/views/project/task_row.rs:285
+#: src/views/project/project_list.rs:77 src/views/project/task_row.rs:288
 msgid "Undo"
 msgstr "برگرد"
 
@@ -405,7 +445,7 @@ msgstr "مدت زمان نمی تواند 0 باشد"
 msgid "until"
 msgstr "تا"
 
-#: src/views/project/task_row.rs:284
+#: src/views/project/task_row.rs:287
 msgid "\"{}\" is going to delete"
 msgstr "درحال حذف \"{}\""
 
