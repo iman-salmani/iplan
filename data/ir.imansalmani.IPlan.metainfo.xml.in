@@ -55,6 +55,11 @@
   </categories>
   <content_rating type="oars-1.1" />
   <releases>
+    <release version="1.3.1" date="2023-06-03">
+      <description>
+        <p>Bug fix</p>
+      </description>
+    </release>
     <release version="1.3.0" date="2023-06-02">
       <description>
         <p>Code refactoring, and UI improvements</p>
