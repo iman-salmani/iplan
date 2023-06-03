@@ -170,12 +170,11 @@ impl TaskRow {
                     .parent()
                     .and_downcast::<Self>()
                     .unwrap();
+                let imp = obj.imp();
                 let task = obj.task();
                 task.set_done(active);
                 update_task(&task).expect("Failed to update task");
-                if active {
-                    obj.imp().timer_status.set(TimerStatus::Off);
-                }
+                imp.timer_status.set(TimerStatus::Off);
                 obj.activate_action("task.check", Some(&obj.index().to_variant()))
                     .expect("Failed to activate task.check action");
                 Some(active)
