@@ -76,12 +76,10 @@ mod imp {
                     )
                     .button_label(gettext("Undo"))
                     .build();
-                toast.connect_button_clicked(glib::clone!(
-                    @weak obj, @weak task =>
+                toast.connect_button_clicked(glib::clone!(@weak obj, @weak task, @strong row =>
                     move |_toast| {
-                        task.set_property("done", false);
+                        task.set_done(false);
                         update_task(&task).expect("Failed to update task");
-                        let row = TaskRow::new(task);
                         obj.imp().tasks_box.append(&row);
                 }));
                 let window = obj.root().and_downcast::<IPlanWindow>().unwrap();

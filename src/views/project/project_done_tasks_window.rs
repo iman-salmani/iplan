@@ -154,24 +154,13 @@ impl ProjectDoneTasksWindow {
             move |_| {
                 let task = read_task(row.task().id()).expect("Failed to read the task");
                 let win_imp = win.imp();
-                let row_imp = row.imp();
                 let main_window = win.transient_for().unwrap();
                 if !task.done() {
                     win_imp.tasks_box.remove(&row);
                     main_window.activate_action("project.open", None) // TODO: just add task to list (consider the task duration could be changed)
                         .expect("Failed to activate project.open action");
                 } else {
-                    row_imp.timer_button_content.set_label(&task.duration_display());
-                    let task_name = task.name();
-                    row_imp.name_button
-                        .child()
-                        .unwrap()
-                        .downcast::<gtk::Label>()
-                        .unwrap()
-                        .set_text(&task_name);
-                    row_imp.name_button.set_tooltip_text(Some(&task_name));
-                    row_imp.name_entry.buffer().set_text(&task_name);
-                    row_imp.task.replace(task);
+                    row.reset(task);
                     row.changed();
                     main_window.activate_action("project.update", None).expect("Failed to send project.update signal");
                 }
