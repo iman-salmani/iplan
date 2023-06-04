@@ -6,3 +6,6 @@ row.expander textview {
   font-size: 24px;
   margin: 3px;
 }
+.project-icon.large {
+  font-size: 48px;
+}
