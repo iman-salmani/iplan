@@ -4,7 +4,7 @@ use std::cmp::Ordering;
 
 use crate::db::migrate::MIGRATIONS;
 
-const DB_VERSION: u8 = 5;
+const DB_VERSION: u8 = 6;
 
 pub fn get_connection() -> Connection {
     Connection::open(glib::user_data_dir().join("data.db")).expect("Failed connect to database")
@@ -53,6 +53,7 @@ pub fn check_database() -> Result<()> {
                 suspended   INTEGER NOT NULL DEFAULT 0,
                 parent      INTEGER NOT NULL DEFAULT 0,
                 description TEXT    NOT NULL DEFAULT '',
+                date	    INTEGER NOT NULL DEFAULT 0,
                 PRIMARY KEY(id AUTOINCREMENT)
             );",
             (),

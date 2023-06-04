@@ -6,7 +6,19 @@
   <template class="DateRow" parent="AdwActionRow">
     <property name="activatable-widget">menu_button</property>
     <child type="suffix">
+      <object class="GtkButton" id="clear_button">
+        <property name="label" translatable="yes">clear</property>
+        <property name="valign">center</property>
+        <property name="visible">false</property>
+        <signal name="clicked" handler="handle_clear_clicked" swapped="true" />
+        <style>
+          <class name="flat" />
+        </style>
+      </object>
+    </child>
+    <child type="suffix">
       <object class="GtkMenuButton" id="menu_button">
+        <property name="icon-name">x-office-calendar-symbolic</property>
         <property name="valign">center</property>
         <property name="popover">
           <object class="GtkPopover">
@@ -16,13 +28,11 @@
               </object>
             </child>
           </object>
-        </property><!--
-        End Popover -->
+        </property><!-- End Popover -->
         <style>
           <class name="flat" />
         </style>
       </object>
-    </child><!--
-    End MenuButton -->
+    </child><!-- End MenuButton -->
   </template>
 </interface>

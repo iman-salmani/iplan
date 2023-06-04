@@ -19,6 +19,12 @@
           <object class="TaskRow" id="task_row">
           </object>
         </child><!-- End Task Row -->
+        <child>
+          <object class="DateRow" id="date_row">
+            <property name="title">Date</property>
+            <signal name="date-changed" handler="handle_task_date_changed" swapped="true" />
+          </object>
+        </child>
         <child><!-- Description -->
           <object class="AdwExpanderRow" id="description_expander_row">
             <property name="title" translatable="yes">Description</property>

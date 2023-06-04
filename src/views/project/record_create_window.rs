@@ -89,16 +89,8 @@ impl RecordCreateWindow {
         imp.task_id.replace(task_id);
         let start = glib::DateTime::now_local().unwrap();
         win.set_record(Record::new(0, start.to_unix(), 0, task_id));
-        imp.start_date_row.set_date(
-            start.year() as u16,
-            start.month() as u8,
-            start.day_of_month() as u8,
-        );
-        imp.end_date_row.set_date(
-            start.year() as u16,
-            start.month() as u8,
-            start.day_of_month() as u8,
-        );
+        imp.start_date_row.set_datetime(&start);
+        imp.end_date_row.set_datetime(&start);
         imp.start_time_row
             .set_time_from_digits(start.hour(), start.minute(), start.seconds());
         imp.end_time_row
@@ -116,11 +108,7 @@ impl RecordCreateWindow {
                 let imp = obj.imp();
                 let unix = obj.record().start() + time as i64;
                 let end_datetime = glib::DateTime::from_unix_local(unix).unwrap();
-                imp.end_date_row.set_date(
-                    end_datetime.year() as u16,
-                    end_datetime.month() as u8,
-                    end_datetime.day_of_month() as u8,
-                );
+                imp.end_date_row.set_datetime(&end_datetime);
                 Some(unix)
             })
             .transform_from(|binding, end_datetime: i64| {

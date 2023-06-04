@@ -10,6 +10,7 @@
     </style>
     <child type="suffix">
       <object class="GtkMenuButton" id="menu_button">
+        <property name="icon-name">preferences-system-time-symbolic</property>
         <property name="valign">center</property>
         <property name="popover">
           <object class="GtkPopover">
@@ -46,8 +47,7 @@
                       </object>
                     </property>
                   </object>
-                </child><!--
-                End Minute SpinButton -->
+                </child><!-- End Minute SpinButton -->
                 <child>
                   <object class="GtkLabel">
                     <property name="label">:</property>
@@ -65,8 +65,7 @@
                       </object>
                     </property>
                   </object>
-                </child><!--
-                End Seconds SpinButton -->
+                </child><!-- End Seconds SpinButton -->
               </object>
             </child><!--
             End GtkBox -->

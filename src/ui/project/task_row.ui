@@ -108,11 +108,14 @@
               <object class="AdwButtonContent" id="timer_button_content">
                 <property name="halign">start</property>
                 <property name="label" translatable="yes">Timer</property>
-                <property name="icon-name">preferences-system-time-symbolic</property>
+                <property name="icon-name">stopwatch-symbolic</property>
               </object>
             </child>
           </object>
         </child><!-- End Timer -->
+        <child>
+          <object class="GtkSeparator"></object>
+        </child>
         <child><!-- Delete Task -->
           <object class="GtkButton">
             <signal name="clicked" handler="handle_delete_button_clicked" swapped="true" />

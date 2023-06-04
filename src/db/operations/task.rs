@@ -95,7 +95,7 @@ pub fn update_task(task: &Task) -> Result<()> {
         &format!(
             "UPDATE tasks SET
             name = ?2, done = ?3, project = ?4, list = ?5,
-            {position_stmt} suspended = ?6, parent = ?7, description = ?8 WHERE id = ?1"
+            {position_stmt} suspended = ?6, parent = ?7, description = ?8, date = ?9 WHERE id = ?1"
         ),
         (
             task.id(),
@@ -106,6 +106,7 @@ pub fn update_task(task: &Task) -> Result<()> {
             task.suspended(),
             task.parent(),
             task.description(),
+            task.date(),
         ),
     )?;
     Ok(())

@@ -76,11 +76,7 @@ impl RecordRow {
         let obj: Self = glib::Object::builder().property("record", record).build();
         let imp = obj.imp();
         obj.set_labels();
-        imp.start_date_row.set_date(
-            start.year() as u16,
-            start.month() as u8,
-            start.day_of_month() as u8,
-        );
+        imp.start_date_row.set_datetime(&start);
         imp.start_time_row
             .set_time_from_digits(start.hour(), start.minute(), start.seconds());
         imp.duration_row.set_time(duration as i32);

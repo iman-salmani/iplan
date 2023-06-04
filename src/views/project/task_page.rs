@@ -6,6 +6,7 @@ use std::unimplemented;
 use crate::db::models::{Record, Task};
 use crate::db::operations::{create_task, read_record, read_records, read_tasks, update_task};
 use crate::views::project::{RecordCreateWindow, RecordRow, TaskRow};
+use crate::views::DateRow;
 
 mod imp {
     use super::*;
@@ -38,6 +39,8 @@ mod imp {
         pub records_page: TemplateChild<gtk::ScrolledWindow>,
         #[template_child]
         pub records_box: TemplateChild<gtk::ListBox>,
+        #[template_child]
+        pub date_row: TemplateChild<DateRow>,
     }
 
     #[glib::object_subclass]
@@ -109,6 +112,11 @@ impl TaskPage {
         obj.set_task(task.clone());
         imp.task_row.reset(task.clone());
 
+        imp.date_row.set_clear_option(true);
+        if let Some(date) = task.date_datetime() {
+            imp.date_row.set_datetime(&date);
+        }
+
         let task_description = task.description();
         imp.description_expander_row
             .set_subtitle(&obj.description_display(&task_description));
@@ -171,6 +179,13 @@ impl TaskPage {
             return String::from(first_line);
         }
         String::from("")
+    }
+
+    #[template_callback]
+    fn handle_task_date_changed(&self, datetime: glib::DateTime, _: DateRow) {
+        let task = self.task();
+        task.set_date(datetime.to_unix());
+        update_task(&task).expect("Failed to change update task");
     }
 
     #[template_callback]

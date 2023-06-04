@@ -29,6 +29,8 @@ mod imp {
         pub parent: Cell<i64>,
         #[property(get, set)]
         pub description: RefCell<String>,
+        #[property(get, set)]
+        pub date: Cell<i64>,
     }
 
     #[glib::object_subclass]
@@ -94,6 +96,15 @@ impl Task {
             _ => panic!("The Task cannot have multiple incomplete records"),
         }
     }
+
+    pub fn date_datetime(&self) -> Option<glib::DateTime> {
+        let date = self.date();
+        if date == 0 {
+            None
+        } else {
+            Some(glib::DateTime::from_unix_local(self.date()).unwrap())
+        }
+    }
 }
 
 impl TryFrom<&Row<'_>> for Task {
@@ -110,6 +121,7 @@ impl TryFrom<&Row<'_>> for Task {
             ("suspended", &row.get::<usize, bool>(6)?),
             ("parent", &row.get::<usize, i64>(7)?),
             ("description", &row.get::<usize, String>(8)?),
+            ("date", &row.get::<usize, i64>(9)?),
         ]))
     }
 }

@@ -31,6 +31,7 @@ install_data(
   	join_paths(actions_dir, 'view-columns-symbolic.svg'),
   	join_paths(actions_dir, 'list-symbolic.svg'),
   	join_paths(actions_dir, 'profit-symbolic.svg'),
+    join_paths(actions_dir, 'stopwatch-symbolic.svg'),
 	],
   install_dir: join_paths(get_option('datadir'), 'icons', actions_dir)
 )

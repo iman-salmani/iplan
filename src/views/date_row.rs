@@ -1,20 +1,27 @@
 use adw::subclass::prelude::*;
 use adw::traits::ActionRowExt;
-use gtk::glib::{once_cell::sync::Lazy, subclass::*};
+use gettextrs::gettext;
+use gtk::glib::{once_cell::sync::Lazy, subclass::*, Properties};
 use gtk::{glib, prelude::*};
+use std::cell::Cell;
 
 const DATE_FORMAT: &str = "%B %e, %Y";
 
 mod imp {
     use super::*;
 
-    #[derive(Default, gtk::CompositeTemplate)]
+    #[derive(Default, gtk::CompositeTemplate, Properties)]
     #[template(resource = "/ir/imansalmani/iplan/ui/date_row.ui")]
+    #[properties(type_wrapper=super::DateRow)]
     pub struct DateRow {
         #[template_child]
         pub calendar: TemplateChild<gtk::Calendar>,
         #[template_child]
         pub menu_button: TemplateChild<gtk::MenuButton>,
+        #[template_child]
+        pub clear_button: TemplateChild<gtk::Button>,
+        #[property(get, set)]
+        pub clear_option: Cell<bool>,
     }
 
     #[glib::object_subclass]
@@ -42,6 +49,18 @@ mod imp {
             });
             SIGNALS.as_ref()
         }
+
+        fn properties() -> &'static [glib::ParamSpec] {
+            Self::derived_properties()
+        }
+
+        fn property(&self, id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+            self.derived_property(id, pspec)
+        }
+
+        fn set_property(&self, id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
+            self.derived_set_property(id, value, pspec)
+        }
     }
     impl WidgetImpl for DateRow {}
     impl ListBoxRowImpl for DateRow {}
@@ -67,13 +86,13 @@ impl DateRow {
         Self::default()
     }
 
-    pub fn set_date(&self, year: u16, month: u8, day: u8) {
+    pub fn set_datetime(&self, datetime: &glib::DateTime) {
         let imp = self.imp();
-        imp.calendar.set_year(year as i32);
-        imp.calendar.set_month(month as i32 - 1);
-        imp.calendar.set_day(day as i32);
-        let datetime = self.calculate_datetime();
-        self.set_subtitle(&datetime.format(DATE_FORMAT).unwrap());
+        imp.calendar.set_year(datetime.year());
+        imp.calendar.set_month(datetime.month() - 1);
+        imp.calendar.set_day(datetime.day_of_month());
+        self.refresh_row(datetime);
+        self.show_clear_button();
     }
 
     pub fn calculate_datetime(&self) -> glib::DateTime {
@@ -90,11 +109,40 @@ impl DateRow {
         .unwrap()
     }
 
+    fn refresh_row(&self, datetime: &glib::DateTime) {
+        let now = glib::DateTime::now_local().unwrap().ymd();
+        let subtitle = if now == datetime.ymd() {
+            gettext("Today")
+        } else {
+            datetime.format(DATE_FORMAT).unwrap().to_string()
+        };
+        self.set_subtitle(&subtitle);
+    }
+
+    fn show_clear_button(&self) {
+        if self.clear_option() {
+            self.imp().clear_button.set_visible(true);
+        }
+    }
+
+    #[template_callback]
+    fn handle_clear_clicked(&self, clear_button: gtk::Button) {
+        clear_button.set_visible(false);
+        self.imp().calendar.clear_marks();
+        self.set_subtitle("");
+        self.emit_by_name::<()>(
+            "date-changed",
+            &[&glib::DateTime::from_unix_local(0).unwrap()],
+        );
+    }
+
     #[template_callback]
     fn handle_day_selected(&self, _calendar: gtk::Calendar) {
-        self.imp().menu_button.popdown();
+        let imp = self.imp();
+        imp.menu_button.popdown();
+        self.show_clear_button();
         let datetime = self.calculate_datetime();
-        self.set_subtitle(&datetime.format(DATE_FORMAT).unwrap());
+        self.refresh_row(&datetime);
         self.emit_by_name::<()>("date-changed", &[&datetime]);
     }
 }
