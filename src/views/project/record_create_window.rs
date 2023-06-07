@@ -90,9 +90,9 @@ impl RecordCreateWindow {
         let start = glib::DateTime::now_local().unwrap();
         win.set_record(Record::new(0, start.to_unix(), 0, task_id));
         imp.start_date_row.set_datetime(&start);
-        imp.end_date_row.set_datetime(&start);
         imp.start_time_row
             .set_time_from_digits(start.hour(), start.minute(), start.seconds());
+        imp.end_date_row.set_datetime(&start);
         imp.end_time_row
             .set_time_from_digits(start.hour(), start.minute(), start.seconds());
         win
@@ -148,6 +148,15 @@ impl RecordCreateWindow {
             .build();
     }
 
+    fn set_duration(&self, duration: i64) {
+        let imp = self.imp();
+        if duration.is_negative() {
+            imp.duration_row.set_time(0);
+        } else {
+            imp.duration_row.set_time(duration as i32);
+        };
+    }
+
     #[template_callback]
     fn handle_cancel_button_clicked(&self, _button: gtk::Button) {
         self.close();
@@ -178,16 +187,18 @@ impl RecordCreateWindow {
         let imp = self.imp();
         let datetime = datetime
             .add_seconds(imp.start_time_row.time() as f64)
-            .unwrap();
+            .unwrap()
+            .to_unix();
         let record = self.record();
-        record.set_start(datetime.to_unix());
+        record.set_start(datetime);
+        self.set_duration(self.end_datetime() - datetime);
     }
 
     #[template_callback]
-    fn handle_start_time_changed(&self, _time: i32, time_picker: TimeRow) {
+    fn handle_start_time_changed(&self, _time: i32, time_row: TimeRow) {
         let record = self.record();
         let prev_datetime = glib::DateTime::from_unix_local(record.start()).unwrap();
-        let (hour, min, sec) = time_picker.get_digits();
+        let (hour, min, sec) = time_row.get_digits();
         let datetime = glib::DateTime::new(
             &glib::TimeZone::local(),
             prev_datetime.year(),
@@ -197,8 +208,10 @@ impl RecordCreateWindow {
             min,
             sec,
         )
-        .unwrap();
-        record.set_start(datetime.to_unix());
+        .unwrap()
+        .to_unix();
+        record.set_start(datetime);
+        self.set_duration(self.end_datetime() - datetime);
     }
 
     #[template_callback]
