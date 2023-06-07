@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <schemalist gettext-domain="iplan">
-	<schema id="ir.imansalmani.IPlan.State" path="/ir/imansalmani/IPlan/State/">
-	  <key name="default-project-layout" type="i">
-	    <default>0</default>
-	  </key>
-	  <key name="width" type="i">
+  <schema id="ir.imansalmani.IPlan.State" path="/ir/imansalmani/IPlan/State/">
+    <key name="default-project-layout" type="i">
+      <default>0</default>
+    </key>
+    <key name="width" type="i">
       <default>640</default>
     </key>
     <key name="height" type="i">
@@ -16,6 +16,8 @@
     <key name="is-fullscreen" type="b">
       <default>false</default>
     </key>
-	</schema>
+    <key name="background-play" type="b">
+      <default>true</default>
+    </key>
+  </schema>
 </schemalist>
-

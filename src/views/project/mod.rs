@@ -27,3 +27,9 @@ pub use task_window::TaskWindow;
 
 mod task_page;
 pub use task_page::TaskPage;
+
+mod reminder_row;
+pub use reminder_row::ReminderRow;
+
+mod reminder_window;
+pub use reminder_window::ReminderWindow;

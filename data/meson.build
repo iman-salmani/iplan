@@ -1,6 +1,12 @@
+if get_option('profile') == 'development'
+	application_id = 'ir.imansalmani.IPlan.Devel'
+else
+  application_id = 'ir.imansalmani.IPlan'
+endif
+
 desktop_file = i18n.merge_file(
         input: 'ir.imansalmani.IPlan.desktop.in',
-       output: 'ir.imansalmani.IPlan.desktop',
+       output: application_id + '.desktop',
          type: 'desktop',
        po_dir: '../po',
       install: true,
@@ -35,5 +41,16 @@ if compile_schemas.found()
        compile_schemas,
        args: ['--strict', '--dry-run', meson.current_source_dir()])
 endif
+
+service_conf = configuration_data()
+service_conf.set('application_id', application_id)
+service_conf.set('bindir', get_option('prefix') / get_option('bindir'))
+configure_file(
+  input: 'io.bassi.IPlan.service.in',
+  output: '@0@.service'.format(application_id),
+  configuration: service_conf,
+  install: true,
+  install_dir: get_option('datadir') / 'dbus-1/services',
+)
 
 subdir('icons')

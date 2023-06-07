@@ -9,3 +9,6 @@ pub use task::Task;
 
 mod record;
 pub use record::Record;
+
+mod reminder;
+pub use reminder::Reminder;

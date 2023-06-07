@@ -19,25 +19,42 @@
  */
 
 use adw::subclass::prelude::*;
+#[cfg(any(target_os = "linux", target_os = "freebsd"))]
+use ashpd::{desktop::background::Background, WindowIdentifier};
 use gettextrs::gettext;
 use gtk::prelude::*;
 use gtk::{gio, glib};
+use std::cell::RefCell;
+use std::thread;
+use std::time::{SystemTime, UNIX_EPOCH};
 
 use crate::config::{APPLICATION_ID, VERSION};
+use crate::db::models::Reminder;
+use crate::db::operations::{read_reminder, read_task, update_reminder};
 use crate::views::search::SearchWindow;
 use crate::views::{BackupWindow, IPlanWindow};
 
 mod imp {
     use super::*;
 
-    #[derive(Debug, Default)]
-    pub struct IPlanApplication {}
+    #[derive(Debug)]
+    pub struct IPlanApplication {
+        pub background_hold: RefCell<Option<ApplicationHoldGuard>>,
+        pub settings: gio::Settings,
+    }
 
     #[glib::object_subclass]
     impl ObjectSubclass for IPlanApplication {
         const NAME: &'static str = "IPlanApplication";
         type Type = super::IPlanApplication;
         type ParentType = adw::Application;
+
+        fn new() -> Self {
+            Self {
+                background_hold: RefCell::default(),
+                settings: gio::Settings::new("ir.imansalmani.IPlan.State"),
+            }
+        }
     }
 
     impl ObjectImpl for IPlanApplication {
@@ -45,6 +62,7 @@ mod imp {
             self.parent_constructed();
             let obj = self.obj();
             obj.setup_gactions();
+            obj.setup_settings();
             obj.set_accels_for_action("app.quit", &["<primary>q"]);
             obj.set_accels_for_action("app.shortcuts", &["<primary>question"]);
             obj.set_accels_for_action("app.search", &["<primary>f"]);
@@ -69,6 +87,9 @@ mod imp {
                 window.upcast()
             };
 
+            #[cfg(any(target_os = "linux", target_os = "freebsd"))]
+            application.request_background();
+
             // Ask the window manager/compositor to present the window
             window.present();
         }
@@ -90,6 +111,22 @@ impl IPlanApplication {
             .property("application-id", application_id)
             .property("flags", flags)
             .build()
+    }
+
+    fn setup_settings(&self) {
+        self.imp().settings.connect_changed(
+            Some("background-play"),
+            glib::clone!(@weak self as this => move |settings, _| {
+                let background_play = settings.boolean("background-play");
+                if background_play {
+                    this.request_background();
+                } else {
+                    this.imp().background_hold.replace(None);
+                }
+            }),
+        );
+
+        let _dummy = self.imp().settings.boolean("background-play");
     }
 
     fn setup_gactions(&self) {
@@ -160,5 +197,70 @@ impl IPlanApplication {
             .build();
 
         about.present();
+    }
+
+    pub fn send_reminder(&self, reminder: Reminder) {
+        let (tx, rx) = glib::MainContext::channel(glib::PRIORITY_DEFAULT);
+        let now = SystemTime::now()
+            .duration_since(UNIX_EPOCH)
+            .expect("Time went backwards");
+        let datetime = reminder.datetime_duration();
+
+        if datetime < now {
+            return;
+        }
+
+        let remains = datetime - now;
+        thread::spawn(move || {
+            thread::sleep(remains);
+            if tx.send("").is_err() {}
+        });
+        rx.attach(None,glib::clone!(@weak self as obj => @default-return glib::Continue(false), move |_: &str| {
+            let fresh_reminder = read_reminder(reminder.id()).expect("Failed to read reminder");
+
+            if fresh_reminder.past() || fresh_reminder.datetime() != reminder.datetime() {
+                return glib::Continue(false);
+            }
+
+            let task = read_task(fresh_reminder.task()).expect("Failed to read task");
+            let notification = gio::Notification::new(&task.name());
+            notification.set_priority(gio::NotificationPriority::High);
+            obj.send_notification(Some(&format!("reminder-{}", fresh_reminder.id())), &notification);
+            fresh_reminder.set_past(true);
+            update_reminder(&fresh_reminder).expect("Failed to update reminder");
+
+            glib::Continue(false)
+        }));
+    }
+
+    #[cfg(any(target_os = "linux", target_os = "freebsd"))]
+    async fn portal_request_background(&self) {
+        if let Some(window) = self.active_window() {
+            let root = window.native().unwrap();
+            let identifier = WindowIdentifier::from_native(&root).await;
+            let request = Background::request().identifier(identifier).reason(Some(
+                gettext("IPlan needs to run in the background to send reminders").as_str(),
+            ));
+
+            match request.send().await.and_then(|r| r.response()) {
+                Ok(_) => {
+                    self.imp().background_hold.replace(Some(self.hold()));
+                }
+                Err(_) => {
+                    self.imp()
+                        .settings
+                        .set_boolean("background-play", false)
+                        .expect("Unable to set background-play settings key");
+                }
+            }
+        }
+    }
+
+    #[cfg(any(target_os = "linux", target_os = "freebsd"))]
+    fn request_background(&self) {
+        let ctx = glib::MainContext::default();
+        ctx.spawn_local(glib::clone!(@weak self as app => async move {
+            app.portal_request_background().await
+        }));
     }
 }

@@ -1,11 +1,14 @@
 use adw::traits::ExpanderRowExt;
 use gtk::{glib, glib::Properties, prelude::*, subclass::prelude::*};
 use std::cell::RefCell;
+use std::time::{SystemTime, UNIX_EPOCH};
 use std::unimplemented;
 
-use crate::db::models::{Record, Task};
-use crate::db::operations::{create_task, read_record, read_records, read_tasks, update_task};
-use crate::views::project::{RecordCreateWindow, RecordRow, TaskRow};
+use crate::db::models::{Record, Reminder, Task};
+use crate::db::operations::{
+    create_task, read_record, read_records, read_reminder, read_reminders, read_tasks, update_task,
+};
+use crate::views::project::{RecordCreateWindow, RecordRow, ReminderRow, ReminderWindow, TaskRow};
 use crate::views::DateRow;
 
 mod imp {
@@ -19,6 +22,8 @@ mod imp {
         pub task: RefCell<Task>,
         #[template_child]
         pub task_row: TemplateChild<TaskRow>,
+        #[template_child]
+        pub reminders_expander_row: TemplateChild<adw::ExpanderRow>,
         #[template_child]
         pub description_expander_row: TemplateChild<adw::ExpanderRow>,
         #[template_child]
@@ -117,6 +122,12 @@ impl TaskPage {
             imp.date_row.set_datetime(&date);
         }
 
+        let reminders = read_reminders(task.id()).expect("Failed to read subtasks");
+        for reminder in reminders {
+            let row = ReminderRow::new(reminder);
+            imp.reminders_expander_row.add_row(&row);
+        }
+
         let task_description = task.description();
         imp.description_expander_row
             .set_subtitle(&obj.description_display(&task_description));
@@ -174,6 +185,13 @@ impl TaskPage {
         imp.records_box.append(&row);
     }
 
+    pub fn add_reminder(&self, reminder_id: i64) {
+        let imp = self.imp();
+        let reminder = read_reminder(reminder_id).expect("Failed to read record");
+        let row = ReminderRow::new(reminder);
+        imp.reminders_expander_row.add_row(&row);
+    }
+
     fn description_display(&self, text: &str) -> String {
         if let Some(first_line) = text.lines().next() {
             return String::from(first_line);
@@ -186,6 +204,18 @@ impl TaskPage {
         let task = self.task();
         task.set_date(datetime.to_unix());
         update_task(&task).expect("Failed to change update task");
+    }
+
+    #[template_callback]
+    fn handle_new_reminder_clicked(&self, _: gtk::Button) {
+        let win = self.root().and_downcast::<gtk::Window>().unwrap();
+        let now = SystemTime::now()
+            .duration_since(UNIX_EPOCH)
+            .expect("Time went backwards")
+            .as_secs();
+        let reminder = Reminder::new(0, now as i64, false, self.task().id(), 2);
+        let modal = ReminderWindow::new(&win.application().unwrap(), &win, reminder, false);
+        modal.present();
     }
 
     #[template_callback]

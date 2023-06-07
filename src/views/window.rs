@@ -271,6 +271,12 @@ impl IPlanWindow {
             gtk::style_context_add_provider_for_display(&display, &provider, 400)
         }
 
+        // let notification = gio::Notification::new("test notification");
+        // window
+        //     .application()
+        //     .unwrap()
+        //     .send_notification(Some("notif-id"), &notification);
+
         window
     }
 

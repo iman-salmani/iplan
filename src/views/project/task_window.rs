@@ -60,6 +60,15 @@ mod imp {
                     .unwrap()
                     .add_record(record_id);
             });
+            klass.install_action("reminder.created", Some("x"), move |obj, _, value| {
+                let reminder_id = value.unwrap().get::<i64>().unwrap();
+                let imp = obj.imp();
+                imp.task_pages_stack
+                    .visible_child()
+                    .and_downcast::<TaskPage>()
+                    .unwrap()
+                    .add_reminder(reminder_id);
+            });
         }
 
         fn instance_init(obj: &glib::subclass::InitializingObject<Self>) {

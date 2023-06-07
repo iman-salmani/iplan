@@ -94,6 +94,6 @@ impl TryFrom<&Row<'_>> for Project {
 
 impl Default for Project {
     fn default() -> Self {
-        Project::new(1, String::new(), false, 0, String::new(), String::new())
+        Project::new(0, String::new(), false, 0, String::new(), String::new())
     }
 }

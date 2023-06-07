@@ -2,6 +2,8 @@
 .flatpak-builder
 build
 _build
+_build_pro
+_build_dev
 .vscode
 src/config.rs
 target

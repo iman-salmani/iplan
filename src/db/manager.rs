@@ -4,7 +4,7 @@ use std::cmp::Ordering;
 
 use crate::db::migrate::MIGRATIONS;
 
-const DB_VERSION: u8 = 6;
+const DB_VERSION: u8 = 7;
 
 pub fn get_connection() -> Connection {
     Connection::open(glib::user_data_dir().join("data.db")).expect("Failed connect to database")
@@ -65,6 +65,18 @@ pub fn check_database() -> Result<()> {
                 start	  INTEGER NOT NULL,
                 duration  INTEGER NOT NULL DEFAULT 0,
                 task      INTEGER NOT NULL,
+                PRIMARY KEY(id AUTOINCREMENT)
+            );",
+            (),
+        )?;
+
+        conn.execute(
+            "CREATE TABLE reminders (
+                id	      INTEGER NOT NULL,
+                datetime  INTEGER NOT NULL,
+                past      INTEGER NOT NULL DEFAULT 0,
+                task      INTEGER NOT NULL,
+                priority  INTEGER NOT NULL DEFAULT 1,
                 PRIMARY KEY(id AUTOINCREMENT)
             );",
             (),

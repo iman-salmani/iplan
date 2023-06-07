@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE interface SYSTEM "../schema.dtd">
+<interface>
+  <requires lib="gtk" version="4.0" />
+  <requires lib="Adw" version="1.0" />
+  <template class="ReminderRow" parent="AdwActionRow">
+    <property name="activatable-widget">icon</property>
+    <signal name="activated" handler="handle_activated" />
+    <child type="suffix">
+      <object class="GtkImage" id="icon">
+        <property name="icon-name">alarm-symbolic</property>
+      </object>
+    </child>
+  </template>
+</interface>

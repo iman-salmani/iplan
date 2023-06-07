@@ -3,7 +3,7 @@
 <interface>
   <requires lib="gtk" version="4.0" />
   <requires lib="Adw" version="1.0" />
-  <template class="RecordCreateWindow" parent="GtkWindow">
+  <template class="ReminderWindow" parent="GtkWindow">
     <property name="width-request">480</property>
     <property name="height-request">480</property>
     <property name="modal">true</property>
@@ -13,7 +13,7 @@
         <property name="show-end-title-buttons">false</property>
         <property name="title-widget">
           <object class="GtkLabel">
-            <property name="label" translatable="yes">New Record</property>
+            <property name="label" translatable="yes">Reminder</property>
             <style>
               <class name="heading" />
             </style>
@@ -42,56 +42,43 @@
           <object class="GtkScrolledWindow">
             <child>
               <object class="AdwPreferencesPage">
-                <child><!-- Starts Group -->
+                <child><!-- Datetime Group -->
                   <object class="AdwPreferencesGroup">
-                    <property name="title" translatable="yes">Starts</property>
                     <child>
-                      <object class="DateRow" id="start_date_row">
+                      <object class="DateRow" id="date_row">
                         <property name="title" translatable="yes">Date</property>
-                        <signal name="date-changed" handler="handle_start_date_changed"
-                          swapped="true" />
+                        <signal name="date-changed" handler="handle_date_changed" swapped="true" />
                       </object>
                     </child>
                     <child>
-                      <object class="TimeRow" id="start_time_row">
+                      <object class="TimeRow" id="time_row">
                         <property name="title" translatable="yes">Time</property>
-                        <signal name="time-changed" handler="handle_start_time_changed"
-                          swapped="true" />
+                        <signal name="time-changed" handler="handle_time_changed" swapped="true" />
+                      </object>
+                    </child>
+                  </object>
+                </child><!-- End DateTime Group -->
+                <child>
+                  <object class="AdwPreferencesGroup" id="delete_group">
+                    <property name="visible">false</property>
+                    <child>
+                      <object class="AdwActionRow">
+                        <property name="title" translatable="yes">delete</property>
+                        <property name="activatable-widget">delete_button</property>
+                        <child type="suffix">
+                          <object class="GtkButton" id="delete_button">
+                            <property name="valign">center</property>
+                            <property name="icon-name">user-trash-symbolic</property>
+                            <signal name="clicked" handler="handle_delete_button_clicked" swapped="true" />
+                            <style>
+                              <class name="flat" />
+                            </style>
+                          </object>
+                        </child>
                       </object>
                     </child>
                   </object>
                 </child>
-                <!-- End Starts Group -->
-                <child><!-- Ends Group -->
-                  <object class="AdwPreferencesGroup">
-                    <property name="title" translatable="yes">Ends</property>
-                    <child>
-                      <object class="DateRow" id="end_date_row">
-                        <property name="title" translatable="yes">Date</property>
-                        <signal name="date-changed" handler="handle_end_date_changed"
-                          swapped="true" />
-                      </object>
-                    </child>
-                    <child>
-                      <object class="TimeRow" id="end_time_row">
-                        <property name="title" translatable="yes">Time</property>
-                      </object>
-                    </child>
-                  </object>
-                </child>
-                <!-- End Ends Group -->
-                <child><!-- Duration Group -->
-                  <object class="AdwPreferencesGroup">
-                    <child>
-                      <object class="TimeRow" id="duration_row">
-                        <property name="title" translatable="yes">Duration</property>
-                        <signal name="time-changed" handler="handle_duration_time_changed"
-                          swapped="true" />
-                      </object>
-                    </child>
-                  </object>
-                </child>
-                <!-- End Duration Group -->
               </object>
             </child>
           </object>

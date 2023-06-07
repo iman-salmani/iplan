@@ -18,10 +18,12 @@
     <file preprocess="xml-stripblanks">ui/project/task_row.ui</file>
     <file preprocess="xml-stripblanks">ui/project/project_edit_window.ui</file>
     <file preprocess="xml-stripblanks">ui/project/project_done_tasks_window.ui</file>
-    <file preprocess="xml-stripblanks">ui/project/record_row.ui</file>
-    <file preprocess="xml-stripblanks">ui/project/record_create_window.ui</file>
     <file preprocess="xml-stripblanks">ui/project/task_window.ui</file>
     <file preprocess="xml-stripblanks">ui/project/task_page.ui</file>
+    <file preprocess="xml-stripblanks">ui/project/record_row.ui</file>
+    <file preprocess="xml-stripblanks">ui/project/record_create_window.ui</file>
+    <file preprocess="xml-stripblanks">ui/project/reminder_window.ui</file>
+    <file preprocess="xml-stripblanks">ui/project/reminder_row.ui</file>
 
     <file preprocess="xml-stripblanks">ui/search/search_window.ui</file>
     <file preprocess="xml-stripblanks">ui/search/search_result.ui</file>

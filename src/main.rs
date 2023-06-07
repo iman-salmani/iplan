@@ -27,9 +27,9 @@ use self::application::IPlanApplication;
 
 use config::{APPLICATION_ID, GETTEXT_PACKAGE, LOCALEDIR, PKGDATADIR};
 use gettextrs::{bind_textdomain_codeset, bindtextdomain, textdomain};
-use gtk::{gio, prelude::*};
+use gtk::{gio, glib, prelude::*};
 
-fn main() {
+fn main() -> glib::ExitCode {
     // Set up gettext translations
     bindtextdomain(GETTEXT_PACKAGE, LOCALEDIR).expect("Unable to bind the text domain");
     bind_textdomain_codeset(GETTEXT_PACKAGE, "UTF-8")
@@ -54,5 +54,7 @@ fn main() {
     // exits. Upon return, we have our exit code to return to the shell. (This
     // is the code you see when you do `echo $?` after running a command in a
     // terminal.
-    std::process::exit(app.run().into());
+    let ctx = glib::MainContext::default();
+    let _guard = ctx.acquire().unwrap();
+    app.run()
 }

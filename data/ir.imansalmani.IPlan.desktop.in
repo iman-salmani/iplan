@@ -6,3 +6,6 @@ Terminal=false
 Type=Application
 Categories=GNOME;GTK;Utility;
 StartupNotify=true
+X-GNOME-UsesNotifications=true
+DBusActivatable=true
+X-Purism-FormFactor=Workstation;Mobile;
