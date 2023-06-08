@@ -1,13 +1,13 @@
 use adw;
 use adw::subclass::prelude::*;
-use adw::traits::{ExpanderRowExt, PreferencesRowExt};
+use adw::traits::{ActionRowExt, PreferencesRowExt};
 use gettextrs::gettext;
 use gtk::{glib, glib::Properties, prelude::*};
 use std::cell::RefCell;
 
 use crate::db::models::Record;
-use crate::db::operations::{delete_record, update_record};
-use crate::views::{project::TaskWindow, DateRow, TimeRow};
+use crate::db::operations::read_record;
+use crate::views::project::RecordWindow;
 
 mod imp {
     use super::*;
@@ -18,19 +18,13 @@ mod imp {
     pub struct RecordRow {
         #[property(get, set)]
         pub record: RefCell<Record>,
-        #[template_child]
-        pub start_date_row: TemplateChild<DateRow>,
-        #[template_child]
-        pub start_time_row: TemplateChild<TimeRow>,
-        #[template_child]
-        pub duration_row: TemplateChild<TimeRow>,
     }
 
     #[glib::object_subclass]
     impl ObjectSubclass for RecordRow {
         const NAME: &'static str = "RecordRow";
         type Type = super::RecordRow;
-        type ParentType = adw::ExpanderRow;
+        type ParentType = adw::ActionRow;
 
         fn class_init(klass: &mut Self::Class) {
             klass.bind_template();
@@ -58,28 +52,20 @@ mod imp {
     impl WidgetImpl for RecordRow {}
     impl ListBoxRowImpl for RecordRow {}
     impl PreferencesRowImpl for RecordRow {}
-    impl ExpanderRowImpl for RecordRow {}
+    impl ActionRowImpl for RecordRow {}
 }
 
 glib::wrapper! {
     pub struct RecordRow(ObjectSubclass<imp::RecordRow>)
-        @extends gtk::Widget, gtk::ListBoxRow, adw::PreferencesRow, adw::ExpanderRow,
+        @extends gtk::Widget, gtk::ListBoxRow, adw::PreferencesRow, adw::ActionRow,
         @implements gtk::Buildable;
 }
 
 #[gtk::template_callbacks]
 impl RecordRow {
     pub fn new(record: Record) -> Self {
-        let duration = record.duration();
-        let start = glib::DateTime::from_unix_local(record.start())
-            .expect("Failed to create glib::DateTime from Record::start");
         let obj: Self = glib::Object::builder().property("record", record).build();
-        let imp = obj.imp();
         obj.set_labels();
-        imp.start_date_row.set_datetime(&start);
-        imp.start_time_row
-            .set_time_from_digits(start.hour(), start.minute(), start.seconds());
-        imp.duration_row.set_time(duration as i32);
         obj
     }
 
@@ -118,64 +104,29 @@ impl RecordRow {
     }
 
     #[template_callback]
-    fn handle_start_date_changed(&self, datetime: glib::DateTime, _date_row: DateRow) {
-        let imp = self.imp();
-        let datetime = datetime
-            .add_seconds(imp.start_time_row.time() as f64)
-            .unwrap();
-        let record = self.record();
-        record.set_start(datetime.to_unix());
-        self.set_labels();
-        update_record(&record).expect("Failed to update record");
-    }
-
-    #[template_callback]
-    fn handle_start_time_changed(&self, _time: i32, time_picker: TimeRow) {
-        let record = self.record();
-        let prev_datetime = glib::DateTime::from_unix_local(record.start()).unwrap();
-        let (hour, min, sec) = time_picker.get_digits();
-        let datetime = glib::DateTime::new(
-            &glib::TimeZone::local(),
-            prev_datetime.year(),
-            prev_datetime.month(),
-            prev_datetime.day_of_month(),
-            hour,
-            min,
-            sec,
-        )
-        .unwrap();
-        record.set_start(datetime.to_unix());
-        update_record(&record).expect("Failed to update record");
-        self.refresh();
-    }
-
-    #[template_callback]
-    fn handle_duration_time_changed(&self, time: i32, _: TimeRow) {
-        if time == 0 {
-            let toast = adw::Toast::builder()
-                .title(gettext("Duration can't be 0"))
-                .build();
-            self.root()
-                .and_downcast::<TaskWindow>()
-                .unwrap()
-                .imp()
-                .toast_overlay
-                .add_toast(toast);
-            return;
-        }
-
-        let record = self.record();
-        record.set_duration(time as i64);
-        update_record(&record).expect("Failed to update record");
-        self.refresh();
-    }
-
-    #[template_callback]
-    fn handle_delete_button_clicked(&self, _button: gtk::Button) {
-        delete_record(self.record().id()).expect("Failed to delete record");
-        self.activate_action("record.delete", None)
-            .expect("Failed to send record.delete action");
-        let records_box = self.parent().and_downcast::<gtk::ListBox>().unwrap();
-        records_box.remove(self);
+    fn handle_activated(&self) {
+        let win = self.root().and_downcast::<gtk::Window>().unwrap();
+        let modal = RecordWindow::new(&win.application().unwrap(), &win, self.record(), true);
+        modal.present();
+        modal.connect_close_request(
+            glib::clone!(@weak self as obj => @default-return gtk::Inhibit(false), move |_| {
+                match read_record(obj.record().id()) {
+                    Ok(reminder) => {
+                        obj.set_record(reminder);
+                        obj.refresh();
+                    }
+                    Err(err) => match err {
+                        rusqlite::Error::QueryReturnedNoRows  => {
+                            obj.activate_action("record.delete", None)
+                                .expect("Failed to send record.delete action");
+                            let records_box = obj.parent().and_downcast::<gtk::ListBox>().unwrap();
+                            records_box.remove(&obj);
+                        },
+                        err => panic!("{err}")
+                    }
+                }
+                gtk::Inhibit(false)
+            }),
+        );
     }
 }

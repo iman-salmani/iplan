@@ -10,7 +10,7 @@ src/ui/project/project_edit_window.ui
 src/ui/project/project_header.ui
 src/ui/project/project_list.ui
 src/ui/project/project_lists.ui
-src/ui/project/record_create_window.ui
+src/ui/project/record_window.ui
 src/ui/project/record_row.ui
 src/ui/project/reminder_window.ui
 src/ui/project/task_page.ui
@@ -25,7 +25,7 @@ src/views/project/project_edit_window.rs
 src/views/project/project_header.rs
 src/views/project/project_list.rs
 src/views/project/project_lists.rs
-src/views/project/record_create_window.rs
+src/views/project/record_window.rs
 src/views/project/record_row.rs
 src/views/project/reminder_window.rs
 src/views/project/task_row.rs

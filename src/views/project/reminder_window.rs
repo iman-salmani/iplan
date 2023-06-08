@@ -115,7 +115,7 @@ impl ReminderWindow {
         }
 
         if self.state() {
-            update_reminder(&reminder).expect("Failed to update record");
+            update_reminder(&reminder).expect("Failed to update reminder");
         } else {
             reminder = create_reminder(reminder.datetime(), reminder.task(), reminder.priority())
                 .expect("Failed to create record");

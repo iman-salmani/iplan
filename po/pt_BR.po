@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: iplan\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-06-07 20:42+0330\n"
+"POT-Creation-Date: 2023-06-08 18:39+0330\n"
 "PO-Revision-Date: 2023-05-27 15:10-0300\n"
 "Last-Translator: Fúlvio Leo <fulviokaldas@outlook.com>\n"
 "Language: pt_BR\n"
@@ -293,61 +293,43 @@ msgstr "nenhuma lista encontrada"
 msgid "New list"
 msgstr "Nova lista"
 
-#: src/ui/project/record_create_window.ui:16
+#: src/ui/project/record_window.ui:16
 msgid "New Record"
 msgstr "Novo Registro"
 
-#: src/ui/project/record_create_window.ui:24
-#: src/ui/project/reminder_window.ui:24
+#: src/ui/project/record_window.ui:24 src/ui/project/reminder_window.ui:24
 msgid "Cancel"
 msgstr "Cancelar"
 
-#: src/ui/project/record_create_window.ui:30
-#: src/ui/project/reminder_window.ui:30
+#: src/ui/project/record_window.ui:30 src/ui/project/reminder_window.ui:30
 msgid "Done"
 msgstr "Concluído"
 
-#: src/ui/project/record_create_window.ui:47
+#: src/ui/project/record_window.ui:47
 #, fuzzy
 msgid "Starts"
 msgstr "começar"
 
-#: src/ui/project/record_create_window.ui:50
-#: src/ui/project/record_create_window.ui:70
+#: src/ui/project/record_window.ui:50 src/ui/project/record_window.ui:70
 #: src/ui/project/reminder_window.ui:49
 msgid "Date"
 msgstr ""
 
-#: src/ui/project/record_create_window.ui:57
-#: src/ui/project/record_create_window.ui:77
+#: src/ui/project/record_window.ui:57 src/ui/project/record_window.ui:77
 #: src/ui/project/reminder_window.ui:55
 msgid "Time"
 msgstr ""
 
-#: src/ui/project/record_create_window.ui:67
+#: src/ui/project/record_window.ui:67
 msgid "Ends"
 msgstr ""
 
-#: src/ui/project/record_create_window.ui:87
+#: src/ui/project/record_window.ui:86
 #, fuzzy
 msgid "Duration"
 msgstr "duração"
 
-#: src/ui/project/record_row.ui:9
-#, fuzzy
-msgid "start date"
-msgstr "começar"
-
-#: src/ui/project/record_row.ui:16
-#, fuzzy
-msgid "start time"
-msgstr "começar"
-
-#: src/ui/project/record_row.ui:22
-msgid "duration"
-msgstr "duração"
-
-#: src/ui/project/record_row.ui:28 src/ui/project/reminder_window.ui:66
+#: src/ui/project/record_window.ui:98 src/ui/project/reminder_window.ui:66
 msgid "delete"
 msgstr "deletar"
 
@@ -467,12 +449,11 @@ msgstr "Use o menu principal {} para adicionar novas listas"
 msgid "New List"
 msgstr "Nova lista"
 
-#: src/views/project/record_create_window.rs:170
-#: src/views/project/record_row.rs:156
+#: src/views/project/record_window.rs:180
 msgid "Duration can't be 0"
 msgstr ""
 
-#: src/views/project/record_row.rs:106
+#: src/views/project/record_row.rs:92
 msgid "until"
 msgstr ""
 
@@ -492,6 +473,17 @@ msgstr "Projeto"
 #: src/views/search/search_result.rs:60
 msgid "Task"
 msgstr "Tarefa"
+
+#, fuzzy
+#~ msgid "start date"
+#~ msgstr "começar"
+
+#, fuzzy
+#~ msgid "start time"
+#~ msgstr "começar"
+
+#~ msgid "duration"
+#~ msgstr "duração"
 
 #, fuzzy
 #~ msgctxt "shortcut window"

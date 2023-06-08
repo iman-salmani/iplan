@@ -8,7 +8,7 @@ use crate::db::models::{Record, Reminder, Task};
 use crate::db::operations::{
     create_task, read_record, read_records, read_reminder, read_reminders, read_tasks, update_task,
 };
-use crate::views::project::{RecordCreateWindow, RecordRow, ReminderRow, ReminderWindow, TaskRow};
+use crate::views::project::{RecordRow, RecordWindow, ReminderRow, ReminderWindow, TaskRow};
 use crate::views::DateRow;
 
 mod imp {
@@ -118,8 +118,9 @@ impl TaskPage {
         imp.task_row.reset(task.clone());
 
         imp.date_row.set_clear_option(true);
-        if let Some(date) = task.date_datetime() {
-            imp.date_row.set_datetime(&date);
+        let date = task.date();
+        if date == 0 {
+            imp.date_row.set_datetime_from_unix(date);
         }
 
         let reminders = read_reminders(task.id()).expect("Failed to read subtasks");
@@ -256,7 +257,12 @@ impl TaskPage {
     #[template_callback]
     fn handle_new_record_button_clicked(&self, _button: gtk::Button) {
         let win = self.root().and_downcast::<gtk::Window>().unwrap();
-        let modal = RecordCreateWindow::new(&win.application().unwrap(), &win, self.task().id());
+        let now = SystemTime::now()
+            .duration_since(UNIX_EPOCH)
+            .unwrap()
+            .as_secs();
+        let record = Record::new(0, now as i64, 0, self.task().id());
+        let modal = RecordWindow::new(&win.application().unwrap(), &win, record, false);
         modal.present();
     }
 

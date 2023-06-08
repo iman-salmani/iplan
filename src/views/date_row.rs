@@ -4,7 +4,6 @@ use gettextrs::gettext;
 use gtk::glib::{once_cell::sync::Lazy, subclass::*, Properties};
 use gtk::{glib, prelude::*};
 use std::cell::Cell;
-
 const DATE_FORMAT: &str = "%B %e, %Y";
 
 mod imp {
@@ -22,6 +21,8 @@ mod imp {
         pub clear_button: TemplateChild<gtk::Button>,
         #[property(get, set)]
         pub clear_option: Cell<bool>,
+        #[property(get, set)]
+        pub skip: Cell<bool>,
     }
 
     #[glib::object_subclass]
@@ -88,11 +89,18 @@ impl DateRow {
 
     pub fn set_datetime(&self, datetime: &glib::DateTime) {
         let imp = self.imp();
+        self.set_skip(true);
         imp.calendar.set_year(datetime.year());
         imp.calendar.set_month(datetime.month() - 1);
         imp.calendar.set_day(datetime.day_of_month());
+        self.set_skip(false);
         self.refresh_row(datetime);
         self.show_clear_button();
+    }
+
+    pub fn set_datetime_from_unix(&self, unix: i64) {
+        let datetime = glib::DateTime::from_unix_local(unix).unwrap();
+        self.set_datetime(&datetime);
     }
 
     pub fn calculate_datetime(&self) -> glib::DateTime {
@@ -143,6 +151,8 @@ impl DateRow {
         self.show_clear_button();
         let datetime = self.calculate_datetime();
         self.refresh_row(&datetime);
-        self.emit_by_name::<()>("date-changed", &[&datetime]);
+        if !self.skip() {
+            self.emit_by_name::<()>("date-changed", &[&datetime]);
+        }
     }
 }

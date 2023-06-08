@@ -3,40 +3,12 @@
 <interface>
   <requires lib="gtk" version="4.0" />
   <requires lib="Adw" version="1.0" />
-  <template class="RecordRow" parent="AdwExpanderRow">
-    <child>
-      <object class="DateRow" id="start_date_row">
-        <property name="title" translatable="yes">start date</property>
-        <signal name="date-changed" handler="handle_start_date_changed"
-          swapped="true" />
-      </object>
-    </child>
-    <child>
-      <object class="TimeRow" id="start_time_row">
-        <property name="title" translatable="yes">start time</property>
-        <signal name="time-changed" handler="handle_start_time_changed" swapped="true" />
-      </object>
-    </child>
-    <child>
-      <object class="TimeRow" id="duration_row">
-        <property name="title" translatable="yes">duration</property>
-        <signal name="time-changed" handler="handle_duration_time_changed" swapped="true" />
-      </object>
-    </child>
-    <child>
-      <object class="AdwActionRow">
-        <property name="title" translatable="yes">delete</property>
-        <property name="activatable-widget">delete_button</property>
-        <child type="suffix">
-          <object class="GtkButton" id="delete_button">
-            <property name="valign">center</property>
-            <property name="icon-name">user-trash-symbolic</property>
-            <signal name="clicked" handler="handle_delete_button_clicked" swapped="true" />
-            <style>
-              <class name="flat" />
-            </style>
-          </object>
-        </child>
+  <template class="RecordRow" parent="AdwActionRow">
+    <property name="activatable-widget">icon</property>
+    <signal name="activated" handler="handle_activated" />
+    <child type="suffix">
+      <object class="GtkImage" id="icon">
+        <property name="icon-name">preferences-system-time-symbolic</property>
       </object>
     </child>
   </template>

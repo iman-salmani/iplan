@@ -58,7 +58,7 @@
                     </child>
                   </object>
                 </child><!-- End DateTime Group -->
-                <child>
+                <child><!-- Delete Group -->
                   <object class="AdwPreferencesGroup" id="delete_group">
                     <property name="visible">false</property>
                     <child>
@@ -78,7 +78,7 @@
                       </object>
                     </child>
                   </object>
-                </child>
+                </child><!-- End Delete Group -->
               </object>
             </child>
           </object>

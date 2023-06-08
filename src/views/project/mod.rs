@@ -19,8 +19,8 @@ pub use project_done_tasks_window::ProjectDoneTasksWindow;
 mod record_row;
 pub use record_row::RecordRow;
 
-mod record_create_window;
-pub use record_create_window::RecordCreateWindow;
+mod record_window;
+pub use record_window::RecordWindow;
 
 mod task_window;
 pub use task_window::TaskWindow;

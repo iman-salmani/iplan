@@ -3,7 +3,7 @@
 <interface>
   <requires lib="gtk" version="4.0" />
   <requires lib="Adw" version="1.0" />
-  <template class="RecordCreateWindow" parent="GtkWindow">
+  <template class="RecordWindow" parent="GtkWindow">
     <property name="width-request">480</property>
     <property name="height-request">480</property>
     <property name="modal">true</property>
@@ -78,8 +78,7 @@
                       </object>
                     </child>
                   </object>
-                </child>
-                <!-- End Ends Group -->
+                </child><!-- End Ends Group -->
                 <child><!-- Duration Group -->
                   <object class="AdwPreferencesGroup">
                     <child>
@@ -90,8 +89,24 @@
                       </object>
                     </child>
                   </object>
-                </child>
-                <!-- End Duration Group -->
+                </child><!-- End Duration Group -->
+                <child><!-- Delete Group -->
+                  <object class="AdwPreferencesGroup" id="delete_group">
+                    <property name="visible">false</property>
+                    <child>
+                      <object class="AdwActionRow">
+                        <property name="title" translatable="yes">delete</property>
+                        <property name="activatable-widget">delete_icon</property>
+                        <signal name="activated" handler="handle_delete_activated" swapped="true" />
+                        <child type="suffix">
+                          <object class="GtkImage" id="delete_icon">
+                            <property name="icon-name">user-trash-symbolic</property>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                  </object>
+                </child><!-- End Delete Group -->
               </object>
             </child>
           </object>
