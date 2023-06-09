@@ -123,7 +123,7 @@ impl TaskPage {
             imp.date_row.set_datetime_from_unix(date);
         }
 
-        let reminders = read_reminders(task.id()).expect("Failed to read subtasks");
+        let reminders = read_reminders(task.id()).expect("Failed to read reminders");
         for reminder in reminders {
             let row = ReminderRow::new(reminder);
             imp.reminders_expander_row.add_row(&row);
