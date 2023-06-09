@@ -5,7 +5,7 @@
   <requires lib="Adw" version="1.0" />
   <template class="TaskWindow" parent="GtkWindow">
     <property name="width-request">480</property>
-    <property name="height-request">480</property>
+    <property name="height-request">600</property>
     <property name="modal">true</property>
     <property name="destroy-with-parent">true</property>
     <property name="titlebar">
