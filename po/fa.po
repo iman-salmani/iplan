@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: iplan\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-06-09 20:19+0330\n"
+"POT-Creation-Date: 2023-06-09 21:27+0330\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Iman Salmani <contact.imansalmani@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -34,17 +34,17 @@ msgstr ""
 "شخصی یا شغل خود را سازماندهی کنند."
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:10
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:97
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:116
 msgid "Features:"
 msgstr "ویژگی ها:"
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:12
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:99
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:118
 msgid "Grouping tasks with project and list"
 msgstr "گروه بندی وظایف با پروژه و لیست"
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:13
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:100
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:119
 msgid "Timer for tasks"
 msgstr "تایمر برای وظایف"
 
@@ -54,100 +54,136 @@ msgid "Subtasks"
 msgstr "وظایف فرعی"
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:15
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:101
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:68
+msgid "Calendar for Exploring tasks by date"
+msgstr "تقویم برای کاوش وظایف بر اساس تاریخ"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:16
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:120
 msgid "Global search"
 msgstr "جستجوی سراسری"
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:16
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:102
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:17
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:121
 msgid "Arranging projects, lists, and tasks by drag and drop"
 msgstr "مرتب سازی پروژه ها، فهرست ها و وظایف با کشیدن و رها کردن"
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:21
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:22
 msgid "The IPlan main window"
 msgstr "پنجره ی آیپلن"
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:25
-msgid "The IPlan main window (dark mode)"
-msgstr "پنجره ی آیپلن (حالت تیره)"
-
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:29
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:26
 msgid "Task window"
 msgstr "پنجره وظیفه"
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:33
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:30 src/ui/window.ui:49
+#: src/ui/window.ui:106
+msgid "Calendar"
+msgstr "تقویم"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:34
+msgid "The IPlan main window (dark mode)"
+msgstr "پنجره ی آیپلن (حالت تیره)"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:38
 msgid "The IPlan main window (small size)"
 msgstr "پنجره ی آیپلن (سایز کوچک)"
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:40
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:45
 msgid "Iman Salmani"
 msgstr "ایمان سلمانی"
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:60
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:65
+msgid "New features and updates"
+msgstr "ویژگی ها و به روز رسانی های جدید"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:67
+msgid "Backing up system"
+msgstr "پشتیبان گیری از سیستم"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:69
+msgid ""
+"Tasks can have date and reminders (Application will remain in background for "
+"handling reminders)"
+msgstr "وظایف می توانند تاریخ و یادآوری داشته باشند (برنامه برای مدیریت یادآوری ها در پس زمینه باقی می ماند)"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:70
+msgid "When a task doesn't have record, Timer button will move to options"
+msgstr "هنگامی که یک کار سابقه نداشته باشد، دکمه تایمر به گزینه ها منتقل می شود"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:71
+msgid "Record edit window"
+msgstr "پنجره ویرایش سوابق"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:72
+msgid "Now users able to edit record duration by changing start time"
+msgstr "اکنون کاربران می توانند مدت زمان سوابق را با تغییر زمان شروع ویرایش کنند"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:73
+msgid "Bug fixes, and UI improvements"
+msgstr "رفع اشکال و بهبود رابط کاربری"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:79
 msgid "Bug fix"
 msgstr "رفع اشکال"
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:65
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:84
 msgid "Code refactoring, and UI improvements"
 msgstr "بازسازی کد و بهبود رابط کاربری"
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:67
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:86
 msgid "New widgets for selecting Date and Time"
 msgstr "ویجت های جدید برای انتخاب تاریخ و زمان"
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:68
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:87
 msgid "Changing duration of the new record by setting end time"
 msgstr "تغییر مدت زمان رکورد جدید با تنظیم زمان پایان"
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:69
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:88
 msgid "Add Brazilian Portuguese Translation thanks to Fúlvio Leo"
 msgstr "اضافه کردن ترجمه پرتغالی برزیل به لطف Fúlvio Leo"
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:75
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:94
 msgid "Subtasks, Bug fixes, and UI improvements"
 msgstr "وظایف فرعی، رفع اشکال و بهبود رابط کاربری"
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:77
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:96
 msgid "Task Window which contains task info, subtasks, and records"
 msgstr "پنجره وظیفه که حاوی اطلاعات کار، وظایف فرعی و سوابق است"
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:78
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:97
 msgid "Translation to Persian and Turkish languages thanks to Sabri Ünal"
 msgstr "ترجمه به زبان های فارسی و ترکی با تشکر از صبری اونال"
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:79
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:98
 msgid "New toast message for moving back task from the tasks done list"
 msgstr "پیام نان تست جدید برای برگرداندن کار از لیست کارهای انجام شده"
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:80
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:99
 msgid "Users are now able to pick emojis for their projects in the edit window"
 msgstr ""
 "کاربران اکنون می‌توانند شکلک‌هایی را برای پروژه‌های خود در پنجره ویرایش انتخاب "
 "کنند"
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:81
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:100
 msgid "Projects and Tasks now can have descriptions"
 msgstr "پروژه ها و وظایف اکنون می توانند شرح داشته باشند"
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:87
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:106
 msgid "Performance improvement and records window"
 msgstr "بهبود عملکرد و پنجره سوابق"
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:89
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:108
 msgid "Lazy loading for project tasks and stat"
 msgstr "پیاده سازی Lazy loading برای وظایف پروژه و آمار"
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:90
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:109
 msgid "Records window for creating, editing, and deleting records"
 msgstr "پنجره رکوردها برای ایجاد، ویرایش و حذف رکوردها"
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:96
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:115
 msgid "First stable release."
 msgstr "اولین انتشار پایدار."
-
-#: src/ui/window.ui:49 src/ui/window.ui:106
-msgid "Calendar"
-msgstr "تقویم"
 
 #: src/ui/window.ui:139
 msgid "Today"
@@ -471,12 +507,3 @@ msgstr "پروژه"
 #: src/views/search/search_result.rs:60
 msgid "Task"
 msgstr "وظیفه"
-
-#~ msgid "start date"
-#~ msgstr "تاریخ شروع"
-
-#~ msgid "start time"
-#~ msgstr "زمان شروع"
-
-#~ msgid "duration"
-#~ msgstr "مدت"

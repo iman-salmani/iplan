@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: iplan\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-06-09 20:19+0330\n"
+"POT-Creation-Date: 2023-06-09 21:27+0330\n"
 "PO-Revision-Date: 2023-05-27 15:10-0300\n"
 "Last-Translator: Fúlvio Leo <fulviokaldas@outlook.com>\n"
 "Language: pt_BR\n"
@@ -35,17 +35,17 @@ msgstr ""
 "sua vida pessoal ou trabalho"
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:10
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:97
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:116
 msgid "Features:"
 msgstr "Funcionalidades"
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:12
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:99
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:118
 msgid "Grouping tasks with project and list"
 msgstr "Agrupamento de tarefas em projetos e listas"
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:13
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:100
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:119
 msgid "Timer for tasks"
 msgstr "Temporizador para tarefas"
 
@@ -55,104 +55,142 @@ msgid "Subtasks"
 msgstr "Subtarefas"
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:15
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:101
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:68
+msgid "Calendar for Exploring tasks by date"
+msgstr ""
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:16
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:120
 msgid "Global search"
 msgstr "Busca global"
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:16
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:102
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:17
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:121
 msgid "Arranging projects, lists, and tasks by drag and drop"
 msgstr "Organização de projetos, listas e tarefas arrastando e soltando"
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:21
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:22
 msgid "The IPlan main window"
 msgstr "A janela principal do IPlan"
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:25
-msgid "The IPlan main window (dark mode)"
-msgstr "A janela principal do IPlan (modo escuro)"
-
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:29
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:26
 msgid "Task window"
 msgstr "Janela de tarefas"
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:33
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:30 src/ui/window.ui:49
+#: src/ui/window.ui:106
+msgid "Calendar"
+msgstr ""
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:34
+msgid "The IPlan main window (dark mode)"
+msgstr "A janela principal do IPlan (modo escuro)"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:38
 msgid "The IPlan main window (small size)"
 msgstr "A janela principal do IPlan (tamanho pequeno)"
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:40
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:45
 msgid "Iman Salmani"
 msgstr "Iman Salmani"
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:60
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:65
+#, fuzzy
+msgid "New features and updates"
+msgstr "Funcionalidades"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:67
+msgid "Backing up system"
+msgstr ""
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:69
+msgid ""
+"Tasks can have date and reminders (Application will remain in background for "
+"handling reminders)"
+msgstr ""
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:70
+msgid "When a task doesn't have record, Timer button will move to options"
+msgstr ""
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:71
+msgid "Record edit window"
+msgstr ""
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:72
+msgid "Now users able to edit record duration by changing start time"
+msgstr ""
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:73
+#, fuzzy
+msgid "Bug fixes, and UI improvements"
+msgstr "Subtarefas, correções de bugs e melhorias na interface de usuário"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:79
 msgid "Bug fix"
 msgstr ""
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:65
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:84
 #, fuzzy
 msgid "Code refactoring, and UI improvements"
 msgstr "Subtarefas, correções de bugs e melhorias na interface de usuário"
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:67
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:86
 msgid "New widgets for selecting Date and Time"
 msgstr ""
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:68
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:87
 msgid "Changing duration of the new record by setting end time"
 msgstr ""
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:69
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:88
 msgid "Add Brazilian Portuguese Translation thanks to Fúlvio Leo"
 msgstr ""
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:75
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:94
 msgid "Subtasks, Bug fixes, and UI improvements"
 msgstr "Subtarefas, correções de bugs e melhorias na interface de usuário"
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:77
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:96
 msgid "Task Window which contains task info, subtasks, and records"
 msgstr ""
 "Janela de Tarefas que contém informações de tarefas, subtarefas e registros"
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:78
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:97
 msgid "Translation to Persian and Turkish languages thanks to Sabri Ünal"
 msgstr "Tradução para os idiomas persa e turco graças a Sabri Ünal"
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:79
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:98
 msgid "New toast message for moving back task from the tasks done list"
 msgstr ""
 "Nova mensagem toast para mover de volta tarefas da lista de tarefas "
 "concluídas"
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:80
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:99
 msgid "Users are now able to pick emojis for their projects in the edit window"
 msgstr ""
 "Usuários agora conseguem escolher emojis para os seus projetos na janela de "
 "edição"
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:81
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:100
 msgid "Projects and Tasks now can have descriptions"
 msgstr "Projetos e Tarefas agora podem ter descrições"
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:87
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:106
 msgid "Performance improvement and records window"
 msgstr "Janela de melhoria de desempenho e registros"
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:89
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:108
 msgid "Lazy loading for project tasks and stat"
 msgstr "Carregamento lento para tarefas e estatísticas do projeto"
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:90
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:109
 msgid "Records window for creating, editing, and deleting records"
 msgstr "Janela de registros para criar, editar e excluir registros"
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:96
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:115
 msgid "First stable release."
 msgstr "Primeira versão estável"
-
-#: src/ui/window.ui:49 src/ui/window.ui:106
-msgid "Calendar"
-msgstr ""
 
 #: src/ui/window.ui:139
 msgid "Today"

@@ -12,6 +12,7 @@
       <li>Grouping tasks with project and list</li>
       <li>Timer for tasks</li>
       <li>Subtasks</li>
+      <li>Calendar for Exploring tasks by date</li>
       <li>Global search</li>
       <li>Arranging projects, lists, and tasks by drag and drop</li>
     </ul>
@@ -19,19 +20,23 @@
   <screenshots>
     <screenshot type="default">
       <caption>The IPlan main window</caption>
-      <image type="source" width="1600" height="900">https://github.com/iman-salmani/iplan/blob/aef51101e346cf9a0d61c27c5a2d6f2106b7beaf/data/screenshots/window.png?raw=true</image>
-    </screenshot>
-    <screenshot>
-      <caption>The IPlan main window (dark mode)</caption>
-      <image type="source" width="1600" height="900">https://github.com/iman-salmani/iplan/blob/aef51101e346cf9a0d61c27c5a2d6f2106b7beaf/data/screenshots/window-dark.png?raw=true</image>
+      <image type="source" width="1600" height="900">https://github.com/iman-salmani/iplan/blob/332895c3c492a1840ac0a694e1ae77ba20019560/data/screenshots/window.png?raw=true</image>
     </screenshot>
     <screenshot>
       <caption>Task window</caption>
-      <image type="source" width="900" height="900">https://github.com/iman-salmani/iplan/blob/aef51101e346cf9a0d61c27c5a2d6f2106b7beaf/data/screenshots/task-window.png?raw=true</image>
+      <image type="source" width="900" height="900">https://github.com/iman-salmani/iplan/blob/332895c3c492a1840ac0a694e1ae77ba20019560/data/screenshots/task-window.png?raw=true</image>
+    </screenshot>
+    <screenshot>
+      <caption>Calendar</caption>
+      <image type="source" width="1600" height="900">https://github.com/iman-salmani/iplan/blob/332895c3c492a1840ac0a694e1ae77ba20019560/data/screenshots/calendar.png?raw=true</image>
+    </screenshot>
+    <screenshot>
+      <caption>The IPlan main window (dark mode)</caption>
+      <image type="source" width="1600" height="900">https://github.com/iman-salmani/iplan/blob/332895c3c492a1840ac0a694e1ae77ba20019560/data/screenshots/window-dark.png?raw=true</image>
     </screenshot>
     <screenshot>
       <caption>The IPlan main window (small size)</caption>
-      <image type="source" width="900" height="900">https://github.com/iman-salmani/iplan/blob/aef51101e346cf9a0d61c27c5a2d6f2106b7beaf/data/screenshots/window-small.png?raw=true</image>
+      <image type="source" width="900" height="900">https://github.com/iman-salmani/iplan/blob/332895c3c492a1840ac0a694e1ae77ba20019560/data/screenshots/window-small.png?raw=true</image>
     </screenshot>
   </screenshots>
   <launchable type="desktop-id">ir.imansalmani.IPlan.desktop</launchable>
@@ -55,6 +60,20 @@
   </categories>
   <content_rating type="oars-1.1" />
   <releases>
+    <release version="1.4.0" date="2023-06-09">
+      <description>
+        <p>New features and updates</p>
+        <ul>
+          <li>Backing up system</li>
+          <li>Calendar for Exploring tasks by date</li>
+          <li>Tasks can have date and reminders (Application will remain in background for handling reminders)</li>
+          <li>When a task doesn't have record, Timer button will move to options</li>
+          <li>Record edit window</li>
+          <li>Now users able to edit record duration by changing start time</li>
+          <li>Bug fixes, and UI improvements</li>
+        </ul>
+      </description>
+    </release>
     <release version="1.3.1" date="2023-06-03">
       <description>
         <p>Bug fix</p>
