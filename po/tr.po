@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ir.imansalmani.IPlan\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-06-09 19:49+0330\n"
+"POT-Creation-Date: 2023-06-09 20:19+0330\n"
 "PO-Revision-Date: 2023-06-03 10:00+0300\n"
 "Last-Translator: Sabri Ünal <libreajans@gmail.com>\n"
 "Language-Team: Türkçe <takim@gnome.org.tr>\n"
@@ -272,7 +272,7 @@ msgstr "Açıklama"
 msgid "Archive"
 msgstr "Arşivle"
 
-#: src/ui/project/project_edit_window.ui:118 src/ui/project/task_row.ui:128
+#: src/ui/project/project_edit_window.ui:118 src/ui/project/task_row.ui:124
 msgid "Delete"
 msgstr "Sil"
 
@@ -365,7 +365,7 @@ msgstr "Kayıt Bulunamadı"
 msgid "Use add button up there or start a timer"
 msgstr "Yukarıdaki ekle düğmesini kullanın ya da bir zamanlayıcı başlatın"
 
-#: src/ui/project/task_row.ui:110
+#: src/ui/project/task_row.ui:109 src/views/project/task_row.rs:157
 #, fuzzy
 msgid "Timer"
 msgstr "Saat"
@@ -400,11 +400,11 @@ msgstr "Sabri Ünal <libreajans@gmail.com>"
 msgid "IPlan needs to run in the background to send reminders"
 msgstr ""
 
-#: src/views/window.rs:102 src/views/window.rs:250
+#: src/views/window.rs:105 src/views/window.rs:253
 msgid "Personal"
 msgstr "Kişisel"
 
-#: src/views/window.rs:103 src/views/window.rs:251
+#: src/views/window.rs:106 src/views/window.rs:254
 #: src/views/sidebar/sidebar_projects.rs:212
 msgid "Tasks"
 msgstr "Görevler"
@@ -437,7 +437,7 @@ msgstr "Proje ve görevleri kalıcı olarak kaybedilecek."
 msgid "\"{}\" moved to the done tasks list"
 msgstr "\"{}\" tamamlanmış görevler listesine taşındı"
 
-#: src/views/project/project_list.rs:77 src/views/project/task_row.rs:320
+#: src/views/project/project_list.rs:77 src/views/project/task_row.rs:321
 msgid "Undo"
 msgstr "Geri Al"
 
@@ -471,7 +471,7 @@ msgstr "şu zamana kadar"
 msgid "Time can't be in the past"
 msgstr "Günlük harcanan zaman"
 
-#: src/views/project/task_row.rs:319
+#: src/views/project/task_row.rs:320
 msgid "\"{}\" is going to delete"
 msgstr "“{}” silinecek"
 

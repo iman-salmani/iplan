@@ -87,6 +87,9 @@ mod imp {
             });
             klass.install_action("project.update", None, move |win, _, _| {
                 let imp = win.imp();
+                if imp.calendar.is_visible() {
+                    return;
+                }
                 let project = win.project();
                 imp.project_header.open_project(&project);
                 imp.sidebar_projects.update_project(&project);

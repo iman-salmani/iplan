@@ -61,8 +61,7 @@
             <signal name="activate" handler="handle_name_entry_activate" swapped="true" />
             <signal name="icon-press" handler="handle_name_entry_icon_press" swapped="true" />
           </object>
-        </child>
-        <!-- End Name Entry -->
+        </child><!-- End Name Entry -->
         <child>
           <object class="GtkSeparator">
             <property name="hexpand">true</property>
@@ -113,9 +112,6 @@
             </child>
           </object>
         </child><!-- End Timer -->
-        <child>
-          <object class="GtkSeparator"></object>
-        </child>
         <child><!-- Delete Task -->
           <object class="GtkButton">
             <signal name="clicked" handler="handle_delete_button_clicked" swapped="true" />

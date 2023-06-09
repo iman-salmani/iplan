@@ -153,9 +153,12 @@ impl TaskRow {
             self.start_timer(record);
         } else {
             let duration = task.duration();
-            if duration != 0 {
+            if duration == 0 {
+                imp.timer_button_content.set_label(&gettext("Timer"));
+            } else {
                 imp.timer_button_content
                     .set_label(&Record::duration_display(duration));
+                self.move_timer_button(true);
             }
         }
     }
@@ -187,7 +190,6 @@ impl TaskRow {
                 update_task(&task).expect("Failed to update task");
                 if active {
                     imp.timer_status.set(TimerStatus::Off);
-                    obj.move_timer_button(false);
                 }
                 obj.activate_action("task.check", Some(&obj.index().to_variant()))
                     .expect("Failed to activate task.check action");
@@ -236,8 +238,8 @@ impl TaskRow {
             button.remove_css_class("flat");
             button.insert_before(row_box, Some(options_button));
         } else {
-            button.unparent();
             button.add_css_class("flat");
+            button.unparent();
             options_box.prepend(button);
         }
     }
@@ -302,7 +304,6 @@ impl TaskRow {
         if self.imp().timer_status.get() != TimerStatus::On {
             self.start_timer(record);
         } else {
-            self.move_timer_button(false);
             self.imp().timer_status.set(TimerStatus::Off);
         }
     }
