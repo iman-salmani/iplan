@@ -29,6 +29,7 @@ use crate::views::project::{
     ProjectDoneTasksWindow, ProjectEditWindow, ProjectHeader, ProjectLayout, ProjectLists,
 };
 use crate::views::sidebar::SidebarProjects;
+use crate::views::Calendar;
 
 mod imp {
     use super::*;
@@ -48,6 +49,10 @@ mod imp {
         pub toast_overlay: TemplateChild<adw::ToastOverlay>,
         #[template_child]
         pub project_lists: TemplateChild<ProjectLists>,
+        #[template_child]
+        pub calendar: TemplateChild<Calendar>,
+        #[template_child]
+        pub calendar_button: TemplateChild<gtk::Button>,
     }
 
     #[glib::object_subclass]
@@ -66,6 +71,7 @@ mod imp {
                 imp.project_lists.open_project(project.id());
                 imp.project_lists.select_task(None);
                 imp.sidebar_projects.check_archive_hidden();
+                win.close_calendar();
             });
             klass.install_action("project.new", None, move |win, _, _| {
                 let imp = win.imp();
@@ -114,6 +120,7 @@ mod imp {
                 imp.project_lists.select_task(None);
                 imp.sidebar_projects.select_active_project();
                 imp.sidebar_projects.check_archive_hidden();
+                win.close_calendar();
             });
             klass.install_action("search.task", Some("(bx)"), move |win, _, value| {
                 let imp = win.imp();
@@ -139,6 +146,7 @@ mod imp {
                             }
                     ),
                 );
+                win.close_calendar();
             });
             klass.install_action("search.task-done", Some("(bxx)"), move |win, _, value| {
                 let imp = win.imp();
@@ -168,6 +176,7 @@ mod imp {
                             }
                     ),
                 );
+                win.close_calendar();
             });
         }
 
@@ -271,17 +280,17 @@ impl IPlanWindow {
             gtk::style_context_add_provider_for_display(&display, &provider, 400)
         }
 
-        // let notification = gio::Notification::new("test notification");
-        // window
-        //     .application()
-        //     .unwrap()
-        //     .send_notification(Some("notif-id"), &notification);
-
         window
     }
 
     pub fn project(&self) -> Project {
         self.property("project")
+    }
+
+    fn close_calendar(&self) {
+        let imp = self.imp();
+        imp.calendar.set_visible(false);
+        imp.calendar_button.add_css_class("flat");
     }
 
     #[template_callback]
@@ -313,5 +322,26 @@ impl IPlanWindow {
             }
             None => button.set_icon_name("list-symbolic"),
         }
+    }
+
+    #[template_callback]
+    fn handle_calendar_button_clicked(&self, button: gtk::Button) {
+        let imp = self.imp();
+        button.remove_css_class("flat");
+        imp.project.take();
+        imp.calendar.set_visible(true);
+        if imp.calendar.imp().stack.visible_child_name().is_none() {
+            imp.calendar.open_today();
+        } else {
+            imp.calendar.refresh();
+        }
+        let projects_box: &gtk::ListBox = imp.sidebar_projects.imp().projects_box.as_ref();
+        projects_box.unselect_row(&projects_box.selected_row().unwrap());
+    }
+
+    #[template_callback]
+    fn handle_calendar_today_clicked(&self, _: gtk::Button) {
+        let imp = self.imp();
+        imp.calendar.open_today();
     }
 }

@@ -2,6 +2,7 @@ data/ir.imansalmani.IPlan.desktop.in
 data/ir.imansalmani.IPlan.gschema.xml
 data/ir.imansalmani.IPlan.metainfo.xml.in
 src/ui/window.ui
+src/ui/calendar_page.ui
 src/ui/shortcuts_window.ui
 src/ui/backup_window.ui
 src/ui/delete_dialog.ui

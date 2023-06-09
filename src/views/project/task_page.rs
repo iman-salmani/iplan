@@ -119,7 +119,7 @@ impl TaskPage {
 
         imp.date_row.set_clear_option(true);
         let date = task.date();
-        if date == 0 {
+        if date != 0 {
             imp.date_row.set_datetime_from_unix(date);
         }
 
@@ -150,7 +150,7 @@ impl TaskPage {
                 !row.task().suspended()
         }));
 
-        let tasks = read_tasks(task.project(), None, None, Some(task.id()))
+        let tasks = read_tasks(Some(task.project()), None, None, Some(task.id()), None)
             .expect("Failed to read subtasks");
         for task in tasks {
             let row = TaskRow::new(task);

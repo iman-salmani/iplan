@@ -70,7 +70,7 @@ impl Task {
         for record in read_records(self.id(), false, None, None).expect("Failed to read records") {
             total += record.duration();
         }
-        for subtask in read_tasks(self.project(), None, None, Some(self.id()))
+        for subtask in read_tasks(Some(self.project()), None, None, Some(self.id()), None)
             .expect("Failed to read subtasks")
         {
             total += subtask.duration();

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE interface SYSTEM "schema.dtd">
+<interface>
+  <requires lib="gtk" version="4.0" />
+  <requires lib="Adw" version="1.0" />
+  <template class="CalendarPage" parent="GtkBox">
+    <property name="orientation">vertical</property>
+    <property name="width-request">480</property>
+    <child><!-- Scrolled Window - Its for horizontal layout-->
+      <object class="GtkScrolledWindow" id="scrolled_window">
+        <property name="vexpand">true</property>
+        <child><!-- Task List -->
+          <object class="GtkListBox" id="tasks_box">
+            <property name="valign">start</property>
+            <property name="selection_mode">none</property>
+            <property name="margin-top">3</property>
+            <property name="margin-bottom">9</property>
+            <property name="margin-start">15</property>
+            <property name="margin-end">15</property>
+            <signal name="row-activated" handler="handle_tasks_box_row_activated" swapped="true" />
+            <style>
+              <class name="boxed-list" />
+            </style>
+            <child type="placeholder">
+              <object class="AdwStatusPage">
+                <property name="icon-name">view-list-symbolic</property>
+                <property name="height-request">320</property>
+                <property name="title" translatable="yes">no tasks found</property>
+              </object>
+            </child>
+          </object>
+        </child><!-- End Task List -->
+      </object>
+    </child><!-- Scrolled Window -->
+  </template>
+</interface>

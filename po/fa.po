@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: iplan\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-06-08 18:39+0330\n"
+"POT-Creation-Date: 2023-06-09 19:49+0330\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Iman Salmani <contact.imansalmani@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #: data/ir.imansalmani.IPlan.desktop.in:3
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:6 src/ui/window.ui:29
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:6 src/ui/window.ui:28
 msgid "IPlan"
 msgstr "آیپلن"
 
@@ -145,29 +145,41 @@ msgstr "پنجره رکوردها برای ایجاد، ویرایش و حذف �
 msgid "First stable release."
 msgstr "اولین انتشار پایدار."
 
-#: src/ui/window.ui:112
+#: src/ui/window.ui:49 src/ui/window.ui:106
+msgid "Calendar"
+msgstr "تقویم"
+
+#: src/ui/window.ui:139
+msgid "Today"
+msgstr "امروز"
+
+#: src/ui/window.ui:177
 msgid "_New List"
 msgstr "_فهرست جدید"
 
-#: src/ui/window.ui:116
+#: src/ui/window.ui:181
 msgid "_Edit Project"
 msgstr "_ویرایش پروژه"
 
-#: src/ui/window.ui:126
+#: src/ui/window.ui:191
 msgid "_Backup"
 msgstr "_پشتیبان گیری"
 
-#: src/ui/window.ui:130
+#: src/ui/window.ui:195
 msgid "_Keyboard Shortcuts"
 msgstr "_میانبرهای صفحه کلید"
 
-#: src/ui/window.ui:134
+#: src/ui/window.ui:199
 msgid "_About IPlan"
 msgstr "_درباره آیپلن"
 
-#: src/ui/window.ui:140
+#: src/ui/window.ui:205
 msgid "_Quit"
 msgstr "_خروج"
+
+#: src/ui/calendar_page.ui:28 src/ui/project/project_list.ui:81
+msgid "no tasks found"
+msgstr "هیچ کاری پیدا نشد"
 
 #: src/ui/shortcuts_window.ui:13
 msgctxt "shortcut window"
@@ -203,7 +215,7 @@ msgstr "جستجو"
 msgid "Backup"
 msgstr "پشتیبان گیری"
 
-#: src/ui/backup_window.ui:35 src/views/backup_window.rs:60
+#: src/ui/backup_window.ui:35 src/views/backup_window.rs:62
 msgid "Export"
 msgstr "صدور"
 
@@ -215,7 +227,7 @@ msgstr "مسیر پوشه داده"
 msgid "Add this path to your backup application"
 msgstr "این مسیر را به برنامه پشتیبان خود اضافه کنید"
 
-#: src/ui/backup_window.ui:68 src/views/backup_window.rs:96
+#: src/ui/backup_window.ui:68 src/views/backup_window.rs:98
 msgid "Import"
 msgstr "ورود نسخه پشتیبان"
 
@@ -259,13 +271,9 @@ msgstr "بایگانی"
 msgid "Delete"
 msgstr "حذف"
 
-#: src/ui/project/project_header.ui:95
+#: src/ui/project/project_header.ui:92
 msgid "Time spent per day"
 msgstr "زمان صرف شده در روز"
-
-#: src/ui/project/project_list.ui:81
-msgid "no tasks found"
-msgstr "هیچ کاری پیدا نشد"
 
 #: src/ui/project/project_list.ui:82 src/ui/project/task_page.ui:146
 msgid "Use add button up there"
@@ -382,24 +390,24 @@ msgstr "ایمان سلمانی <contact.imansalmani@gmail.com>"
 msgid "IPlan needs to run in the background to send reminders"
 msgstr "برای ارسال یادآوری، آپلن باید در پس‌زمینه اجرا شود"
 
-#: src/views/window.rs:96 src/views/window.rs:241
+#: src/views/window.rs:102 src/views/window.rs:250
 msgid "Personal"
 msgstr "شخصی"
 
-#: src/views/window.rs:97 src/views/window.rs:242
+#: src/views/window.rs:103 src/views/window.rs:251
 #: src/views/sidebar/sidebar_projects.rs:212
 msgid "Tasks"
 msgstr "وظایف"
 
-#: src/views/backup_window.rs:89
+#: src/views/backup_window.rs:91
 msgid "Path copied!"
 msgstr "مسیر کپی شد!"
 
-#: src/views/backup_window.rs:109
+#: src/views/backup_window.rs:111
 msgid "Error while caching previous data"
 msgstr "خطا هنگام ذخیره داده های قبلی"
 
-#: src/views/backup_window.rs:112
+#: src/views/backup_window.rs:114
 msgid "Error while importing data"
 msgstr "خطا هنگام وارد کردن داده ها"
 
@@ -423,11 +431,11 @@ msgstr "\"{}\" به فهرست کارهای انجام شده منتقل شد"
 msgid "Undo"
 msgstr "برگرد"
 
-#: src/views/project/project_list.rs:367
+#: src/views/project/project_list.rs:373
 msgid "Delete \"{}\" list?"
 msgstr "پروژه \"{}\" لیست شود؟"
 
-#: src/views/project/project_list.rs:369
+#: src/views/project/project_list.rs:375
 msgid "The list and its tasks will be permanently lost."
 msgstr "فهرست و وظایف آن برای همیشه از بین خواهد رفت."
 

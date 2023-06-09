@@ -121,7 +121,7 @@ impl ProjectHeader {
             let dates = &mut vec![];
             dates.push(now.to_unix());
             let tasks: Vec<crate::db::models::Task> =
-                read_tasks(project_id, None, None, None).expect("Failed to read tasks");
+                read_tasks(Some(project_id), None, None, None, None).expect("Failed to read tasks");
             for i in 0..7 {
                 let date = glib::DateTime::from_local(
                     now.year(),

@@ -6,6 +6,8 @@ use std::fs;
 use crate::db::check_database;
 use crate::IPlanApplication;
 
+use super::IPlanWindow;
+
 mod imp {
     use super::*;
 
@@ -113,7 +115,13 @@ impl BackupWindow {
                         toast_overlay.add_toast(toast);
                     } else {
                         check_database().expect("Database check has failed(after importing data)");
-                        obj.transient_for().unwrap().activate_action("project.open", None).expect("Failed to send project.open action");
+                        let iplan_window = obj.transient_for().and_downcast::<IPlanWindow>().unwrap();
+                        let calendar = iplan_window.imp().calendar.get();
+                        if calendar.is_visible() {
+                            calendar.refresh();
+                        } else {
+                            iplan_window.activate_action("project.open", None).expect("Failed to send project.open action");
+                        }
                     }
                 }
             }),

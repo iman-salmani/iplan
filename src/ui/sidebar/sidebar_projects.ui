@@ -12,7 +12,7 @@
         <child>
           <object class="GtkLabel">
             <property name="label" translatable="yes">Projects</property>
-            <property name="margin-start">6</property>
+            <property name="margin-start">9</property>
             <style>
               <class name="heading" />
             </style>
@@ -42,12 +42,11 @@
           </object>
         </child>
       </object>
-    </child>
-    <!-- End Projects Header -->
+    </child><!-- End Projects Header -->
     <child><!-- Projects List -->
       <object class="GtkListBox" id="projects_box">
-        <property name="margin-start">6</property>
-        <property name="margin-end">6</property>
+        <!-- <property name="margin-start">6</property> -->
+        <!-- <property name="margin-end">6</property> -->
         <property name="selection-mode">browse</property>
         <property name="activate-on-single-click">true</property>
         <signal name="row-activated" handler="handle_projects_box_row_activated" swapped="true" />

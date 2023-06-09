@@ -12,8 +12,7 @@
           bind-source="toggle_pane_button"
           bind-property="active"
           bind-flags="sync-create|bidirectional" />
-        <!-- Sidebar -->
-        <property name="flap">
+        <property name="flap"><!-- Sidebar -->
           <object class="GtkBox" id="sidebar">
             <property name="orientation">vertical</property>
             <property name="width-request">240</property>
@@ -35,72 +34,138 @@
               </object>
             </child>
             <child>
+              <object class="GtkButton" id="calendar_button">
+                <property name="margin-start">6</property>
+                <property name="margin-end">6</property>
+                <property name="margin-top">6</property>
+                <signal name="clicked" handler="handle_calendar_button_clicked" swapped="true" />
+                <style>
+                  <class name="flat" />
+                </style>
+                <child>
+                  <object class="AdwButtonContent">
+                    <property name="halign">start</property>
+                    <property name="icon-name">x-office-calendar-symbolic</property>
+                    <property name="label" translatable="yes">Calendar</property>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child>
               <object class="SidebarProjects" id="sidebar_projects" />
             </child>
           </object>
-        </property>
-        <!-- End Sidebar -->
+        </property><!-- End Sidebar -->
         <property name="separator">
           <object class="GtkSeparator" />
         </property>
-        <property name="content"><!-- Content -->
-          <object class="GtkBox">
-            <property name="orientation">vertical</property>
-            <child><!-- Header -->
-              <object class="AdwHeaderBar">
-                <property name="title-widget">
-                  <object class="GtkLabel"></object>
-                </property>
-                <!-- Toggle Pane Button -->
-                <child type="start">
-                  <object class="GtkToggleButton" id="toggle_pane_button">
-                    <property name="icon-name">sidebar-show-symbolic</property>
-                    <property name="active">True</property>
-                    <property name="visible"
-                      bind-source="flap"
-                      bind-property="folded"
-                      bind-flags="sync-create" />
-                  </object>
-                </child>
-                <!-- End Toggle Pane Button -->
-                <child>
-                  <object class="ProjectHeader" id="project_header" />
-                </child>
-                <!-- Primary Menu Button -->
-                <child type="end">
-                  <object class="GtkMenuButton">
-                    <property name="icon-name">open-menu-symbolic</property>
-                    <property name="menu-model">primary_menu_model</property>
-                    <property name="primary">true</property>
-                  </object>
-                </child>
-                <!-- End Primary Menu Button -->
-                <child type="end">
-                  <object class="GtkButton">
-                    <property name="icon-name">system-search-symbolic</property>
-                    <property name="action-name">app.search</property>
-                  </object>
-                </child>
-                <child type="end">
-                  <object class="GtkButton" id="project_layout_button">
-                    <property name="icon-name">list-symbolic</property>
-                    <signal name="clicked" handler="handle_project_layout_button_clicked"
-                      swapped="true" />
-                  </object>
-                </child>
-              </object>
-            </child>
-            <!-- End Header -->
+        <property name="content"><!-- Toast Overlay -->
+          <object class="AdwToastOverlay" id="toast_overlay">
             <child>
-              <object class="AdwToastOverlay" id="toast_overlay">
+              <object class="GtkBox">
+                <property name="orientation">vertical</property>
+                <child><!-- Header -->
+                  <object class="AdwHeaderBar">
+                    <property name="title-widget">
+                      <object class="GtkLabel"></object>
+                    </property>
+                    <child type="start"><!-- Toggle Pane Button -->
+                      <object class="GtkToggleButton" id="toggle_pane_button">
+                        <property name="icon-name">sidebar-show-symbolic</property>
+                        <property name="active">True</property>
+                        <property name="visible"
+                          bind-source="flap"
+                          bind-property="folded"
+                          bind-flags="sync-create" />
+                      </object>
+                    </child><!-- End Toggle Pane Button -->
+                    <child>
+                      <object class="ProjectHeader" id="project_header">
+                        <property name="visible"
+                          bind-source="calendar_header"
+                          bind-property="visible"
+                          bind-flags="sync-create|invert-boolean" />
+                      </object>
+                    </child>
+                    <child><!-- Calendar header -->
+                      <object class="GtkBox" id="calendar_header">
+                        <property name="visible"
+                          bind-source="calendar"
+                          bind-property="visible"
+                          bind-flags="sync-create" />
+                        <property name="margin-start">6</property>
+                        <property name="spacing">3</property>
+                        <property name="hexpand">true</property>
+                        <child>
+                          <object class="GtkImage">
+                            <property name="icon-name">x-office-calendar-symbolic</property>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkLabel">
+                            <property name="label" translatable="yes">Calendar</property>
+                            <style>
+                              <class name="heading" />
+                            </style>
+                          </object>
+                        </child>
+                      </object>
+                    </child><!-- End Calendar header -->
+                    <child type="end"><!-- Primary Menu Button -->
+                      <object class="GtkMenuButton">
+                        <property name="icon-name">open-menu-symbolic</property>
+                        <property name="menu-model">primary_menu_model</property>
+                        <property name="primary">true</property>
+                      </object>
+                    </child><!-- End Primary Menu Button -->
+                    <child type="end">
+                      <object class="GtkButton">
+                        <property name="icon-name">system-search-symbolic</property>
+                        <property name="action-name">app.search</property>
+                      </object>
+                    </child>
+                    <child type="end">
+                      <object class="GtkButton" id="project_layout_button">
+                        <property name="icon-name">list-symbolic</property>
+                        <property name="visible"
+                          bind-source="calendar_header"
+                          bind-property="visible"
+                          bind-flags="sync-create|invert-boolean" />
+                        <signal name="clicked" handler="handle_project_layout_button_clicked" swapped="true" />
+                      </object>
+                    </child>
+                    <child type="end"><!-- Calendar Today -->
+                      <object class="GtkButton">
+                        <property name="label" translatable="yes">Today</property>
+                        <property name="visible"
+                          bind-source="calendar_header"
+                          bind-property="visible"
+                          bind-flags="sync-create" />
+                        <signal name="clicked" handler="handle_calendar_today_clicked" swapped="true" />
+                        <style>
+                          <class name="flat" />
+                        </style>
+                      </object>
+                    </child><!-- End Calendar Today -->
+                  </object>
+                </child><!-- End Header -->
+                <child><!-- Project Lists -->
+                  <object class="ProjectLists" id="project_lists">
+                    <property name="visible"
+                      bind-source="calendar"
+                      bind-property="visible"
+                      bind-flags="sync-create|invert-boolean" />
+                  </object>
+                </child><!-- End Project Lists -->
                 <child>
-                  <object class="ProjectLists" id="project_lists" />
+                  <object class="Calendar" id="calendar">
+                    <property name="visible">false</property>
+                  </object>
                 </child>
               </object>
             </child>
           </object>
-        </property>
-        <!-- End Content -->
+        </property><!-- End Toast Overlay -->
       </object>
     </property>
     <!-- End Flap -->

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE interface SYSTEM "schema.dtd">
+<interface>
+  <requires lib="gtk" version="4.0" />
+  <requires lib="Adw" version="1.0" />
+  <template class="DayIndicator" parent="GtkButton">
+    <property name="hexpand">true</property>
+    <style>
+      <class name="flat" />
+    </style>
+    <child>
+      <object class="GtkBox">
+        <property name="orientation">vertical</property>
+        <child>
+          <object class="GtkLabel" id="month">
+            <style>
+              <class name="dim-label" />
+              <class name="caption" />
+            </style>
+          </object>
+        </child>
+        <child>
+          <object class="GtkLabel" id="day">
+            <property name="margin-top">3</property>
+            <property name="margin-top">3</property>
+            <property name="halign">center</property>
+            <style>
+              <class name="title-4" />
+            </style>
+          </object>
+        </child>
+        <child>
+          <object class="GtkLabel" id="weekday">
+            <style>
+              <class name="dim-label" />
+              <class name="caption" />
+            </style>
+          </object>
+        </child>
+      </object>
+    </child>
+  </template>
+</interface>

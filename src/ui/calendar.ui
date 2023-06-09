@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE interface SYSTEM "schema.dtd">
+<interface>
+  <requires lib="gtk" version="4.0" />
+  <requires lib="Adw" version="1.0" />
+  <template class="Calendar" parent="GtkBox">
+    <property name="orientation">vertical</property>
+    <property name="width-request">480</property>
+    <child><!-- Calendar Header -->
+      <object class="GtkBox">
+        <style>
+          <class name="calendar_header" />
+          <class name="card" />
+          <class name="linked" />
+        </style>
+        <child>
+          <object class="GtkButton">
+            <property name="icon-name">go-previous-symbolic</property>
+            <property name="width-request">48</property>
+            <signal name="clicked" handler="handle_previous_day_clicked" swapped="true" />
+            <style>
+              <class name="flat" />
+            </style>
+          </object>
+        </child>
+        <child><!-- Stack Switcher -->
+          <object class="GtkBox" id="day_switcher">
+            <style>
+              <class name="linked" />
+            </style>
+          </object>
+        </child><!-- End Stack Switcher -->
+        <child>
+          <object class="GtkButton">
+            <property name="icon-name">go-next-symbolic</property>
+            <property name="width-request">48</property>
+            <signal name="clicked" handler="handle_next_day_clicked" swapped="true" />
+            <style>
+              <class name="flat" />
+            </style>
+          </object>
+        </child>
+      </object>
+    </child><!-- End Calendar Header -->
+    <child><!-- Stack -->
+      <object class="GtkStack" id="stack">
+        <property name="margin-top">12</property>
+        <property name="vexpand">True</property>
+      </object>
+    </child><!-- End Stack -->
+  </template>
+</interface>

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: iplan\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-06-08 18:39+0330\n"
+"POT-Creation-Date: 2023-06-09 19:49+0330\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #: data/ir.imansalmani.IPlan.desktop.in:3
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:6 src/ui/window.ui:29
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:6 src/ui/window.ui:28
 msgid "IPlan"
 msgstr ""
 
@@ -142,28 +142,40 @@ msgstr ""
 msgid "First stable release."
 msgstr ""
 
-#: src/ui/window.ui:112
+#: src/ui/window.ui:49 src/ui/window.ui:106
+msgid "Calendar"
+msgstr ""
+
+#: src/ui/window.ui:139
+msgid "Today"
+msgstr ""
+
+#: src/ui/window.ui:177
 msgid "_New List"
 msgstr ""
 
-#: src/ui/window.ui:116
+#: src/ui/window.ui:181
 msgid "_Edit Project"
 msgstr ""
 
-#: src/ui/window.ui:126
+#: src/ui/window.ui:191
 msgid "_Backup"
 msgstr ""
 
-#: src/ui/window.ui:130
+#: src/ui/window.ui:195
 msgid "_Keyboard Shortcuts"
 msgstr ""
 
-#: src/ui/window.ui:134
+#: src/ui/window.ui:199
 msgid "_About IPlan"
 msgstr ""
 
-#: src/ui/window.ui:140
+#: src/ui/window.ui:205
 msgid "_Quit"
+msgstr ""
+
+#: src/ui/calendar_page.ui:28 src/ui/project/project_list.ui:81
+msgid "no tasks found"
 msgstr ""
 
 #: src/ui/shortcuts_window.ui:13
@@ -200,7 +212,7 @@ msgstr ""
 msgid "Backup"
 msgstr ""
 
-#: src/ui/backup_window.ui:35 src/views/backup_window.rs:60
+#: src/ui/backup_window.ui:35 src/views/backup_window.rs:62
 msgid "Export"
 msgstr ""
 
@@ -212,7 +224,7 @@ msgstr ""
 msgid "Add this path to your backup application"
 msgstr ""
 
-#: src/ui/backup_window.ui:68 src/views/backup_window.rs:96
+#: src/ui/backup_window.ui:68 src/views/backup_window.rs:98
 msgid "Import"
 msgstr ""
 
@@ -256,12 +268,8 @@ msgstr ""
 msgid "Delete"
 msgstr ""
 
-#: src/ui/project/project_header.ui:95
+#: src/ui/project/project_header.ui:92
 msgid "Time spent per day"
-msgstr ""
-
-#: src/ui/project/project_list.ui:81
-msgid "no tasks found"
 msgstr ""
 
 #: src/ui/project/project_list.ui:82 src/ui/project/task_page.ui:146
@@ -379,24 +387,24 @@ msgstr ""
 msgid "IPlan needs to run in the background to send reminders"
 msgstr ""
 
-#: src/views/window.rs:96 src/views/window.rs:241
+#: src/views/window.rs:102 src/views/window.rs:250
 msgid "Personal"
 msgstr ""
 
-#: src/views/window.rs:97 src/views/window.rs:242
+#: src/views/window.rs:103 src/views/window.rs:251
 #: src/views/sidebar/sidebar_projects.rs:212
 msgid "Tasks"
 msgstr ""
 
-#: src/views/backup_window.rs:89
+#: src/views/backup_window.rs:91
 msgid "Path copied!"
 msgstr ""
 
-#: src/views/backup_window.rs:109
+#: src/views/backup_window.rs:111
 msgid "Error while caching previous data"
 msgstr ""
 
-#: src/views/backup_window.rs:112
+#: src/views/backup_window.rs:114
 msgid "Error while importing data"
 msgstr ""
 
@@ -420,11 +428,11 @@ msgstr ""
 msgid "Undo"
 msgstr ""
 
-#: src/views/project/project_list.rs:367
+#: src/views/project/project_list.rs:373
 msgid "Delete \"{}\" list?"
 msgstr ""
 
-#: src/views/project/project_list.rs:369
+#: src/views/project/project_list.rs:375
 msgid "The list and its tasks will be permanently lost."
 msgstr ""
 

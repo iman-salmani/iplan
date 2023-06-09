@@ -21,26 +21,42 @@ pub fn create_task(name: &str, project_id: i64, list_id: i64, parent: i64) -> Re
 }
 
 pub fn read_tasks(
-    project_id: i64,
+    project_id: Option<i64>,
     list_id: Option<i64>,
     done_tasks: Option<bool>,
     parent_id: Option<i64>,
+    time_range: Option<(i64, i64)>,
 ) -> Result<Vec<Task>> {
-    let filters = &mut String::new();
+    let filters = &mut vec![];
+    if let Some(project_id) = project_id {
+        filters.push(format!("project = {project_id}"));
+    }
     if let Some(list_id) = list_id {
-        filters.push_str(&format!(" AND list = {list_id}"));
+        filters.push(format!("list = {list_id}"));
     }
     if let Some(done_tasks) = done_tasks {
-        filters.push_str(&format!(" AND done = {done_tasks}"));
+        filters.push(format!("done = {done_tasks}"));
     }
     if let Some(parent_id) = parent_id {
-        filters.push_str(&format!(" AND parent = {parent_id}"));
+        filters.push(format!("parent = {parent_id}"));
+    }
+    if let Some((start, end)) = time_range {
+        filters.push(format!("date >= {start} AND date < {end}"));
+    }
+    let filters_str = &mut String::new();
+    for filter in filters {
+        let prefix = if filters_str.is_empty() {
+            "WHERE"
+        } else {
+            "AND"
+        };
+        filters_str.push_str(&format!("{prefix} {filter} "));
     }
     let conn = get_connection();
     let mut stmt = conn.prepare(&format!(
-        "SELECT * FROM tasks WHERE project = ? {filters} ORDER BY position DESC"
+        "SELECT * FROM tasks {filters_str} ORDER BY position DESC"
     ))?;
-    let mut rows = stmt.query([project_id])?;
+    let mut rows = stmt.query([])?;
     let mut tasks = Vec::new();
     while let Some(row) = rows.next()? {
         tasks.push(Task::try_from(row)?)

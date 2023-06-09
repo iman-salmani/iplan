@@ -146,13 +146,15 @@ impl DateRow {
 
     #[template_callback]
     fn handle_day_selected(&self, _calendar: gtk::Calendar) {
+        if self.skip() {
+            return;
+        }
+
         let imp = self.imp();
         imp.menu_button.popdown();
         self.show_clear_button();
         let datetime = self.calculate_datetime();
         self.refresh_row(&datetime);
-        if !self.skip() {
-            self.emit_by_name::<()>("date-changed", &[&datetime]);
-        }
+        self.emit_by_name::<()>("date-changed", &[&datetime]);
     }
 }

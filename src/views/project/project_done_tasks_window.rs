@@ -98,8 +98,14 @@ impl ProjectDoneTasksWindow {
         let imp = win.imp();
         let list: List = win.property("list");
         imp.name_label.set_label(&gettext("Done Tasks"));
-        for task in read_tasks(list.project(), Some(list.id()), Some(true), Some(0))
-            .expect("Failed to read tasks")
+        for task in read_tasks(
+            Some(list.project()),
+            Some(list.id()),
+            Some(true),
+            Some(0),
+            None,
+        )
+        .expect("Failed to read tasks")
         {
             let project_list_task = TaskRow::new(task);
             imp.tasks_box.append(&project_list_task);

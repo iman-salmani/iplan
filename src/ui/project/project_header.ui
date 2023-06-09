@@ -17,25 +17,22 @@
             <child><!-- Icon -->
               <object class="GtkLabel" id="icon_label">
                 <style>
-                  <class name="title-2" />
+                  <class name="title-4" />
                 </style>
               </object>
-            </child>
-            <!-- End Icon -->
-            <child><!-- Icon -->
+            </child><!-- End Icon -->
+            <child><!-- Label -->
               <object class="GtkLabel" id="name_label">
                 <property name="margin-start">3</property>
                 <style>
                   <class name="heading" />
                 </style>
               </object>
-            </child>
-            <!-- End Icon -->
+            </child><!-- End Label -->
           </object>
         </child>
       </object>
-    </child>
-    <!-- End Name Button -->
+    </child><!-- End Name Button -->
     <child><!-- Name Entry -->
       <object class="GtkEntry" id="name_entry">
         <property name="margin-start">10</property>

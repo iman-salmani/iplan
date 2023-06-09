@@ -320,8 +320,7 @@ impl TaskRow {
             .button_label(gettext("Undo"))
             .build();
 
-        toast.connect_button_clicked(glib::clone!(
-            @weak self as obj =>
+        toast.connect_button_clicked(glib::clone!(@weak self as obj =>
             move |_toast| {
                 let task = obj.task();
                 task.set_property("suspended", false);
@@ -331,8 +330,7 @@ impl TaskRow {
                     obj.grab_focus();
                 }
         }));
-        toast.connect_dismissed(glib::clone!(
-            @strong self as obj =>
+        toast.connect_dismissed(glib::clone!(@strong self as obj =>
             move |_toast| {
                 let task = obj.task();
                 if task.suspended() {    // Checking Undo button

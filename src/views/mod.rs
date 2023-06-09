@@ -10,6 +10,15 @@ pub use date_row::DateRow;
 mod time_row;
 pub use time_row::TimeRow;
 
+mod calendar;
+pub use calendar::Calendar;
+
+mod calendar_page;
+pub use calendar_page::CalendarPage;
+
+mod day_indicator;
+pub use day_indicator::DayIndicator;
+
 pub mod project;
 pub mod search;
 pub mod sidebar;

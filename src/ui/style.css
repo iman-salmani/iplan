@@ -9,3 +9,6 @@ row.expander textview {
 .project-icon.large {
   font-size: 48px;
 }
+.calendar_header, .calendar_header * {
+  border-radius: 0;
+}

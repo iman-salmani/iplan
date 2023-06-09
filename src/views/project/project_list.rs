@@ -135,8 +135,14 @@ impl ProjectList {
 
         imp.name_entry.buffer().set_text(&list.name());
 
-        let tasks = read_tasks(list.project(), Some(list.id()), Some(false), Some(0))
-            .expect("Failed to read tasks");
+        let tasks = read_tasks(
+            Some(list.project()),
+            Some(list.id()),
+            Some(false),
+            Some(0),
+            None,
+        )
+        .expect("Failed to read tasks");
         imp.tasks.replace(tasks);
         let tasks = imp.tasks.borrow().to_owned();
         if tasks.len() > page_size && layout == ProjectLayout::Horizontal {
