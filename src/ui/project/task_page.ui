@@ -17,6 +17,7 @@
         </style>
         <child><!-- Task Row -->
           <object class="TaskRow" id="task_row">
+            <property name="compact">true</property>
           </object>
         </child><!-- End Task Row -->
         <child><!-- Date Row -->

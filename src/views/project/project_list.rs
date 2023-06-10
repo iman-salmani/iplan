@@ -147,12 +147,12 @@ impl ProjectList {
         let tasks = imp.tasks.borrow().to_owned();
         if tasks.len() > page_size && layout == ProjectLayout::Horizontal {
             for task in tasks.split_at(page_size).0 {
-                let project_list_task = TaskRow::new(task.to_owned());
+                let project_list_task = TaskRow::new(task.to_owned(), false);
                 imp.tasks_box.append(&project_list_task);
             }
         } else {
             for task in tasks {
-                let project_list_task = TaskRow::new(task);
+                let project_list_task = TaskRow::new(task, false);
                 imp.tasks_box.append(&project_list_task);
             }
         }
@@ -180,7 +180,7 @@ impl ProjectList {
                 if next < tasks.len() {
                     let task = tasks.get(next).unwrap().clone();
                     let task_p = task.position();
-                    let project_list_task = TaskRow::new(task);
+                    let project_list_task = TaskRow::new(task, false);
                     imp.tasks_box.append(&project_list_task);
                     if task_p == target_task.position() {
                         project_list_task.grab_focus();
@@ -255,7 +255,7 @@ impl ProjectList {
                         let next = imp.tasks_box.observe_children().n_items() as usize - 1;
                         let tasks = imp.tasks.borrow();
                         if next < tasks.len() {
-                            let project_list_task = TaskRow::new(tasks.get(next).unwrap().clone());
+                            let project_list_task = TaskRow::new(tasks.get(next).unwrap().clone(), false);
                             imp.tasks_box.append(&project_list_task);
                         }
                     }
@@ -354,7 +354,7 @@ impl ProjectList {
     fn handle_new_button_clicked(&self, _button: gtk::Button) {
         let list = self.list();
         let task = create_task("", list.project(), list.id(), 0).expect("Failed to create task");
-        let task_ui = TaskRow::new(task);
+        let task_ui = TaskRow::new(task, false);
         let imp = self.imp();
         imp.tasks_box.prepend(&task_ui);
         let task_imp = task_ui.imp();

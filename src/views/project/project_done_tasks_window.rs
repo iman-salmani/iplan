@@ -107,7 +107,7 @@ impl ProjectDoneTasksWindow {
         )
         .expect("Failed to read tasks")
         {
-            let project_list_task = TaskRow::new(task);
+            let project_list_task = TaskRow::new(task, false);
             imp.tasks_box.append(&project_list_task);
         }
         imp.tasks_box.set_sort_func(|row1, row2| {

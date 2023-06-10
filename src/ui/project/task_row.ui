@@ -6,77 +6,107 @@
   <template class="TaskRow" parent="GtkListBoxRow">
     <child><!-- Box -->
       <object class="GtkBox" id="row_box">
-        <property name="orientation">horizontal</property>
-        <property name="margin-start">3</property>
-        <property name="margin-end">3</property>
-        <property name="margin-top">3</property>
-        <property name="margin-bottom">3</property>
-        <style>
-          <class name="toolbar" />
-        </style>
-        <child><!-- Check Button -->
-          <object class="GtkCheckButton" id="checkbox">
-          </object>
-        </child>
-        <!-- End Check Button -->
-        <child><!-- Name Button -->
-          <object class="GtkButton" id="name_button">
-            <property name="margin-start">0</property>
-            <property name="tooltip-text"
-              bind-source="name_entry_buffer"
-              bind-property="text"
-              bind-flags="sync-create" />
-            <signal name="clicked" handler="handle_name_button_clicked" swapped="true" />
+        <property name="orientation">vertical</property>
+        <child><!-- Header Box -->
+          <object class="GtkBox" id="header">
+            <property name="orientation">horizontal</property>
             <style>
-              <class name="flat" />
+              <class name="toolbar" />
             </style>
-            <child>
-              <object class="GtkLabel" id="name_label">
-                <property name="ellipsize">end</property>
-                <property name="label"
+            <child><!-- Check Button -->
+              <object class="GtkCheckButton" id="checkbox">
+              </object>
+            </child><!-- End Check Button -->
+            <child><!-- Name Button -->
+              <object class="GtkButton" id="name_button">
+                <property name="margin-start">0</property>
+                <property name="tooltip-text"
                   bind-source="name_entry_buffer"
                   bind-property="text"
                   bind-flags="sync-create" />
-                <attributes>
-                  <attribute name="weight" value="PANGO_WEIGHT_NORMAL" />
-                </attributes>
+                <signal name="clicked" handler="handle_name_button_clicked" swapped="true" />
+                <style>
+                  <class name="flat" />
+                </style>
+                <child>
+                  <object class="GtkLabel" id="name_label">
+                    <property name="ellipsize">end</property>
+                    <property name="label"
+                      bind-source="name_entry_buffer"
+                      bind-property="text"
+                      bind-flags="sync-create" />
+                    <attributes>
+                      <attribute name="weight" value="PANGO_WEIGHT_NORMAL" />
+                    </attributes>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <!-- End Name Button -->
+            <child><!-- Name Entry -->
+              <object class="GtkEntry" id="name_entry">
+                <property name="margin-start">1</property>
+                <property name="margin-end">1</property>
+                <property name="hexpand">true</property>
+                <property name="visible"
+                  bind-source="name_button"
+                  bind-property="visible"
+                  bind-flags="invert-boolean">false</property>
+                <property name="secondary-icon-name">window-close-symbolic</property>
+                <property name="buffer">
+                  <object class="GtkEntryBuffer" id="name_entry_buffer" />
+                </property>
+                <signal name="activate" handler="handle_name_entry_activate" swapped="true" />
+                <signal name="icon-press" handler="handle_name_entry_icon_press" swapped="true" />
+              </object>
+            </child><!-- End Name Entry -->
+            <child>
+              <object class="GtkSeparator">
+                <property name="hexpand">true</property>
+                <style>
+                  <class name="spacer" />
+                </style>
+              </object>
+            </child>
+            <child><!-- Task Options Button -->
+              <object class="GtkMenuButton" id="options_button">
+                <property name="icon_name">view-more-symbolic</property>
+                <property name="has_frame">false</property>
+                <property name="popover">options_popover</property>
+              </object>
+            </child><!-- End Task Options Button -->
+          </object>
+        </child><!-- End Header Box -->
+        <child><!-- Body -->
+          <object class="GtkBox" id="body">
+            <property name="margin-start">9</property>
+            <property name="margin-end">9</property>
+            <property name="margin-bottom">9</property>
+            <child>
+              <object class="GtkSeparator">
+                <property name="margin-start">9</property>
+                <property name="margin-end">28</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkImage">
+                <property name="icon-name">view-list-bullet-symbolic</property>
+                <property name="margin-end">3</property>
+                <style>
+                  <class name="dim-label" />
+                </style>
+              </object>
+            </child>
+            <child>
+              <object class="GtkLabel" id="subtasks_progress">
+                <style>
+                  <class name="body" />
+                  <class name="dim-label" />
+                </style>
               </object>
             </child>
           </object>
-        </child>
-        <!-- End Name Button -->
-        <child><!-- Name Entry -->
-          <object class="GtkEntry" id="name_entry">
-            <property name="margin-start">1</property>
-            <property name="margin-end">1</property>
-            <property name="hexpand">true</property>
-            <property name="visible"
-              bind-source="name_button"
-              bind-property="visible"
-              bind-flags="invert-boolean">false</property>
-            <property name="secondary-icon-name">window-close-symbolic</property>
-            <property name="buffer">
-              <object class="GtkEntryBuffer" id="name_entry_buffer" />
-            </property>
-            <signal name="activate" handler="handle_name_entry_activate" swapped="true" />
-            <signal name="icon-press" handler="handle_name_entry_icon_press" swapped="true" />
-          </object>
-        </child><!-- End Name Entry -->
-        <child>
-          <object class="GtkSeparator">
-            <property name="hexpand">true</property>
-            <style>
-              <class name="spacer" />
-            </style>
-          </object>
-        </child>
-        <child><!-- Task Options Button -->
-          <object class="GtkMenuButton" id="options_button">
-            <property name="icon_name">view-more-symbolic</property>
-            <property name="has_frame">false</property>
-            <property name="popover">options_popover</property>
-          </object>
-        </child><!-- End Task Options Button -->
+        </child><!-- End Body -->
       </object>
     </child>
     <!-- End Box -->

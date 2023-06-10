@@ -83,7 +83,7 @@ impl CalendarPage {
         let tasks = read_tasks(None, None, None, None, Some((datetime.to_unix(), end)))
             .expect("Failed to read tasks");
         for task in tasks {
-            let project_list_task = TaskRow::new(task);
+            let project_list_task = TaskRow::new(task, false);
             imp.tasks_box.append(&project_list_task);
         }
         obj.set_datetime(datetime);

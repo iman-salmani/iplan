@@ -5,7 +5,7 @@ use std::thread;
 use std::time::{Duration, SystemTime};
 
 use crate::db::models::{Record, Task};
-use crate::db::operations::{create_record, delete_task, update_record, update_task};
+use crate::db::operations::{create_record, delete_task, read_tasks, update_record, update_task};
 use crate::views::project::{ProjectDoneTasksWindow, TaskWindow};
 use crate::views::IPlanWindow;
 
@@ -28,8 +28,12 @@ mod imp {
         pub task: RefCell<Task>,
         #[property(get, set)]
         pub moving_out: Cell<bool>,
+        #[property(get, set)]
+        pub compact: Cell<bool>,
         #[template_child]
         pub row_box: TemplateChild<gtk::Box>,
+        #[template_child]
+        pub header: TemplateChild<gtk::Box>,
         #[template_child]
         pub checkbox: TemplateChild<gtk::CheckButton>,
         #[template_child]
@@ -51,6 +55,10 @@ mod imp {
         pub options_popover: TemplateChild<gtk::Popover>,
         #[template_child]
         pub options_box: TemplateChild<gtk::Box>,
+        #[template_child]
+        pub body: TemplateChild<gtk::Box>,
+        #[template_child]
+        pub subtasks_progress: TemplateChild<gtk::Label>,
     }
 
     #[glib::object_subclass]
@@ -126,8 +134,9 @@ glib::wrapper! {
 
 #[gtk::template_callbacks]
 impl TaskRow {
-    pub fn new(task: Task) -> Self {
+    pub fn new(task: Task, compact: bool) -> Self {
         let obj = glib::Object::new::<Self>();
+        obj.set_compact(compact);
         obj.reset(task);
         obj
     }
@@ -135,6 +144,28 @@ impl TaskRow {
     pub fn reset(&self, task: Task) {
         let imp = self.imp();
         imp.name_entry_buffer.set_text(task.name());
+
+        if self.compact() {
+            imp.body.set_visible(false);
+        } else {
+            let subtasks =
+                read_tasks(Some(task.project()), None, None, Some(task.id()), None).unwrap();
+            let total = subtasks.len();
+            if total == 0 {
+                imp.body.set_visible(false);
+            } else {
+                let mut done_count = 0;
+                for subtask in subtasks {
+                    if subtask.done() {
+                        done_count += 1;
+                    }
+                }
+                imp.subtasks_progress
+                    .set_label(&format!("{done_count}/{total}"));
+                imp.body.set_visible(true);
+            }
+        }
+
         self.set_task(task);
         self.reset_timer();
     }
@@ -179,6 +210,8 @@ impl TaskRow {
             .transform_from(|binding, active: bool| {
                 let checkbox = binding.target().and_downcast::<gtk::CheckButton>().unwrap();
                 let obj = checkbox
+                    .parent()
+                    .unwrap()
                     .parent()
                     .unwrap()
                     .parent()
@@ -230,13 +263,13 @@ impl TaskRow {
         let imp = self.imp();
         let button: &gtk::Button = imp.timer_button.as_ref();
         let options_box: &gtk::Box = imp.options_box.as_ref();
-        let row_box: &gtk::Box = imp.row_box.as_ref();
-        let options_button: &gtk::MenuButton = imp.options_button.as_ref();
         if indicate {
+            let options_button: &gtk::MenuButton = imp.options_button.as_ref();
+            let header: &gtk::Box = imp.header.as_ref();
             button.unparent();
             options_button.popdown();
             button.remove_css_class("flat");
-            button.insert_before(row_box, Some(options_button));
+            button.insert_before(header, Some(options_button));
         } else {
             button.add_css_class("flat");
             button.unparent();

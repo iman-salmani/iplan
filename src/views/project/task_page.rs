@@ -153,7 +153,7 @@ impl TaskPage {
         let tasks = read_tasks(Some(task.project()), None, None, Some(task.id()), None)
             .expect("Failed to read subtasks");
         for task in tasks {
-            let row = TaskRow::new(task);
+            let row = TaskRow::new(task, false);
             imp.subtasks_box.append(&row);
         }
 
@@ -270,7 +270,7 @@ impl TaskPage {
     fn handle_new_subtask_button_clicked(&self, _button: gtk::Button) {
         let task = self.task();
         let task = create_task("", task.project(), 0, task.id()).expect("Failed to create subtask");
-        let task_ui = TaskRow::new(task);
+        let task_ui = TaskRow::new(task, false);
         let imp = self.imp();
         imp.subtasks_box.prepend(&task_ui);
         let task_imp = task_ui.imp();
