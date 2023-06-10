@@ -24,9 +24,9 @@ use gtk::{gdk, gio, glib, glib::once_cell::sync::Lazy, prelude::*};
 use std::cell::RefCell;
 
 use crate::db::models::Project;
-use crate::db::operations::{create_list, create_project, read_list, read_projects};
-use crate::views::project::{
-    ProjectDoneTasksWindow, ProjectEditWindow, ProjectHeader, ProjectLayout, ProjectLists,
+use crate::db::operations::{create_list, create_project, read_projects, read_task};
+use crate::views::project::{ProjectEditWindow, ProjectHeader, ProjectLayout, ProjectLists,
+    TaskWindow,
 };
 use crate::views::sidebar::SidebarProjects;
 use crate::views::Calendar;
@@ -125,7 +125,7 @@ mod imp {
                 imp.sidebar_projects.check_archive_hidden();
                 win.close_calendar();
             });
-            klass.install_action("search.task", Some("(bx)"), move |win, _, value| {
+            klass.install_action("search.task", Some("(x)"), move |win, _, value| {
                 let imp = win.imp();
                 let (project_changed, task_id) = value.unwrap().get::<(bool, i64)>().unwrap();
                 if project_changed {
@@ -135,49 +135,15 @@ mod imp {
                     imp.sidebar_projects.select_active_project();
                     imp.sidebar_projects.check_archive_hidden();
                 }
-                let (tx, rx) = glib::MainContext::channel(glib::PRIORITY_DEFAULT);
-                glib::idle_add_once(move || {
-                    tx.send("").expect("Something happens");
-                });
-                rx.attach(
-                    None,
-                    glib::clone!(
-                            @weak imp => @default-return glib::Continue(false),
-                            move |_text| {
-                                imp.project_lists.select_task(Some(task_id));
-                                glib::Continue(false)
-                            }
-                    ),
-                );
-                win.close_calendar();
-            });
-            klass.install_action("search.task-done", Some("(bxx)"), move |win, _, value| {
-                let imp = win.imp();
-                let (project_changed, task_id, list_id) =
-                    value.unwrap().get::<(bool, i64, i64)>().unwrap();
-                if project_changed {
-                    let project = win.project();
-                    imp.project_header.open_project(&project);
-                    imp.project_lists.open_project(project.id());
-                    imp.sidebar_projects.select_active_project();
-                    imp.sidebar_projects.check_archive_hidden();
-                }
-                let (tx, rx) = glib::MainContext::channel(glib::PRIORITY_DEFAULT);
-                glib::idle_add_once(move || {
-                    tx.send("").expect("Something happens");
-                });
-                let list = read_list(list_id).expect("Failed to read list");
-                let window = ProjectDoneTasksWindow::new(win.application().unwrap(), win, list);
-                window.present();
-                rx.attach(
-                    None,
-                    glib::clone!(
-                            @weak window => @default-return glib::Continue(false),
-                            move |_text| {
-                                window.select_task(task_id);
-                                glib::Continue(false)
-                            }
-                    ),
+                
+                let task = read_task(task_id).expect("Failed to read task");
+                let modal = TaskWindow::new(&win.application().unwrap(), win, task);
+                modal.present();
+                modal.connect_close_request(glib::clone!(@weak win => @default-return gtk::Inhibit(false),
+                    move |_| {
+                        win.activate_action("project.open", None).expect("Failed to activate project.open action");
+                        gtk::Inhibit(false)
+                    }),
                 );
                 win.close_calendar();
             });

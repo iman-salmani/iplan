@@ -112,13 +112,24 @@ glib::wrapper! {
 
 #[gtk::template_callbacks]
 impl TaskWindow {
-    pub fn new(application: &gtk::Application, app_window: &gtk::Window, task: Task) -> Self {
+    pub fn new<P: glib::IsA<gtk::Window>>(
+        application: &gtk::Application,
+        app_window: &P,
+        task: Task,
+    ) -> Self {
         let win: Self = glib::Object::builder()
             .property("application", application)
             .build();
         win.set_transient_for(Some(app_window));
         let imp = win.imp();
         let task_id = task.id().to_string();
+        let parent_id = task.parent();
+        if parent_id != 0 {
+            let parent_task = read_task(parent_id).expect("Failed to read task");
+            win.set_property("parent-task", parent_id);
+            imp.back_button_content.set_label(&parent_task.name());
+            imp.back_button.set_visible(true);
+        }
         imp.task_pages_stack
             .add_named(&TaskPage::new(task), Some(&task_id));
         win
@@ -195,10 +206,14 @@ impl TaskWindow {
             .and_downcast::<TaskPage>()
             .unwrap();
         let from_task = from_page.task();
-        imp.task_pages_stack.set_visible_child_full(
-            &self.parent_task().to_string(),
-            gtk::StackTransitionType::SlideRight,
-        );
+        let parent_name = self.parent_task().to_string();
+        if imp.task_pages_stack.child_by_name(&parent_name).is_none() {
+            let parent_task = read_task(from_task.parent()).expect("Failed to read task");
+            imp.task_pages_stack
+                .add_named(&TaskPage::new(parent_task), Some(&parent_name));
+        }
+        imp.task_pages_stack
+            .set_visible_child_full(&parent_name, gtk::StackTransitionType::SlideRight);
         imp.task_pages_stack.remove(&from_page);
         let target_page = imp
             .task_pages_stack

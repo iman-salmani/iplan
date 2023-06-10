@@ -193,21 +193,13 @@ impl SearchWindow {
             } else {
                 false
             };
-            if task.done() {
-                app_win
-                    .activate_action(
-                        "search.task-done",
-                        Some(&(project_changed, task.id(), task.list()).to_variant()),
-                    )
-                    .expect("Failed to send project.open action");
-            } else {
-                app_win
-                    .activate_action(
-                        "search.task",
-                        Some(&(project_changed, task.id()).to_variant()),
-                    )
-                    .expect("Failed to send project.open action");
-            }
+
+            app_win
+                .activate_action(
+                    "search.task",
+                    Some(&(project_changed, task.id()).to_variant()),
+                )
+                .expect("Failed to send project.open action");
         }
         self.close();
     }

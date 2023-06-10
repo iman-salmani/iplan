@@ -126,7 +126,10 @@ impl ProjectLists {
     pub fn select_task(&self, task_id: Option<i64>) {
         let imp = self.imp();
         if let Some(task_id) = task_id {
-            let task = read_task(task_id).expect("Failed to read task");
+            let mut task = read_task(task_id).expect("Failed to read task");
+            if task.parent() != 0 {
+                task = read_task(task.parent()).expect("Failed to read task")
+            }
             let list = read_list(task.list()).expect("Failed to read list");
             let project_list = imp
                 .lists_box
