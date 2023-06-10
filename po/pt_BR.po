@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: iplan\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-06-09 21:27+0330\n"
-"PO-Revision-Date: 2023-05-27 15:10-0300\n"
+"PO-Revision-Date: 2023-06-10 12:30-0300\n"
 "Last-Translator: Fúlvio Leo <fulviokaldas@outlook.com>\n"
 "Language: pt_BR\n"
 "MIME-Version: 1.0\n"
@@ -47,7 +47,7 @@ msgstr "Agrupamento de tarefas em projetos e listas"
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:13
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:119
 msgid "Timer for tasks"
-msgstr "Temporizador para tarefas"
+msgstr "Cronômetro para tarefas"
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:14 src/ui/project/task_page.ui:73
 #: src/ui/project/task_page.ui:87
@@ -57,7 +57,7 @@ msgstr "Subtarefas"
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:15
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:68
 msgid "Calendar for Exploring tasks by date"
-msgstr ""
+msgstr "Calendário para explorar tarefas por data"
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:16
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:120
@@ -80,7 +80,7 @@ msgstr "Janela de tarefas"
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:30 src/ui/window.ui:49
 #: src/ui/window.ui:106
 msgid "Calendar"
-msgstr ""
+msgstr "Calendário"
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:34
 msgid "The IPlan main window (dark mode)"
@@ -95,57 +95,59 @@ msgid "Iman Salmani"
 msgstr "Iman Salmani"
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:65
-#, fuzzy
 msgid "New features and updates"
-msgstr "Funcionalidades"
+msgstr "Novos recursos e atualizações"
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:67
 msgid "Backing up system"
-msgstr ""
+msgstr "Sistema de backup"
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:69
 msgid ""
 "Tasks can have date and reminders (Application will remain in background for "
 "handling reminders)"
 msgstr ""
+"As tarefas podem ter data e lembretes (o aplicativo permanecerá em segundo "
+"plano para lidar com lembretes)"
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:70
 msgid "When a task doesn't have record, Timer button will move to options"
 msgstr ""
+"Quando uma tarefa não tem registro, o botão Cronômetro irá para as opções"
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:71
 msgid "Record edit window"
-msgstr ""
+msgstr "Janela de edição de registro"
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:72
 msgid "Now users able to edit record duration by changing start time"
 msgstr ""
+"Agora os usuários podem editar a duração do registro alterando o tempo de "
+"início"
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:73
-#, fuzzy
 msgid "Bug fixes, and UI improvements"
-msgstr "Subtarefas, correções de bugs e melhorias na interface de usuário"
+msgstr "Correções de bugs e melhorias na interface de usuário"
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:79
 msgid "Bug fix"
-msgstr ""
+msgstr "Correção de bug"
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:84
-#, fuzzy
 msgid "Code refactoring, and UI improvements"
-msgstr "Subtarefas, correções de bugs e melhorias na interface de usuário"
+msgstr "Refatoração de código e melhorias na interface de usuário"
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:86
 msgid "New widgets for selecting Date and Time"
-msgstr ""
+msgstr "Novos widgets para selecionar Data e Tempo"
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:87
 msgid "Changing duration of the new record by setting end time"
-msgstr ""
+msgstr "Alterando a duração do novo registro definindo o tempo final"
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:88
 msgid "Add Brazilian Portuguese Translation thanks to Fúlvio Leo"
-msgstr ""
+msgstr "Adicionar tradução para o português do Brasil graças a Fúlvio Leo"
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:94
 msgid "Subtasks, Bug fixes, and UI improvements"
@@ -206,7 +208,7 @@ msgstr "_Editar Projeto"
 
 #: src/ui/window.ui:191
 msgid "_Backup"
-msgstr ""
+msgstr "_Backup"
 
 #: src/ui/window.ui:195
 msgid "_Keyboard Shortcuts"
@@ -230,10 +232,9 @@ msgid "Application"
 msgstr "Aplicação"
 
 #: src/ui/shortcuts_window.ui:24
-#, fuzzy
 msgctxt "shortcut window"
 msgid "Keyboard Shortcuts"
-msgstr "_Atalhos de Teclado"
+msgstr "Atalhos de Teclado"
 
 #: src/ui/shortcuts_window.ui:31
 msgctxt "shortcut window"
@@ -257,27 +258,27 @@ msgstr "Buscar"
 
 #: src/ui/backup_window.ui:19
 msgid "Backup"
-msgstr ""
+msgstr "Backup"
 
 #: src/ui/backup_window.ui:35 src/views/backup_window.rs:62
 msgid "Export"
-msgstr ""
+msgstr "Exportar"
 
 #: src/ui/backup_window.ui:47
 msgid "Data folder path"
-msgstr ""
+msgstr "Caminho da pasta Data"
 
 #: src/ui/backup_window.ui:48
 msgid "Add this path to your backup application"
-msgstr ""
+msgstr "Adicione este caminho ao seu aplicativo de backup"
 
 #: src/ui/backup_window.ui:68 src/views/backup_window.rs:98
 msgid "Import"
-msgstr ""
+msgstr "Importar"
 
 #: src/ui/backup_window.ui:69
 msgid "While importing, previous data will be cached"
-msgstr ""
+msgstr "Durante a importação, os dados anteriores serão armazenados em cache"
 
 #: src/ui/delete_dialog.ui:13
 msgid "_Cancel"
@@ -352,28 +353,26 @@ msgid "Done"
 msgstr "Concluído"
 
 #: src/ui/project/record_window.ui:47
-#, fuzzy
 msgid "Starts"
-msgstr "começar"
+msgstr "Começa"
 
 #: src/ui/project/record_window.ui:50 src/ui/project/record_window.ui:70
 #: src/ui/project/reminder_window.ui:49
 msgid "Date"
-msgstr ""
+msgstr "Data"
 
 #: src/ui/project/record_window.ui:57 src/ui/project/record_window.ui:77
 #: src/ui/project/reminder_window.ui:55
 msgid "Time"
-msgstr ""
+msgstr "Tempo"
 
 #: src/ui/project/record_window.ui:67
 msgid "Ends"
-msgstr ""
+msgstr "Termina"
 
 #: src/ui/project/record_window.ui:86
-#, fuzzy
 msgid "Duration"
-msgstr "duração"
+msgstr "Duração"
 
 #: src/ui/project/record_window.ui:98 src/ui/project/reminder_window.ui:66
 msgid "delete"
@@ -381,11 +380,11 @@ msgstr "deletar"
 
 #: src/ui/project/reminder_window.ui:16
 msgid "Reminder"
-msgstr ""
+msgstr "Lembrete"
 
 #: src/ui/project/task_page.ui:30
 msgid "Reminders"
-msgstr ""
+msgstr "Lembretes"
 
 #: src/ui/project/task_page.ui:92
 msgid "Records"
@@ -400,13 +399,12 @@ msgid "no records found"
 msgstr "nenhum registro encontrado"
 
 #: src/ui/project/task_page.ui:179
-#, fuzzy
 msgid "Use add button up there or start a timer"
-msgstr "Use o botão adicionar lá em cima ou inicie um temporizador"
+msgstr "Use o botão adicionar lá em cima ou inicie um cronômetro"
 
 #: src/ui/project/task_row.ui:109 src/views/project/task_row.rs:157
 msgid "Timer"
-msgstr ""
+msgstr "Cronômetro"
 
 #: src/ui/search/search_window.ui:16
 msgid "Search"
@@ -435,7 +433,7 @@ msgstr "Fúlvio Leo <fulviokaldas@outlook.com>"
 
 #: src/application.rs:242
 msgid "IPlan needs to run in the background to send reminders"
-msgstr ""
+msgstr "O IPlan precisa ser executado em segundo plano para enviar lembretes"
 
 #: src/views/window.rs:105 src/views/window.rs:253
 msgid "Personal"
@@ -448,15 +446,15 @@ msgstr "Tarefas"
 
 #: src/views/backup_window.rs:91
 msgid "Path copied!"
-msgstr ""
+msgstr "Caminho copiado!"
 
 #: src/views/backup_window.rs:111
 msgid "Error while caching previous data"
-msgstr ""
+msgstr "Erro ao armazenar dados anteriores em cache"
 
 #: src/views/backup_window.rs:114
 msgid "Error while importing data"
-msgstr ""
+msgstr "Erro ao importar dados"
 
 #: src/views/project/project_done_tasks_window.rs:100
 msgid "Done Tasks"
@@ -497,16 +495,15 @@ msgstr "Nova lista"
 
 #: src/views/project/record_window.rs:180
 msgid "Duration can't be 0"
-msgstr ""
+msgstr "A duração não pode ser 0"
 
 #: src/views/project/record_row.rs:92
 msgid "until"
-msgstr ""
+msgstr "até"
 
 #: src/views/project/reminder_window.rs:111
-#, fuzzy
 msgid "Time can't be in the past"
-msgstr "Tempo gasto por dia"
+msgstr "O tempo não pode estar no passado"
 
 #: src/views/project/task_row.rs:320
 msgid "\"{}\" is going to delete"
