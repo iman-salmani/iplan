@@ -187,7 +187,7 @@ impl IPlanApplication {
             .application_icon("ir.imansalmani.IPlan")
             .developer_name("Iman Salmani")
             .version(VERSION)
-            .developers(vec!["Iman Salmani"])
+            .developers(vec!["Iman Salmani https://github.com/iman-salmani"])
             .copyright("© 2023 Iman Salmani")
             .license_type(gtk::License::Lgpl30)
             .website("https://github.com/iman-salmani/iplan")
