@@ -1,14 +1,14 @@
-# SOME DESCRIPTIVE TITLE.
+# Czech translation for IPlan.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the iplan package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# FIRST AUTHOR Amerey.eu <info@amerey.eu>, 2023.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: iplan\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-06-09 21:27+0330\n"
-"PO-Revision-Date: 2023-06-10 12:02+0200\n"
+"PO-Revision-Date: 2023-06-10 20:08+0200\n"
 "Last-Translator: Amerey.eu <info@amerey.eu>\n"
 "Language-Team: \n"
 "Language: cs\n"
@@ -204,7 +204,7 @@ msgstr "_Záloha"
 
 #: src/ui/window.ui:195
 msgid "_Keyboard Shortcuts"
-msgstr "Klávesové zkratky"
+msgstr "_Klávesové zkratky"
 
 #: src/ui/window.ui:199
 msgid "_About IPlan"
