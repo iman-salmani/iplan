@@ -92,6 +92,9 @@
               <object class="GtkImage">
                 <property name="icon-name">view-list-bullet-symbolic</property>
                 <property name="margin-end">3</property>
+                <binding name="visible">
+                  <lookup name="visible">subtasks_progress</lookup>
+                </binding>
                 <style>
                   <class name="dim-label" />
                 </style>
@@ -99,8 +102,29 @@
             </child>
             <child>
               <object class="GtkLabel" id="subtasks_progress">
+                <property name="margin-end">12</property>
                 <style>
-                  <class name="body" />
+                  <class name="caption" />
+                  <class name="dim-label" />
+                </style>
+              </object>
+            </child>
+            <child>
+              <object class="GtkImage">
+                <property name="icon-name">x-office-calendar-symbolic</property>
+                <property name="margin-end">3</property>
+                <binding name="visible">
+                  <lookup name="visible">date_indicator</lookup>
+                </binding>
+                <style>
+                  <class name="dim-label" />
+                </style>
+              </object>
+            </child>
+            <child>
+              <object class="GtkLabel" id="date_indicator">
+                <style>
+                  <class name="caption" />
                   <class name="dim-label" />
                 </style>
               </object>

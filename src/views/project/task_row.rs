@@ -59,6 +59,8 @@ mod imp {
         pub body: TemplateChild<gtk::Box>,
         #[template_child]
         pub subtasks_progress: TemplateChild<gtk::Label>,
+        #[template_child]
+        pub date_indicator: TemplateChild<gtk::Label>,
     }
 
     #[glib::object_subclass]
@@ -152,7 +154,7 @@ impl TaskRow {
                 read_tasks(Some(task.project()), None, None, Some(task.id()), None).unwrap();
             let total = subtasks.len();
             if total == 0 {
-                imp.body.set_visible(false);
+                imp.subtasks_progress.set_visible(false);
             } else {
                 let mut done_count = 0;
                 for subtask in subtasks {
@@ -162,7 +164,19 @@ impl TaskRow {
                 }
                 imp.subtasks_progress
                     .set_label(&format!("{done_count}/{total}"));
-                imp.body.set_visible(true);
+                imp.subtasks_progress.set_visible(true);
+            }
+
+            if let Some(datetime) = task.date_datetime() {
+                imp.date_indicator
+                    .set_label(&datetime.format("%A").unwrap());
+                imp.date_indicator.set_visible(true);
+            } else {
+                imp.date_indicator.set_visible(false);
+            }
+
+            if !imp.subtasks_progress.is_visible() && !imp.date_indicator.is_visible() {
+                imp.body.set_visible(false);
             }
         }
 

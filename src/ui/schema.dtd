@@ -12,7 +12,11 @@
 <!ATTLIST property bind-flags CDATA #IMPLIED>
 <!ATTLIST property translatable NMTOKEN #IMPLIED>
 <!ATTLIST property context CDATA #IMPLIED>
-<!ELEMENT object (property*,signal*,style?,child*,responses?,attributes?)>
+<!ELEMENT binding (lookup*)>
+<!ATTLIST binding name NMTOKEN #REQUIRED>
+<!ELEMENT lookup (#PCDATA)>
+<!ATTLIST lookup name NMTOKEN #REQUIRED>
+<!ELEMENT object (property*,binding*,signal*,style?,child*,responses?,attributes?)>
 <!ATTLIST object class NMTOKEN #REQUIRED>
 <!ATTLIST object id NMTOKEN #IMPLIED>
 <!ELEMENT style (class+)>
