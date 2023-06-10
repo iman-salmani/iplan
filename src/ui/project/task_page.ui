@@ -105,7 +105,7 @@
         <!-- End Lists menu -->
         <child><!-- New Record Button -->
           <object class="GtkButton" id="new_record_button">
-            <property name="icon-name">list-add-symbolic</property>
+            <property name="icon-name">appointment-new-symbolic</property>
             <property name="has_frame">false</property>
             <property name="visible"
               bind-source="new_subtask_button"
