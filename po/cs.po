@@ -1,0 +1,510 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the iplan package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: iplan\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-06-09 21:27+0330\n"
+"PO-Revision-Date: 2023-06-10 12:02+0200\n"
+"Last-Translator: Amerey.eu <info@amerey.eu>\n"
+"Language-Team: \n"
+"Language: cs\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.3.1\n"
+
+#: data/ir.imansalmani.IPlan.desktop.in:3
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:6 src/ui/window.ui:28
+msgid "IPlan"
+msgstr "IPlan"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:7
+msgid "Your plan for improving personal life and workflow"
+msgstr "Váš plán na zlepšení osobního a pracovního života"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:9
+msgid ""
+"IPlan goal is to be a user friendly tool for those who want to organize "
+"their personal life or jobs."
+msgstr ""
+"Cílem IPlan je být uživatelsky přívětivým nástrojem pro ty, kteří si chtějí "
+"organizovat svůj osobní život nebo práci."
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:10
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:116
+msgid "Features:"
+msgstr "Funkce:"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:12
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:118
+msgid "Grouping tasks with project and list"
+msgstr "Seskupování úkolů s projektem a seznamem"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:13
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:119
+msgid "Timer for tasks"
+msgstr "Časomíra pro úkoly"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:14 src/ui/project/task_page.ui:73
+#: src/ui/project/task_page.ui:87
+msgid "Subtasks"
+msgstr "Dílčí úkoly"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:15
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:68
+msgid "Calendar for Exploring tasks by date"
+msgstr "Kalendář pro prozkoumávání úkolů podle data"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:16
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:120
+msgid "Global search"
+msgstr "Globální vyhledávání"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:17
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:121
+msgid "Arranging projects, lists, and tasks by drag and drop"
+msgstr "Uspořádání projektů, seznamů a úkolů přetažením"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:22
+msgid "The IPlan main window"
+msgstr "Hlavní okno IPlan"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:26
+msgid "Task window"
+msgstr "Okno úkolu"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:30 src/ui/window.ui:49
+#: src/ui/window.ui:106
+msgid "Calendar"
+msgstr "Kalendář"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:34
+msgid "The IPlan main window (dark mode)"
+msgstr "Hlavní okno IPlan (tmavý režim)"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:38
+msgid "The IPlan main window (small size)"
+msgstr "Hlavní okno IPlan (malá velikost)"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:45
+msgid "Iman Salmani"
+msgstr "Iman Salmani"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:65
+msgid "New features and updates"
+msgstr "Nové funkce a aktualizace"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:67
+msgid "Backing up system"
+msgstr "Zálohování systému"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:69
+msgid ""
+"Tasks can have date and reminders (Application will remain in background for "
+"handling reminders)"
+msgstr ""
+"Úkoly mohou mít datum a připomenutí (Aplikace zůstane na pozadí pro "
+"zpracování připomenutí)"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:70
+msgid "When a task doesn't have record, Timer button will move to options"
+msgstr "Když úkol nemá záznam, tlačítko Časovač se přesune na možností"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:71
+msgid "Record edit window"
+msgstr "Okno pro úpravu záznamu"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:72
+msgid "Now users able to edit record duration by changing start time"
+msgstr "Nyní mohou uživatelé upravovat délku záznamu změnou času zahájení"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:73
+msgid "Bug fixes, and UI improvements"
+msgstr "Opravy chyb a vylepšení uživatelského rozhraní"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:79
+msgid "Bug fix"
+msgstr "Oprava chyby"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:84
+msgid "Code refactoring, and UI improvements"
+msgstr "Úprava kódu a vylepšení uživatelského rozhraní"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:86
+msgid "New widgets for selecting Date and Time"
+msgstr "Nové widgety pro výběr data a času"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:87
+msgid "Changing duration of the new record by setting end time"
+msgstr "Změna doby trvání nového záznamu nastavením času ukončení"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:88
+msgid "Add Brazilian Portuguese Translation thanks to Fúlvio Leo"
+msgstr "Přidán překlad brazilské portugalštiny díky Fúlvio Leovi"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:94
+msgid "Subtasks, Bug fixes, and UI improvements"
+msgstr "Dílčí úkoly, opravy chyb a vylepšení uživatelského rozhraní"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:96
+msgid "Task Window which contains task info, subtasks, and records"
+msgstr "Okno úkolu, které obsahuje informace o úkolu, dílčí úkoly a záznamy"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:97
+msgid "Translation to Persian and Turkish languages thanks to Sabri Ünal"
+msgstr "Překlad do perštiny a turečtiny díky Sabri Ünal"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:98
+msgid "New toast message for moving back task from the tasks done list"
+msgstr "Nová zpráva pro přesun zpět úkolu ze seznamu dokončených úkolů"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:99
+msgid "Users are now able to pick emojis for their projects in the edit window"
+msgstr "Uživatelé si nyní mohou vybrat emotikony pro své projekty v okně úprav"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:100
+msgid "Projects and Tasks now can have descriptions"
+msgstr "Projekty a úkoly nyní mohou mít popisy"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:106
+msgid "Performance improvement and records window"
+msgstr "Zlepšení výkonu"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:108
+msgid "Lazy loading for project tasks and stat"
+msgstr "Postupné načítání pro projektové úkoly"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:109
+msgid "Records window for creating, editing, and deleting records"
+msgstr "Okno záznamů pro vytváření, úpravy a mazání záznamů"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:115
+msgid "First stable release."
+msgstr "První stabilní verze."
+
+#: src/ui/window.ui:139
+msgid "Today"
+msgstr "Dnes"
+
+#: src/ui/window.ui:177
+msgid "_New List"
+msgstr "_Nový seznam"
+
+#: src/ui/window.ui:181
+msgid "_Edit Project"
+msgstr "_Upravit projekt"
+
+#: src/ui/window.ui:191
+msgid "_Backup"
+msgstr "_Záloha"
+
+#: src/ui/window.ui:195
+msgid "_Keyboard Shortcuts"
+msgstr "Klávesové zkratky"
+
+#: src/ui/window.ui:199
+msgid "_About IPlan"
+msgstr "_O aplikaci IPlan"
+
+#: src/ui/window.ui:205
+msgid "_Quit"
+msgstr "_Ukončit"
+
+#: src/ui/calendar_page.ui:28 src/ui/project/project_list.ui:81
+msgid "no tasks found"
+msgstr "nebyly nalezeny žádné úkoly"
+
+#: src/ui/shortcuts_window.ui:13
+msgctxt "shortcut window"
+msgid "Application"
+msgstr "Aplikace"
+
+#: src/ui/shortcuts_window.ui:24
+msgctxt "shortcut window"
+msgid "Keyboard Shortcuts"
+msgstr "Klávesové zkratky"
+
+#: src/ui/shortcuts_window.ui:31
+msgctxt "shortcut window"
+msgid "Primary Menu"
+msgstr "Hlavní nabídka"
+
+#: src/ui/shortcuts_window.ui:37
+msgctxt "shortcut window"
+msgid "Quit"
+msgstr "Ukončit"
+
+#: src/ui/shortcuts_window.ui:47
+msgctxt "shortcut window"
+msgid "Tasks"
+msgstr "Úkoly"
+
+#: src/ui/shortcuts_window.ui:50
+msgctxt "shortcut window"
+msgid "Search"
+msgstr "Vyhledávání"
+
+#: src/ui/backup_window.ui:19
+msgid "Backup"
+msgstr "Záloha"
+
+#: src/ui/backup_window.ui:35 src/views/backup_window.rs:62
+msgid "Export"
+msgstr "Exportovat"
+
+#: src/ui/backup_window.ui:47
+msgid "Data folder path"
+msgstr "Cesta ke složce dat"
+
+#: src/ui/backup_window.ui:48
+msgid "Add this path to your backup application"
+msgstr "Přidejte tuto cestu ke své aplikaci pro zálohování"
+
+#: src/ui/backup_window.ui:68 src/views/backup_window.rs:98
+msgid "Import"
+msgstr "Importovat"
+
+#: src/ui/backup_window.ui:69
+msgid "While importing, previous data will be cached"
+msgstr "Při importu budou předchozí data uložena do mezipaměti"
+
+#: src/ui/delete_dialog.ui:13
+msgid "_Cancel"
+msgstr "_Zrušit"
+
+#: src/ui/delete_dialog.ui:14
+msgid "_Delete"
+msgstr "_Smazat"
+
+#: src/ui/project/project_done_tasks_window.ui:52
+msgid "no done tasks found"
+msgstr "nenalezeny žádné hotové úkoly"
+
+#: src/ui/project/project_edit_window.ui:17
+msgid "Edit Project"
+msgstr "Upravit projekt"
+
+#: src/ui/project/project_edit_window.ui:48
+msgid "Name"
+msgstr "Název"
+
+#: src/ui/project/project_edit_window.ui:56
+msgid "Icon"
+msgstr "Ikona"
+
+#: src/ui/project/project_edit_window.ui:75 src/ui/project/task_page.ui:43
+msgid "Description"
+msgstr "Popis"
+
+#: src/ui/project/project_edit_window.ui:106
+msgid "Archive"
+msgstr "Archivovat"
+
+#: src/ui/project/project_edit_window.ui:118 src/ui/project/task_row.ui:124
+msgid "Delete"
+msgstr "Smazat"
+
+#: src/ui/project/project_header.ui:92
+msgid "Time spent per day"
+msgstr "Čas strávený denně"
+
+#: src/ui/project/project_list.ui:82 src/ui/project/task_page.ui:146
+msgid "Use add button up there"
+msgstr "Pro nový úkol použijte tlačítko plus"
+
+#: src/ui/project/project_list.ui:119
+msgid "Done tasks"
+msgstr "Hotové úkoly"
+
+#: src/ui/project/project_list.ui:149
+msgid "Delete list"
+msgstr "Smazat seznam"
+
+#: src/ui/project/project_lists.ui:35
+msgid "no lists found"
+msgstr "nenalezeny žádné seznamy"
+
+#: src/ui/project/project_lists.ui:64
+msgid "New list"
+msgstr "Nový seznam"
+
+#: src/ui/project/record_window.ui:16
+msgid "New Record"
+msgstr "Nový záznam"
+
+#: src/ui/project/record_window.ui:24 src/ui/project/reminder_window.ui:24
+msgid "Cancel"
+msgstr "Zrušit"
+
+#: src/ui/project/record_window.ui:30 src/ui/project/reminder_window.ui:30
+msgid "Done"
+msgstr "Hotovo"
+
+#: src/ui/project/record_window.ui:47
+msgid "Starts"
+msgstr "Začíná"
+
+#: src/ui/project/record_window.ui:50 src/ui/project/record_window.ui:70
+#: src/ui/project/reminder_window.ui:49
+msgid "Date"
+msgstr "Datum"
+
+#: src/ui/project/record_window.ui:57 src/ui/project/record_window.ui:77
+#: src/ui/project/reminder_window.ui:55
+msgid "Time"
+msgstr "Čas"
+
+#: src/ui/project/record_window.ui:67
+msgid "Ends"
+msgstr "Končí"
+
+#: src/ui/project/record_window.ui:86
+msgid "Duration"
+msgstr "Doba trvání"
+
+#: src/ui/project/record_window.ui:98 src/ui/project/reminder_window.ui:66
+msgid "delete"
+msgstr "smazat"
+
+#: src/ui/project/reminder_window.ui:16
+msgid "Reminder"
+msgstr "Upomínka"
+
+#: src/ui/project/task_page.ui:30
+msgid "Reminders"
+msgstr "Upomínky"
+
+#: src/ui/project/task_page.ui:92
+msgid "Records"
+msgstr "Záznamy"
+
+#: src/ui/project/task_page.ui:145
+msgid "no subtasks found"
+msgstr "nebyly nalezeny žádné dílčí úkoly"
+
+#: src/ui/project/task_page.ui:178
+msgid "no records found"
+msgstr "nebyly nalezeny žádné záznamy"
+
+#: src/ui/project/task_page.ui:179
+msgid "Use add button up there or start a timer"
+msgstr "Použijte tlačítko Přidat nebo spusťte časovač"
+
+#: src/ui/project/task_row.ui:109 src/views/project/task_row.rs:157
+msgid "Timer"
+msgstr "Časovač"
+
+#: src/ui/search/search_window.ui:16
+msgid "Search"
+msgstr "Vyhledávání"
+
+#: src/ui/search/search_window.ui:58
+msgid "no results found"
+msgstr "nebyly nalezeny žádné výsledky"
+
+#: src/ui/sidebar/sidebar_projects.ui:14
+msgid "Projects"
+msgstr "Projekty"
+
+#: src/ui/sidebar/sidebar_projects.ui:33
+msgid "Show archive projects"
+msgstr "Zobrazit archivní projekty"
+
+#: src/ui/sidebar/sidebar_projects.ui:40
+msgid "New project"
+msgstr "Nový projekt"
+
+#. Translators: Replace "translator-credits" with your names, one name per line
+#: src/application.rs:196
+msgid "translator-credits"
+msgstr "Amerey.eu"
+
+#: src/application.rs:242
+msgid "IPlan needs to run in the background to send reminders"
+msgstr "IPlan musí běžet na pozadí, aby mohl odesílat připomenutí"
+
+#: src/views/window.rs:105 src/views/window.rs:253
+msgid "Personal"
+msgstr "Osobní"
+
+#: src/views/window.rs:106 src/views/window.rs:254
+#: src/views/sidebar/sidebar_projects.rs:212
+msgid "Tasks"
+msgstr "Úkoly"
+
+#: src/views/backup_window.rs:91
+msgid "Path copied!"
+msgstr "Cesta zkopírována!"
+
+#: src/views/backup_window.rs:111
+msgid "Error while caching previous data"
+msgstr "Chyba při ukládání předchozích dat do mezipaměti"
+
+#: src/views/backup_window.rs:114
+msgid "Error while importing data"
+msgstr "Chyba při importování dat"
+
+#: src/views/project/project_done_tasks_window.rs:100
+msgid "Done Tasks"
+msgstr "Hotové úkoly"
+
+#: src/views/project/project_edit_window.rs:134
+msgid "Delete \"{}\" project?"
+msgstr "Smazat projekt „{}“?"
+
+#: src/views/project/project_edit_window.rs:137
+msgid "The project and its tasks will be permanently lost."
+msgstr "Projekt a jeho úkoly budou trvale ztraceny."
+
+#: src/views/project/project_list.rs:75
+msgid "\"{}\" moved to the done tasks list"
+msgstr "Položka „{}“ byla přesunuta do seznamu dokončených úkolů"
+
+#: src/views/project/project_list.rs:77 src/views/project/task_row.rs:321
+msgid "Undo"
+msgstr "Zpět"
+
+#: src/views/project/project_list.rs:373
+msgid "Delete \"{}\" list?"
+msgstr "Smazat seznam „{}“?"
+
+#: src/views/project/project_list.rs:375
+msgid "The list and its tasks will be permanently lost."
+msgstr "Seznam a jeho úkoly budou nenávratně ztraceny."
+
+#. Translators: {} Will be replaced with a shortcut label.
+#: src/views/project/project_lists.rs:55
+msgid "Use the primary menu {} for adding new lists"
+msgstr "Pro přidávání nových seznamů použijte primární nabídku {}"
+
+#: src/views/project/project_lists.rs:153
+msgid "New List"
+msgstr "Nový seznam"
+
+#: src/views/project/record_window.rs:180
+msgid "Duration can't be 0"
+msgstr "Doba trvání nemůže být 0"
+
+#: src/views/project/record_row.rs:92
+msgid "until"
+msgstr "až do"
+
+#: src/views/project/reminder_window.rs:111
+msgid "Time can't be in the past"
+msgstr "Čas nemůže být v minulosti"
+
+#: src/views/project/task_row.rs:320
+msgid "\"{}\" is going to delete"
+msgstr "„{}“ bude smazán"
+
+#: src/views/search/search_result.rs:55
+msgid "Project"
+msgstr "Projekt"
+
+#: src/views/search/search_result.rs:60
+msgid "Task"
+msgstr "Úkol"
