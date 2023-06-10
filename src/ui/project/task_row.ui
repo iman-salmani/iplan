@@ -123,8 +123,21 @@
             </child>
             <child>
               <object class="GtkLabel" id="date_indicator">
+                <property name="margin-end">12</property>
                 <style>
                   <class name="caption" />
+                  <class name="dim-label" />
+                </style>
+              </object>
+            </child>
+            <child>
+              <object class="GtkImage" id="reminders_indicator">
+                <property name="icon-name">alarm-symbolic</property>
+                <property name="margin-end">3</property>
+                <binding name="visible">
+                  <lookup name="visible">date_indicator</lookup>
+                </binding>
+                <style>
                   <class name="dim-label" />
                 </style>
               </object>

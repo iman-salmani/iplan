@@ -5,7 +5,9 @@ use std::thread;
 use std::time::{Duration, SystemTime};
 
 use crate::db::models::{Record, Task};
-use crate::db::operations::{create_record, delete_task, read_tasks, update_record, update_task};
+use crate::db::operations::{
+    create_record, delete_task, read_reminders, read_tasks, update_record, update_task,
+};
 use crate::views::project::{ProjectDoneTasksWindow, TaskWindow};
 use crate::views::IPlanWindow;
 
@@ -61,6 +63,8 @@ mod imp {
         pub subtasks_progress: TemplateChild<gtk::Label>,
         #[template_child]
         pub date_indicator: TemplateChild<gtk::Label>,
+        #[template_child]
+        pub reminders_indicator: TemplateChild<gtk::Image>,
     }
 
     #[glib::object_subclass]
@@ -175,7 +179,14 @@ impl TaskRow {
                 imp.date_indicator.set_visible(false);
             }
 
-            if !imp.subtasks_progress.is_visible() && !imp.date_indicator.is_visible() {
+            let reminders = read_reminders(task.id()).unwrap();
+            if reminders.is_empty() {
+                imp.reminders_indicator.set_visible(false);
+            } else {
+                imp.reminders_indicator.set_visible(true);
+            }
+
+            if !imp.subtasks_progress.is_visible() && !imp.date_indicator.is_visible() && imp.reminders_indicator.is_visible() {
                 imp.body.set_visible(false);
             }
         }
