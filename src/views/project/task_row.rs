@@ -202,7 +202,7 @@ impl TaskRow {
 
             if !imp.subtasks_progress.is_visible()
                 && !imp.date_indicator.is_visible()
-                && imp.reminders_indicator.is_visible()
+                && !imp.reminders_indicator.is_visible()
             {
                 imp.footer.set_visible(false);
             }

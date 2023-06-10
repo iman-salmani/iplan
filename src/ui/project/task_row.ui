@@ -38,9 +38,6 @@
                     <style>
                       <class name="heading" />
                     </style>
-                    <!-- <attributes> -->
-                    <!-- <attribute name="weight" value="PANGO_WEIGHT_NORMAL" /> -->
-                    <!-- </attributes> -->
                   </object>
                 </child>
               </object>
