@@ -35,9 +35,12 @@
                       bind-source="name_entry_buffer"
                       bind-property="text"
                       bind-flags="sync-create" />
-                    <attributes>
-                      <attribute name="weight" value="PANGO_WEIGHT_NORMAL" />
-                    </attributes>
+                    <style>
+                      <class name="heading" />
+                    </style>
+                    <!-- <attributes> -->
+                    <!-- <attribute name="weight" value="PANGO_WEIGHT_NORMAL" /> -->
+                    <!-- </attributes> -->
                   </object>
                 </child>
               </object>
@@ -79,6 +82,31 @@
         </child><!-- End Header Box -->
         <child><!-- Body -->
           <object class="GtkBox" id="body">
+            <property name="margin-start">9</property>
+            <property name="margin-end">9</property>
+            <child>
+              <object class="GtkSeparator">
+                <property name="margin-start">9</property>
+                <property name="margin-end">28</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkLabel" id="description">
+                <property name="hexpand">true</property>
+                <property name="halign">start</property>
+                <property name="lines">-1</property>
+                <property name="ellipsize">end</property>
+                <property name="margin-end">9</property>
+                <property name="margin-bottom">12</property>
+                <style>
+                  <class name="body" />
+                </style>
+              </object>
+            </child>
+          </object>
+        </child><!-- End Body -->
+        <child><!-- Footer -->
+          <object class="GtkBox" id="footer">
             <property name="margin-start">9</property>
             <property name="margin-end">9</property>
             <property name="margin-bottom">9</property>
@@ -143,7 +171,7 @@
               </object>
             </child>
           </object>
-        </child><!-- End Body -->
+        </child><!-- End Footer -->
       </object>
     </child>
     <!-- End Box -->

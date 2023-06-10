@@ -58,7 +58,11 @@ mod imp {
         #[template_child]
         pub options_box: TemplateChild<gtk::Box>,
         #[template_child]
+        pub description: TemplateChild<gtk::Label>,
+        #[template_child]
         pub body: TemplateChild<gtk::Box>,
+        #[template_child]
+        pub footer: TemplateChild<gtk::Box>,
         #[template_child]
         pub subtasks_progress: TemplateChild<gtk::Label>,
         #[template_child]
@@ -153,7 +157,17 @@ impl TaskRow {
 
         if self.compact() {
             imp.body.set_visible(false);
+            imp.footer.set_visible(false);
         } else {
+            let task_description = task.description();
+            let task_description = task_description.trim();
+            if task_description.is_empty() {
+                imp.body.set_visible(false);
+            } else {
+                imp.description.set_label(&task_description);
+                imp.body.set_visible(true);
+            }
+
             let subtasks =
                 read_tasks(Some(task.project()), None, None, Some(task.id()), None).unwrap();
             let total = subtasks.len();
@@ -186,8 +200,11 @@ impl TaskRow {
                 imp.reminders_indicator.set_visible(true);
             }
 
-            if !imp.subtasks_progress.is_visible() && !imp.date_indicator.is_visible() && imp.reminders_indicator.is_visible() {
-                imp.body.set_visible(false);
+            if !imp.subtasks_progress.is_visible()
+                && !imp.date_indicator.is_visible()
+                && imp.reminders_indicator.is_visible()
+            {
+                imp.footer.set_visible(false);
             }
         }
 
