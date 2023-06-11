@@ -79,27 +79,29 @@ impl Calendar {
     pub fn open_today(&self) {
         let imp = self.imp();
         let today = self.today_datetime();
+        let possible_today_indicator_date = imp
+            .day_switcher
+            .observe_children()
+            .item(2)
+            .and_downcast::<DayIndicator>()
+            .unwrap()
+            .datetime();
 
-        if self.datetime() == today {
-            let selected_indicator = imp
-                .day_switcher
-                .observe_children()
-                .item(2)
-                .and_downcast::<DayIndicator>()
-                .unwrap();
-            if selected_indicator.datetime() == today {
-                return;
+        if possible_today_indicator_date != today {
+            self.clear_day_switcher();
+
+            for day in -2..5 {
+                let datetime = today.add_days(day).unwrap();
+                imp.day_switcher.append(&self.new_day_indicator(datetime));
             }
         }
 
-        self.clear_day_switcher();
-
-        for day in -2..5 {
-            let datetime = today.add_days(day).unwrap();
-            imp.day_switcher.append(&self.new_day_indicator(datetime));
+        if self.datetime() != today {
+            self.set_page(today);
+            self.refresh_indicators_selection();
+        } else if possible_today_indicator_date != today {
+            self.refresh_indicators_selection();
         }
-
-        self.set_page(today);
     }
 
     pub fn refresh(&self) {
@@ -128,6 +130,7 @@ impl Calendar {
         day_indicator.connect_clicked(glib::clone!(@weak self as obj => move |indicator| {
             let datetime = indicator.datetime();
             obj.set_page(datetime);
+            obj.refresh_indicators_selection();
         }));
         day_indicator
     }
@@ -135,6 +138,11 @@ impl Calendar {
     fn set_page(&self, datetime: glib::DateTime) {
         let imp = self.imp();
         let previous_datetime = self.datetime();
+
+        if previous_datetime == datetime {
+            return;
+        }
+
         let name = datetime.format("%F").unwrap();
         let transition = if previous_datetime < datetime {
             gtk::StackTransitionType::SlideLeft
@@ -148,19 +156,22 @@ impl Calendar {
             imp.stack.add_named(&page, Some(&name));
         }
         imp.stack.set_visible_child_full(&name, transition);
-        self.refresh_indicators_selection();
     }
 
     fn refresh_indicators_selection(&self) {
         let imp = self.imp();
         let name = imp.stack.visible_child_name().unwrap();
         let indicators = imp.day_switcher.observe_children();
+        let today = self.today_datetime();
         for i in 0..indicators.n_items() {
             let indicator = indicators.item(i).and_downcast::<DayIndicator>().unwrap();
             if indicator.datetime().format("%F").unwrap() == name {
                 indicator.remove_css_class("flat");
             } else {
                 indicator.add_css_class("flat");
+            }
+            if today == indicator.datetime() {
+                indicator.add_css_class("accent");
             }
         }
     }
