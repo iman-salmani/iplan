@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: iplan\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-06-09 21:27+0330\n"
+"POT-Creation-Date: 2023-06-11 23:25+0330\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Iman Salmani <contact.imansalmani@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -48,8 +48,8 @@ msgstr "گروه بندی وظایف با پروژه و لیست"
 msgid "Timer for tasks"
 msgstr "تایمر برای وظایف"
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:14 src/ui/project/task_page.ui:73
-#: src/ui/project/task_page.ui:87
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:14 src/ui/project/task_page.ui:75
+#: src/ui/project/task_page.ui:89
 msgid "Subtasks"
 msgstr "وظایف فرعی"
 
@@ -105,11 +105,14 @@ msgstr "پشتیبان گیری از سیستم"
 msgid ""
 "Tasks can have date and reminders (Application will remain in background for "
 "handling reminders)"
-msgstr "وظایف می توانند تاریخ و یادآوری داشته باشند (برنامه برای مدیریت یادآوری ها در پس زمینه باقی می ماند)"
+msgstr ""
+"وظایف می توانند تاریخ و یادآوری داشته باشند (برنامه برای مدیریت یادآوری ها "
+"در پس زمینه باقی می ماند)"
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:70
 msgid "When a task doesn't have record, Timer button will move to options"
-msgstr "هنگامی که یک کار سابقه نداشته باشد، دکمه تایمر به گزینه ها منتقل می شود"
+msgstr ""
+"هنگامی که یک کار سابقه نداشته باشد، دکمه تایمر به گزینه ها منتقل می شود"
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:71
 msgid "Record edit window"
@@ -117,7 +120,8 @@ msgstr "پنجره ویرایش سوابق"
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:72
 msgid "Now users able to edit record duration by changing start time"
-msgstr "اکنون کاربران می توانند مدت زمان سوابق را با تغییر زمان شروع ویرایش کنند"
+msgstr ""
+"اکنون کاربران می توانند مدت زمان سوابق را با تغییر زمان شروع ویرایش کنند"
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:73
 msgid "Bug fixes, and UI improvements"
@@ -185,7 +189,7 @@ msgstr "پنجره رکوردها برای ایجاد، ویرایش و حذف �
 msgid "First stable release."
 msgstr "اولین انتشار پایدار."
 
-#: src/ui/window.ui:139
+#: src/ui/window.ui:139 src/ui/date_row.ui:24
 msgid "Today"
 msgstr "امروز"
 
@@ -279,6 +283,10 @@ msgstr "لغو"
 msgid "_Delete"
 msgstr "حذف"
 
+#: src/ui/date_row.ui:38
+msgid "No Date"
+msgstr "بدون تاریخ"
+
 #: src/ui/project/project_done_tasks_window.ui:52
 msgid "no done tasks found"
 msgstr "هیچ کار انجام شده ای پیدا نشد"
@@ -295,15 +303,15 @@ msgstr "نام"
 msgid "Icon"
 msgstr "نماد"
 
-#: src/ui/project/project_edit_window.ui:75 src/ui/project/task_page.ui:43
+#: src/ui/project/project_edit_window.ui:75 src/ui/project/task_page.ui:44
 msgid "Description"
 msgstr "شرح"
 
-#: src/ui/project/project_edit_window.ui:106
+#: src/ui/project/project_edit_window.ui:107
 msgid "Archive"
 msgstr "بایگانی"
 
-#: src/ui/project/project_edit_window.ui:118 src/ui/project/task_row.ui:124
+#: src/ui/project/project_edit_window.ui:119 src/ui/project/task_row.ui:216
 msgid "Delete"
 msgstr "حذف"
 
@@ -311,7 +319,7 @@ msgstr "حذف"
 msgid "Time spent per day"
 msgstr "زمان صرف شده در روز"
 
-#: src/ui/project/project_list.ui:82 src/ui/project/task_page.ui:146
+#: src/ui/project/project_list.ui:82 src/ui/project/task_page.ui:148
 msgid "Use add button up there"
 msgstr "از دکمه افزودن در بالا استفاده کنید"
 
@@ -373,27 +381,27 @@ msgstr "حذف"
 msgid "Reminder"
 msgstr "یادآور"
 
-#: src/ui/project/task_page.ui:30
+#: src/ui/project/task_page.ui:31
 msgid "Reminders"
 msgstr "یادآوری ها"
 
-#: src/ui/project/task_page.ui:92
+#: src/ui/project/task_page.ui:94
 msgid "Records"
 msgstr "سوابق"
 
-#: src/ui/project/task_page.ui:145
+#: src/ui/project/task_page.ui:147
 msgid "no subtasks found"
 msgstr "هیچ کار فرعی پیدا نشد"
 
-#: src/ui/project/task_page.ui:178
+#: src/ui/project/task_page.ui:180
 msgid "no records found"
 msgstr "هیچ رکوردی پیدا نشد"
 
-#: src/ui/project/task_page.ui:179
+#: src/ui/project/task_page.ui:181
 msgid "Use add button up there or start a timer"
 msgstr "از دکمه افزودن در بالا استفاده کنید یا تایمر را شروع کنید"
 
-#: src/ui/project/task_row.ui:109 src/views/project/task_row.rs:157
+#: src/ui/project/task_row.ui:201 src/views/project/task_row.rs:230
 msgid "Timer"
 msgstr "زمان سنج"
 
@@ -426,11 +434,11 @@ msgstr "ایمان سلمانی <contact.imansalmani@gmail.com>"
 msgid "IPlan needs to run in the background to send reminders"
 msgstr "برای ارسال یادآوری، آپلن باید در پس‌زمینه اجرا شود"
 
-#: src/views/window.rs:105 src/views/window.rs:253
+#: src/views/window.rs:105 src/views/window.rs:219
 msgid "Personal"
 msgstr "شخصی"
 
-#: src/views/window.rs:106 src/views/window.rs:254
+#: src/views/window.rs:106 src/views/window.rs:220
 #: src/views/sidebar/sidebar_projects.rs:212
 msgid "Tasks"
 msgstr "وظایف"
@@ -463,7 +471,7 @@ msgstr "پروژه و وظایف آن برای همیشه از بین خواهد
 msgid "\"{}\" moved to the done tasks list"
 msgstr "\"{}\" به فهرست کارهای انجام شده منتقل شد"
 
-#: src/views/project/project_list.rs:77 src/views/project/task_row.rs:321
+#: src/views/project/project_list.rs:77 src/views/project/task_row.rs:396
 msgid "Undo"
 msgstr "برگرد"
 
@@ -480,7 +488,7 @@ msgstr "فهرست و وظایف آن برای همیشه از بین خواهد
 msgid "Use the primary menu {} for adding new lists"
 msgstr "از منوی اصلی {} برای افزودن لیست های جدید استفاده کنید"
 
-#: src/views/project/project_lists.rs:153
+#: src/views/project/project_lists.rs:156
 msgid "New List"
 msgstr "فهرست جدید"
 
@@ -496,7 +504,7 @@ msgstr "تا"
 msgid "Time can't be in the past"
 msgstr "زمان نمی تواند در گذشته باشد"
 
-#: src/views/project/task_row.rs:320
+#: src/views/project/task_row.rs:395
 msgid "\"{}\" is going to delete"
 msgstr "درحال حذف \"{}\""
 

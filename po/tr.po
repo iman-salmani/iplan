@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ir.imansalmani.IPlan\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-06-09 21:27+0330\n"
+"POT-Creation-Date: 2023-06-11 23:25+0330\n"
 "PO-Revision-Date: 2023-06-03 10:00+0300\n"
 "Last-Translator: Sabri Ünal <libreajans@gmail.com>\n"
 "Language-Team: Türkçe <takim@gnome.org.tr>\n"
@@ -51,8 +51,8 @@ msgstr "Proje ve listelerle görev gruplama"
 msgid "Timer for tasks"
 msgstr "Görev zamanlayıcısı"
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:14 src/ui/project/task_page.ui:73
-#: src/ui/project/task_page.ui:87
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:14 src/ui/project/task_page.ui:75
+#: src/ui/project/task_page.ui:89
 msgid "Subtasks"
 msgstr "Alt görevler"
 
@@ -190,7 +190,7 @@ msgstr "Kayıt oluşturmak, düzenlemek ve silmek için kayıtlar penceresi"
 msgid "First stable release."
 msgstr "İlk stabil sürüm."
 
-#: src/ui/window.ui:139
+#: src/ui/window.ui:139 src/ui/date_row.ui:24
 msgid "Today"
 msgstr ""
 
@@ -285,6 +285,11 @@ msgstr "_İptal"
 msgid "_Delete"
 msgstr "_Sil"
 
+#: src/ui/date_row.ui:38
+#, fuzzy
+msgid "No Date"
+msgstr "Tarih"
+
 # Başlık düzeni tercih edildi.
 #: src/ui/project/project_done_tasks_window.ui:52
 msgid "no done tasks found"
@@ -302,15 +307,15 @@ msgstr "Ad"
 msgid "Icon"
 msgstr "Simge"
 
-#: src/ui/project/project_edit_window.ui:75 src/ui/project/task_page.ui:43
+#: src/ui/project/project_edit_window.ui:75 src/ui/project/task_page.ui:44
 msgid "Description"
 msgstr "Açıklama"
 
-#: src/ui/project/project_edit_window.ui:106
+#: src/ui/project/project_edit_window.ui:107
 msgid "Archive"
 msgstr "Arşivle"
 
-#: src/ui/project/project_edit_window.ui:118 src/ui/project/task_row.ui:124
+#: src/ui/project/project_edit_window.ui:119 src/ui/project/task_row.ui:216
 msgid "Delete"
 msgstr "Sil"
 
@@ -318,7 +323,7 @@ msgstr "Sil"
 msgid "Time spent per day"
 msgstr "Günlük harcanan zaman"
 
-#: src/ui/project/project_list.ui:82 src/ui/project/task_page.ui:146
+#: src/ui/project/project_list.ui:82 src/ui/project/task_page.ui:148
 msgid "Use add button up there"
 msgstr "Yukarıdaki ekle düğmesini kullanın"
 
@@ -381,29 +386,29 @@ msgstr "sil"
 msgid "Reminder"
 msgstr ""
 
-#: src/ui/project/task_page.ui:30
+#: src/ui/project/task_page.ui:31
 msgid "Reminders"
 msgstr ""
 
-#: src/ui/project/task_page.ui:92
+#: src/ui/project/task_page.ui:94
 msgid "Records"
 msgstr "Kayıtlar"
 
 # Başlık düzeni tercih edildi.
-#: src/ui/project/task_page.ui:145
+#: src/ui/project/task_page.ui:147
 msgid "no subtasks found"
 msgstr "Alt Görev Bulunamadı"
 
 # Başlık düzeni tercih edildi.
-#: src/ui/project/task_page.ui:178
+#: src/ui/project/task_page.ui:180
 msgid "no records found"
 msgstr "Kayıt Bulunamadı"
 
-#: src/ui/project/task_page.ui:179
+#: src/ui/project/task_page.ui:181
 msgid "Use add button up there or start a timer"
 msgstr "Yukarıdaki ekle düğmesini kullanın ya da bir zamanlayıcı başlatın"
 
-#: src/ui/project/task_row.ui:109 src/views/project/task_row.rs:157
+#: src/ui/project/task_row.ui:201 src/views/project/task_row.rs:230
 #, fuzzy
 msgid "Timer"
 msgstr "Saat"
@@ -438,11 +443,11 @@ msgstr "Sabri Ünal <libreajans@gmail.com>"
 msgid "IPlan needs to run in the background to send reminders"
 msgstr ""
 
-#: src/views/window.rs:105 src/views/window.rs:253
+#: src/views/window.rs:105 src/views/window.rs:219
 msgid "Personal"
 msgstr "Kişisel"
 
-#: src/views/window.rs:106 src/views/window.rs:254
+#: src/views/window.rs:106 src/views/window.rs:220
 #: src/views/sidebar/sidebar_projects.rs:212
 msgid "Tasks"
 msgstr "Görevler"
@@ -475,7 +480,7 @@ msgstr "Proje ve görevleri kalıcı olarak kaybedilecek."
 msgid "\"{}\" moved to the done tasks list"
 msgstr "\"{}\" tamamlanmış görevler listesine taşındı"
 
-#: src/views/project/project_list.rs:77 src/views/project/task_row.rs:321
+#: src/views/project/project_list.rs:77 src/views/project/task_row.rs:396
 msgid "Undo"
 msgstr "Geri Al"
 
@@ -492,7 +497,7 @@ msgstr "Liste ve görevleri kalıcı olarak kaybedilecek."
 msgid "Use the primary menu {} for adding new lists"
 msgstr "Yeni listeler eklemek için {} ana menüyü kullan"
 
-#: src/views/project/project_lists.rs:153
+#: src/views/project/project_lists.rs:156
 msgid "New List"
 msgstr "Yeni Liste"
 
@@ -509,7 +514,7 @@ msgstr "şu zamana kadar"
 msgid "Time can't be in the past"
 msgstr "Günlük harcanan zaman"
 
-#: src/views/project/task_row.rs:320
+#: src/views/project/task_row.rs:395
 msgid "\"{}\" is going to delete"
 msgstr "“{}” silinecek"
 
