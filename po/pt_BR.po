@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: iplan\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-06-11 23:25+0330\n"
+"POT-Creation-Date: 2023-06-12 00:19+0330\n"
 "PO-Revision-Date: 2023-06-10 12:30-0300\n"
 "Last-Translator: Fúlvio Leo <fulviokaldas@outlook.com>\n"
 "Language: pt_BR\n"
@@ -221,6 +221,14 @@ msgstr "_Sobre o IPlan"
 #: src/ui/window.ui:205
 msgid "_Quit"
 msgstr "_Sair"
+
+#: src/ui/calendar.ui:18
+msgid "Previous week"
+msgstr ""
+
+#: src/ui/calendar.ui:36
+msgid "Next week"
+msgstr ""
 
 #: src/ui/calendar_page.ui:28 src/ui/project/project_list.ui:81
 msgid "no tasks found"

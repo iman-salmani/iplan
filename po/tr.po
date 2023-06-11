@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ir.imansalmani.IPlan\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-06-11 23:25+0330\n"
+"POT-Creation-Date: 2023-06-12 00:19+0330\n"
 "PO-Revision-Date: 2023-06-03 10:00+0300\n"
 "Last-Translator: Sabri Ünal <libreajans@gmail.com>\n"
 "Language-Team: Türkçe <takim@gnome.org.tr>\n"
@@ -217,6 +217,14 @@ msgstr "IPlan _Hakkında"
 #: src/ui/window.ui:205
 msgid "_Quit"
 msgstr "_Çık"
+
+#: src/ui/calendar.ui:18
+msgid "Previous week"
+msgstr ""
+
+#: src/ui/calendar.ui:36
+msgid "Next week"
+msgstr ""
 
 # Başlık düzeni tercih edildi.
 #: src/ui/calendar_page.ui:28 src/ui/project/project_list.ui:81
