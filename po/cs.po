@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: iplan\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-06-09 21:27+0330\n"
-"PO-Revision-Date: 2023-06-10 20:08+0200\n"
+"PO-Revision-Date: 2023-06-11 15:03+0200\n"
 "Last-Translator: Amerey.eu <info@amerey.eu>\n"
 "Language-Team: \n"
 "Language: cs\n"
@@ -421,7 +421,7 @@ msgstr "Nový projekt"
 #. Translators: Replace "translator-credits" with your names, one name per line
 #: src/application.rs:196
 msgid "translator-credits"
-msgstr "Amerey.eu"
+msgstr "Amerey.eu https://amerey.eu"
 
 #: src/application.rs:242
 msgid "IPlan needs to run in the background to send reminders"
