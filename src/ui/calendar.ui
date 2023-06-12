@@ -15,6 +15,7 @@
         </style>
         <child>
           <object class="GtkButton">
+            <property name="tooltip-text" translatable="yes">Previous week</property>
             <property name="icon-name">go-previous-symbolic</property>
             <property name="width-request">48</property>
             <signal name="clicked" handler="handle_previous_day_clicked" swapped="true" />
@@ -32,6 +33,7 @@
         </child><!-- End Stack Switcher -->
         <child>
           <object class="GtkButton">
+            <property name="tooltip-text" translatable="yes">Next week</property>
             <property name="icon-name">go-next-symbolic</property>
             <property name="width-request">48</property>
             <signal name="clicked" handler="handle_next_day_clicked" swapped="true" />

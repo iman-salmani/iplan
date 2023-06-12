@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: iplan\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-06-09 21:27+0330\n"
+"POT-Creation-Date: 2023-06-12 00:19+0330\n"
 "PO-Revision-Date: 2023-06-11 15:03+0200\n"
 "Last-Translator: Amerey.eu <info@amerey.eu>\n"
 "Language-Team: \n"
@@ -49,8 +49,8 @@ msgstr "Seskupování úkolů s projektem a seznamem"
 msgid "Timer for tasks"
 msgstr "Časomíra pro úkoly"
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:14 src/ui/project/task_page.ui:73
-#: src/ui/project/task_page.ui:87
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:14 src/ui/project/task_page.ui:75
+#: src/ui/project/task_page.ui:89
 msgid "Subtasks"
 msgstr "Dílčí úkoly"
 
@@ -186,7 +186,7 @@ msgstr "Okno záznamů pro vytváření, úpravy a mazání záznamů"
 msgid "First stable release."
 msgstr "První stabilní verze."
 
-#: src/ui/window.ui:139
+#: src/ui/window.ui:139 src/ui/date_row.ui:24
 msgid "Today"
 msgstr "Dnes"
 
@@ -213,6 +213,14 @@ msgstr "_O aplikaci IPlan"
 #: src/ui/window.ui:205
 msgid "_Quit"
 msgstr "_Ukončit"
+
+#: src/ui/calendar.ui:18
+msgid "Previous week"
+msgstr ""
+
+#: src/ui/calendar.ui:36
+msgid "Next week"
+msgstr ""
 
 #: src/ui/calendar_page.ui:28 src/ui/project/project_list.ui:81
 msgid "no tasks found"
@@ -280,6 +288,11 @@ msgstr "_Zrušit"
 msgid "_Delete"
 msgstr "_Smazat"
 
+#: src/ui/date_row.ui:38
+#, fuzzy
+msgid "No Date"
+msgstr "Datum"
+
 #: src/ui/project/project_done_tasks_window.ui:52
 msgid "no done tasks found"
 msgstr "nenalezeny žádné hotové úkoly"
@@ -296,15 +309,15 @@ msgstr "Název"
 msgid "Icon"
 msgstr "Ikona"
 
-#: src/ui/project/project_edit_window.ui:75 src/ui/project/task_page.ui:43
+#: src/ui/project/project_edit_window.ui:75 src/ui/project/task_page.ui:44
 msgid "Description"
 msgstr "Popis"
 
-#: src/ui/project/project_edit_window.ui:106
+#: src/ui/project/project_edit_window.ui:107
 msgid "Archive"
 msgstr "Archivovat"
 
-#: src/ui/project/project_edit_window.ui:118 src/ui/project/task_row.ui:124
+#: src/ui/project/project_edit_window.ui:119 src/ui/project/task_row.ui:216
 msgid "Delete"
 msgstr "Smazat"
 
@@ -312,7 +325,7 @@ msgstr "Smazat"
 msgid "Time spent per day"
 msgstr "Čas strávený denně"
 
-#: src/ui/project/project_list.ui:82 src/ui/project/task_page.ui:146
+#: src/ui/project/project_list.ui:82 src/ui/project/task_page.ui:148
 msgid "Use add button up there"
 msgstr "Pro nový úkol použijte tlačítko plus"
 
@@ -374,27 +387,27 @@ msgstr "smazat"
 msgid "Reminder"
 msgstr "Upomínka"
 
-#: src/ui/project/task_page.ui:30
+#: src/ui/project/task_page.ui:31
 msgid "Reminders"
 msgstr "Upomínky"
 
-#: src/ui/project/task_page.ui:92
+#: src/ui/project/task_page.ui:94
 msgid "Records"
 msgstr "Záznamy"
 
-#: src/ui/project/task_page.ui:145
+#: src/ui/project/task_page.ui:147
 msgid "no subtasks found"
 msgstr "nebyly nalezeny žádné dílčí úkoly"
 
-#: src/ui/project/task_page.ui:178
+#: src/ui/project/task_page.ui:180
 msgid "no records found"
 msgstr "nebyly nalezeny žádné záznamy"
 
-#: src/ui/project/task_page.ui:179
+#: src/ui/project/task_page.ui:181
 msgid "Use add button up there or start a timer"
 msgstr "Použijte tlačítko Přidat nebo spusťte časovač"
 
-#: src/ui/project/task_row.ui:109 src/views/project/task_row.rs:157
+#: src/ui/project/task_row.ui:201 src/views/project/task_row.rs:230
 msgid "Timer"
 msgstr "Časovač"
 
@@ -427,11 +440,11 @@ msgstr "Amerey.eu https://amerey.eu"
 msgid "IPlan needs to run in the background to send reminders"
 msgstr "IPlan musí běžet na pozadí, aby mohl odesílat připomenutí"
 
-#: src/views/window.rs:105 src/views/window.rs:253
+#: src/views/window.rs:105 src/views/window.rs:219
 msgid "Personal"
 msgstr "Osobní"
 
-#: src/views/window.rs:106 src/views/window.rs:254
+#: src/views/window.rs:106 src/views/window.rs:220
 #: src/views/sidebar/sidebar_projects.rs:212
 msgid "Tasks"
 msgstr "Úkoly"
@@ -464,7 +477,7 @@ msgstr "Projekt a jeho úkoly budou trvale ztraceny."
 msgid "\"{}\" moved to the done tasks list"
 msgstr "Položka „{}“ byla přesunuta do seznamu dokončených úkolů"
 
-#: src/views/project/project_list.rs:77 src/views/project/task_row.rs:321
+#: src/views/project/project_list.rs:77 src/views/project/task_row.rs:396
 msgid "Undo"
 msgstr "Zpět"
 
@@ -481,7 +494,7 @@ msgstr "Seznam a jeho úkoly budou nenávratně ztraceny."
 msgid "Use the primary menu {} for adding new lists"
 msgstr "Pro přidávání nových seznamů použijte primární nabídku {}"
 
-#: src/views/project/project_lists.rs:153
+#: src/views/project/project_lists.rs:156
 msgid "New List"
 msgstr "Nový seznam"
 
@@ -497,7 +510,7 @@ msgstr "až do"
 msgid "Time can't be in the past"
 msgstr "Čas nemůže být v minulosti"
 
-#: src/views/project/task_row.rs:320
+#: src/views/project/task_row.rs:395
 msgid "\"{}\" is going to delete"
 msgstr "„{}“ bude smazán"
 

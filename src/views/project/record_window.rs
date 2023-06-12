@@ -147,7 +147,7 @@ impl RecordWindow {
                 let datetime = obj
                     .imp()
                     .end_date_row
-                    .calculate_datetime()
+                    .date()
                     .add_seconds(time as f64)
                     .unwrap();
                 Some(datetime.to_unix())

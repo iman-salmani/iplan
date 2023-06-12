@@ -12,3 +12,7 @@ row.expander textview {
 .calendar_header, .calendar_header * {
   border-radius: 0;
 }
+.date_row_calendar {
+  background-color: rgba(0,0,0,0);
+  border: 0;
+}

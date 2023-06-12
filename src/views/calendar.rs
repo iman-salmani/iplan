@@ -79,25 +79,29 @@ impl Calendar {
     pub fn open_today(&self) {
         let imp = self.imp();
         let today = self.today_datetime();
-
-        let first_indicator = imp
+        let possible_today_indicator_date = imp
             .day_switcher
-            .first_child()
+            .observe_children()
+            .item(2)
             .and_downcast::<DayIndicator>()
-            .unwrap();
-        let first_date = first_indicator.datetime();
-        let difference = today.difference(&first_date).as_days();
-        if difference < 0 {
-            for _ in 0..difference.abs() {
-                self.switcher_previous();
-            }
-        } else if difference > 7 {
-            for _ in 0..difference - 3 {
-                self.switcher_next();
+            .unwrap()
+            .datetime();
+
+        if possible_today_indicator_date != today {
+            self.clear_day_switcher();
+
+            for day in -2..5 {
+                let datetime = today.add_days(day).unwrap();
+                imp.day_switcher.append(&self.new_day_indicator(datetime));
             }
         }
 
-        self.set_page(today);
+        if self.datetime() != today {
+            self.set_page(today);
+            self.refresh_indicators_selection();
+        } else if possible_today_indicator_date != today {
+            self.refresh_indicators_selection();
+        }
     }
 
     pub fn refresh(&self) {
@@ -114,9 +118,9 @@ impl Calendar {
 
     fn init_widgets(&self) {
         let imp = self.imp();
-        let now = self.today_datetime();
+        let today = self.today_datetime();
         for day in -2..5 {
-            let datetime = now.add_days(day).unwrap();
+            let datetime = today.add_days(day).unwrap();
             imp.day_switcher.append(&self.new_day_indicator(datetime));
         }
     }
@@ -126,6 +130,7 @@ impl Calendar {
         day_indicator.connect_clicked(glib::clone!(@weak self as obj => move |indicator| {
             let datetime = indicator.datetime();
             obj.set_page(datetime);
+            obj.refresh_indicators_selection();
         }));
         day_indicator
     }
@@ -133,6 +138,11 @@ impl Calendar {
     fn set_page(&self, datetime: glib::DateTime) {
         let imp = self.imp();
         let previous_datetime = self.datetime();
+
+        if previous_datetime == datetime {
+            return;
+        }
+
         let name = datetime.format("%F").unwrap();
         let transition = if previous_datetime < datetime {
             gtk::StackTransitionType::SlideLeft
@@ -146,13 +156,13 @@ impl Calendar {
             imp.stack.add_named(&page, Some(&name));
         }
         imp.stack.set_visible_child_full(&name, transition);
-        self.refresh_indicators_selection();
     }
 
     fn refresh_indicators_selection(&self) {
         let imp = self.imp();
         let name = imp.stack.visible_child_name().unwrap();
         let indicators = imp.day_switcher.observe_children();
+        let today = self.today_datetime();
         for i in 0..indicators.n_items() {
             let indicator = indicators.item(i).and_downcast::<DayIndicator>().unwrap();
             if indicator.datetime().format("%F").unwrap() == name {
@@ -160,22 +170,27 @@ impl Calendar {
             } else {
                 indicator.add_css_class("flat");
             }
+            if today == indicator.datetime() {
+                indicator.add_css_class("accent");
+            }
         }
     }
 
     fn switcher_next(&self) {
         let imp = self.imp();
-        let first_indicator = imp.day_switcher.first_child().unwrap();
         let last_indicator = imp
             .day_switcher
             .last_child()
             .and_downcast::<DayIndicator>()
             .unwrap();
-        let datetime = last_indicator.datetime().add_days(1).unwrap();
-        let new_indicator = self.new_day_indicator(datetime);
-        imp.day_switcher.remove(&first_indicator);
-        imp.day_switcher.append(&new_indicator);
-        // FIXME: what todo if deleted indicator is active
+
+        self.clear_day_switcher();
+
+        for i in 1..7 {
+            let datetime = last_indicator.datetime().add_days(i).unwrap();
+            let new_indicator = self.new_day_indicator(datetime);
+            imp.day_switcher.append(&new_indicator);
+        }
     }
 
     fn switcher_previous(&self) {
@@ -185,11 +200,25 @@ impl Calendar {
             .first_child()
             .and_downcast::<DayIndicator>()
             .unwrap();
-        let last_indicator = imp.day_switcher.last_child().unwrap();
-        let datetime = first_indicator.datetime().add_days(-1).unwrap();
-        let new_indicator = self.new_day_indicator(datetime);
-        imp.day_switcher.remove(&last_indicator);
-        imp.day_switcher.prepend(&new_indicator);
+
+        self.clear_day_switcher();
+
+        for i in 1..7 {
+            let datetime = first_indicator.datetime().add_days(-i).unwrap();
+            let new_indicator = self.new_day_indicator(datetime);
+            imp.day_switcher.prepend(&new_indicator);
+        }
+    }
+
+    fn clear_day_switcher(&self) {
+        let imp = self.imp();
+        loop {
+            if let Some(indicator) = imp.day_switcher.first_child() {
+                imp.day_switcher.remove(&indicator);
+            } else {
+                break;
+            }
+        }
     }
 
     fn today_datetime(&self) -> glib::DateTime {

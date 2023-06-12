@@ -90,9 +90,7 @@ impl DateRow {
     pub fn set_datetime(&self, datetime: &glib::DateTime) {
         let imp = self.imp();
         self.set_skip(true);
-        imp.calendar.set_year(datetime.year());
-        imp.calendar.set_month(datetime.month() - 1);
-        imp.calendar.set_day(datetime.day_of_month());
+        imp.calendar.select_day(datetime);
         self.set_skip(false);
         self.refresh_row(datetime);
         self.show_clear_button();
@@ -103,7 +101,7 @@ impl DateRow {
         self.set_datetime(&datetime);
     }
 
-    pub fn calculate_datetime(&self) -> glib::DateTime {
+    pub fn date(&self) -> glib::DateTime {
         let calendar: &gtk::Calendar = self.imp().calendar.as_ref();
         glib::DateTime::new(
             &glib::TimeZone::local(),
@@ -135,13 +133,23 @@ impl DateRow {
 
     #[template_callback]
     fn handle_clear_clicked(&self, clear_button: gtk::Button) {
+        let imp = self.imp();
         clear_button.set_visible(false);
-        self.imp().calendar.clear_marks();
         self.set_subtitle("");
+        imp.menu_button.popdown();
         self.emit_by_name::<()>(
             "date-changed",
             &[&glib::DateTime::from_unix_local(0).unwrap()],
         );
+    }
+
+    #[template_callback]
+    fn handle_today_clicked(&self, _: gtk::Button) {
+        let imp = self.imp();
+        let now = glib::DateTime::now_local().unwrap();
+        imp.calendar.select_day(&now);
+        self.refresh_row(&now);
+        self.show_clear_button();
     }
 
     #[template_callback]
@@ -153,7 +161,7 @@ impl DateRow {
         let imp = self.imp();
         imp.menu_button.popdown();
         self.show_clear_button();
-        let datetime = self.calculate_datetime();
+        let datetime = self.date();
         self.refresh_row(&datetime);
         self.emit_by_name::<()>("date-changed", &[&datetime]);
     }
