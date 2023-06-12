@@ -52,7 +52,7 @@ msgstr "Minuteur pour les tâches"
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:14 src/ui/project/task_page.ui:73
 #: src/ui/project/task_page.ui:87
 msgid "Subtasks"
-msgstr "Possibilité d’ajouter des sous-tâches"
+msgstr "Sous-tâches"
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:15
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:68
@@ -434,7 +434,7 @@ msgstr "Nouveau projet"
 #. Translators: Replace "translator-credits" with your names, one name per line
 #: src/application.rs:196
 msgid "translator-credits"
-msgstr "Irénée Thirion"
+msgstr "Irénée Thirion <irenee.thirion@e.email>"
 
 #: src/application.rs:242
 msgid "IPlan needs to run in the background to send reminders"
