@@ -296,6 +296,11 @@ impl IPlanWindow {
     #[template_callback]
     fn handle_calendar_button_clicked(&self, button: gtk::Button) {
         let imp = self.imp();
+        
+        if imp.calendar.is_visible() {
+            return
+        }
+
         button.remove_css_class("flat");
         imp.project.take();
         imp.calendar.set_visible(true);
