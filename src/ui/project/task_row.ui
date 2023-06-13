@@ -81,6 +81,7 @@
           <object class="GtkBox" id="body">
             <property name="margin-start">9</property>
             <property name="margin-end">9</property>
+            <property name="visible">false</property>
             <child>
               <object class="GtkSeparator">
                 <property name="margin-start">9</property>
@@ -107,6 +108,7 @@
             <property name="margin-start">9</property>
             <property name="margin-end">9</property>
             <property name="margin-bottom">9</property>
+            <property name="visible">false</property>
             <child>
               <object class="GtkSeparator">
                 <property name="margin-start">9</property>

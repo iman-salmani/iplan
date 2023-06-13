@@ -88,8 +88,8 @@ mod imp {
 
 glib::wrapper! {
     pub struct ProjectLists(ObjectSubclass<imp::ProjectLists>)
-        @extends gtk::Widget,
-        @implements gtk::Buildable;
+        @extends glib::InitiallyUnowned, gtk::Widget,
+        @implements gtk::Accessible, gtk::Buildable, gtk::ConstraintTarget;
 }
 
 impl Default for ProjectLists {
@@ -107,19 +107,27 @@ impl ProjectLists {
         let imp = self.imp();
 
         let lists = imp.lists_box.observe_children();
-        for _i in 0..lists.n_items() {
+        for _ in 0..lists.n_items() {
             imp.lists_box
                 .remove(&lists.item(0).and_downcast::<gtk::Widget>().unwrap());
         }
 
-        // let tasks_per_page = self.allocated_height() / 72;   // TODO: update by window resize
-        let page_size: i32 = 18;
-        for list in read_lists(project_id).expect("Failed to read lists") {
-            let project_list = ProjectList::new(list, imp.layout.get(), page_size as usize);
-            imp.lists_box.append(&project_list);
-        }
-        if imp.lists_box.first_child().is_none() {
+        let lists = read_lists(project_id).unwrap();
+        if lists.is_empty() {
             imp.lists_box.append(&imp.placeholder.get());
+        } else {
+            let mut max_height = self.height();
+            if max_height == 0 {
+                max_height = self
+                    .root()
+                    .and_downcast::<IPlanWindow>()
+                    .unwrap()
+                    .default_height();
+            }
+            for list in lists {
+                let project_list = ProjectList::new(list, imp.layout.get(), max_height as usize);
+                imp.lists_box.append(&project_list);
+            }
         }
     }
 

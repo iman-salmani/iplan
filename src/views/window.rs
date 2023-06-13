@@ -241,7 +241,6 @@ impl IPlanWindow {
             .activate_action("project.open", None)
             .expect("Failed to open project");
         imp.sidebar_projects.select_active_project();
-        imp.project_lists.open_project(window.project().id());
 
         if let Some(display) = gdk::Display::default() {
             let provider = gtk::CssProvider::new();

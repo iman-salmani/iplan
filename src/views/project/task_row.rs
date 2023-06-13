@@ -32,6 +32,8 @@ mod imp {
         pub moving_out: Cell<bool>,
         #[property(get, set)]
         pub compact: Cell<bool>,
+        #[property(get, set)]
+        pub lazy: Cell<bool>,
         #[template_child]
         pub row_box: TemplateChild<gtk::Box>,
         #[template_child]
@@ -138,8 +140,8 @@ mod imp {
 
 glib::wrapper! {
     pub struct TaskRow(ObjectSubclass<imp::TaskRow>)
-        @extends gtk::Widget, gtk::ListBoxRow,
-        @implements gtk::Buildable;
+        @extends glib::InitiallyUnowned, gtk::Widget, gtk::ListBoxRow,
+        @implements gtk::Accessible, gtk::Actionable, gtk::Buildable, gtk::ConstraintTarget;
 }
 
 #[gtk::template_callbacks]
@@ -148,6 +150,17 @@ impl TaskRow {
         let obj = glib::Object::new::<Self>();
         obj.set_compact(compact);
         obj.reset(task);
+        obj
+    }
+
+    pub fn new_lazy(task: &Task) -> Self {
+        let obj = glib::Object::new::<Self>();
+        obj.set_task(task);
+        obj.set_lazy(true);
+        obj.connect_lazy_notify(|obj| {
+            let task = obj.task();
+            obj.reset(task);
+        });
         obj
     }
 

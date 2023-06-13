@@ -77,7 +77,7 @@ impl ProjectHeader {
             .set_label(&Record::duration_display(project.duration()));
 
         let lists = imp.stat_box.observe_children();
-        for _i in 0..lists.n_items() {
+        for _ in 0..lists.n_items() {
             if let Some(row) = lists.item(0).and_downcast::<gtk::ListBoxRow>() {
                 imp.stat_box.remove(&row);
             }

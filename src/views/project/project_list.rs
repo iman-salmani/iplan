@@ -20,7 +20,6 @@ mod imp {
     pub struct ProjectList {
         #[property(get, set)]
         pub list: RefCell<List>,
-        pub tasks: RefCell<Vec<Task>>,
         #[template_child]
         pub header: TemplateChild<gtk::Box>,
         #[template_child]
@@ -111,7 +110,17 @@ mod imp {
             self.derived_set_property(id, value, pspec)
         }
     }
-    impl WidgetImpl for ProjectList {}
+    impl WidgetImpl for ProjectList {
+        fn map(&self) {
+            self.parent_map();
+            let obj = self.obj();
+            if let Some(win) = obj.root().and_downcast::<IPlanWindow>() {
+                win.connect_default_height_notify(glib::clone!(@weak obj => move |_| {
+                    obj.load_lazy_rows();
+                }));
+            }
+        }
+    }
     impl BoxImpl for ProjectList {}
 }
 
@@ -123,7 +132,7 @@ glib::wrapper! {
 
 #[gtk::template_callbacks]
 impl ProjectList {
-    pub fn new(list: List, layout: ProjectLayout, page_size: usize) -> Self {
+    pub fn new(list: List, layout: ProjectLayout, max_height: usize) -> Self {
         let obj = glib::Object::new::<Self>();
         obj.set_list(list);
         let imp = obj.imp();
@@ -143,49 +152,36 @@ impl ProjectList {
             None,
         )
         .expect("Failed to read tasks");
-        imp.tasks.replace(tasks);
-        let tasks = imp.tasks.borrow().to_owned();
-        if tasks.len() > page_size && layout == ProjectLayout::Horizontal {
-            for task in tasks.split_at(page_size).0 {
-                let project_list_task = TaskRow::new(task.to_owned(), false);
-                imp.tasks_box.append(&project_list_task);
+        if layout == ProjectLayout::Horizontal {
+            let page_size = max_height / 50;
+            let (first_rows, other_rows) = tasks.split_at(page_size); // FIXME: check if height += 50 have a better better performance
+            for task in first_rows {
+                let task_row = TaskRow::new(task.to_owned(), false);
+                imp.tasks_box.append(&task_row);
+            }
+            for task in other_rows {
+                let task_row = TaskRow::new_lazy(task);
+                imp.tasks_box.append(&task_row);
             }
         } else {
             for task in tasks {
-                let project_list_task = TaskRow::new(task, false);
-                imp.tasks_box.append(&project_list_task);
+                let task_row = TaskRow::new(task, false);
+                imp.tasks_box.append(&task_row);
             }
         }
+
         obj
     }
 
     pub fn select_task(&self, target_task: Task) {
         let imp = self.imp();
         let task_rows = imp.tasks_box.observe_children();
-        let mut loaded = false;
         for i in 0..task_rows.n_items() - 1 {
-            if let Some(project_list_task) = task_rows.item(i).and_downcast::<TaskRow>() {
-                let list_task = project_list_task.task();
+            if let Some(task_row) = task_rows.item(i).and_downcast::<TaskRow>() {
+                let list_task = task_row.task();
                 if list_task.position() == target_task.position() {
-                    project_list_task.grab_focus();
-                    loaded = true;
+                    task_row.grab_focus();
                     break;
-                }
-            }
-        }
-        if !loaded {
-            loop {
-                let next = imp.tasks_box.observe_children().n_items() as usize - 1;
-                let tasks = imp.tasks.borrow();
-                if next < tasks.len() {
-                    let task = tasks.get(next).unwrap().clone();
-                    let task_p = task.position();
-                    let project_list_task = TaskRow::new(task, false);
-                    imp.tasks_box.append(&project_list_task);
-                    if task_p == target_task.position() {
-                        project_list_task.grab_focus();
-                        break;
-                    }
                 }
             }
         }
@@ -214,11 +210,42 @@ impl ProjectList {
         });
     }
 
+    fn load_lazy_rows(&self) {
+        let imp = self.imp();
+        let scrolled_win = imp.scrolled_window.get();
+        let pos = scrolled_win.vadjustment().value();
+        let height = imp.scrolled_window.height();
+        let row = imp.tasks_box.row_at_y(height + pos as i32 - 50);
+
+        let mut possible_row = row.and_upcast::<gtk::Widget>();
+        loop {
+            if let Some(row) = possible_row {
+                if row.property::<bool>("lazy") {
+                    row.set_property("lazy", false);
+                    possible_row = row.prev_sibling();
+                } else {
+                    break;
+                }
+            } else {
+                break;
+            }
+        }
+    }
+
     fn transform_horizontal_layout(&self) {
         let imp: &imp::ProjectList = self.imp();
         imp.tasks_box.unparent();
         imp.scrolled_window.set_child(Some(&imp.tasks_box.get()));
         imp.scrolled_window.set_visible(true);
+
+        imp.scrolled_window
+            .vadjustment()
+            .connect_value_changed(glib::clone!(@weak self as obj =>
+                move |_| {
+                    obj.load_lazy_rows();
+                }
+            ));
+
         let scroll_controller = gtk::EventControllerScroll::builder()
             .flags(gtk::EventControllerScrollFlags::VERTICAL)
             .build();
@@ -248,19 +275,6 @@ impl ProjectList {
             ),
         );
         imp.scrolled_window.add_controller(scroll_controller);
-        imp.scrolled_window
-            .connect_edge_reached(glib::clone!(@weak imp =>
-                move |_obj, pos| {
-                    if pos == gtk::PositionType::Bottom {
-                        let next = imp.tasks_box.observe_children().n_items() as usize - 1;
-                        let tasks = imp.tasks.borrow();
-                        if next < tasks.len() {
-                            let project_list_task = TaskRow::new(tasks.get(next).unwrap().clone(), false);
-                            imp.tasks_box.append(&project_list_task);
-                        }
-                    }
-                }
-            ));
     }
 
     fn add_drag_drop_controllers(&self) {
