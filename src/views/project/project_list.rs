@@ -152,8 +152,8 @@ impl ProjectList {
             None,
         )
         .expect("Failed to read tasks");
-        if layout == ProjectLayout::Horizontal {
-            let page_size = max_height / 50;
+        let page_size = max_height / 50;
+        if tasks.len() > page_size && layout == ProjectLayout::Horizontal {
             let (first_rows, other_rows) = tasks.split_at(page_size); // FIXME: check if height += 50 have a better better performance
             for task in first_rows {
                 let task_row = TaskRow::new(task.to_owned(), false);
