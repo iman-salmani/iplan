@@ -66,6 +66,7 @@
                 <property name="orientation">vertical</property>
                 <child><!-- Header -->
                   <object class="AdwHeaderBar">
+                    <property name="show-start-title-buttons">false</property>
                     <property name="title-widget">
                       <object class="GtkLabel"></object>
                     </property>
