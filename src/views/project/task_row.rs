@@ -213,11 +213,13 @@ impl TaskRow {
                 imp.reminders_indicator.set_visible(true);
             }
 
-            if !imp.subtasks_progress.is_visible()
-                && !imp.date_indicator.is_visible()
-                && !imp.reminders_indicator.is_visible()
+            if !imp.subtasks_progress.get_visible()
+                && !imp.date_indicator.get_visible()
+                && !imp.reminders_indicator.get_visible()
             {
                 imp.footer.set_visible(false);
+            } else {
+                imp.footer.set_visible(true);
             }
         }
 

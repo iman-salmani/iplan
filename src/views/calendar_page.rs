@@ -3,9 +3,7 @@ use gtk::glib::Properties;
 use gtk::{glib, subclass::prelude::*};
 use std::cell::RefCell;
 
-use crate::db::models::Task;
-use crate::db::operations::{read_task, read_tasks};
-use crate::views::project::{TaskRow, TaskWindow};
+use crate::views::TasksList;
 
 mod imp {
     use super::*;
@@ -17,7 +15,7 @@ mod imp {
         #[property(get, set)]
         pub datetime: RefCell<glib::DateTime>,
         #[template_child]
-        pub tasks_box: TemplateChild<gtk::ListBox>,
+        pub tasks_lists: TemplateChild<gtk::Box>,
     }
 
     #[glib::object_subclass]
@@ -29,9 +27,6 @@ mod imp {
         fn class_init(klass: &mut Self::Class) {
             klass.bind_template();
             klass.bind_template_instance_callbacks();
-            klass.install_action("task.check", Some("i"), move |obj, _, _| {
-                obj.imp().tasks_box.invalidate_sort();
-            });
         }
 
         fn instance_init(obj: &glib::subclass::InitializingObject<Self>) {
@@ -41,17 +36,12 @@ mod imp {
         fn new() -> Self {
             Self {
                 datetime: RefCell::new(glib::DateTime::now_local().unwrap()),
-                tasks_box: TemplateChild::default(),
+                tasks_lists: TemplateChild::default(),
             }
         }
     }
 
     impl ObjectImpl for CalendarPage {
-        fn constructed(&self) {
-            self.parent_constructed();
-            let obj = self.obj();
-            obj.set_tasks_box_funcs();
-        }
         fn properties() -> &'static [glib::ParamSpec] {
             Self::derived_properties()
         }
@@ -79,59 +69,11 @@ impl CalendarPage {
     pub fn new(datetime: glib::DateTime) -> Self {
         let obj: CalendarPage = glib::Object::new::<Self>();
         let imp = obj.imp();
-        let end = datetime.add_days(1).unwrap().to_unix();
-        let tasks = read_tasks(None, None, None, None, Some((datetime.to_unix(), end)))
-            .expect("Failed to read tasks");
-        for task in tasks {
-            let project_list_task = TaskRow::new(task, false);
-            imp.tasks_box.append(&project_list_task);
+        for i in 0..7 {
+            let tasks_list = TasksList::new(datetime.add_days(i).unwrap());
+            imp.tasks_lists.append(&tasks_list);
         }
         obj.set_datetime(datetime);
         obj
-    }
-
-    fn set_tasks_box_funcs(&self) {
-        let imp = self.imp();
-        imp.tasks_box.set_sort_func(|row1, _| {
-            let row1_done = row1.property::<Task>("task").done();
-
-            if row1_done {
-                gtk::Ordering::Larger
-            } else {
-                gtk::Ordering::Smaller
-            }
-        });
-
-        imp.tasks_box.set_filter_func(|row| {
-            let row = row.downcast_ref::<TaskRow>().unwrap();
-            if row.task().suspended() {
-                false
-            } else {
-                !row.imp().moving_out.get()
-            }
-        });
-    }
-
-    #[template_callback]
-    fn handle_tasks_box_row_activated(&self, row: gtk::ListBoxRow, tasks_box: gtk::ListBox) {
-        let win = self.root().and_downcast::<gtk::Window>().unwrap();
-        let row = row.downcast::<TaskRow>().unwrap();
-        let modal = TaskWindow::new(&win.application().unwrap(), &win, row.task());
-        modal.present();
-        row.cancel_timer();
-        let page_datetime = self.datetime().to_unix();
-        modal.connect_close_request(glib::clone!(
-            @weak row as obj => @default-return gtk::Inhibit(false),
-            move |_| {
-                let task = read_task(obj.task().id()).expect("Failed to read the task");
-                if task.date() == page_datetime {
-                    obj.reset(task);
-                    obj.changed();
-                } else {
-                    tasks_box.remove(&obj);
-                }
-                gtk::Inhibit(false)
-            }
-        ));
     }
 }

@@ -118,7 +118,7 @@
             <child>
               <object class="GtkImage">
                 <property name="icon-name">view-list-bullet-symbolic</property>
-                <property name="margin-end">3</property>
+                <property name="margin-end">6</property>
                 <binding name="visible">
                   <lookup name="visible">subtasks_progress</lookup>
                 </binding>

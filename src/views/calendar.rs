@@ -89,15 +89,15 @@ impl Calendar {
 
         if possible_today_indicator_date != today {
             self.clear_day_switcher();
-
             for day in -2..5 {
                 let datetime = today.add_days(day).unwrap();
                 imp.day_switcher.append(&self.new_day_indicator(datetime));
             }
         }
 
-        if self.datetime() != today {
-            self.set_page(today);
+        let datetime = today.add_days(-2).unwrap();
+        if self.datetime() != datetime {
+            self.set_page(datetime);
             self.refresh_indicators_selection();
         } else if possible_today_indicator_date != today {
             self.refresh_indicators_selection();
@@ -127,10 +127,10 @@ impl Calendar {
 
     fn new_day_indicator(&self, datetime: glib::DateTime) -> DayIndicator {
         let day_indicator = DayIndicator::new(datetime);
-        day_indicator.connect_clicked(glib::clone!(@weak self as obj => move |indicator| {
-            let datetime = indicator.datetime();
-            obj.set_page(datetime);
-            obj.refresh_indicators_selection();
+        day_indicator.connect_clicked(glib::clone!(@weak self as obj => move |_indicator| {
+            // let datetime = indicator.datetime();
+            // obj.set_page(datetime);
+            // obj.refresh_indicators_selection();
         }));
         day_indicator
     }
@@ -144,10 +144,10 @@ impl Calendar {
         }
 
         let name = datetime.format("%F").unwrap();
-        let transition = if previous_datetime < datetime {
-            gtk::StackTransitionType::SlideLeft
+        let transition: gtk::StackTransitionType = if previous_datetime < datetime {
+            gtk::StackTransitionType::SlideUp
         } else {
-            gtk::StackTransitionType::SlideRight
+            gtk::StackTransitionType::SlideDown
         };
 
         self.set_datetime(&datetime);
@@ -160,16 +160,16 @@ impl Calendar {
 
     fn refresh_indicators_selection(&self) {
         let imp = self.imp();
-        let name = imp.stack.visible_child_name().unwrap();
+        // let name = imp.stack.visible_child_name().unwrap();
         let indicators = imp.day_switcher.observe_children();
         let today = self.today_datetime();
         for i in 0..indicators.n_items() {
             let indicator = indicators.item(i).and_downcast::<DayIndicator>().unwrap();
-            if indicator.datetime().format("%F").unwrap() == name {
-                indicator.remove_css_class("flat");
-            } else {
-                indicator.add_css_class("flat");
-            }
+            // if indicator.datetime().format("%F").unwrap() == name {
+            //     indicator.remove_css_class("flat");
+            // } else {
+            //     indicator.add_css_class("flat");
+            // }
             if today == indicator.datetime() {
                 indicator.add_css_class("accent");
             }
@@ -188,6 +188,9 @@ impl Calendar {
 
         for i in 1..7 {
             let datetime = last_indicator.datetime().add_days(i).unwrap();
+            if i == 1 {
+                self.set_page(datetime.clone());
+            }
             let new_indicator = self.new_day_indicator(datetime);
             imp.day_switcher.append(&new_indicator);
         }
@@ -205,6 +208,9 @@ impl Calendar {
 
         for i in 1..7 {
             let datetime = first_indicator.datetime().add_days(-i).unwrap();
+            if i == 6 {
+                self.set_page(datetime.clone());
+            }
             let new_indicator = self.new_day_indicator(datetime);
             imp.day_switcher.prepend(&new_indicator);
         }

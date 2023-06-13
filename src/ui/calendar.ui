@@ -46,7 +46,6 @@
     </child><!-- End Calendar Header -->
     <child><!-- Stack -->
       <object class="GtkStack" id="stack">
-        <property name="margin-top">12</property>
         <property name="vexpand">True</property>
       </object>
     </child><!-- End Stack -->

@@ -150,6 +150,7 @@ impl DateRow {
         imp.calendar.select_day(&now);
         self.refresh_row(&now);
         self.show_clear_button();
+        self.emit_by_name::<()>("date-changed", &[&self.date()]);
     }
 
     #[template_callback]

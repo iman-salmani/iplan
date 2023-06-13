@@ -9,6 +9,7 @@
     <file preprocess="xml-stripblanks">ui/time_row.ui</file>
     <file preprocess="xml-stripblanks">ui/calendar.ui</file>
     <file preprocess="xml-stripblanks">ui/calendar_page.ui</file>
+    <file preprocess="xml-stripblanks">ui/tasks_list.ui</file>
     <file preprocess="xml-stripblanks">ui/day_indicator.ui</file>
     <file>ui/style.css</file>
 
