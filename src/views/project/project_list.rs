@@ -600,16 +600,18 @@ impl ProjectList {
         _y: f64,
     ) -> gdk::DragAction {
         let row: TaskRow = target.value_as().unwrap();
-        let tasks_box = self.imp().tasks_box.get();
-        row.imp().moving_out.set(false);
+        let imp = self.imp();
+
         // Avoid from when drag start
-        if row.task().list() == self.list().id() && row.imp().moving_out.get() {
-            tasks_box.invalidate_filter();
+        if row.task().list() == self.list().id() && row.moving_out() {
+            row.set_moving_out(false);
+            imp.tasks_box.invalidate_filter();
         } else if row.task().list() != self.list().id() {
+            row.set_moving_out(false);
             let task = row.task();
             let list_id = self.list().id();
-            task.set_property("list", list_id);
-            task.set_property("position", new_position(list_id));
+            task.set_list(list_id);
+            task.set_position(new_position(list_id));
             let parent = row.parent().and_downcast::<gtk::ListBox>().unwrap();
             for i in 0..row.index() {
                 let task = parent
@@ -617,21 +619,21 @@ impl ProjectList {
                     .and_downcast::<TaskRow>()
                     .unwrap()
                     .task();
-                task.set_property("position", task.position() - 1);
+                task.set_position(task.position() - 1);
             }
             parent.remove(&row);
-            if tasks_box.observe_children().n_items() == 1 {
-                tasks_box.set_height_request(320);
+            if imp.tasks_box.observe_children().n_items() == 1 {
+                imp.tasks_box.set_height_request(320);
             }
-            tasks_box.prepend(&row);
-            tasks_box.drag_highlight_row(&row);
+            imp.tasks_box.prepend(&row);
+            imp.tasks_box.drag_highlight_row(&row);
         }
         gdk::DragAction::MOVE
     }
 
     fn task_drop_target_leave(&self, target: &gtk::DropTarget) {
         if let Some(row) = target.value_as::<TaskRow>() {
-            row.imp().moving_out.set(true);
+            row.set_moving_out(true);
             let tasks_box: &gtk::ListBox = self.imp().tasks_box.as_ref();
             tasks_box.invalidate_filter();
             tasks_box.set_height_request(-1);
