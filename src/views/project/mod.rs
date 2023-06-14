@@ -10,6 +10,9 @@ pub use project_list::ProjectList;
 mod task_row;
 pub use task_row::{TaskRow, TimerStatus};
 
+mod subtask_row;
+pub use subtask_row::SubtaskRow;
+
 mod project_edit_window;
 pub use project_edit_window::ProjectEditWindow;
 

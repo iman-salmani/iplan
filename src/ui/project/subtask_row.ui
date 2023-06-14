@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE interface SYSTEM "../schema.dtd">
+<interface>
+  <requires lib="gtk" version="4.0" />
+  <requires lib="Adw" version="1.0" />
+  <template class="SubtaskRow" parent="GtkBox">
+    <property name="margin-bottom">9</property>
+    <property name="margin-start">11</property>
+    <property name="margin-end">6</property>
+    <property name="spacing">6</property>
+    <style>
+      <class name="dim-label" />
+    </style>
+    <child>
+      <object class="GtkImage" id="done"></object>
+    </child>
+    <child>
+      <object class="GtkLabel" id="name">
+      </object>
+    </child>
+  </template>
+</interface>

@@ -25,8 +25,8 @@ use std::cell::RefCell;
 
 use crate::db::models::Project;
 use crate::db::operations::{create_list, create_project, read_projects, read_task};
-use crate::views::project::{ProjectEditWindow, ProjectHeader, ProjectLayout, ProjectLists,
-    TaskWindow,
+use crate::views::project::{
+    ProjectEditWindow, ProjectHeader, ProjectLayout, ProjectLists, TaskWindow,
 };
 use crate::views::sidebar::SidebarProjects;
 use crate::views::Calendar;
@@ -295,9 +295,9 @@ impl IPlanWindow {
     #[template_callback]
     fn handle_calendar_button_clicked(&self, button: gtk::Button) {
         let imp = self.imp();
-        
+
         if imp.calendar.is_visible() {
-            return
+            return;
         }
 
         button.remove_css_class("flat");

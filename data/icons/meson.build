@@ -32,6 +32,8 @@ install_data(
   	join_paths(actions_dir, 'list-symbolic.svg'),
   	join_paths(actions_dir, 'profit-symbolic.svg'),
     join_paths(actions_dir, 'stopwatch-symbolic.svg'),
+    join_paths(actions_dir, 'check-round-outline-whole-symbolic.svg'),
+    join_paths(actions_dir, 'circle-outline-thick-symbolic.svg'),
 	],
   install_dir: join_paths(get_option('datadir'), 'icons', actions_dir)
 )

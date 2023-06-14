@@ -8,7 +8,7 @@ use crate::db::models::{Record, Task};
 use crate::db::operations::{
     create_record, delete_task, read_reminders, read_tasks, update_record, update_task,
 };
-use crate::views::project::{ProjectDoneTasksWindow, TaskWindow};
+use crate::views::project::{ProjectDoneTasksWindow, SubtaskRow, TaskWindow};
 use crate::views::IPlanWindow;
 
 #[derive(Default, PartialEq, Clone, Copy)]
@@ -64,9 +64,9 @@ mod imp {
         #[template_child]
         pub body: TemplateChild<gtk::Box>,
         #[template_child]
-        pub footer: TemplateChild<gtk::Box>,
+        pub subtasks: TemplateChild<gtk::Box>,
         #[template_child]
-        pub subtasks_progress: TemplateChild<gtk::Label>,
+        pub footer: TemplateChild<gtk::Box>,
         #[template_child]
         pub date_indicator: TemplateChild<gtk::Label>,
         #[template_child]
@@ -172,6 +172,7 @@ impl TaskRow {
             self.remove_css_class("card");
             self.set_margin_bottom(0);
             imp.body.set_visible(false);
+            imp.subtasks.set_visible(false);
             imp.footer.set_visible(false);
         } else {
             let task_description = task.description();
@@ -183,21 +184,24 @@ impl TaskRow {
                 imp.body.set_visible(true);
             }
 
+            loop {
+                if let Some(subtask) = imp.subtasks.first_child() {
+                    imp.subtasks.remove(&subtask);
+                } else {
+                    break;
+                }
+            }
+
             let subtasks =
                 read_tasks(Some(task.project()), None, None, Some(task.id()), None).unwrap();
-            let total = subtasks.len();
-            if total == 0 {
-                imp.subtasks_progress.set_visible(false);
+            if subtasks.is_empty() {
+                imp.subtasks.set_visible(false);
             } else {
-                let mut done_count = 0;
+                imp.subtasks.set_visible(true);
                 for subtask in subtasks {
-                    if subtask.done() {
-                        done_count += 1;
-                    }
+                    let subtask_row = SubtaskRow::new(subtask);
+                    imp.subtasks.append(&subtask_row);
                 }
-                imp.subtasks_progress
-                    .set_label(&format!("{done_count}/{total}"));
-                imp.subtasks_progress.set_visible(true);
             }
 
             if let Some(datetime) = task.date_datetime() {
@@ -215,10 +219,7 @@ impl TaskRow {
                 imp.reminders_indicator.set_visible(true);
             }
 
-            if !imp.subtasks_progress.get_visible()
-                && !imp.date_indicator.get_visible()
-                && !imp.reminders_indicator.get_visible()
-            {
+            if !imp.date_indicator.get_visible() && !imp.reminders_indicator.get_visible() {
                 imp.footer.set_visible(false);
             } else {
                 imp.footer.set_visible(true);

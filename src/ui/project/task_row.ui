@@ -102,6 +102,12 @@
           </object>
         </child><!-- End Body -->
         <child>
+          <object class="GtkBox" id="subtasks">
+            <property name="orientation">vertical</property>
+            <property name="visible">false</property>
+          </object>
+        </child>
+        <child>
           <object class="GtkSeparator">
             <property name="hexpand">true</property>
             <property name="margin-bottom">9</property>
@@ -119,27 +125,6 @@
             <property name="margin-end">9</property>
             <property name="margin-bottom">9</property>
             <property name="visible">false</property>
-            <child>
-              <object class="GtkImage">
-                <property name="icon-name">view-list-bullet-symbolic</property>
-                <property name="margin-end">6</property>
-                <binding name="visible">
-                  <lookup name="visible">subtasks_progress</lookup>
-                </binding>
-                <style>
-                  <class name="dim-label" />
-                </style>
-              </object>
-            </child>
-            <child>
-              <object class="GtkLabel" id="subtasks_progress">
-                <property name="margin-end">12</property>
-                <style>
-                  <class name="caption" />
-                  <class name="dim-label" />
-                </style>
-              </object>
-            </child>
             <child>
               <object class="GtkImage">
                 <property name="icon-name">x-office-calendar-symbolic</property>
