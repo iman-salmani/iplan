@@ -1,6 +1,5 @@
 use adw::traits::ExpanderRowExt;
-use gtk::{glib, glib::Properties, prelude::*, subclass::prelude::*};
-use std::cell::RefCell;
+use gtk::{glib, prelude::*, subclass::prelude::*};
 use std::time::{SystemTime, UNIX_EPOCH};
 use std::unimplemented;
 
@@ -14,12 +13,9 @@ use crate::views::DateRow;
 mod imp {
     use super::*;
 
-    #[derive(Default, gtk::CompositeTemplate, Properties)]
+    #[derive(Default, gtk::CompositeTemplate)]
     #[template(resource = "/ir/imansalmani/iplan/ui/project/task_page.ui")]
-    #[properties(wrapper_type=super::TaskPage)]
     pub struct TaskPage {
-        #[property(get, set)]
-        pub task: RefCell<Task>,
         #[template_child]
         pub task_row: TemplateChild<TaskRow>,
         #[template_child]
@@ -86,19 +82,7 @@ mod imp {
         }
     }
 
-    impl ObjectImpl for TaskPage {
-        fn properties() -> &'static [glib::ParamSpec] {
-            Self::derived_properties()
-        }
-
-        fn property(&self, id: usize, pspec: &glib::ParamSpec) -> glib::Value {
-            self.derived_property(id, pspec)
-        }
-
-        fn set_property(&self, id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
-            self.derived_set_property(id, value, pspec)
-        }
-    }
+    impl ObjectImpl for TaskPage {}
     impl WidgetImpl for TaskPage {}
     impl BoxImpl for TaskPage {}
 }
@@ -114,22 +98,26 @@ impl TaskPage {
     pub fn new(task: Task) -> Self {
         let obj: Self = glib::Object::builder().build();
         let imp = obj.imp();
-        obj.set_task(task.clone());
-        imp.task_row.reset(task.clone());
+
+        let task_id = task.id();
+        let task_description = task.description();
+        let task_project = task.project();
+        let task_date = task.date();
+        imp.task_row.reset(task);
 
         imp.date_row.set_clear_option(true);
-        let date = task.date();
+        let date = task_date;
         if date != 0 {
             imp.date_row.set_datetime_from_unix(date);
         }
 
-        let reminders = read_reminders(task.id()).expect("Failed to read reminders");
+        let reminders = read_reminders(task_id).expect("Failed to read reminders");
         for reminder in reminders {
             let row = ReminderRow::new(reminder);
             imp.reminders_expander_row.add_row(&row);
         }
 
-        let task_description = task.description();
+        let task_description = task_description;
         imp.description_expander_row
             .set_subtitle(&obj.description_display(&task_description));
         imp.description_buffer.set_text(&task_description);
@@ -150,7 +138,7 @@ impl TaskPage {
                 !row.task().suspended()
         }));
 
-        let tasks = read_tasks(Some(task.project()), None, None, Some(task.id()), None)
+        let tasks = read_tasks(Some(task_project), None, None, Some(task_id), None)
             .expect("Failed to read subtasks");
         for task in tasks {
             let row = TaskRow::new(task, false);
@@ -169,13 +157,17 @@ impl TaskPage {
                 }
             });
 
-        let records = read_records(task.id(), false, None, None).expect("Failed to read records");
+        let records = read_records(task_id, false, None, None).expect("Failed to read records");
         for record in records {
             let row = RecordRow::new(record);
             imp.records_box.append(&row);
         }
 
         obj
+    }
+
+    pub fn task(&self) -> Task {
+        self.imp().task_row.task()
     }
 
     pub fn add_record(&self, record_id: i64) {

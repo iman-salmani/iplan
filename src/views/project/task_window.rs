@@ -223,7 +223,7 @@ impl TaskWindow {
         let subtasks_rows = target_page.imp().subtasks_box.observe_children();
         for i in 0..subtasks_rows.n_items() {
             let row = subtasks_rows.item(i).and_downcast::<TaskRow>().unwrap();
-            if row.task().position() == from_task.position() {
+            if row.task().id() == from_task.id() {
                 row.reset(from_task);
                 row.changed();
                 break;

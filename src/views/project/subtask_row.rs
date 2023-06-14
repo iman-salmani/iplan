@@ -1,5 +1,4 @@
-use gtk::{glib, glib::Properties, prelude::*, subclass::prelude::*};
-use std::cell::RefCell;
+use gtk::{glib, subclass::prelude::*};
 
 use crate::db::models::Task;
 mod imp {
