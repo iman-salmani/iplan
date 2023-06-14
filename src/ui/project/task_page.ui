@@ -141,16 +141,69 @@
             <style>
               <class name="tasks_box" />
             </style>
-            <child type="placeholder">
-              <object class="AdwStatusPage">
-                <property name="icon-name">view-list-symbolic</property>
-                <property name="title" translatable="yes">no subtasks found</property>
-                <property name="description" translatable="yes">Use add button up there</property>
-                <style>
-                  <class name="compact" />
-                </style>
+            <child><!-- Add task to Bottom -->
+              <object class="GtkListBoxRow" id="bottom_add_task">
+                <property name="activatable">false</property>
+                <child>
+                  <object class="GtkButton">
+                    <property name="height-request">48</property>
+                    <signal name="clicked" handler="handle_add_subtask_to_bottom_clicked" swapped="true" />
+                    <style>
+                      <class name="flat" />
+                    </style>
+                    <child>
+                      <object class="GtkBox">
+                        <property name="spacing">9</property>
+                        <property name="valign">center</property>
+                        <property name="halign">center</property>
+                        <child>
+                          <object class="GtkImage">
+                            <property name="icon-name">list-add-symbolic</property>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkLabel">
+                            <property name="label" translatable="yes">Add task</property>
+                            <style>
+                              <class name="heading" />
+                            </style>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                  </object>
+                </child>
               </object>
-            </child>
+            </child><!-- End Add task to Bottom -->
+            <child type="placeholder"><!-- Placeholder -->
+              <object class="GtkButton">
+                <property name="height-request">150</property>
+                <signal name="clicked" handler="handle_new_subtask_button_clicked" swapped="true" />
+                <style>
+                  <class name="card" />
+                </style>
+                <child>
+                  <object class="GtkBox">
+                    <property name="spacing">12</property>
+                    <property name="valign">center</property>
+                    <property name="halign">center</property>
+                    <child>
+                      <object class="GtkImage">
+                        <property name="icon-name">list-add-symbolic</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkLabel">
+                        <property name="label" translatable="yes">Add task</property>
+                        <style>
+                          <class name="title-4" />
+                        </style>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child><!-- End Placeholder -->
           </object>
         </child>
         <!-- End SubTasks -->

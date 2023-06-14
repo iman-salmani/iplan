@@ -38,6 +38,8 @@ mod imp {
         pub options_popover: TemplateChild<gtk::Popover>,
         #[template_child]
         pub show_done_tasks_button: TemplateChild<gtk::Button>,
+        #[template_child]
+        pub bottom_add_task: TemplateChild<gtk::ListBoxRow>,
     }
 
     #[glib::object_subclass]
@@ -190,24 +192,50 @@ impl ProjectList {
     fn set_tasks_box_funcs(&self) {
         let imp = self.imp();
         imp.tasks_box.set_sort_func(|row1, row2| {
-            let row1_p = row1.property::<Task>("task").position();
-            let row2_p = row2.property::<Task>("task").position();
+            let row1 = if let Some(row1) = row1.downcast_ref::<TaskRow>() {
+                row1
+            } else {
+                return gtk::Ordering::Larger;
+            };
+            let row2 = if let Some(row2) = row2.downcast_ref::<TaskRow>() {
+                row2
+            } else {
+                return gtk::Ordering::Smaller;
+            };
 
-            if row1_p < row2_p {
+            if row1.task().position() < row2.task().position() {
                 gtk::Ordering::Larger
             } else {
                 gtk::Ordering::Smaller
             }
         });
 
-        imp.tasks_box.set_filter_func(|row| {
-            let row = row.downcast_ref::<TaskRow>().unwrap();
-            if row.task().suspended() {
-                false
-            } else {
-                !row.imp().moving_out.get()
-            }
-        });
+        imp.tasks_box.set_filter_func(
+            glib::clone!(@weak self as obj => @default-return false, move |row| {
+                let imp = obj.imp();
+                let first_child = imp.tasks_box.first_child().unwrap();
+                if first_child.widget_name() == "GtkListBoxRow" {
+                    imp.bottom_add_task.set_visible(false);
+                } else if !imp.bottom_add_task.is_visible() {
+                    imp.bottom_add_task.set_visible(true);
+                } else {
+                    let row = first_child.downcast::<TaskRow>().unwrap();
+                    if row.task().suspended() || row.moving_out() {
+                        imp.bottom_add_task.set_visible(false);
+                    }
+                }
+
+                if let Some(row) = row.downcast_ref::<TaskRow>() {
+                    if row.task().suspended() {
+                        false
+                    } else {
+                        !row.moving_out()
+                    }
+                } else {
+                    true
+                }
+            }),
+        );
     }
 
     fn load_lazy_rows(&self) {
@@ -220,9 +248,13 @@ impl ProjectList {
         let mut possible_row = row.and_upcast::<gtk::Widget>();
         loop {
             if let Some(row) = possible_row {
-                if row.property::<bool>("lazy") {
-                    row.set_property("lazy", false);
-                    possible_row = row.prev_sibling();
+                if let Some(row) = row.downcast_ref::<TaskRow>() {
+                    if row.lazy() {
+                        row.set_lazy(false);
+                        possible_row = row.prev_sibling();
+                    } else {
+                        break;
+                    }
                 } else {
                     break;
                 }
@@ -374,6 +406,32 @@ impl ProjectList {
         let task_imp = task_ui.imp();
         task_imp.name_button.set_visible(false);
         task_imp.name_entry.grab_focus();
+    }
+
+    #[template_callback]
+    fn handle_add_task_to_bottom_clicked(&self, _button: gtk::Button) {
+        let imp = self.imp();
+        let list = self.list();
+        let task = create_task("", list.project(), list.id(), 0).expect("Failed to create task");
+
+        task.set_position(0);
+        let task_rows = imp.tasks_box.observe_children();
+        for i in 0..task_rows.n_items() {
+            if let Some(row) = task_rows.item(i as u32).and_downcast::<TaskRow>() {
+                let row_task = row.task();
+                row_task.set_position(row_task.position() + 1);
+            }
+        }
+
+        update_task(&task).unwrap();
+
+        let task_ui = TaskRow::new(task, false);
+        imp.tasks_box.append(&task_ui);
+        let task_imp = task_ui.imp();
+        task_imp.name_button.set_visible(false);
+        task_imp.name_entry.grab_focus();
+        let vadjustment = imp.scrolled_window.vadjustment();
+        vadjustment.set_value(vadjustment.upper());
     }
 
     #[template_callback]

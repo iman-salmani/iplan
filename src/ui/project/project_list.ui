@@ -48,6 +48,7 @@
           <object class="GtkButton" id="new_task_button">
             <property name="icon-name">list-add-symbolic</property>
             <property name="has_frame">false</property>
+            <property name="tooltip-text" translatable="yes">Add task</property>
             <signal name="clicked" handler="handle_new_button_clicked" swapped="true" />
           </object>
         </child>
@@ -76,25 +77,78 @@
           <class name="tasks_box" />
           <class name="flat" />
         </style>
-        <child type="placeholder">
-          <object class="AdwStatusPage">
-            <property name="icon-name">view-list-symbolic</property>
-            <property name="height-request">320</property>
-            <property name="title" translatable="yes">no tasks found</property>
-            <property name="description" translatable="yes">Use add button up there</property>
+        <child><!-- Add task to Bottom -->
+          <object class="GtkListBoxRow" id="bottom_add_task">
+            <property name="activatable">false</property>
+            <child>
+              <object class="GtkButton">
+                <property name="height-request">48</property>
+                <signal name="clicked" handler="handle_add_task_to_bottom_clicked" swapped="true" />
+                <style>
+                  <class name="flat" />
+                </style>
+                <child>
+                  <object class="GtkBox">
+                    <property name="spacing">9</property>
+                    <property name="valign">center</property>
+                    <property name="halign">center</property>
+                    <child>
+                      <object class="GtkImage">
+                        <property name="icon-name">list-add-symbolic</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkLabel">
+                        <property name="label" translatable="yes">Add task</property>
+                        <style>
+                          <class name="heading" />
+                        </style>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
           </object>
-        </child>
+        </child><!-- End Add task to Bottom -->
+        <child type="placeholder"><!-- Placeholder -->
+          <object class="GtkButton">
+            <property name="height-request">150</property>
+            <signal name="clicked" handler="handle_new_button_clicked" swapped="true" />
+            <style>
+              <class name="card" />
+            </style>
+            <child>
+              <object class="GtkBox">
+                <property name="spacing">12</property>
+                <property name="valign">center</property>
+                <property name="halign">center</property>
+                <child>
+                  <object class="GtkImage">
+                    <property name="icon-name">list-add-symbolic</property>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkLabel">
+                    <property name="label" translatable="yes">Add task</property>
+                    <style>
+                      <class name="title-4" />
+                    </style>
+                  </object>
+                </child>
+              </object>
+            </child>
+          </object>
+        </child><!-- End Placeholder -->
       </object>
-    </child>
-    <!-- End Task List -->
+    </child><!-- End Task List -->
     <child><!-- Scrolled Window - Its for horizontal layout-->
       <object class="GtkScrolledWindow" id="scrolled_window">
         <property name="vexpand">true</property>
         <property name="visible">false</property>
         <property name="hscrollbar-policy">never</property>
       </object>
-    </child><!-- Scrolled
-    Window -->
+    </child><!-- End Scrolled Window -->
   </template>
   <!-- Options Popover -->
   <object class="GtkPopover" id="options_popover">
@@ -157,10 +211,8 @@
               </object>
             </child>
           </object>
-        </child>
-        <!-- End Delete List -->
+        </child><!-- End Delete List -->
       </object>
     </child>
-  </object>
-  <!-- End Options Popover -->
+  </object><!-- End Options Popover -->
 </interface>

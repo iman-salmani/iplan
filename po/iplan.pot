@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: iplan\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-06-12 00:19+0330\n"
+"POT-Creation-Date: 2023-06-14 19:17+0330\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -76,7 +76,7 @@ msgid "Task window"
 msgstr ""
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:30 src/ui/window.ui:49
-#: src/ui/window.ui:106
+#: src/ui/window.ui:107
 msgid "Calendar"
 msgstr ""
 
@@ -182,31 +182,31 @@ msgstr ""
 msgid "First stable release."
 msgstr ""
 
-#: src/ui/window.ui:139 src/ui/date_row.ui:24
+#: src/ui/window.ui:140 src/ui/date_row.ui:24
 msgid "Today"
 msgstr ""
 
-#: src/ui/window.ui:177
+#: src/ui/window.ui:178
 msgid "_New List"
 msgstr ""
 
-#: src/ui/window.ui:181
+#: src/ui/window.ui:182
 msgid "_Edit Project"
 msgstr ""
 
-#: src/ui/window.ui:191
+#: src/ui/window.ui:192
 msgid "_Backup"
 msgstr ""
 
-#: src/ui/window.ui:195
+#: src/ui/window.ui:196
 msgid "_Keyboard Shortcuts"
 msgstr ""
 
-#: src/ui/window.ui:199
+#: src/ui/window.ui:200
 msgid "_About IPlan"
 msgstr ""
 
-#: src/ui/window.ui:205
+#: src/ui/window.ui:206
 msgid "_Quit"
 msgstr ""
 
@@ -216,10 +216,6 @@ msgstr ""
 
 #: src/ui/calendar.ui:36
 msgid "Next week"
-msgstr ""
-
-#: src/ui/calendar_page.ui:28 src/ui/project/project_list.ui:81
-msgid "no tasks found"
 msgstr ""
 
 #: src/ui/shortcuts_window.ui:13
@@ -312,7 +308,7 @@ msgstr ""
 msgid "Archive"
 msgstr ""
 
-#: src/ui/project/project_edit_window.ui:119 src/ui/project/task_row.ui:216
+#: src/ui/project/project_edit_window.ui:119
 msgid "Delete"
 msgstr ""
 
@@ -320,15 +316,17 @@ msgstr ""
 msgid "Time spent per day"
 msgstr ""
 
-#: src/ui/project/project_list.ui:82 src/ui/project/task_page.ui:148
-msgid "Use add button up there"
+#: src/ui/project/project_list.ui:51 src/ui/project/project_list.ui:102
+#: src/ui/project/project_list.ui:133 src/ui/project/task_page.ui:166
+#: src/ui/project/task_page.ui:197
+msgid "Add task"
 msgstr ""
 
-#: src/ui/project/project_list.ui:119
+#: src/ui/project/project_list.ui:175
 msgid "Done tasks"
 msgstr ""
 
-#: src/ui/project/project_list.ui:149
+#: src/ui/project/project_list.ui:205
 msgid "Delete list"
 msgstr ""
 
@@ -390,20 +388,20 @@ msgstr ""
 msgid "Records"
 msgstr ""
 
-#: src/ui/project/task_page.ui:147
-msgid "no subtasks found"
-msgstr ""
-
-#: src/ui/project/task_page.ui:180
+#: src/ui/project/task_page.ui:233
 msgid "no records found"
 msgstr ""
 
-#: src/ui/project/task_page.ui:181
+#: src/ui/project/task_page.ui:234
 msgid "Use add button up there or start a timer"
 msgstr ""
 
-#: src/ui/project/task_row.ui:201 src/views/project/task_row.rs:230
-msgid "Timer"
+#: src/ui/project/task_row.ui:194 src/views/project/task_row.rs:248
+msgid "Start _timer"
+msgstr ""
+
+#: src/ui/project/task_row.ui:210
+msgid "_Delete task"
 msgstr ""
 
 #: src/ui/search/search_window.ui:16
@@ -468,19 +466,19 @@ msgstr ""
 msgid "The project and its tasks will be permanently lost."
 msgstr ""
 
-#: src/views/project/project_list.rs:75
+#: src/views/project/project_list.rs:76
 msgid "\"{}\" moved to the done tasks list"
 msgstr ""
 
-#: src/views/project/project_list.rs:77 src/views/project/task_row.rs:396
+#: src/views/project/project_list.rs:78 src/views/project/task_row.rs:414
 msgid "Undo"
 msgstr ""
 
-#: src/views/project/project_list.rs:373
+#: src/views/project/project_list.rs:445
 msgid "Delete \"{}\" list?"
 msgstr ""
 
-#: src/views/project/project_list.rs:375
+#: src/views/project/project_list.rs:447
 msgid "The list and its tasks will be permanently lost."
 msgstr ""
 
@@ -489,7 +487,7 @@ msgstr ""
 msgid "Use the primary menu {} for adding new lists"
 msgstr ""
 
-#: src/views/project/project_lists.rs:156
+#: src/views/project/project_lists.rs:164
 msgid "New List"
 msgstr ""
 
@@ -505,7 +503,7 @@ msgstr ""
 msgid "Time can't be in the past"
 msgstr ""
 
-#: src/views/project/task_row.rs:395
+#: src/views/project/task_row.rs:413
 msgid "\"{}\" is going to delete"
 msgstr ""
 

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: iplan\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-06-12 00:19+0330\n"
+"POT-Creation-Date: 2023-06-14 19:17+0330\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Iman Salmani <contact.imansalmani@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -77,7 +77,7 @@ msgid "Task window"
 msgstr "پنجره وظیفه"
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:30 src/ui/window.ui:49
-#: src/ui/window.ui:106
+#: src/ui/window.ui:107
 msgid "Calendar"
 msgstr "تقویم"
 
@@ -189,31 +189,31 @@ msgstr "پنجره رکوردها برای ایجاد، ویرایش و حذف �
 msgid "First stable release."
 msgstr "اولین انتشار پایدار."
 
-#: src/ui/window.ui:139 src/ui/date_row.ui:24
+#: src/ui/window.ui:140 src/ui/date_row.ui:24
 msgid "Today"
 msgstr "امروز"
 
-#: src/ui/window.ui:177
+#: src/ui/window.ui:178
 msgid "_New List"
 msgstr "_فهرست جدید"
 
-#: src/ui/window.ui:181
+#: src/ui/window.ui:182
 msgid "_Edit Project"
 msgstr "_ویرایش پروژه"
 
-#: src/ui/window.ui:191
+#: src/ui/window.ui:192
 msgid "_Backup"
 msgstr "_پشتیبان گیری"
 
-#: src/ui/window.ui:195
+#: src/ui/window.ui:196
 msgid "_Keyboard Shortcuts"
 msgstr "_میانبرهای صفحه کلید"
 
-#: src/ui/window.ui:199
+#: src/ui/window.ui:200
 msgid "_About IPlan"
 msgstr "_درباره آیپلن"
 
-#: src/ui/window.ui:205
+#: src/ui/window.ui:206
 msgid "_Quit"
 msgstr "_خروج"
 
@@ -224,10 +224,6 @@ msgstr "هفته قبل"
 #: src/ui/calendar.ui:36
 msgid "Next week"
 msgstr "هفته بعد"
-
-#: src/ui/calendar_page.ui:28 src/ui/project/project_list.ui:81
-msgid "no tasks found"
-msgstr "هیچ کاری پیدا نشد"
 
 #: src/ui/shortcuts_window.ui:13
 msgctxt "shortcut window"
@@ -319,7 +315,7 @@ msgstr "شرح"
 msgid "Archive"
 msgstr "بایگانی"
 
-#: src/ui/project/project_edit_window.ui:119 src/ui/project/task_row.ui:216
+#: src/ui/project/project_edit_window.ui:119
 msgid "Delete"
 msgstr "حذف"
 
@@ -327,15 +323,17 @@ msgstr "حذف"
 msgid "Time spent per day"
 msgstr "زمان صرف شده در روز"
 
-#: src/ui/project/project_list.ui:82 src/ui/project/task_page.ui:148
-msgid "Use add button up there"
-msgstr "از دکمه افزودن در بالا استفاده کنید"
+#: src/ui/project/project_list.ui:51 src/ui/project/project_list.ui:102
+#: src/ui/project/project_list.ui:133 src/ui/project/task_page.ui:166
+#: src/ui/project/task_page.ui:197
+msgid "Add task"
+msgstr ""
 
-#: src/ui/project/project_list.ui:119
+#: src/ui/project/project_list.ui:175
 msgid "Done tasks"
 msgstr "وظایف انجام شده"
 
-#: src/ui/project/project_list.ui:149
+#: src/ui/project/project_list.ui:205
 msgid "Delete list"
 msgstr "حذف فهرست"
 
@@ -397,21 +395,22 @@ msgstr "یادآوری ها"
 msgid "Records"
 msgstr "سوابق"
 
-#: src/ui/project/task_page.ui:147
-msgid "no subtasks found"
-msgstr "هیچ کار فرعی پیدا نشد"
-
-#: src/ui/project/task_page.ui:180
+#: src/ui/project/task_page.ui:233
 msgid "no records found"
 msgstr "هیچ رکوردی پیدا نشد"
 
-#: src/ui/project/task_page.ui:181
+#: src/ui/project/task_page.ui:234
 msgid "Use add button up there or start a timer"
 msgstr "از دکمه افزودن در بالا استفاده کنید یا تایمر را شروع کنید"
 
-#: src/ui/project/task_row.ui:201 src/views/project/task_row.rs:230
-msgid "Timer"
-msgstr "زمان سنج"
+#: src/ui/project/task_row.ui:194 src/views/project/task_row.rs:248
+msgid "Start _timer"
+msgstr ""
+
+#: src/ui/project/task_row.ui:210
+#, fuzzy
+msgid "_Delete task"
+msgstr "حذف"
 
 #: src/ui/search/search_window.ui:16
 msgid "Search"
@@ -475,19 +474,19 @@ msgstr "پروژه \"{}\" حذف شود؟"
 msgid "The project and its tasks will be permanently lost."
 msgstr "پروژه و وظایف آن برای همیشه از بین خواهد رفت."
 
-#: src/views/project/project_list.rs:75
+#: src/views/project/project_list.rs:76
 msgid "\"{}\" moved to the done tasks list"
 msgstr "\"{}\" به فهرست کارهای انجام شده منتقل شد"
 
-#: src/views/project/project_list.rs:77 src/views/project/task_row.rs:396
+#: src/views/project/project_list.rs:78 src/views/project/task_row.rs:414
 msgid "Undo"
 msgstr "برگرد"
 
-#: src/views/project/project_list.rs:373
+#: src/views/project/project_list.rs:445
 msgid "Delete \"{}\" list?"
 msgstr "پروژه \"{}\" لیست شود؟"
 
-#: src/views/project/project_list.rs:375
+#: src/views/project/project_list.rs:447
 msgid "The list and its tasks will be permanently lost."
 msgstr "فهرست و وظایف آن برای همیشه از بین خواهد رفت."
 
@@ -496,7 +495,7 @@ msgstr "فهرست و وظایف آن برای همیشه از بین خواهد
 msgid "Use the primary menu {} for adding new lists"
 msgstr "از منوی اصلی {} برای افزودن لیست های جدید استفاده کنید"
 
-#: src/views/project/project_lists.rs:156
+#: src/views/project/project_lists.rs:164
 msgid "New List"
 msgstr "فهرست جدید"
 
@@ -512,7 +511,7 @@ msgstr "تا"
 msgid "Time can't be in the past"
 msgstr "زمان نمی تواند در گذشته باشد"
 
-#: src/views/project/task_row.rs:395
+#: src/views/project/task_row.rs:413
 msgid "\"{}\" is going to delete"
 msgstr "درحال حذف \"{}\""
 
@@ -523,3 +522,15 @@ msgstr "پروژه"
 #: src/views/search/search_result.rs:60
 msgid "Task"
 msgstr "وظیفه"
+
+#~ msgid "no tasks found"
+#~ msgstr "هیچ کاری پیدا نشد"
+
+#~ msgid "Use add button up there"
+#~ msgstr "از دکمه افزودن در بالا استفاده کنید"
+
+#~ msgid "no subtasks found"
+#~ msgstr "هیچ کار فرعی پیدا نشد"
+
+#~ msgid "Timer"
+#~ msgstr "زمان سنج"

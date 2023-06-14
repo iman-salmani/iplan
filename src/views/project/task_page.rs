@@ -42,6 +42,8 @@ mod imp {
         pub records_box: TemplateChild<gtk::ListBox>,
         #[template_child]
         pub date_row: TemplateChild<DateRow>,
+        #[template_child]
+        pub bottom_add_task: TemplateChild<gtk::ListBoxRow>,
     }
 
     #[glib::object_subclass]
@@ -123,20 +125,44 @@ impl TaskPage {
         imp.description_buffer.set_text(&task_description);
 
         imp.subtasks_box.set_sort_func(|row1, row2| {
-            let task1 = row1.property::<Task>("task");
-            let task2 = row2.property::<Task>("task");
-            if task1.position() < task2.position() {
+            let row1 = if let Some(row1) = row1.downcast_ref::<TaskRow>() {
+                row1
+            } else {
+                return gtk::Ordering::Larger;
+            };
+            let row2 = if let Some(row2) = row2.downcast_ref::<TaskRow>() {
+                row2
+            } else {
+                return gtk::Ordering::Smaller;
+            };
+
+            if row1.task().position() < row2.task().position() {
                 gtk::Ordering::Larger
             } else {
                 gtk::Ordering::Smaller
             }
         });
-        imp.subtasks_box.set_filter_func(glib::clone!(
-            @weak imp => @default-return false,
-            move |row| {
-                let row = row.downcast_ref::<TaskRow>().unwrap();
-                !row.task().suspended()
-        }));
+        imp.subtasks_box.set_filter_func(
+            glib::clone!(@weak obj => @default-return false, move |row| {
+                let imp = obj.imp();
+                let first_child = imp.subtasks_box.first_child().unwrap();
+                if first_child.widget_name() == "GtkListBoxRow" {
+                    imp.bottom_add_task.set_visible(false);
+                } else if !imp.bottom_add_task.is_visible() {
+                    imp.bottom_add_task.set_visible(true);
+                } else {
+                    let row = first_child.downcast::<TaskRow>().unwrap();
+                    if row.task().suspended() || row.moving_out() {
+                        imp.bottom_add_task.set_visible(false);
+                    }
+                }
+                if let Some(row) = row.downcast_ref::<TaskRow>() {
+                    !row.task().suspended()
+                } else {
+                    true
+                }
+            }),
+        );
 
         let tasks = read_tasks(Some(task_project), None, None, Some(task_id), None)
             .expect("Failed to read subtasks");
@@ -268,6 +294,32 @@ impl TaskPage {
         let task_imp = task_ui.imp();
         task_imp.name_button.set_visible(false);
         task_imp.name_entry.grab_focus();
+    }
+
+    #[template_callback]
+    fn handle_add_subtask_to_bottom_clicked(&self, _button: gtk::Button) {
+        let imp = self.imp();
+        let task = self.task();
+        let subtask = create_task("", task.project(), 0, task.id()).expect("Failed to create task");
+
+        subtask.set_position(0);
+        let subtask_rows = imp.subtasks_box.observe_children();
+        for i in 0..subtask_rows.n_items() {
+            if let Some(row) = subtask_rows.item(i as u32).and_downcast::<TaskRow>() {
+                let row_subtask = row.task();
+                row_subtask.set_position(row_subtask.position() + 1);
+            }
+        }
+
+        update_task(&subtask).unwrap();
+
+        let subtask_ui = TaskRow::new(subtask, false);
+        imp.subtasks_box.append(&subtask_ui);
+        let subtask_imp = subtask_ui.imp();
+        subtask_imp.name_button.set_visible(false);
+        subtask_imp.name_entry.grab_focus();
+        let vadjustment = imp.subtasks_page.vadjustment();
+        vadjustment.set_value(vadjustment.upper());
     }
 
     #[template_callback]

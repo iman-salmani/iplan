@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: iplan\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-06-12 00:19+0330\n"
+"POT-Creation-Date: 2023-06-14 19:17+0330\n"
 "PO-Revision-Date: 2023-06-10 12:30-0300\n"
 "Last-Translator: Fúlvio Leo <fulviokaldas@outlook.com>\n"
 "Language: pt_BR\n"
@@ -78,7 +78,7 @@ msgid "Task window"
 msgstr "Janela de tarefas"
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:30 src/ui/window.ui:49
-#: src/ui/window.ui:106
+#: src/ui/window.ui:107
 msgid "Calendar"
 msgstr "Calendário"
 
@@ -194,31 +194,31 @@ msgstr "Janela de registros para criar, editar e excluir registros"
 msgid "First stable release."
 msgstr "Primeira versão estável"
 
-#: src/ui/window.ui:139 src/ui/date_row.ui:24
+#: src/ui/window.ui:140 src/ui/date_row.ui:24
 msgid "Today"
 msgstr "Hoje"
 
-#: src/ui/window.ui:177
+#: src/ui/window.ui:178
 msgid "_New List"
 msgstr "_Nova Lista"
 
-#: src/ui/window.ui:181
+#: src/ui/window.ui:182
 msgid "_Edit Project"
 msgstr "_Editar Projeto"
 
-#: src/ui/window.ui:191
+#: src/ui/window.ui:192
 msgid "_Backup"
 msgstr "_Backup"
 
-#: src/ui/window.ui:195
+#: src/ui/window.ui:196
 msgid "_Keyboard Shortcuts"
 msgstr "_Atalhos de Teclado"
 
-#: src/ui/window.ui:199
+#: src/ui/window.ui:200
 msgid "_About IPlan"
 msgstr "_Sobre o IPlan"
 
-#: src/ui/window.ui:205
+#: src/ui/window.ui:206
 msgid "_Quit"
 msgstr "_Sair"
 
@@ -229,10 +229,6 @@ msgstr ""
 #: src/ui/calendar.ui:36
 msgid "Next week"
 msgstr ""
-
-#: src/ui/calendar_page.ui:28 src/ui/project/project_list.ui:81
-msgid "no tasks found"
-msgstr "nenhuma tarefa encontrada"
 
 #: src/ui/shortcuts_window.ui:13
 msgctxt "shortcut window"
@@ -325,7 +321,7 @@ msgstr "Descrição"
 msgid "Archive"
 msgstr "Arquivo"
 
-#: src/ui/project/project_edit_window.ui:119 src/ui/project/task_row.ui:216
+#: src/ui/project/project_edit_window.ui:119
 msgid "Delete"
 msgstr "Deletar"
 
@@ -333,15 +329,17 @@ msgstr "Deletar"
 msgid "Time spent per day"
 msgstr "Tempo gasto por dia"
 
-#: src/ui/project/project_list.ui:82 src/ui/project/task_page.ui:148
-msgid "Use add button up there"
-msgstr "Use o botão adicionar lá em cima"
+#: src/ui/project/project_list.ui:51 src/ui/project/project_list.ui:102
+#: src/ui/project/project_list.ui:133 src/ui/project/task_page.ui:166
+#: src/ui/project/task_page.ui:197
+msgid "Add task"
+msgstr ""
 
-#: src/ui/project/project_list.ui:119
+#: src/ui/project/project_list.ui:175
 msgid "Done tasks"
 msgstr "Tarefas concluídas"
 
-#: src/ui/project/project_list.ui:149
+#: src/ui/project/project_list.ui:205
 msgid "Delete list"
 msgstr "Deletar lista"
 
@@ -403,21 +401,23 @@ msgstr "Lembretes"
 msgid "Records"
 msgstr "Registros"
 
-#: src/ui/project/task_page.ui:147
-msgid "no subtasks found"
-msgstr "nenhuma subtarefa encontrada"
-
-#: src/ui/project/task_page.ui:180
+#: src/ui/project/task_page.ui:233
 msgid "no records found"
 msgstr "nenhum registro encontrado"
 
-#: src/ui/project/task_page.ui:181
+#: src/ui/project/task_page.ui:234
 msgid "Use add button up there or start a timer"
 msgstr "Use o botão adicionar lá em cima ou inicie um cronômetro"
 
-#: src/ui/project/task_row.ui:201 src/views/project/task_row.rs:230
-msgid "Timer"
-msgstr "Cronômetro"
+#: src/ui/project/task_row.ui:194 src/views/project/task_row.rs:248
+#, fuzzy
+msgid "Start _timer"
+msgstr "começar"
+
+#: src/ui/project/task_row.ui:210
+#, fuzzy
+msgid "_Delete task"
+msgstr "_Deletar"
 
 #: src/ui/search/search_window.ui:16
 msgid "Search"
@@ -481,19 +481,19 @@ msgstr "Deletar o projeto \"{}\"?"
 msgid "The project and its tasks will be permanently lost."
 msgstr "O projeto e suas tarefas associadas serão perdidos permanentemente."
 
-#: src/views/project/project_list.rs:75
+#: src/views/project/project_list.rs:76
 msgid "\"{}\" moved to the done tasks list"
 msgstr "\"{}\" movido para a lista de tarefas concluídas"
 
-#: src/views/project/project_list.rs:77 src/views/project/task_row.rs:396
+#: src/views/project/project_list.rs:78 src/views/project/task_row.rs:414
 msgid "Undo"
 msgstr "Desfazer"
 
-#: src/views/project/project_list.rs:373
+#: src/views/project/project_list.rs:445
 msgid "Delete \"{}\" list?"
 msgstr "Deletar a lista \"{}\"?"
 
-#: src/views/project/project_list.rs:375
+#: src/views/project/project_list.rs:447
 msgid "The list and its tasks will be permanently lost."
 msgstr "A lista e suas tarefas associadas serão perdidas permanentemente."
 
@@ -502,7 +502,7 @@ msgstr "A lista e suas tarefas associadas serão perdidas permanentemente."
 msgid "Use the primary menu {} for adding new lists"
 msgstr "Use o menu principal {} para adicionar novas listas"
 
-#: src/views/project/project_lists.rs:156
+#: src/views/project/project_lists.rs:164
 msgid "New List"
 msgstr "Nova lista"
 
@@ -518,7 +518,7 @@ msgstr "até"
 msgid "Time can't be in the past"
 msgstr "O tempo não pode estar no passado"
 
-#: src/views/project/task_row.rs:395
+#: src/views/project/task_row.rs:413
 msgid "\"{}\" is going to delete"
 msgstr "\"{}\" irá deletar"
 
@@ -530,12 +530,20 @@ msgstr "Projeto"
 msgid "Task"
 msgstr "Tarefa"
 
-#, fuzzy
-#~ msgid "start date"
-#~ msgstr "começar"
+#~ msgid "no tasks found"
+#~ msgstr "nenhuma tarefa encontrada"
+
+#~ msgid "Use add button up there"
+#~ msgstr "Use o botão adicionar lá em cima"
+
+#~ msgid "no subtasks found"
+#~ msgstr "nenhuma subtarefa encontrada"
+
+#~ msgid "Timer"
+#~ msgstr "Cronômetro"
 
 #, fuzzy
-#~ msgid "start time"
+#~ msgid "start date"
 #~ msgstr "começar"
 
 #~ msgid "duration"
