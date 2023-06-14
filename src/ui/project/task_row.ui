@@ -4,6 +4,10 @@
   <requires lib="gtk" version="4.0" />
   <requires lib="Adw" version="1.0" />
   <template class="TaskRow" parent="GtkListBoxRow">
+    <property name="margin-bottom">12</property>
+    <style>
+      <class name="card" />
+    </style>
     <child><!-- Box -->
       <object class="GtkBox" id="row_box">
         <property name="orientation">vertical</property>
@@ -15,6 +19,7 @@
             </style>
             <child><!-- Check Button -->
               <object class="GtkCheckButton" id="checkbox">
+
               </object>
             </child><!-- End Check Button -->
             <child><!-- Name Button -->
@@ -35,9 +40,9 @@
                       bind-source="name_entry_buffer"
                       bind-property="text"
                       bind-flags="sync-create" />
-                    <style>
-                      <class name="heading" />
-                    </style>
+                    <attributes>
+                      <attribute name="weight" value="PANGO_WEIGHT_NORMAL" />
+                    </attributes>
                   </object>
                 </child>
               </object>
@@ -80,41 +85,40 @@
         <child><!-- Body -->
           <object class="GtkBox" id="body">
             <property name="margin-start">9</property>
-            <property name="margin-end">9</property>
+            <property name="margin-bottom">12</property>
             <property name="visible">false</property>
-            <child>
-              <object class="GtkSeparator">
-                <property name="margin-start">9</property>
-                <property name="margin-end">28</property>
-              </object>
-            </child>
             <child>
               <object class="GtkLabel" id="description">
                 <property name="hexpand">true</property>
                 <property name="halign">start</property>
                 <property name="lines">-1</property>
                 <property name="ellipsize">end</property>
-                <property name="margin-end">9</property>
-                <property name="margin-bottom">12</property>
+                <property name="margin-end">18</property>
                 <style>
-                  <class name="body" />
+                  <class name="dim-label" />
                 </style>
               </object>
             </child>
           </object>
         </child><!-- End Body -->
+        <child>
+          <object class="GtkSeparator">
+            <property name="hexpand">true</property>
+            <property name="margin-bottom">9</property>
+            <binding name="visible">
+              <lookup name="visible">footer</lookup>
+            </binding>
+            <style>
+              <class name="background" />
+            </style>
+          </object>
+        </child>
         <child><!-- Footer -->
           <object class="GtkBox" id="footer">
             <property name="margin-start">9</property>
             <property name="margin-end">9</property>
             <property name="margin-bottom">9</property>
             <property name="visible">false</property>
-            <child>
-              <object class="GtkSeparator">
-                <property name="margin-start">9</property>
-                <property name="margin-end">28</property>
-              </object>
-            </child>
             <child>
               <object class="GtkImage">
                 <property name="icon-name">view-list-bullet-symbolic</property>
@@ -196,11 +200,13 @@
             <signal name="clicked" handler="handle_timer_button_clicked" swapped="true" />
             <style>
               <class name="flat" />
+              <class name="menu_item" />
             </style>
             <child>
               <object class="AdwButtonContent" id="timer_button_content">
                 <property name="halign">start</property>
-                <property name="label" translatable="yes">Timer</property>
+                <property name="use-underline">true</property>
+                <property name="label" translatable="yes">Start _timer</property>
                 <property name="icon-name">stopwatch-symbolic</property>
               </object>
             </child>
@@ -215,7 +221,8 @@
             <child>
               <object class="AdwButtonContent">
                 <property name="halign">start</property>
-                <property name="label" translatable="yes">Delete</property>
+                <property name="use-underline">true</property>
+                <property name="label" translatable="yes">_Delete task</property>
                 <property name="icon-name">user-trash-symbolic</property>
               </object>
             </child>

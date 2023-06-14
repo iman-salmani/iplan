@@ -45,7 +45,7 @@
         <property name="selection_mode">none</property>
         <signal name="row-activated" handler="handle_tasks_box_row_activated" swapped="true" />
         <style>
-          <class name="boxed-list" />
+          <class name="tasks_box" />
         </style>
       </object>
     </child><!-- End Task List -->

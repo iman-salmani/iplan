@@ -10,6 +10,7 @@
       <object class="GtkBox" id="header">
         <property name="margin-start">12</property>
         <property name="margin-end">12</property>
+        <property name="margin-bottom">6</property>
         <child><!-- Name Button -->
           <object class="GtkButton" id="name_button">
             <property name="has-frame">false</property>
@@ -53,7 +54,7 @@
         <!-- End New Task Button -->
         <child><!-- Project Options Button -->
           <object class="GtkMenuButton" id="options_button">
-            <property name="icon_name">view-more-symbolic</property>
+            <property name="icon_name">view-more-horizontal-symbolic</property>
             <property name="has_frame">false</property>
             <property name="popover">options_popover</property>
           </object>
@@ -72,7 +73,8 @@
         <property name="margin-end">15</property>
         <signal name="row-activated" handler="handle_tasks_box_row_activated" swapped="true" />
         <style>
-          <class name="boxed-list" />
+          <class name="tasks_box" />
+          <class name="flat" />
         </style>
         <child type="placeholder">
           <object class="AdwStatusPage">

@@ -44,7 +44,7 @@
                     <signal name="row-activated" handler="handle_tasks_box_row_activated"
                       swapped="true" />
                     <style>
-                      <class name="boxed-list" />
+                      <class name="tasks_box" />
                     </style>
                     <child type="placeholder">
                       <object class="AdwStatusPage">

@@ -169,6 +169,8 @@ impl TaskRow {
         imp.name_entry_buffer.set_text(task.name());
 
         if self.compact() {
+            self.remove_css_class("card");
+            self.set_margin_bottom(0);
             imp.body.set_visible(false);
             imp.footer.set_visible(false);
         } else {
@@ -242,7 +244,7 @@ impl TaskRow {
         } else {
             let duration = task.duration();
             if duration == 0 {
-                imp.timer_button_content.set_label(&gettext("Timer"));
+                imp.timer_button_content.set_label(&gettext("Start _timer"));
             } else {
                 imp.timer_button_content
                     .set_label(&Record::duration_display(duration));
