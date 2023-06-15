@@ -365,18 +365,17 @@ impl ProjectList {
         let modal = TaskWindow::new(&win.application().unwrap(), &win, row.task());
         modal.present();
         row.cancel_timer();
-        modal.connect_close_request(glib::clone!(
-            @weak row as obj => @default-return gtk::Inhibit(false),
-            move |_| {
-                let task = read_task(obj.task().id()).expect("Failed to read the task");
+        modal.connect_closure(
+            "task-window-close",
+            true,
+            glib::closure_local!(@watch row => move |_win: TaskWindow, task: Task| {
                 if task.done() {
-                    tasks_box.remove(&obj);
+                    tasks_box.remove(row);
                 } else {
-                    obj.reset(task);
-                    obj.changed();
-                    obj.activate_action("project.update", None).expect("Failed to send project.update signal");
+                    row.reset(task);
+                    row.changed();
+                    row.activate_action("project.update", None).expect("Failed to send project.update signal");
                 }
-                gtk::Inhibit(false)
             }
         ));
     }

@@ -5,7 +5,7 @@ use gtk::{glib, subclass::prelude::*};
 use std::cell::RefCell;
 
 use crate::db::models::{Record, Task};
-use crate::db::operations::{read_task, read_tasks};
+use crate::db::operations::read_tasks;
 use crate::views::project::{TaskRow, TaskWindow};
 
 mod imp {
@@ -122,16 +122,6 @@ impl TasksList {
 
     fn set_tasks_box_funcs(&self) {
         let imp = self.imp();
-        imp.tasks_box.set_sort_func(|row1, _| {
-            let row1_done = row1.property::<Task>("task").done();
-
-            if row1_done {
-                gtk::Ordering::Larger
-            } else {
-                gtk::Ordering::Smaller
-            }
-        });
-
         imp.tasks_box.set_filter_func(|row| {
             let row = row.downcast_ref::<TaskRow>().unwrap();
             if row.task().suspended() {
@@ -150,18 +140,17 @@ impl TasksList {
         modal.present();
         row.cancel_timer();
         let page_datetime = self.datetime().to_unix();
-        modal.connect_close_request(glib::clone!(
-            @weak row as obj => @default-return gtk::Inhibit(false),
-            move |_| {
-                let task = read_task(obj.task().id()).expect("Failed to read the task");
+        modal.connect_closure(
+            "task-window-close",
+            true,
+            glib::closure_local!(@watch row => move |_win: TaskWindow, task: Task| {
                 if task.date() == page_datetime {
-                    obj.reset(task);
-                    obj.changed();
+                    row.reset(task);
+                    row.changed();
                 } else {
-                    tasks_box.remove(&obj);
+                    tasks_box.remove(row);
                 }
-                gtk::Inhibit(false)
-            }
-        ));
+            }),
+        );
     }
 }

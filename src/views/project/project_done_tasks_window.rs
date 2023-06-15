@@ -151,18 +151,18 @@ impl ProjectDoneTasksWindow {
 
     #[template_callback]
     fn handle_tasks_box_row_activated(&self, row: gtk::ListBoxRow, _tasks_box: gtk::ListBox) {
-        let win = self.root().and_downcast::<gtk::Window>().unwrap();
+        let obj = self.root().and_downcast::<gtk::Window>().unwrap();
         let row = row.downcast::<TaskRow>().unwrap();
-        let modal = TaskWindow::new(&win.application().unwrap(), &win, row.task());
+        let modal = TaskWindow::new(&obj.application().unwrap(), &obj, row.task());
         modal.present();
-        modal.connect_close_request(glib::clone!(
-            @weak self as win, @weak row => @default-return gtk::Inhibit(false),
-            move |_| {
-                let task = read_task(row.task().id()).expect("Failed to read the task");
-                let win_imp = win.imp();
-                let main_window = win.transient_for().unwrap();
+        modal.connect_closure(
+            "task-window-close",
+            true,
+            glib::closure_local!(@watch self as obj, @weak-allow-none row => move |_win: TaskWindow, task: Task| {
+                let row = row.unwrap();
+                let main_window = obj.transient_for().unwrap();
                 if !task.done() {
-                    win_imp.tasks_box.remove(&row);
+                    obj.imp().tasks_box.remove(&row);
                     main_window.activate_action("project.open", None) // TODO: just add task to list (consider the task duration could be changed)
                         .expect("Failed to activate project.open action");
                 } else {
@@ -170,7 +170,6 @@ impl ProjectDoneTasksWindow {
                     row.changed();
                     main_window.activate_action("project.update", None).expect("Failed to send project.update signal");
                 }
-                gtk::Inhibit(false)
             }
         ));
     }

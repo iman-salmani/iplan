@@ -1,4 +1,5 @@
-use gtk::{glib, glib::once_cell::sync::Lazy, prelude::*, subclass::prelude::*};
+use glib::{once_cell::sync::Lazy, subclass::Signal};
+use gtk::{glib, prelude::*, subclass::prelude::*};
 use std::cell::Cell;
 use std::unimplemented;
 
@@ -77,6 +78,15 @@ mod imp {
     }
 
     impl ObjectImpl for TaskWindow {
+        fn signals() -> &'static [glib::subclass::Signal] {
+            static SIGNALS: Lazy<Vec<Signal>> = Lazy::new(|| {
+                vec![Signal::builder("task-window-close")
+                    .param_types([Task::static_type()])
+                    .build()]
+            });
+            SIGNALS.as_ref()
+        }
+
         fn properties() -> &'static [glib::ParamSpec] {
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> =
                 Lazy::new(|| vec![glib::ParamSpecInt64::builder("parent-task").build()]);
@@ -101,7 +111,19 @@ mod imp {
         }
     }
     impl WidgetImpl for TaskWindow {}
-    impl WindowImpl for TaskWindow {}
+    impl WindowImpl for TaskWindow {
+        fn close_request(&self) -> glib::signal::Inhibit {
+            let obj = self.obj();
+            let page = obj
+                .imp()
+                .task_pages_stack
+                .visible_child()
+                .and_downcast::<TaskPage>()
+                .unwrap();
+            obj.emit_by_name::<()>("task-window-close", &[&page.task()]);
+            self.parent_close_request()
+        }
+    }
 }
 
 glib::wrapper! {
