@@ -24,6 +24,9 @@ jobs:
         profile: minimal
         toolchain: stable
         override: true
+    - uses: BSFishy/meson-build@v1.0.3
+      with:
+        action: build
     - name: Build
       run: cargo build --verbose
     - name: Run tests
