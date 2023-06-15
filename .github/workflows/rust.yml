@@ -14,12 +14,11 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    container:
+      image: ghcr.io/gtk-rs/gtk4-rs/gtk4:latest
+
     steps:
     - uses: actions/checkout@v3
-    - name: Install libpango1.0-dev
-      run: sudo apt install -y libpango1.0-dev
-    - name: Install libgtk-4-dev
-      run: sudo apt install -y libgtk-4-dev
     - name: Build
       run: cargo build --verbose
     - name: Run tests
