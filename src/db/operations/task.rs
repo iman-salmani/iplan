@@ -43,6 +43,7 @@ pub fn read_tasks(
     if let Some((start, end)) = time_range {
         filters.push(format!("date >= {start} AND date < {end}"));
     }
+    filters.push("suspended = 0".to_string());
     let filters_str = &mut String::new();
     for filter in filters {
         let prefix = if filters_str.is_empty() {
