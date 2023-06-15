@@ -1,4 +1,4 @@
-use gtk::{glib, prelude::*, subclass::prelude::*};
+use gtk::{gdk, glib, prelude::*, subclass::prelude::*};
 use std::cell::RefCell;
 
 use crate::db::models::Project;
@@ -61,25 +61,30 @@ impl SearchWindow {
         let search_entry_controller = gtk::EventControllerKey::new();
         search_entry_controller.connect_key_pressed(glib::clone!(
             @weak win => @default-return gtk::Inhibit(false),
-            move |_controller, _keyval, keycode, _state| {
+            move |_controller, keyval, _keycode, _state| {
                 let imp = win.imp();
+
+                if keyval == gdk::Key::Escape {
+                    win.close();
+                    return gtk::Inhibit(false);
+                }
+
                 if let Some(first_child) =
                     imp.search_results.first_child().and_downcast::<gtk::ListBoxRow>() {
-                    let step = match keycode {
-                        111 => -1,  // Up
-                        116 => 1,   // Down
-                        _ => 0
+                    let step = match keyval {
+                        gdk::Key::Up => -1,
+                        gdk::Key::Down => 1,
+                        _ => return gtk::Inhibit(false)
                     };
-                    if step != 0 {
-                        if let Some(selected_row) = imp.search_results.selected_row() {
-                            if let Some(row) =
-                                imp.search_results.row_at_index(selected_row.index() + step) {
-                                imp.search_results.select_row(Some(&row));
-                            }
-                        } else {
-                            imp.search_results.select_row(Some(&first_child));
+                    if let Some(selected_row) = imp.search_results.selected_row() {
+                        if let Some(row) =
+                            imp.search_results.row_at_index(selected_row.index() + step) {
+                            imp.search_results.select_row(Some(&row));
                         }
+                    } else {
+                        imp.search_results.select_row(Some(&first_child));
                     }
+
                 }
                 gtk::Inhibit(false)
         }));

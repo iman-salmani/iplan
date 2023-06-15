@@ -19,9 +19,6 @@
               swapped="true" />
           </object>
         </property>
-        <style>
-          <class name="flat" />
-        </style>
         <child type="start">
           <object class="GtkToggleButton" id="show_done_tasks_toggle_button">
             <property name="icon-name">object-select-symbolic</property>
