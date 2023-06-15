@@ -30,12 +30,12 @@
             <property name="icon-name">preferences-system-time-symbolic</property>
             <property name="margin-end">6</property>
             <binding name="visible">
-              <lookup name="visible">duration</lookup>
+              <lookup name="visible">duration_label</lookup>
             </binding>
           </object>
         </child>
         <child>
-          <object class="GtkLabel" id="duration"></object>
+          <object class="GtkLabel" id="duration_label"></object>
         </child>
       </object><!-- end header -->
     </child>

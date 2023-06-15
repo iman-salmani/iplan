@@ -186,7 +186,7 @@ impl Calendar {
 
         self.clear_day_switcher();
 
-        for i in 1..7 {
+        for i in 1..8 {
             let datetime = last_indicator.datetime().add_days(i).unwrap();
             if i == 1 {
                 self.set_page(datetime.clone());
@@ -206,9 +206,9 @@ impl Calendar {
 
         self.clear_day_switcher();
 
-        for i in 1..7 {
+        for i in 1..8 {
             let datetime = first_indicator.datetime().add_days(-i).unwrap();
-            if i == 6 {
+            if i == 7 {
                 self.set_page(datetime.clone());
             }
             let new_indicator = self.new_day_indicator(datetime);

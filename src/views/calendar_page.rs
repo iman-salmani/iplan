@@ -3,7 +3,7 @@ use gtk::glib::Properties;
 use gtk::{glib, subclass::prelude::*};
 use std::cell::RefCell;
 
-use crate::views::TasksList;
+use crate::views::{project::TaskRow, TasksList};
 
 mod imp {
     use super::*;
@@ -72,6 +72,38 @@ impl CalendarPage {
         for i in 0..7 {
             let tasks_list = TasksList::new(datetime.add_days(i).unwrap());
             imp.tasks_lists.append(&tasks_list);
+            tasks_list.connect_closure(
+                "task-moveout",
+                false,
+                glib::closure_local!(@watch obj => move |_: TasksList, row: TaskRow| {
+                    let start = obj.datetime();
+                    let task = row.task();
+                    let task_date = task.date();
+                    let difference = task_date - start.to_unix();
+                    let mut i = difference / (24 * 60 * 60);
+                    if i >= 0 && i < 7 {
+                        let tasks_list = obj.imp().tasks_lists.observe_children().item(i as u32).and_downcast::<TasksList>().unwrap();
+                        tasks_list.add_row(row);
+                    } else {
+                        i = i / 7;
+                        if i <= 0 {
+                            i -= 1;
+                        }
+                        let target_week = start.add_days(i as i32 * 7).unwrap();
+                        let stack = obj.parent().and_downcast::<gtk::Stack>().unwrap();
+                        let name = target_week.format("%F").unwrap();
+                        if let Some(page) = stack.child_by_name(&name) {
+                            let page = page.downcast::<Self>().unwrap();
+                            let difference = task_date - target_week.to_unix();
+                            let i = difference / 86400; // day in seconds
+                            let tasks_lists = page.imp().tasks_lists.observe_children();
+                            let tasks_list = tasks_lists.item(i.abs() as u32);
+                            let tasks_list = tasks_list.and_downcast::<TasksList>().unwrap();
+                            tasks_list.add_row(row);
+                        }
+                    }
+                }),
+            );
         }
         obj.set_datetime(datetime);
         obj

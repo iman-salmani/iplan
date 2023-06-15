@@ -1,8 +1,8 @@
 use adw::prelude::*;
 use gettextrs::gettext;
-use gtk::glib::Properties;
+use glib::{once_cell::sync::Lazy, subclass::Signal, Properties};
 use gtk::{glib, subclass::prelude::*};
-use std::cell::RefCell;
+use std::cell::{Cell, RefCell};
 
 use crate::db::models::{Record, Task};
 use crate::db::operations::read_tasks;
@@ -17,10 +17,12 @@ mod imp {
     pub struct TasksList {
         #[property(get, set)]
         pub datetime: RefCell<glib::DateTime>,
+        #[property(get, set)]
+        pub duration: Cell<i64>,
         #[template_child]
         pub name: TemplateChild<gtk::Label>,
         #[template_child]
-        pub duration: TemplateChild<gtk::Label>,
+        pub duration_label: TemplateChild<gtk::Label>,
         #[template_child]
         pub tasks_box: TemplateChild<gtk::ListBox>,
     }
@@ -46,8 +48,9 @@ mod imp {
         fn new() -> Self {
             Self {
                 datetime: RefCell::new(glib::DateTime::now_local().unwrap()),
+                duration: Cell::new(0),
                 name: TemplateChild::default(),
-                duration: TemplateChild::default(),
+                duration_label: TemplateChild::default(),
                 tasks_box: TemplateChild::default(),
             }
         }
@@ -58,7 +61,18 @@ mod imp {
             self.parent_constructed();
             let obj = self.obj();
             obj.set_tasks_box_funcs();
+            obj.add_bindings();
         }
+
+        fn signals() -> &'static [glib::subclass::Signal] {
+            static SIGNALS: Lazy<Vec<Signal>> = Lazy::new(|| {
+                vec![Signal::builder("task-moveout")
+                    .param_types([TaskRow::static_type()])
+                    .build()]
+            });
+            SIGNALS.as_ref()
+        }
+
         fn properties() -> &'static [glib::ParamSpec] {
             Self::derived_properties()
         }
@@ -101,23 +115,41 @@ impl TasksList {
         let mut duration = 0;
         if tasks.is_empty() {
             imp.name.add_css_class("dim-label");
-            imp.duration.set_visible(false);
             imp.tasks_box.set_visible(false);
         } else {
             for task in tasks {
                 duration += task.duration();
-                let project_list_task = TaskRow::new(task, false);
-                imp.tasks_box.append(&project_list_task);
-            }
-            if duration == 0 {
-                imp.duration.set_visible(false);
-            } else {
-                imp.duration.set_label(&Record::duration_display(duration));
+                let task_row = TaskRow::new(task, false);
+                imp.tasks_box.append(&task_row);
             }
         }
+        obj.set_duration(duration);
 
         obj.set_datetime(datetime);
         obj
+    }
+
+    pub fn add_row(&self, row: TaskRow) {
+        let imp = self.imp();
+        imp.tasks_box.append(&row);
+        imp.tasks_box.set_visible(true);
+        imp.name.remove_css_class("dim-label");
+        self.set_duration(self.duration() + row.task().duration());
+    }
+
+    fn add_bindings(&self) {
+        self.bind_property::<gtk::Label>("duration", &self.imp().duration_label.get(), "label")
+            .transform_to(|binding, duration: i64| {
+                let duration_label = binding.target().unwrap();
+                if duration == 0 {
+                    duration_label.set_property("visible", false);
+                    Some(String::new())
+                } else {
+                    duration_label.set_property("visible", true);
+                    Some(Record::duration_display(duration))
+                }
+            })
+            .build();
     }
 
     fn set_tasks_box_funcs(&self) {
@@ -143,12 +175,20 @@ impl TasksList {
         modal.connect_closure(
             "task-window-close",
             true,
-            glib::closure_local!(@watch row => move |_win: TaskWindow, task: Task| {
-                if task.date() == page_datetime {
-                    row.reset(task);
-                    row.changed();
-                } else {
-                    tasks_box.remove(row);
+            glib::closure_local!(@watch self as obj, @weak-allow-none row, @weak-allow-none tasks_box => move |_win: TaskWindow, task: Task| {
+                let tasks_box = tasks_box.unwrap();
+                let row = row.unwrap();
+                let task_date = task.date();
+                let task_duration = task.duration();
+                row.reset(task);
+                row.changed();
+                if task_date != page_datetime {
+                    obj.set_duration(obj.duration() - task_duration);
+                    tasks_box.remove(&row);
+                    if tasks_box.first_child().is_none() {
+                        obj.imp().name.add_css_class("dim-label");
+                    }
+                    obj.emit_by_name::<()>("task-moveout", &[&row]);
                 }
             }),
         );
