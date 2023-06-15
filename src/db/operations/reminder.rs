@@ -18,11 +18,17 @@ pub fn create_reminder(datetime: i64, task_id: i64, priority: u8) -> Result<Remi
     ))
 }
 
-pub fn read_reminders(task_id: i64) -> Result<Vec<Reminder>> {
+pub fn read_reminders(task_id: Option<i64>) -> Result<Vec<Reminder>> {
     let conn = get_connection();
-    let mut stmt =
-        conn.prepare("SELECT * FROM reminders WHERE task = ? AND past = 0 ORDER BY datetime DESC")?;
-    let mut rows = stmt.query([task_id])?;
+    let filter = if let Some(task_id) = task_id {
+        format!("task = {task_id} AND")
+    } else {
+        String::new()
+    };
+    let mut stmt = conn.prepare(&format!(
+        "SELECT * FROM reminders WHERE {filter} past = 0 ORDER BY datetime DESC"
+    ))?;
+    let mut rows = stmt.query([])?;
     let mut reminders = Vec::new();
     while let Some(row) = rows.next()? {
         reminders.push(Reminder::try_from(row)?)

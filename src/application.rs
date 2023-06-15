@@ -30,7 +30,7 @@ use std::time::{SystemTime, UNIX_EPOCH};
 
 use crate::config::{APPLICATION_ID, VERSION};
 use crate::db::models::Reminder;
-use crate::db::operations::{read_reminder, read_task, update_reminder};
+use crate::db::operations::{read_reminder, read_reminders, read_task, update_reminder};
 use crate::views::search::SearchWindow;
 use crate::views::{BackupWindow, IPlanWindow};
 
@@ -70,10 +70,19 @@ mod imp {
     }
 
     impl ApplicationImpl for IPlanApplication {
-        // We connect to the activate callback to create a window when the application
-        // has been launched. Additionally, this callback notifies us when the user
-        // tries to launch a "second instance" of the application. When they try
-        // to do that, we'll just present any existing window.
+        fn startup(&self) {
+            self.parent_startup();
+            let application = self.obj();
+
+            #[cfg(any(target_os = "linux", target_os = "freebsd"))]
+            application.request_background();
+
+            let reminders = read_reminders(None).unwrap();
+            for reminder in reminders {
+                application.send_reminder(reminder);
+            }
+        }
+
         fn activate(&self) {
             let application = self.obj();
             // Get the current window or create one if necessary
@@ -86,9 +95,6 @@ mod imp {
                 }
                 window.upcast()
             };
-
-            #[cfg(any(target_os = "linux", target_os = "freebsd"))]
-            application.request_background();
 
             // Ask the window manager/compositor to present the window
             window.present();
@@ -207,6 +213,8 @@ impl IPlanApplication {
         let datetime = reminder.datetime_duration();
 
         if datetime < now {
+            reminder.set_past(true);
+            update_reminder(&reminder).unwrap();
             return;
         }
 
@@ -235,23 +243,28 @@ impl IPlanApplication {
 
     #[cfg(any(target_os = "linux", target_os = "freebsd"))]
     async fn portal_request_background(&self) {
+        let mut request: ashpd::desktop::background::BackgroundRequest = Background::request()
+            .reason(Some(
+                gettext("IPlan needs to run in the background to send reminders").as_str(),
+            ))
+            .auto_start(true)
+            .command(&["iplan", "--gapplication-service"]);
+
         if let Some(window) = self.active_window() {
             let root = window.native().unwrap();
             let identifier = WindowIdentifier::from_native(&root).await;
-            let request = Background::request().identifier(identifier).reason(Some(
-                gettext("IPlan needs to run in the background to send reminders").as_str(),
-            ));
+            request = request.identifier(identifier);
+        }
 
-            match request.send().await.and_then(|r| r.response()) {
-                Ok(_) => {
-                    self.imp().background_hold.replace(Some(self.hold()));
-                }
-                Err(_) => {
-                    self.imp()
-                        .settings
-                        .set_boolean("background-play", false)
-                        .expect("Unable to set background-play settings key");
-                }
+        match request.send().await.and_then(|r| r.response()) {
+            Ok(_) => {
+                self.imp().background_hold.replace(Some(self.hold()));
+            }
+            Err(_) => {
+                self.imp()
+                    .settings
+                    .set_boolean("background-play", false)
+                    .expect("Unable to set background-play settings key");
             }
         }
     }

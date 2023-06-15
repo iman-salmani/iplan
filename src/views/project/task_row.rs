@@ -212,7 +212,7 @@ impl TaskRow {
                 imp.date_indicator.set_visible(false);
             }
 
-            let reminders = read_reminders(task.id()).unwrap();
+            let reminders = read_reminders(Some(task.id())).unwrap();
             if reminders.is_empty() {
                 imp.reminders_indicator.set_visible(false);
             } else {
