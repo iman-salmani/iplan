@@ -84,8 +84,6 @@
                     <property name="wrap-mode">word</property>
                     <property name="buffer">
                       <object class="GtkTextBuffer" id="description_buffer">
-                        <signal name="changed" handler="handle_description_buffer_changed"
-                          swapped="true" />
                       </object>
                     </property>
                   </object>

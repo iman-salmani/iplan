@@ -1,6 +1,7 @@
 use adw::{prelude::*, subclass::prelude::*};
 use gettextrs::gettext;
 use gtk::glib;
+use gtk::glib::Properties;
 use std::cell::RefCell;
 
 use crate::db::models::Project;
@@ -10,9 +11,11 @@ use crate::views::IPlanWindow;
 mod imp {
     use super::*;
 
-    #[derive(Default, gtk::CompositeTemplate)]
+    #[derive(Default, gtk::CompositeTemplate, Properties)]
     #[template(resource = "/ir/imansalmani/iplan/ui/project/project_edit_window.ui")]
+    #[properties(type_wrapper=super::ProjectEditWindow)]
     pub struct ProjectEditWindow {
+        #[property(get, set)]
         pub project: RefCell<Project>,
         #[template_child]
         pub icon_label: TemplateChild<gtk::Label>,
@@ -42,7 +45,19 @@ mod imp {
         }
     }
 
-    impl ObjectImpl for ProjectEditWindow {}
+    impl ObjectImpl for ProjectEditWindow {
+        fn properties() -> &'static [glib::ParamSpec] {
+            Self::derived_properties()
+        }
+
+        fn property(&self, id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+            self.derived_property(id, pspec)
+        }
+
+        fn set_property(&self, id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
+            self.derived_set_property(id, value, pspec)
+        }
+    }
     impl WidgetImpl for ProjectEditWindow {}
     impl WindowImpl for ProjectEditWindow {}
     impl AdwWindowImpl for ProjectEditWindow {}
@@ -57,71 +72,76 @@ glib::wrapper! {
 #[gtk::template_callbacks]
 impl ProjectEditWindow {
     pub fn new(application: gtk::Application, app_window: &IPlanWindow, project: Project) -> Self {
-        let win: Self = glib::Object::builder()
+        let obj: Self = glib::Object::builder()
             .property("application", application)
             .build();
-        win.set_transient_for(Some(app_window));
-        let imp = win.imp();
+        obj.set_transient_for(Some(app_window));
+        let imp = obj.imp();
+
         imp.icon_label.set_text(&project.icon());
+
         imp.name_entry_row.set_text(&project.name());
-        let task_description = project.description();
-        imp.description_expander_row
-            .set_subtitle(&win.description_display(&task_description));
-        imp.description_buffer.set_text(&task_description);
-        imp.archive_switch.set_active(project.archive());
-        imp.archive_switch.connect_state_set(glib::clone!(
-        @weak win, @weak project => @default-return gtk::Inhibit(true),
-        move |_switch, state| {
-            project.set_property("archive", state);
-            win.transient_for().unwrap()
-                .activate_action("project.update", None)
-                .expect("Failed to send project.update action");
-            update_project(&project).expect("Failed to update project");
-            gtk::Inhibit(false)
-        }));
-        imp.project.replace(project);
-        win
+
+        obj.set_project(project);
+        obj.add_bindings();
+        obj
     }
 
-    fn description_display(&self, text: &str) -> String {
-        if let Some(first_line) = text.lines().next() {
-            return String::from(first_line);
-        }
-        String::from("")
+    fn add_bindings(&self) {
+        let imp = self.imp();
+        let project = self.project();
+
+        project
+            .bind_property("archive", &imp.archive_switch.get(), "active")
+            .sync_create()
+            .bidirectional()
+            .build();
+
+        project
+            .bind_property("description", &imp.description_buffer.get(), "text")
+            .sync_create()
+            .bidirectional()
+            .build();
+
+        project.connect_notify_local(
+            None,
+            glib::clone!(@weak self as obj => move|project, param| {
+                update_project(&project).expect("Failed to update task");
+                if param.name() == "description" {
+                    return;
+                }
+                println!("project.update");
+                obj.transient_for()
+                    .unwrap()
+                    .activate_action("project.update", None)
+                    .expect("Failed to send project.update action");
+            }),
+        );
+
+        imp.description_buffer
+            .bind_property("text", &imp.description_expander_row.get(), "subtitle")
+            .transform_to(|_, text: String| {
+                if let Some(first_line) = text.lines().next() {
+                    Some(String::from(first_line))
+                } else {
+                    None
+                }
+            })
+            .sync_create()
+            .build();
     }
 
     #[template_callback]
     fn handle_name_entry_row_apply(&self, entry_row: adw::EntryRow) {
-        let project = self.imp().project.borrow();
-        project.set_property("name", entry_row.text());
-        update_project(&project).expect("Failed to update project");
-        self.transient_for()
-            .unwrap()
-            .activate_action("project.update", None)
-            .expect("Failed to send project.update action");
+        let project = self.project();
+        project.set_name(entry_row.text());
     }
 
     #[template_callback]
     fn handle_project_emoji_picked(&self, emoji: &str, _: gtk::EmojiChooser) {
+        let project = self.project();
         self.imp().icon_label.set_text(emoji);
-        let project = self.imp().project.borrow();
-        project.set_property("icon", emoji.to_string());
-        update_project(&project).expect("Failed to update project");
-        self.transient_for()
-            .unwrap()
-            .activate_action("project.update", None)
-            .expect("Failed to send project.update action");
-    }
-
-    #[template_callback]
-    fn handle_description_buffer_changed(&self, buffer: gtk::TextBuffer) {
-        let imp: &imp::ProjectEditWindow = self.imp();
-        let project = self.imp().project.take();
-        let text = buffer.text(&buffer.start_iter(), &buffer.end_iter(), true);
-        imp.description_expander_row
-            .set_subtitle(&self.description_display(&text));
-        project.set_property("description", text);
-        update_project(&project).expect("Failed to update task");
+        project.set_icon(emoji.to_string());
     }
 
     #[template_callback]
@@ -130,7 +150,7 @@ impl ProjectEditWindow {
             .object::<adw::MessageDialog>("dialog")
             .unwrap();
         dialog.set_transient_for(self.transient_for().as_ref());
-        let project = self.imp().project.take();
+        let project = self.project();
         let dialog_heading = gettext("Delete \"{}\" project?");
         dialog.set_heading(Some(&dialog_heading.replace("{}", &project.name())));
         dialog.set_body(&gettext(
