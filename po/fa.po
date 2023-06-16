@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: iplan\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-06-14 19:17+0330\n"
+"POT-Creation-Date: 2023-06-16 15:30+0330\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Iman Salmani <contact.imansalmani@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -189,7 +189,8 @@ msgstr "پنجره رکوردها برای ایجاد، ویرایش و حذف �
 msgid "First stable release."
 msgstr "اولین انتشار پایدار."
 
-#: src/ui/window.ui:140 src/ui/date_row.ui:24
+#: src/ui/window.ui:140 src/ui/date_row.ui:24 src/views/date_row.rs:121
+#: src/views/tasks_list.rs:107
 msgid "Today"
 msgstr "امروز"
 
@@ -311,11 +312,11 @@ msgstr "نماد"
 msgid "Description"
 msgstr "شرح"
 
-#: src/ui/project/project_edit_window.ui:107
+#: src/ui/project/project_edit_window.ui:105
 msgid "Archive"
 msgstr "بایگانی"
 
-#: src/ui/project/project_edit_window.ui:119
+#: src/ui/project/project_edit_window.ui:117
 msgid "Delete"
 msgstr "حذف"
 
@@ -416,7 +417,7 @@ msgstr "حذف"
 msgid "Search"
 msgstr "جستجو"
 
-#: src/ui/search/search_window.ui:58
+#: src/ui/search/search_window.ui:55
 msgid "no results found"
 msgstr "نتیجه ای پیدا نشد"
 
@@ -433,11 +434,11 @@ msgid "New project"
 msgstr "پروژه جدید"
 
 #. Translators: Replace "translator-credits" with your names, one name per line
-#: src/application.rs:196
+#: src/application.rs:202
 msgid "translator-credits"
 msgstr "ایمان سلمانی <contact.imansalmani@gmail.com>"
 
-#: src/application.rs:242
+#: src/application.rs:248
 msgid "IPlan needs to run in the background to send reminders"
 msgstr "برای ارسال یادآوری، آپلن باید در پس‌زمینه اجرا شود"
 
@@ -466,11 +467,11 @@ msgstr "خطا هنگام وارد کردن داده ها"
 msgid "Done Tasks"
 msgstr "کارهای انجام شده"
 
-#: src/views/project/project_edit_window.rs:134
+#: src/views/project/project_edit_window.rs:153
 msgid "Delete \"{}\" project?"
 msgstr "پروژه \"{}\" حذف شود؟"
 
-#: src/views/project/project_edit_window.rs:137
+#: src/views/project/project_edit_window.rs:156
 msgid "The project and its tasks will be permanently lost."
 msgstr "پروژه و وظایف آن برای همیشه از بین خواهد رفت."
 
@@ -482,11 +483,11 @@ msgstr "\"{}\" به فهرست کارهای انجام شده منتقل شد"
 msgid "Undo"
 msgstr "برگرد"
 
-#: src/views/project/project_list.rs:445
+#: src/views/project/project_list.rs:444
 msgid "Delete \"{}\" list?"
 msgstr "پروژه \"{}\" لیست شود؟"
 
-#: src/views/project/project_list.rs:447
+#: src/views/project/project_list.rs:446
 msgid "The list and its tasks will be permanently lost."
 msgstr "فهرست و وظایف آن برای همیشه از بین خواهد رفت."
 

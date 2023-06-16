@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: iplan\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-06-14 19:17+0330\n"
+"POT-Creation-Date: 2023-06-16 15:30+0330\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -182,7 +182,8 @@ msgstr ""
 msgid "First stable release."
 msgstr ""
 
-#: src/ui/window.ui:140 src/ui/date_row.ui:24
+#: src/ui/window.ui:140 src/ui/date_row.ui:24 src/views/date_row.rs:121
+#: src/views/tasks_list.rs:107
 msgid "Today"
 msgstr ""
 
@@ -304,11 +305,11 @@ msgstr ""
 msgid "Description"
 msgstr ""
 
-#: src/ui/project/project_edit_window.ui:107
+#: src/ui/project/project_edit_window.ui:105
 msgid "Archive"
 msgstr ""
 
-#: src/ui/project/project_edit_window.ui:119
+#: src/ui/project/project_edit_window.ui:117
 msgid "Delete"
 msgstr ""
 
@@ -408,7 +409,7 @@ msgstr ""
 msgid "Search"
 msgstr ""
 
-#: src/ui/search/search_window.ui:58
+#: src/ui/search/search_window.ui:55
 msgid "no results found"
 msgstr ""
 
@@ -425,11 +426,11 @@ msgid "New project"
 msgstr ""
 
 #. Translators: Replace "translator-credits" with your names, one name per line
-#: src/application.rs:196
+#: src/application.rs:202
 msgid "translator-credits"
 msgstr ""
 
-#: src/application.rs:242
+#: src/application.rs:248
 msgid "IPlan needs to run in the background to send reminders"
 msgstr ""
 
@@ -458,11 +459,11 @@ msgstr ""
 msgid "Done Tasks"
 msgstr ""
 
-#: src/views/project/project_edit_window.rs:134
+#: src/views/project/project_edit_window.rs:153
 msgid "Delete \"{}\" project?"
 msgstr ""
 
-#: src/views/project/project_edit_window.rs:137
+#: src/views/project/project_edit_window.rs:156
 msgid "The project and its tasks will be permanently lost."
 msgstr ""
 
@@ -474,11 +475,11 @@ msgstr ""
 msgid "Undo"
 msgstr ""
 
-#: src/views/project/project_list.rs:445
+#: src/views/project/project_list.rs:444
 msgid "Delete \"{}\" list?"
 msgstr ""
 
-#: src/views/project/project_list.rs:447
+#: src/views/project/project_list.rs:446
 msgid "The list and its tasks will be permanently lost."
 msgstr ""
 

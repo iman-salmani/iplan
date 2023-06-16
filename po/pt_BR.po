@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: iplan\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-06-14 19:17+0330\n"
+"POT-Creation-Date: 2023-06-16 15:30+0330\n"
 "PO-Revision-Date: 2023-06-10 12:30-0300\n"
 "Last-Translator: Fúlvio Leo <fulviokaldas@outlook.com>\n"
 "Language: pt_BR\n"
@@ -194,7 +194,8 @@ msgstr "Janela de registros para criar, editar e excluir registros"
 msgid "First stable release."
 msgstr "Primeira versão estável"
 
-#: src/ui/window.ui:140 src/ui/date_row.ui:24
+#: src/ui/window.ui:140 src/ui/date_row.ui:24 src/views/date_row.rs:121
+#: src/views/tasks_list.rs:107
 msgid "Today"
 msgstr "Hoje"
 
@@ -317,11 +318,11 @@ msgstr "Ícone"
 msgid "Description"
 msgstr "Descrição"
 
-#: src/ui/project/project_edit_window.ui:107
+#: src/ui/project/project_edit_window.ui:105
 msgid "Archive"
 msgstr "Arquivo"
 
-#: src/ui/project/project_edit_window.ui:119
+#: src/ui/project/project_edit_window.ui:117
 msgid "Delete"
 msgstr "Deletar"
 
@@ -423,7 +424,7 @@ msgstr "_Deletar"
 msgid "Search"
 msgstr "Buscar"
 
-#: src/ui/search/search_window.ui:58
+#: src/ui/search/search_window.ui:55
 msgid "no results found"
 msgstr "nenhum resultado encontrado"
 
@@ -440,11 +441,11 @@ msgid "New project"
 msgstr "Novo projeto"
 
 #. Translators: Replace "translator-credits" with your names, one name per line
-#: src/application.rs:196
+#: src/application.rs:202
 msgid "translator-credits"
 msgstr "Fúlvio Leo <fulviokaldas@outlook.com>"
 
-#: src/application.rs:242
+#: src/application.rs:248
 msgid "IPlan needs to run in the background to send reminders"
 msgstr "O IPlan precisa ser executado em segundo plano para enviar lembretes"
 
@@ -473,11 +474,11 @@ msgstr "Erro ao importar dados"
 msgid "Done Tasks"
 msgstr "Tarefas Concluídas"
 
-#: src/views/project/project_edit_window.rs:134
+#: src/views/project/project_edit_window.rs:153
 msgid "Delete \"{}\" project?"
 msgstr "Deletar o projeto \"{}\"?"
 
-#: src/views/project/project_edit_window.rs:137
+#: src/views/project/project_edit_window.rs:156
 msgid "The project and its tasks will be permanently lost."
 msgstr "O projeto e suas tarefas associadas serão perdidos permanentemente."
 
@@ -489,11 +490,11 @@ msgstr "\"{}\" movido para a lista de tarefas concluídas"
 msgid "Undo"
 msgstr "Desfazer"
 
-#: src/views/project/project_list.rs:445
+#: src/views/project/project_list.rs:444
 msgid "Delete \"{}\" list?"
 msgstr "Deletar a lista \"{}\"?"
 
-#: src/views/project/project_list.rs:447
+#: src/views/project/project_list.rs:446
 msgid "The list and its tasks will be permanently lost."
 msgstr "A lista e suas tarefas associadas serão perdidas permanentemente."
 

@@ -14,7 +14,6 @@ src/ui/project/project_header.ui
 src/ui/project/project_list.ui
 src/ui/project/project_lists.ui
 src/ui/project/record_window.ui
-src/ui/project/record_row.ui
 src/ui/project/reminder_window.ui
 src/ui/project/task_page.ui
 src/ui/project/task_row.ui
@@ -23,6 +22,8 @@ src/ui/sidebar/sidebar_projects.ui
 src/application.rs
 src/views/window.rs
 src/views/backup_window.rs
+src/views/date_row.rs
+src/views/tasks_list.rs
 src/views/project/project_done_tasks_window.rs
 src/views/project/project_edit_window.rs
 src/views/project/project_header.rs
