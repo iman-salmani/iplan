@@ -586,7 +586,11 @@ impl ProjectList {
             return gdk::DragAction::empty();
         }
         let source_row = source_row.unwrap();
-        let target_row: TaskRow = target_row.and_downcast().unwrap();
+        let target_row: TaskRow = if let Some(row) = target_row.and_downcast() {
+            row
+        } else {
+            return gdk::DragAction::empty();
+        };
 
         // Move
         let source_task = source_row.task();

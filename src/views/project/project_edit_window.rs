@@ -110,7 +110,6 @@ impl ProjectEditWindow {
                 if param.name() == "description" {
                     return;
                 }
-                println!("project.update");
                 obj.transient_for()
                     .unwrap()
                     .activate_action("project.update", None)
