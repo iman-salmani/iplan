@@ -60,6 +60,22 @@
   </categories>
   <content_rating type="oars-1.1" />
   <releases>
+    <release version="1.5.0" date="2023-06-16">
+      <description>
+        <p>New features and updates</p>
+        <ul>
+          <li>The task row shows the description, subtasks, due date, and reminder</li>
+          <li>New design for task rows</li>
+          <li>Add task button below tasks list</li>
+          <li>One week per calendar page</li>
+          <li>Today and No Date buttons on top of the date picker</li>
+          <li>Click on a searched task will open the task window</li>
+          <li>Auto start (if the user lets the app run in the background) and checking for reminders in the startup</li>
+          <li>Czech and French and Brazilian Portuguese Translations Added or updated thanks to Amerey.eu, Irénée Thirion, and Fúlvio Leo</li>
+          <li>Code refactoring, Bug fixes, and UI improvements</li>
+        </ul>
+      </description>
+    </release>
     <release version="1.4.0" date="2023-06-09">
       <description>
         <p>New features and updates</p>
