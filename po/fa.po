@@ -328,7 +328,7 @@ msgstr "زمان صرف شده در روز"
 #: src/ui/project/project_list.ui:133 src/ui/project/task_page.ui:166
 #: src/ui/project/task_page.ui:197
 msgid "Add task"
-msgstr ""
+msgstr "افزودن وظیفه"
 
 #: src/ui/project/project_list.ui:175
 msgid "Done tasks"
@@ -406,12 +406,11 @@ msgstr "از دکمه افزودن در بالا استفاده کنید یا ت
 
 #: src/ui/project/task_row.ui:194 src/views/project/task_row.rs:248
 msgid "Start _timer"
-msgstr ""
+msgstr "شروع _تایمر"
 
 #: src/ui/project/task_row.ui:210
-#, fuzzy
 msgid "_Delete task"
-msgstr "حذف"
+msgstr "حذف وظیفه_"
 
 #: src/ui/search/search_window.ui:16
 msgid "Search"
