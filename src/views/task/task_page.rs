@@ -53,10 +53,7 @@ mod imp {
         fn class_init(klass: &mut Self::Class) {
             klass.bind_template();
             klass.bind_template_instance_callbacks();
-            // klass.install_action("task.check", Some("i"), move |obj, _, _value| {
-            //     let imp = obj.imp();
-            //     imp.subtasks_box.invalidate_sort();
-            // });
+            klass.install_action("task.check", Some("i"), move |_, _, _| {});
             klass.install_action("task.duration-update", None, move |obj, _, _value| {
                 obj.imp().task_row.refresh_timer();
             });

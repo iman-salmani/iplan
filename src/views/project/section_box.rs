@@ -49,9 +49,11 @@ mod imp {
             klass.bind_template_instance_callbacks();
             klass.install_action("task.check", Some("i"), move |obj, _, value| {
                 let imp = obj.imp();
-                let value = value.unwrap().get().unwrap();
-                let upper_row = imp.tasks_box.item_by_index(value - 1);
-                let row = imp.tasks_box.item_by_index(value).unwrap();
+                println!("{:?}", value);
+                let value: i32 = value.unwrap().get().unwrap();
+                let index = value as u32;
+                let upper_row = imp.tasks_box.item_by_index(index - 1);
+                let row = imp.tasks_box.item_by_index(index).unwrap();
                 let task = row.task();
                 if let Some(upper_row) = upper_row {
                     upper_row.grab_focus();

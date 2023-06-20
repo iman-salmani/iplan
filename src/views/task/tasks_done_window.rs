@@ -38,9 +38,9 @@ mod imp {
             klass.bind_template_instance_callbacks();
             klass.install_action("task.check", Some("i"), move |obj, _, value| {
                 let imp = obj.imp();
-                let value = value.unwrap().get().unwrap();
-                let upper_row = imp.tasks_box.row_at_index(value - 1);
-                let row = imp.tasks_box.row_at_index(value).unwrap();
+                let index = value.unwrap().get().unwrap();
+                let upper_row = imp.tasks_box.row_at_index(index - 1);
+                let row = imp.tasks_box.row_at_index(index).unwrap();
                 if let Some(upper_row) = upper_row {
                     upper_row.grab_focus();
                 }
@@ -48,7 +48,7 @@ mod imp {
                 obj.transient_for()
                     .unwrap()
                     .activate_action("project.open", None) // TODO: just add task to section
-                    .expect("Failed to activate project.open action");
+                    .unwrap();
             });
         }
 

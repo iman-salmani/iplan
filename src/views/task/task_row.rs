@@ -284,7 +284,7 @@ impl TaskRow {
                     imp.timer_status.set(TimerStatus::Off);
                 }
                 obj.activate_action("task.check", Some(&obj.index().to_variant()))
-                    .expect("Failed to activate task.check action");
+                    .unwrap();
                 Some(active)
             })
             .sync_create()
