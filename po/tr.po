@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ir.imansalmani.IPlan\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-06-16 16:31+0330\n"
+"POT-Creation-Date: 2023-06-20 15:50+0330\n"
 "PO-Revision-Date: 2023-06-03 10:00+0300\n"
 "Last-Translator: Sabri Ünal <libreajans@gmail.com>\n"
 "Language-Team: Türkçe <takim@gnome.org.tr>\n"
@@ -51,8 +51,8 @@ msgstr "Proje ve listelerle görev gruplama"
 msgid "Timer for tasks"
 msgstr "Görev zamanlayıcısı"
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:14 src/ui/project/task_page.ui:75
-#: src/ui/project/task_page.ui:89
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:14 src/ui/task/task_page.ui:73
+#: src/ui/task/task_page.ui:87
 msgid "Subtasks"
 msgstr "Alt görevler"
 
@@ -233,14 +233,15 @@ msgstr "Kayıt oluşturmak, düzenlemek ve silmek için kayıtlar penceresi"
 msgid "First stable release."
 msgstr "İlk stabil sürüm."
 
-#: src/ui/window.ui:140 src/ui/date_row.ui:24 src/views/date_row.rs:121
-#: src/views/tasks_list.rs:107
+#: src/ui/window.ui:140 src/ui/snippets/date_row.ui:24
+#: src/views/calendar/tasks_list.rs:104 src/views/snippets/date_row.rs:121
 msgid "Today"
 msgstr ""
 
 #: src/ui/window.ui:178
-msgid "_New List"
-msgstr "_Yeni Liste"
+#, fuzzy
+msgid "New _Section"
+msgstr "Yeni Kayıt"
 
 #: src/ui/window.ui:182
 msgid "_Edit Project"
@@ -261,14 +262,6 @@ msgstr "IPlan _Hakkında"
 #: src/ui/window.ui:206
 msgid "_Quit"
 msgstr "_Çık"
-
-#: src/ui/calendar.ui:18
-msgid "Previous week"
-msgstr ""
-
-#: src/ui/calendar.ui:36
-msgid "Next week"
-msgstr ""
 
 #: src/ui/shortcuts_window.ui:13
 msgctxt "shortcut window"
@@ -324,18 +317,13 @@ msgstr ""
 msgid "While importing, previous data will be cached"
 msgstr ""
 
-#: src/ui/delete_dialog.ui:13
-msgid "_Cancel"
-msgstr "_İptal"
+#: src/ui/calendar/calendar.ui:18
+msgid "Previous week"
+msgstr ""
 
-#: src/ui/delete_dialog.ui:14
-msgid "_Delete"
-msgstr "_Sil"
-
-#: src/ui/date_row.ui:38
-#, fuzzy
-msgid "No Date"
-msgstr "Tarih"
+#: src/ui/calendar/calendar.ui:36
+msgid "Next week"
+msgstr ""
 
 # Başlık düzeni tercih edildi.
 #: src/ui/project/project_done_tasks_window.ui:52
@@ -354,7 +342,7 @@ msgstr "Ad"
 msgid "Icon"
 msgstr "Simge"
 
-#: src/ui/project/project_edit_window.ui:75 src/ui/project/task_page.ui:44
+#: src/ui/project/project_edit_window.ui:75 src/ui/task/task_page.ui:44
 msgid "Description"
 msgstr "Açıklama"
 
@@ -370,97 +358,72 @@ msgstr "Sil"
 msgid "Time spent per day"
 msgstr "Günlük harcanan zaman"
 
-#: src/ui/project/project_list.ui:51 src/ui/project/project_list.ui:102
-#: src/ui/project/project_list.ui:133 src/ui/project/task_page.ui:166
-#: src/ui/project/task_page.ui:197
+# Başlık düzeni tercih edildi.
+#: src/ui/project/project_lists.ui:35
+#, fuzzy
+msgid "no sections found"
+msgstr "Kayıt Bulunamadı"
+
+#: src/ui/project/project_lists.ui:64
+#, fuzzy
+msgid "New section"
+msgstr "Yeni Kayıt"
+
+#: src/ui/project/section_box.ui:49 src/ui/task/tasks_box.ui:46
+#: src/ui/task/tasks_box.ui:77
 msgid "Add task"
 msgstr ""
 
-#: src/ui/project/project_list.ui:175
+#: src/ui/project/section_box.ui:91
 msgid "Done tasks"
 msgstr "Tamamlanmış Görevler"
 
-#: src/ui/project/project_list.ui:205
-msgid "Delete list"
+#: src/ui/project/section_box.ui:121
+#, fuzzy
+msgid "Delete section"
 msgstr "Listeyi sil"
 
-# Başlık düzeni tercih edildi.
-#: src/ui/project/project_lists.ui:35
-msgid "no lists found"
-msgstr "Liste Bulunamadı"
-
-#: src/ui/project/project_lists.ui:64
-msgid "New list"
-msgstr "Yeni liste"
-
-#: src/ui/project/record_window.ui:16
+#: src/ui/record/record_window.ui:16
 msgid "New Record"
 msgstr "Yeni Kayıt"
 
-#: src/ui/project/record_window.ui:24 src/ui/project/reminder_window.ui:24
+#: src/ui/record/record_window.ui:24 src/ui/reminder/reminder_window.ui:24
 msgid "Cancel"
 msgstr "İptal"
 
-#: src/ui/project/record_window.ui:30 src/ui/project/reminder_window.ui:30
+#: src/ui/record/record_window.ui:30 src/ui/reminder/reminder_window.ui:30
 msgid "Done"
 msgstr "Tamamlandı"
 
-#: src/ui/project/record_window.ui:47
+#: src/ui/record/record_window.ui:47
 msgid "Starts"
 msgstr "Başlangıç"
 
-#: src/ui/project/record_window.ui:50 src/ui/project/record_window.ui:70
-#: src/ui/project/reminder_window.ui:49
+#: src/ui/record/record_window.ui:50 src/ui/record/record_window.ui:70
+#: src/ui/reminder/reminder_window.ui:49
 msgid "Date"
 msgstr "Tarih"
 
-#: src/ui/project/record_window.ui:57 src/ui/project/record_window.ui:77
-#: src/ui/project/reminder_window.ui:55
+#: src/ui/record/record_window.ui:57 src/ui/record/record_window.ui:77
+#: src/ui/reminder/reminder_window.ui:55
 msgid "Time"
 msgstr "Saat"
 
-#: src/ui/project/record_window.ui:67
+#: src/ui/record/record_window.ui:67
 msgid "Ends"
 msgstr "Bitiş"
 
-#: src/ui/project/record_window.ui:86
+#: src/ui/record/record_window.ui:86
 msgid "Duration"
 msgstr "Süre"
 
-#: src/ui/project/record_window.ui:98 src/ui/project/reminder_window.ui:66
+#: src/ui/record/record_window.ui:98 src/ui/reminder/reminder_window.ui:66
 msgid "delete"
 msgstr "sil"
 
-#: src/ui/project/reminder_window.ui:16
+#: src/ui/reminder/reminder_window.ui:16
 msgid "Reminder"
 msgstr ""
-
-#: src/ui/project/task_page.ui:31
-msgid "Reminders"
-msgstr ""
-
-#: src/ui/project/task_page.ui:94
-msgid "Records"
-msgstr "Kayıtlar"
-
-# Başlık düzeni tercih edildi.
-#: src/ui/project/task_page.ui:233
-msgid "no records found"
-msgstr "Kayıt Bulunamadı"
-
-#: src/ui/project/task_page.ui:234
-msgid "Use add button up there or start a timer"
-msgstr "Yukarıdaki ekle düğmesini kullanın ya da bir zamanlayıcı başlatın"
-
-#: src/ui/project/task_row.ui:194 src/views/project/task_row.rs:248
-#, fuzzy
-msgid "Start _timer"
-msgstr "başlangıç saati"
-
-#: src/ui/project/task_row.ui:210
-#, fuzzy
-msgid "_Delete task"
-msgstr "_Sil"
 
 #: src/ui/search/search_window.ui:16
 msgid "Search"
@@ -483,6 +446,46 @@ msgstr "Arşivlenmiş projeleri göster"
 msgid "New project"
 msgstr "Yeni proje"
 
+#: src/ui/snippets/delete_dialog.ui:13
+msgid "_Cancel"
+msgstr "_İptal"
+
+#: src/ui/snippets/delete_dialog.ui:14
+msgid "_Delete"
+msgstr "_Sil"
+
+#: src/ui/snippets/date_row.ui:38
+#, fuzzy
+msgid "No Date"
+msgstr "Tarih"
+
+#: src/ui/task/task_row.ui:194 src/views/task/task_row.rs:248
+#, fuzzy
+msgid "Start _timer"
+msgstr "başlangıç saati"
+
+#: src/ui/task/task_row.ui:210
+#, fuzzy
+msgid "_Delete task"
+msgstr "_Sil"
+
+#: src/ui/task/task_page.ui:31
+msgid "Reminders"
+msgstr ""
+
+#: src/ui/task/task_page.ui:92
+msgid "Records"
+msgstr "Kayıtlar"
+
+# Başlık düzeni tercih edildi.
+#: src/ui/task/task_page.ui:150
+msgid "no records found"
+msgstr "Kayıt Bulunamadı"
+
+#: src/ui/task/task_page.ui:151
+msgid "Use add button up there or start a timer"
+msgstr "Yukarıdaki ekle düğmesini kullanın ya da bir zamanlayıcı başlatın"
+
 #. Translators: Replace "translator-credits" with your names, one name per line
 #: src/application.rs:202
 msgid "translator-credits"
@@ -492,11 +495,11 @@ msgstr "Sabri Ünal <libreajans@gmail.com>"
 msgid "IPlan needs to run in the background to send reminders"
 msgstr ""
 
-#: src/views/window.rs:105 src/views/window.rs:219
+#: src/views/window.rs:104 src/views/window.rs:218
 msgid "Personal"
 msgstr "Kişisel"
 
-#: src/views/window.rs:106 src/views/window.rs:220
+#: src/views/window.rs:105 src/views/window.rs:219
 #: src/views/sidebar/sidebar_projects.rs:212
 msgid "Tasks"
 msgstr "Görevler"
@@ -513,59 +516,60 @@ msgstr ""
 msgid "Error while importing data"
 msgstr ""
 
-#: src/views/project/project_done_tasks_window.rs:100
+#: src/views/project/project_done_tasks_window.rs:92
 msgid "Done Tasks"
 msgstr "Tamamlanmış Görevler"
 
-#: src/views/project/project_edit_window.rs:153
+#: src/views/project/project_edit_window.rs:154
 msgid "Delete \"{}\" project?"
 msgstr "“{}” projesi silinsin mi?"
 
-#: src/views/project/project_edit_window.rs:156
+#: src/views/project/project_edit_window.rs:157
 msgid "The project and its tasks will be permanently lost."
 msgstr "Proje ve görevleri kalıcı olarak kaybedilecek."
 
-#: src/views/project/project_list.rs:76
-msgid "\"{}\" moved to the done tasks list"
+#. Translators: {} Will be replaced with a shortcut label.
+#: src/views/project/project_lists.rs:66
+#, fuzzy
+msgid "Use the primary menu {} for adding a new section"
+msgstr "Yeni listeler eklemek için {} ana menüyü kullan"
+
+#: src/views/project/project_lists.rs:189
+#, fuzzy
+msgid "New Section"
+msgstr "Yeni Kayıt"
+
+#: src/views/project/section_box.rs:68
+#, fuzzy
+msgid "\"{}\" moved to the done tasks section"
 msgstr "\"{}\" tamamlanmış görevler listesine taşındı"
 
-#: src/views/project/project_list.rs:78 src/views/project/task_row.rs:414
+#: src/views/project/section_box.rs:71 src/views/task/task_row.rs:414
 msgid "Undo"
 msgstr "Geri Al"
 
-#: src/views/project/project_list.rs:444
-msgid "Delete \"{}\" list?"
+#: src/views/project/section_box.rs:250
+#, fuzzy
+msgid "Delete \"{}\" section?"
 msgstr "“{}” listesi silinsin mi?"
 
-#: src/views/project/project_list.rs:446
-msgid "The list and its tasks will be permanently lost."
+#: src/views/project/section_box.rs:253
+#, fuzzy
+msgid "The section and its tasks will be permanently lost."
 msgstr "Liste ve görevleri kalıcı olarak kaybedilecek."
 
-#. Translators: {} Will be replaced with a shortcut label.
-#: src/views/project/project_lists.rs:55
-msgid "Use the primary menu {} for adding new lists"
-msgstr "Yeni listeler eklemek için {} ana menüyü kullan"
-
-#: src/views/project/project_lists.rs:164
-msgid "New List"
-msgstr "Yeni Liste"
-
-#: src/views/project/record_window.rs:180
-msgid "Duration can't be 0"
-msgstr "Süre 0 olamaz"
-
-#: src/views/project/record_row.rs:92
+#: src/views/record/record_row.rs:92
 msgid "until"
 msgstr "şu zamana kadar"
 
-#: src/views/project/reminder_window.rs:111
+#: src/views/record/record_window.rs:180
+msgid "Duration can't be 0"
+msgstr "Süre 0 olamaz"
+
+#: src/views/reminder/reminder_window.rs:111
 #, fuzzy
 msgid "Time can't be in the past"
 msgstr "Günlük harcanan zaman"
-
-#: src/views/project/task_row.rs:413
-msgid "\"{}\" is going to delete"
-msgstr "“{}” silinecek"
 
 #: src/views/search/search_result.rs:55
 msgid "Project"
@@ -574,6 +578,23 @@ msgstr "Proje"
 #: src/views/search/search_result.rs:60
 msgid "Task"
 msgstr "Görev"
+
+#: src/views/task/task_row.rs:413
+msgid "\"{}\" is going to delete"
+msgstr "“{}” silinecek"
+
+#~ msgid "_New List"
+#~ msgstr "_Yeni Liste"
+
+# Başlık düzeni tercih edildi.
+#~ msgid "no lists found"
+#~ msgstr "Liste Bulunamadı"
+
+#~ msgid "New list"
+#~ msgstr "Yeni liste"
+
+#~ msgid "New List"
+#~ msgstr "Yeni Liste"
 
 # Başlık düzeni tercih edildi.
 #~ msgid "no tasks found"

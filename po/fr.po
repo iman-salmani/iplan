@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: iplan\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-06-16 16:31+0330\n"
+"POT-Creation-Date: 2023-06-20 15:50+0330\n"
 "PO-Revision-Date: 2023-06-11 20:32+0200\n"
 "Last-Translator: Irénée Thirion <irenee.thirion@e.email>\n"
 "Language-Team: \n"
@@ -49,8 +49,8 @@ msgstr "Groupement des tâches par projets et listes"
 msgid "Timer for tasks"
 msgstr "Minuteur pour les tâches"
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:14 src/ui/project/task_page.ui:75
-#: src/ui/project/task_page.ui:89
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:14 src/ui/task/task_page.ui:73
+#: src/ui/task/task_page.ui:87
 msgid "Subtasks"
 msgstr "Sous-tâches"
 
@@ -242,14 +242,15 @@ msgstr ""
 msgid "First stable release."
 msgstr "Première version stable."
 
-#: src/ui/window.ui:140 src/ui/date_row.ui:24 src/views/date_row.rs:121
-#: src/views/tasks_list.rs:107
+#: src/ui/window.ui:140 src/ui/snippets/date_row.ui:24
+#: src/views/calendar/tasks_list.rs:104 src/views/snippets/date_row.rs:121
 msgid "Today"
 msgstr "Aujourd’hui"
 
 #: src/ui/window.ui:178
-msgid "_New List"
-msgstr "_Nouvelle liste"
+#, fuzzy
+msgid "New _Section"
+msgstr "Nouveau chronomètre"
 
 #: src/ui/window.ui:182
 msgid "_Edit Project"
@@ -270,14 +271,6 @@ msgstr "À _propos de IPlan"
 #: src/ui/window.ui:206
 msgid "_Quit"
 msgstr "_Quitter"
-
-#: src/ui/calendar.ui:18
-msgid "Previous week"
-msgstr ""
-
-#: src/ui/calendar.ui:36
-msgid "Next week"
-msgstr ""
 
 #: src/ui/shortcuts_window.ui:13
 msgctxt "shortcut window"
@@ -333,18 +326,13 @@ msgstr "Importer"
 msgid "While importing, previous data will be cached"
 msgstr "Pendant l’importation, les données précédentes seront mises en cache"
 
-#: src/ui/delete_dialog.ui:13
-msgid "_Cancel"
-msgstr "A_nnuler"
+#: src/ui/calendar/calendar.ui:18
+msgid "Previous week"
+msgstr ""
 
-#: src/ui/delete_dialog.ui:14
-msgid "_Delete"
-msgstr "_Supprimer"
-
-#: src/ui/date_row.ui:38
-#, fuzzy
-msgid "No Date"
-msgstr "Date"
+#: src/ui/calendar/calendar.ui:36
+msgid "Next week"
+msgstr ""
 
 #: src/ui/project/project_done_tasks_window.ui:52
 msgid "no done tasks found"
@@ -362,7 +350,7 @@ msgstr "Nom"
 msgid "Icon"
 msgstr "Icône"
 
-#: src/ui/project/project_edit_window.ui:75 src/ui/project/task_page.ui:44
+#: src/ui/project/project_edit_window.ui:75 src/ui/task/task_page.ui:44
 msgid "Description"
 msgstr "Description"
 
@@ -378,94 +366,71 @@ msgstr "Supprimer"
 msgid "Time spent per day"
 msgstr "Temps passé par jour"
 
-#: src/ui/project/project_list.ui:51 src/ui/project/project_list.ui:102
-#: src/ui/project/project_list.ui:133 src/ui/project/task_page.ui:166
-#: src/ui/project/task_page.ui:197
+#: src/ui/project/project_lists.ui:35
+#, fuzzy
+msgid "no sections found"
+msgstr "Aucun chronomètre trouvé"
+
+#: src/ui/project/project_lists.ui:64
+#, fuzzy
+msgid "New section"
+msgstr "Nouveau chronomètre"
+
+#: src/ui/project/section_box.ui:49 src/ui/task/tasks_box.ui:46
+#: src/ui/task/tasks_box.ui:77
 msgid "Add task"
 msgstr ""
 
-#: src/ui/project/project_list.ui:175
+#: src/ui/project/section_box.ui:91
 msgid "Done tasks"
 msgstr "Tâches accomplies"
 
-#: src/ui/project/project_list.ui:205
-msgid "Delete list"
+#: src/ui/project/section_box.ui:121
+#, fuzzy
+msgid "Delete section"
 msgstr "Supprimer la liste"
 
-#: src/ui/project/project_lists.ui:35
-msgid "no lists found"
-msgstr "Aucune liste trouvée"
-
-#: src/ui/project/project_lists.ui:64
-msgid "New list"
-msgstr "Nouvelle liste"
-
-#: src/ui/project/record_window.ui:16
+#: src/ui/record/record_window.ui:16
 msgid "New Record"
 msgstr "Nouveau chronomètre"
 
-#: src/ui/project/record_window.ui:24 src/ui/project/reminder_window.ui:24
+#: src/ui/record/record_window.ui:24 src/ui/reminder/reminder_window.ui:24
 msgid "Cancel"
 msgstr "Annuler"
 
-#: src/ui/project/record_window.ui:30 src/ui/project/reminder_window.ui:30
+#: src/ui/record/record_window.ui:30 src/ui/reminder/reminder_window.ui:30
 msgid "Done"
 msgstr "Fait"
 
-#: src/ui/project/record_window.ui:47
+#: src/ui/record/record_window.ui:47
 msgid "Starts"
 msgstr "Commence le"
 
-#: src/ui/project/record_window.ui:50 src/ui/project/record_window.ui:70
-#: src/ui/project/reminder_window.ui:49
+#: src/ui/record/record_window.ui:50 src/ui/record/record_window.ui:70
+#: src/ui/reminder/reminder_window.ui:49
 msgid "Date"
 msgstr "Date"
 
-#: src/ui/project/record_window.ui:57 src/ui/project/record_window.ui:77
-#: src/ui/project/reminder_window.ui:55
+#: src/ui/record/record_window.ui:57 src/ui/record/record_window.ui:77
+#: src/ui/reminder/reminder_window.ui:55
 msgid "Time"
 msgstr "Heure"
 
-#: src/ui/project/record_window.ui:67
+#: src/ui/record/record_window.ui:67
 msgid "Ends"
 msgstr "Finit le"
 
-#: src/ui/project/record_window.ui:86
+#: src/ui/record/record_window.ui:86
 msgid "Duration"
 msgstr "Durée"
 
-#: src/ui/project/record_window.ui:98 src/ui/project/reminder_window.ui:66
+#: src/ui/record/record_window.ui:98 src/ui/reminder/reminder_window.ui:66
 msgid "delete"
 msgstr "Supprimer"
 
-#: src/ui/project/reminder_window.ui:16
+#: src/ui/reminder/reminder_window.ui:16
 msgid "Reminder"
 msgstr "Rappel"
-
-#: src/ui/project/task_page.ui:31
-msgid "Reminders"
-msgstr "Rappels"
-
-#: src/ui/project/task_page.ui:94
-msgid "Records"
-msgstr "Chronomètres"
-
-#: src/ui/project/task_page.ui:233
-msgid "no records found"
-msgstr "Aucun chronomètre trouvé"
-
-#: src/ui/project/task_page.ui:234
-msgid "Use add button up there or start a timer"
-msgstr "Utilisez le bouton Ajouter ci-dessus ou démarrez un minuteur"
-
-#: src/ui/project/task_row.ui:194 src/views/project/task_row.rs:248
-msgid "Start _timer"
-msgstr ""
-
-#: src/ui/project/task_row.ui:210
-#, fuzzy
-msgid "_Delete task"
-msgstr "_Supprimer"
 
 #: src/ui/search/search_window.ui:16
 msgid "Search"
@@ -487,6 +452,44 @@ msgstr "Afficher les projets archivés"
 msgid "New project"
 msgstr "Nouveau projet"
 
+#: src/ui/snippets/delete_dialog.ui:13
+msgid "_Cancel"
+msgstr "A_nnuler"
+
+#: src/ui/snippets/delete_dialog.ui:14
+msgid "_Delete"
+msgstr "_Supprimer"
+
+#: src/ui/snippets/date_row.ui:38
+#, fuzzy
+msgid "No Date"
+msgstr "Date"
+
+#: src/ui/task/task_row.ui:194 src/views/task/task_row.rs:248
+msgid "Start _timer"
+msgstr ""
+
+#: src/ui/task/task_row.ui:210
+#, fuzzy
+msgid "_Delete task"
+msgstr "_Supprimer"
+
+#: src/ui/task/task_page.ui:31
+msgid "Reminders"
+msgstr "Rappels"
+
+#: src/ui/task/task_page.ui:92
+msgid "Records"
+msgstr "Chronomètres"
+
+#: src/ui/task/task_page.ui:150
+msgid "no records found"
+msgstr "Aucun chronomètre trouvé"
+
+#: src/ui/task/task_page.ui:151
+msgid "Use add button up there or start a timer"
+msgstr "Utilisez le bouton Ajouter ci-dessus ou démarrez un minuteur"
+
 #. Translators: Replace "translator-credits" with your names, one name per line
 #: src/application.rs:202
 msgid "translator-credits"
@@ -497,11 +500,11 @@ msgid "IPlan needs to run in the background to send reminders"
 msgstr ""
 "IPlan nécessite de fonctionner en arrière-plan pour envoyer des rappels"
 
-#: src/views/window.rs:105 src/views/window.rs:219
+#: src/views/window.rs:104 src/views/window.rs:218
 msgid "Personal"
 msgstr "Personnel"
 
-#: src/views/window.rs:106 src/views/window.rs:220
+#: src/views/window.rs:105 src/views/window.rs:219
 #: src/views/sidebar/sidebar_projects.rs:212
 msgid "Tasks"
 msgstr "Tâches"
@@ -518,58 +521,59 @@ msgstr "Erreur lors de la mise en cache des données précédentes"
 msgid "Error while importing data"
 msgstr "Erreur lors de l’importation des données"
 
-#: src/views/project/project_done_tasks_window.rs:100
+#: src/views/project/project_done_tasks_window.rs:92
 msgid "Done Tasks"
 msgstr "Tâches accomplies"
 
-#: src/views/project/project_edit_window.rs:153
+#: src/views/project/project_edit_window.rs:154
 msgid "Delete \"{}\" project?"
 msgstr "Supprimer le projet « {} » ?"
 
-#: src/views/project/project_edit_window.rs:156
+#: src/views/project/project_edit_window.rs:157
 msgid "The project and its tasks will be permanently lost."
 msgstr "Le projet et les tâches qu’il contient seront définitivement perdus."
 
-#: src/views/project/project_list.rs:76
-msgid "\"{}\" moved to the done tasks list"
+#. Translators: {} Will be replaced with a shortcut label.
+#: src/views/project/project_lists.rs:66
+#, fuzzy
+msgid "Use the primary menu {} for adding a new section"
+msgstr "Utilisez le menu principal {} pour ajouter de nouvelles listes"
+
+#: src/views/project/project_lists.rs:189
+#, fuzzy
+msgid "New Section"
+msgstr "Nouveau chronomètre"
+
+#: src/views/project/section_box.rs:68
+#, fuzzy
+msgid "\"{}\" moved to the done tasks section"
 msgstr "« {} » déplacé vers la liste des tâches accomplies"
 
-#: src/views/project/project_list.rs:78 src/views/project/task_row.rs:414
+#: src/views/project/section_box.rs:71 src/views/task/task_row.rs:414
 msgid "Undo"
 msgstr "Annuler"
 
-#: src/views/project/project_list.rs:444
-msgid "Delete \"{}\" list?"
+#: src/views/project/section_box.rs:250
+#, fuzzy
+msgid "Delete \"{}\" section?"
 msgstr "Supprimer la liste « {} » ?"
 
-#: src/views/project/project_list.rs:446
-msgid "The list and its tasks will be permanently lost."
+#: src/views/project/section_box.rs:253
+#, fuzzy
+msgid "The section and its tasks will be permanently lost."
 msgstr "La liste et ses tâches seront définitivement perdues."
 
-#. Translators: {} Will be replaced with a shortcut label.
-#: src/views/project/project_lists.rs:55
-msgid "Use the primary menu {} for adding new lists"
-msgstr "Utilisez le menu principal {} pour ajouter de nouvelles listes"
-
-#: src/views/project/project_lists.rs:164
-msgid "New List"
-msgstr "Nouvelle liste"
-
-#: src/views/project/record_window.rs:180
-msgid "Duration can't be 0"
-msgstr "La durée ne peut être 0"
-
-#: src/views/project/record_row.rs:92
+#: src/views/record/record_row.rs:92
 msgid "until"
 msgstr "jusqu’à"
 
-#: src/views/project/reminder_window.rs:111
+#: src/views/record/record_window.rs:180
+msgid "Duration can't be 0"
+msgstr "La durée ne peut être 0"
+
+#: src/views/reminder/reminder_window.rs:111
 msgid "Time can't be in the past"
 msgstr "L’heure ne peut être dans le passé"
-
-#: src/views/project/task_row.rs:413
-msgid "\"{}\" is going to delete"
-msgstr "« {} » sera supprimée"
 
 #: src/views/search/search_result.rs:55
 msgid "Project"
@@ -578,6 +582,22 @@ msgstr "Projet"
 #: src/views/search/search_result.rs:60
 msgid "Task"
 msgstr "Tâche"
+
+#: src/views/task/task_row.rs:413
+msgid "\"{}\" is going to delete"
+msgstr "« {} » sera supprimée"
+
+#~ msgid "_New List"
+#~ msgstr "_Nouvelle liste"
+
+#~ msgid "no lists found"
+#~ msgstr "Aucune liste trouvée"
+
+#~ msgid "New list"
+#~ msgstr "Nouvelle liste"
+
+#~ msgid "New List"
+#~ msgstr "Nouvelle liste"
 
 #~ msgid "no tasks found"
 #~ msgstr "Aucune tâche trouvée"
