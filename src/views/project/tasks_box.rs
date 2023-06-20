@@ -264,8 +264,10 @@ impl TasksBox {
                 move |controller, _dx, dy| {
                     if controller.current_event_state().contains(gdk::ModifierType::SHIFT_MASK) {
                         obj.activate_action("hscroll", Some(&dy.to_variant())).unwrap();
+                        obj.imp().scrolled_window.vscrollbar().set_sensitive(false);
                         gtk::Inhibit(true)
                     } else {
+                        obj.imp().scrolled_window.vscrollbar().set_sensitive(true); // FIXME: Its fine but dont show scrollbar while hovering after scroll ends with sensitive false
                         gtk::Inhibit(false)
                     }
                 }
