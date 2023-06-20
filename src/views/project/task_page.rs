@@ -122,8 +122,8 @@ impl TaskPage {
             .set_subtitle(&obj.description_display(&task_description));
         imp.description_buffer.set_text(&task_description);
 
-        let tasks = read_tasks(Some(task_project), None, None, Some(task_id), None)
-            .expect("Failed to read subtasks");
+        let tasks =
+            read_tasks(None, None, None, Some(task_id), None).expect("Failed to read subtasks");
         imp.subtasks_box
             .set_items_wrapper(TasksBoxWrapper::Task(task_id, task_project));
         imp.subtasks_box.add_tasks(tasks);
@@ -244,7 +244,7 @@ impl TaskPage {
     #[template_callback]
     fn handle_new_subtask_button_clicked(&self, _button: gtk::Button) {
         let task = self.task();
-        let task = create_task("", task.project(), 0, task.id()).expect("Failed to create subtask");
+        let task = create_task("", 0, 0, task.id()).expect("Failed to create subtask");
         self.imp().subtasks_box.add_fresh_task(task);
     }
 

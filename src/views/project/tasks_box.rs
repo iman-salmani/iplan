@@ -277,7 +277,7 @@ impl TasksBox {
     fn create_empty_task(&self) -> Task {
         match self.items_wrapper().expect("items_wrapper cant be None") {
             TasksBoxWrapper::List(id, project) => create_task("", project, id, 0).unwrap(),
-            TasksBoxWrapper::Task(id, project) => create_task("", project, 0, id).unwrap(),
+            TasksBoxWrapper::Task(id, _) => create_task("", 0, 0, id).unwrap(),
             TasksBoxWrapper::Date(date) => {
                 let task = create_task("", 1, 0, 0).unwrap();
                 task.set_date(date);

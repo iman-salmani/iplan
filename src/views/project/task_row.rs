@@ -192,8 +192,7 @@ impl TaskRow {
                 }
             }
 
-            let subtasks =
-                read_tasks(Some(task.project()), None, None, Some(task.id()), None).unwrap();
+            let subtasks = read_tasks(None, None, None, Some(task.id()), None).unwrap();
             if subtasks.is_empty() {
                 imp.subtasks.set_visible(false);
             } else {
