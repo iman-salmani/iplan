@@ -1,8 +1,8 @@
 mod project;
 pub use project::Project;
 
-mod list;
-pub use list::List;
+mod section;
+pub use section::Section;
 
 mod task;
 pub use task::Task;

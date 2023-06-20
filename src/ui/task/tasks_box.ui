@@ -8,7 +8,7 @@
     <child><!-- Scrolled Window - Its for horizontal layout-->
       <object class="GtkScrolledWindow" id="scrolled_window">
         <property name="hscrollbar-policy">never</property>
-        <child><!-- Task List -->
+        <child><!-- Task Box -->
           <object class="GtkListBox" id="items_box">
             <property name="valign">start</property>
             <property name="selection_mode">none</property>
@@ -85,7 +85,7 @@
               </object>
             </child><!-- End Placeholder -->
           </object>
-        </child><!-- End Task List -->
+        </child><!-- End Task Box -->
       </object>
     </child><!-- End Scrolled Window -->
   </template>

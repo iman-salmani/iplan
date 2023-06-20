@@ -20,7 +20,7 @@ mod imp {
         #[property(get, set)]
         pub project: Cell<i64>,
         #[property(get, set)]
-        pub list: Cell<i64>,
+        pub section: Cell<i64>,
         #[property(get, set)]
         pub position: Cell<i32>,
         #[property(get, set)]
@@ -116,7 +116,7 @@ impl TryFrom<&Row<'_>> for Task {
             ("name", &row.get::<usize, String>(1)?),
             ("done", &row.get::<usize, bool>(2)?),
             ("project", &row.get::<usize, i64>(3)?),
-            ("list", &row.get::<usize, i64>(4)?),
+            ("section", &row.get::<usize, i64>(4)?),
             ("position", &row.get::<usize, i32>(5)?),
             ("suspended", &row.get::<usize, bool>(6)?),
             ("parent", &row.get::<usize, i64>(7)?),

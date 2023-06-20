@@ -90,7 +90,7 @@ pub fn delete_project(project_id: i64, index: i32) -> Result<()> {
     let conn = get_connection();
     // Notify: Not return error when id not exists
     conn.execute("DELETE FROM projects WHERE id = ?", (project_id,))?;
-    conn.execute("DELETE FROM lists WHERE project = ?", (project_id,))?;
+    conn.execute("DELETE FROM sections WHERE project = ?", (project_id,))?;
     conn.execute("DELETE FROM tasks WHERE project = ?", (project_id,))?;
     // Decrease upper projects index
     conn.execute("UPDATE projects SET i = i - 1 WHERE i > ?1", (index,))?;

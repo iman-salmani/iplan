@@ -33,7 +33,7 @@
                 <property name="height-request">320</property>
                 <property name="width-request">480</property>
                 <property name="hscrollbar-policy">never</property>
-                <child><!-- Task List -->
+                <child><!-- Tasks Box -->
                   <object class="GtkListBox" id="tasks_box">
                     <property name="vexpand">true</property>
                     <property name="selection_mode">none</property>
@@ -57,7 +57,7 @@
                     </child>
                   </object>
                 </child>
-                <!-- End Task List -->
+                <!-- End Tasks Box -->
               </object>
             </child>
             <!-- Scrolled Window -->

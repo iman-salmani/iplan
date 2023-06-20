@@ -4,7 +4,7 @@ use std::cell::RefCell;
 
 use crate::db::models::Project;
 use crate::db::operations::{
-    create_list, create_project, new_position, read_lists, read_project, read_projects,
+    create_project, create_section, new_position, read_project, read_projects, read_sections,
     update_project, update_task,
 };
 use crate::views::{sidebar::ProjectRow, task::TaskRow, IPlanWindow};
@@ -208,8 +208,8 @@ impl SidebarProjects {
 
     #[template_callback]
     fn handle_new_button_clicked(&self, _button: gtk::Button) {
-        let project = create_project("").expect("Failed to create project");
-        create_list(&gettext("Tasks"), project.id()).expect("Failed to create list");
+        let project = create_project("").unwrap();
+        create_section(&gettext("Tasks"), project.id()).unwrap();
         let row = ProjectRow::new(project.clone());
         let imp = self.imp();
         imp.projects_box.append(&row);
@@ -333,19 +333,19 @@ impl SidebarProjects {
         let task = row.task();
         let project_row = self.imp().projects_box.row_at_y(y as i32).unwrap();
         let project_id = project_row.property::<Project>("project").id();
-        task.set_property("project", project_id);
-        let list_id = read_lists(project_id)
-            .expect("Failed to read lists")
+        task.set_project(project_id);
+        let section_id = read_sections(project_id)
+            .unwrap()
             .first()
-            .expect("Project should have list")
+            .expect("Project should have section")
             .id();
-        task.set_property("list", list_id);
-        task.set_property("position", new_position(list_id));
+        task.set_section(section_id);
+        task.set_position(new_position(section_id));
         row.parent()
             .and_downcast::<gtk::ListBox>()
             .unwrap()
             .remove(&row);
-        update_task(&task).expect("Failed to update task");
+        update_task(&task).unwrap();
         self.select_active_project();
         true
     }

@@ -11,7 +11,7 @@ use crate::views::task::TaskRow;
 
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
 pub enum TasksBoxWrapper {
-    List(i64, i64),
+    Section(i64, i64),
     Task(i64, i64),
     Date(i64),
 }
@@ -68,7 +68,7 @@ mod imp {
             self.parent_constructed();
             let obj = self.obj();
             obj.init_scroller();
-            obj.set_list_box_funcs();
+            obj.set_items_box_funcs();
             obj.add_drag_drop_controllers();
         }
 
@@ -278,7 +278,7 @@ impl TasksBox {
 
     fn create_empty_task(&self) -> Task {
         match self.items_wrapper().expect("items_wrapper cant be None") {
-            TasksBoxWrapper::List(id, project) => create_task("", project, id, 0).unwrap(),
+            TasksBoxWrapper::Section(id, project) => create_task("", project, id, 0).unwrap(),
             TasksBoxWrapper::Task(id, _) => create_task("", 0, 0, id).unwrap(),
             TasksBoxWrapper::Date(date) => {
                 let task = create_task("", 1, 0, 0).unwrap();
@@ -289,7 +289,7 @@ impl TasksBox {
         }
     }
 
-    fn set_list_box_funcs(&self) {
+    fn set_items_box_funcs(&self) {
         let imp = self.imp();
 
         imp.items_box.set_sort_func(glib::clone!(@weak self as obj => @default-return gtk::Ordering::Larger, move |row1, row2| {
@@ -418,7 +418,7 @@ impl TasksBox {
         let task_db = read_task(task.id()).expect("Failed to read task");
         if let TasksBoxWrapper::Date(_) = self.items_wrapper().unwrap() {
             update_task(&task).expect("Failed to update task");
-        } else if task_db.position() != task.position() || task_db.list() != task.list() {
+        } else if task_db.position() != task.position() || task_db.section() != task.section() {
             update_task(&task).expect("Failed to update task");
         }
         row.grab_focus();
@@ -522,7 +522,7 @@ impl TasksBox {
 
         let items_wrapper = self.items_wrapper().expect("items_wrapper cant be None");
         let is_same_box = match items_wrapper {
-            TasksBoxWrapper::List(id, _) => row.task().list() == id,
+            TasksBoxWrapper::Section(id, _) => row.task().section() == id,
             TasksBoxWrapper::Task(id, _) => row.task().parent() == id,
             TasksBoxWrapper::Date(date) => row.task().date() == date,
         };
@@ -531,11 +531,11 @@ impl TasksBox {
             row.set_moving_out(false);
             imp.items_box.invalidate_filter();
         } else if !is_same_box {
-            if let TasksBoxWrapper::List(list_id, _) = items_wrapper {
+            if let TasksBoxWrapper::Section(section_id, _) = items_wrapper {
                 row.set_moving_out(false);
                 let task = row.task();
-                task.set_list(list_id);
-                task.set_position(new_position(list_id));
+                task.set_section(section_id);
+                task.set_position(new_position(section_id));
                 let parent = row.parent().and_downcast::<gtk::ListBox>().unwrap();
                 for i in 0..row.index() {
                     let task = parent

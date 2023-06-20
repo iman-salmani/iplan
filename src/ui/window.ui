@@ -175,8 +175,8 @@
   <menu id='primary_menu_model'>
     <section>
       <item>
-        <attribute name='label' translatable='yes'>_New List</attribute>
-        <attribute name='action'>list.new</attribute>
+        <attribute name='label' translatable='yes'>New _Section</attribute>
+        <attribute name='action'>section.new</attribute>
       </item>
       <item>
         <attribute name='label' translatable='yes'>_Edit Project</attribute>

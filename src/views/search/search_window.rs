@@ -120,9 +120,9 @@ impl SearchWindow {
         }
 
         if text.is_empty() {
-            let lists = imp.search_results.observe_children();
-            for _i in 0..lists.n_items() {
-                if let Some(row) = lists.item(0).and_downcast::<gtk::ListBoxRow>() {
+            let results = imp.search_results.observe_children();
+            for _i in 0..results.n_items() {
+                if let Some(row) = results.item(0).and_downcast::<gtk::ListBoxRow>() {
                     imp.search_results.remove(&row);
                 }
             }
@@ -139,9 +139,9 @@ impl SearchWindow {
                 // One for placeholder
                 return;
             }
-            let lists = imp.search_results.observe_children();
-            for _i in 0..lists.n_items() {
-                if let Some(row) = lists.item(0).and_downcast::<gtk::ListBoxRow>() {
+            let results = imp.search_results.observe_children();
+            for _i in 0..results.n_items() {
+                if let Some(row) = results.item(0).and_downcast::<gtk::ListBoxRow>() {
                     imp.search_results.remove(&row);
                 }
             }

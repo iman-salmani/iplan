@@ -24,7 +24,7 @@ use gtk::{gdk, gio, glib, glib::once_cell::sync::Lazy, prelude::*};
 use std::cell::RefCell;
 
 use crate::db::models::Project;
-use crate::db::operations::{create_list, create_project, read_projects, read_task};
+use crate::db::operations::{create_section, create_project, read_projects, read_task};
 use crate::views::project::{
     ProjectEditWindow, ProjectHeader, ProjectLayout, ProjectLists
 };
@@ -102,7 +102,7 @@ mod imp {
                 } else {
                     let project =
                         create_project(&gettext("Personal")).expect("Failed to create project");
-                    create_list(&gettext("Tasks"), project.id()).expect("Failed to create list");
+                    create_section(&gettext("Tasks"), project.id()).unwrap();
                     project
                 };
                 win.set_property("project", home_project);
@@ -110,9 +110,9 @@ mod imp {
                 win.activate_action("project.open", None)
                     .expect("Failed to send project.open action");
             });
-            klass.install_action("list.new", None, move |win, _, _| {
+            klass.install_action("section.new", None, move |win, _, _| {
                 let imp = win.imp();
-                imp.project_lists.new_list(win.project().id());
+                imp.project_lists.new_section(win.project().id());
             });
             klass.install_action("search.project", None, move |win, _, _| {
                 let imp = win.imp();
@@ -216,7 +216,7 @@ impl IPlanWindow {
         } else {
             let project: Project =
                 create_project(&gettext("Personal")).expect("Failed to create project");
-            create_list(&gettext("Tasks"), project.id()).expect("Failed to create list");
+            create_section(&gettext("Tasks"), project.id()).unwrap();
             project
         };
         let settings = gio::Settings::new("ir.imansalmani.IPlan.State");

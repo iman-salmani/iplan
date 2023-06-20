@@ -3,18 +3,18 @@ use rusqlite::Result;
 use crate::db::get_connection;
 use crate::db::models::Task;
 
-pub fn create_task(name: &str, project_id: i64, list_id: i64, parent: i64) -> Result<Task> {
-    let position = new_position(list_id);
+pub fn create_task(name: &str, project_id: i64, section_id: i64, parent: i64) -> Result<Task> {
+    let position = new_position(section_id);
     let conn = get_connection();
     conn.execute(
-        "INSERT INTO tasks(name, project, list, position, parent) VALUES (?1,?2,?3,?4,?5)",
-        (name, project_id, list_id, position, parent),
+        "INSERT INTO tasks(name, project, section, position, parent) VALUES (?1,?2,?3,?4,?5)",
+        (name, project_id, section_id, position, parent),
     )?;
     Ok(Task::new(&[
         ("id", &conn.last_insert_rowid()),
         ("name", &name),
         ("project", &project_id),
-        ("list", &list_id),
+        ("section", &section_id),
         ("position", &position),
         ("parent", &parent),
     ]))
@@ -22,7 +22,7 @@ pub fn create_task(name: &str, project_id: i64, list_id: i64, parent: i64) -> Re
 
 pub fn read_tasks(
     project_id: Option<i64>,
-    list_id: Option<i64>,
+    section_id: Option<i64>,
     done_tasks: Option<bool>,
     parent_id: Option<i64>,
     time_range: Option<(i64, i64)>,
@@ -31,8 +31,8 @@ pub fn read_tasks(
     if let Some(project_id) = project_id {
         filters.push(format!("project = {project_id}"));
     }
-    if let Some(list_id) = list_id {
-        filters.push(format!("list = {list_id}"));
+    if let Some(section_id) = section_id {
+        filters.push(format!("section = {section_id}"));
     }
     if let Some(done_tasks) = done_tasks {
         filters.push(format!("done = {done_tasks}"));
@@ -78,32 +78,32 @@ pub fn update_task(task: &Task) -> Result<()> {
 
     if task.position() != old_task.position() {
         position_stmt.push_str(&format!("position = {},", task.position()));
-        if task.list() != old_task.list() {
-            // Decrease tasks position in previous list
+        if task.section() != old_task.section() {
+            // Decrease tasks position in previous section
             conn.execute(
                 "UPDATE tasks SET position = position - 1
-                WHERE position > ?1 AND list = ?2",
-                (old_task.position(), old_task.list()),
+                WHERE position > ?1 AND section = ?2",
+                (old_task.position(), old_task.section()),
             )?;
 
-            // Increase tasks position in target list
+            // Increase tasks position in target section
             // Notify: Position not checked for value more than needed
             conn.execute(
                 "UPDATE tasks SET position = position + 1
-                WHERE position >= ?1 AND list = ?2",
-                (task.position(), task.list()),
+                WHERE position >= ?1 AND section = ?2",
+                (task.position(), task.section()),
             )?;
         } else if task.position() > old_task.position() {
             conn.execute(
                 "UPDATE tasks SET position = position - 1
-                WHERE position > ?1 AND position <= ?2 AND list = ?3",
-                (old_task.position(), task.position(), task.list()),
+                WHERE position > ?1 AND position <= ?2 AND section = ?3",
+                (old_task.position(), task.position(), task.section()),
             )?;
         } else if task.position() < old_task.position() {
             conn.execute(
                 "UPDATE tasks SET position = position + 1
-                WHERE position >= ?1 AND position < ?2 AND list = ?3",
-                (task.position(), old_task.position(), task.list()),
+                WHERE position >= ?1 AND position < ?2 AND section = ?3",
+                (task.position(), old_task.position(), task.section()),
             )?;
         }
     }
@@ -111,7 +111,7 @@ pub fn update_task(task: &Task) -> Result<()> {
     conn.execute(
         &format!(
             "UPDATE tasks SET
-            name = ?2, done = ?3, project = ?4, list = ?5,
+            name = ?2, done = ?3, project = ?4, section = ?5,
             {position_stmt} suspended = ?6, parent = ?7, description = ?8, date = ?9 WHERE id = ?1"
         ),
         (
@@ -119,7 +119,7 @@ pub fn update_task(task: &Task) -> Result<()> {
             task.name(),
             task.done(),
             task.project(),
-            task.list(),
+            task.section(),
             task.suspended(),
             task.parent(),
             task.description(),
@@ -129,7 +129,7 @@ pub fn update_task(task: &Task) -> Result<()> {
     Ok(())
 }
 
-pub fn delete_task(task_id: i64, list_id: i64, position: i32) -> Result<()> {
+pub fn delete_task(task_id: i64, section_id: i64, position: i32) -> Result<()> {
     let conn = get_connection();
     // Notify: Not return error when id not exists
     conn.execute("DELETE FROM tasks WHERE id = ?", (task_id,))?;
@@ -138,8 +138,8 @@ pub fn delete_task(task_id: i64, list_id: i64, position: i32) -> Result<()> {
     conn.execute("DELETE FROM reminders WHERE task = ?", (task_id,))?;
     // Decrease upper tasks position
     conn.execute(
-        "UPDATE tasks SET position = position - 1 WHERE position > ?1 AND list = ?2",
-        (position, list_id),
+        "UPDATE tasks SET position = position - 1 WHERE position > ?1 AND section = ?2",
+        (position, section_id),
     )?;
     Ok(())
 }
@@ -161,12 +161,12 @@ pub fn find_tasks(text: &str, done: bool) -> Result<Vec<Task>> {
     Ok(tasks)
 }
 
-pub fn new_position(list_id: i64) -> i32 {
+pub fn new_position(section_id: i64) -> i32 {
     let conn = get_connection();
     let mut stmt = conn
-        .prepare("SELECT position FROM tasks WHERE list = ? ORDER BY position DESC")
+        .prepare("SELECT position FROM tasks WHERE section = ? ORDER BY position DESC")
         .expect("Failed to find new task position");
-    let first_row = stmt.query_row([list_id], |row| row.get::<_, i32>(0));
+    let first_row = stmt.query_row([section_id], |row| row.get::<_, i32>(0));
     match first_row {
         Ok(first_row) => first_row + 1,
         Err(_) => 0,

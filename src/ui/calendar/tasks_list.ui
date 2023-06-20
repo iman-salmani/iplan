@@ -39,11 +39,11 @@
         </child>
       </object><!-- end header -->
     </child>
-    <child><!-- Task List -->
+    <child><!-- Tasks Box -->
       <object class="TasksBox" id="tasks_box">
         <property name="scrollable">false</property>
         <signal name="task-activated" handler="task_activated" swapped="true" />
       </object>
-    </child><!-- End Task List -->
+    </child><!-- End Tasks Box -->
   </template>
 </interface>

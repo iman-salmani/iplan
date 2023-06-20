@@ -3,7 +3,7 @@
 <interface>
   <requires lib="gtk" version="4.0" />
   <requires lib="Adw" version="1.0" />
-  <template class="ProjectList" parent="GtkBox">
+  <template class="SectionBox" parent="GtkBox">
     <property name="orientation">vertical</property>
     <property name="width-request">480</property>
     <child><!-- Header -->
@@ -102,7 +102,7 @@
         <child>
           <object class="GtkSeparator" />
         </child>
-        <child><!-- Delete List -->
+        <child><!-- Delete Section -->
           <object class="GtkButton">
             <signal name="clicked" handler="handle_delete_button_clicked" swapped="true" />
             <style>
@@ -118,7 +118,7 @@
                 </child>
                 <child>
                   <object class="GtkLabel">
-                    <property name="label" translatable="yes">Delete list</property>
+                    <property name="label" translatable="yes">Delete section</property>
                     <attributes>
                       <attribute name="weight" value="PANGO_WEIGHT_NORMAL" />
                     </attributes>
@@ -127,7 +127,7 @@
               </object>
             </child>
           </object>
-        </child><!-- End Delete List -->
+        </child><!-- End Delete Section -->
       </object>
     </child>
   </object><!-- End Options Popover -->

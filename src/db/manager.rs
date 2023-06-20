@@ -4,7 +4,7 @@ use std::cmp::Ordering;
 
 use crate::db::migrate::MIGRATIONS;
 
-const DB_VERSION: u8 = 7;
+const DB_VERSION: u8 = 8;
 
 pub fn get_connection() -> Connection {
     Connection::open(glib::user_data_dir().join("data.db")).expect("Failed connect to database")
@@ -32,7 +32,7 @@ pub fn check_database() -> Result<()> {
         )?;
 
         conn.execute(
-            "CREATE TABLE lists (
+            "CREATE TABLE sections (
                 id        INTEGER NOT NULL,
                 name      TEXT    NOT NULL,
                 project   INTEGER NOT NULL,
@@ -48,7 +48,7 @@ pub fn check_database() -> Result<()> {
                 name	    TEXT    NOT NULL,
                 done	    INTEGER NOT NULL DEFAULT 0,
                 project     INTEGER NOT NULL,
-                list        INTEGER NOT NULL,
+                section     INTEGER NOT NULL,
                 position    INTEGER NOT NULL,
                 suspended   INTEGER NOT NULL DEFAULT 0,
                 parent      INTEGER NOT NULL DEFAULT 0,

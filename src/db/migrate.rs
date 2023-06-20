@@ -2,7 +2,7 @@ use rusqlite::Result;
 
 use crate::db::get_connection;
 
-pub static MIGRATIONS: [fn() -> Result<()>; 7] = [to1, to2, to3, to4, to5, to6, to7];
+pub static MIGRATIONS: [fn() -> Result<()>; 8] = [to1, to2, to3, to4, to5, to6, to7, to8];
 
 fn to1() -> Result<()> {
     // Create records from duration column in tasks table and drop it.
@@ -119,5 +119,13 @@ fn to7() -> Result<()> {
         );",
         (),
     )?;
+    Ok(())
+}
+
+fn to8() -> Result<()> {
+    // Rename Lists table to Sections
+    let conn = get_connection();
+    conn.execute("ALTER TABLE lists RENAME TO sections;", ())?;
+    conn.execute("ALTER TABLE tasks RENAME COLUMN list TO section;", ())?;
     Ok(())
 }

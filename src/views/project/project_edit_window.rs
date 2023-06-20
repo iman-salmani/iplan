@@ -158,7 +158,7 @@ impl ProjectEditWindow {
         ));
         dialog.connect_response(Some("delete"), move |dialog, response| {
             if response == "delete" {
-                delete_project(project.id(), project.index()).expect("Failed to delete list");
+                delete_project(project.id(), project.index()).unwrap();
                 dialog
                     .transient_for()
                     .unwrap()

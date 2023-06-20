@@ -5,8 +5,8 @@ use std::cell::{Cell, RefCell};
 use std::thread;
 use std::time::Duration;
 
-use crate::db::operations::{create_list, read_list, read_lists, read_task};
-use crate::views::{project::ProjectList, task::TaskRow, IPlanWindow};
+use crate::db::operations::{create_section, read_section, read_sections, read_task};
+use crate::views::{project::SectionBox, task::TaskRow, IPlanWindow};
 
 #[derive(Default, Clone, Copy, PartialEq)]
 pub enum ProjectLayout {
@@ -30,7 +30,7 @@ mod imp {
         #[template_child]
         pub scrolled_window: TemplateChild<gtk::ScrolledWindow>,
         #[template_child]
-        pub lists_box: TemplateChild<gtk::Box>,
+        pub sections_box: TemplateChild<gtk::Box>,
         #[template_child]
         pub placeholder: TemplateChild<gtk::Box>,
         #[template_child]
@@ -63,7 +63,7 @@ mod imp {
     impl ObjectImpl for ProjectLists {
         fn constructed(&self) {
             // Translators: {} Will be replaced with a shortcut label.
-            let placeholder_subtitle = gettext("Use the primary menu {} for adding new lists");
+            let placeholder_subtitle = gettext("Use the primary menu {} for adding a new section");
             let placeholder_subtitle = placeholder_subtitle.split_once("{}").unwrap();
             self.placeholder_subtitle_start
                 .set_label(placeholder_subtitle.0);
@@ -130,15 +130,15 @@ impl ProjectLists {
     pub fn open_project(&self, project_id: i64) {
         let imp = self.imp();
 
-        let lists = imp.lists_box.observe_children();
-        for _ in 0..lists.n_items() {
-            imp.lists_box
-                .remove(&lists.item(0).and_downcast::<gtk::Widget>().unwrap());
+        let section_boxes = imp.sections_box.observe_children();
+        for _ in 0..section_boxes.n_items() {
+            imp.sections_box
+                .remove(&section_boxes.item(0).and_downcast::<gtk::Widget>().unwrap());
         }
 
-        let lists = read_lists(project_id).unwrap();
-        if lists.is_empty() {
-            imp.lists_box.append(&imp.placeholder.get());
+        let sections = read_sections(project_id).unwrap();
+        if sections.is_empty() {
+            imp.sections_box.append(&imp.placeholder.get());
         } else {
             let mut max_height = self.height();
             if max_height == 0 {
@@ -148,9 +148,9 @@ impl ProjectLists {
                     .unwrap()
                     .default_height();
             }
-            for list in lists {
-                let project_list = ProjectList::new(list, imp.layout.get(), max_height as usize);
-                imp.lists_box.append(&project_list);
+            for section in sections {
+                let section_box = SectionBox::new(section, imp.layout.get(), max_height as usize);
+                imp.sections_box.append(&section_box);
             }
         }
     }
@@ -158,20 +158,22 @@ impl ProjectLists {
     pub fn select_task(&self, task_id: Option<i64>) {
         let imp = self.imp();
         if let Some(task_id) = task_id {
-            let mut task = read_task(task_id).expect("Failed to read task");
+            let mut task = read_task(task_id).unwrap();
             if task.parent() != 0 {
-                task = read_task(task.parent()).expect("Failed to read task")
+                task = read_task(task.parent()).unwrap();
             }
-            let list = read_list(task.list()).expect("Failed to read list");
-            let project_list = imp
-                .lists_box
+            let section = read_section(task.section()).unwrap();
+            let section_box = imp
+                .sections_box
                 .observe_children()
-                .item(list.index() as u32)
-                .and_downcast::<ProjectList>()
+                .item(section.index() as u32)
+                .and_downcast::<SectionBox>()
                 .unwrap();
-            project_list.select_task(task);
-        } else if let Some(first_list) = imp.lists_box.first_child().and_downcast::<ProjectList>() {
-            if let Some(first_row) = first_list
+            section_box.select_task(task);
+        } else if let Some(first_section_box) =
+            imp.sections_box.first_child().and_downcast::<SectionBox>()
+        {
+            if let Some(first_row) = first_section_box
                 .imp()
                 .tasks_box
                 .first_child()
@@ -182,20 +184,19 @@ impl ProjectLists {
         }
     }
 
-    pub fn new_list(&self, project_id: i64) {
+    pub fn new_section(&self, project_id: i64) {
         let imp = self.imp();
-        let list =
-            create_list(&gettext("New List"), project_id).expect("Failed to create new list");
-        let project_list = ProjectList::new(list, imp.layout.get(), 18);
+        let section = create_section(&gettext("New Section"), project_id).unwrap();
+        let section_box = SectionBox::new(section, imp.layout.get(), 18);
         if imp.placeholder.parent().is_some() {
-            imp.lists_box.remove(&imp.placeholder.get());
+            imp.sections_box.remove(&imp.placeholder.get());
         }
-        imp.lists_box.append(&project_list);
-        let project_list_imp = project_list.imp();
-        project_list_imp.name_button.set_visible(false); // Name entry visibility have binding to this
+        imp.sections_box.append(&section_box);
+        let section_box_imp = section_box.imp();
+        section_box_imp.name_button.set_visible(false); // Name entry visibility have binding to this
         let (tx, rx) = glib::MainContext::channel(glib::PRIORITY_DEFAULT);
         glib::idle_add_once(move || tx.send("").unwrap());
-        let name_entry = project_list_imp.name_entry.get();
+        let name_entry = section_box_imp.name_entry.get();
         rx.attach(None, move |_text| {
             name_entry.grab_focus();
             glib::Continue(false)
@@ -206,13 +207,14 @@ impl ProjectLists {
         let imp = self.imp();
         match layout {
             ProjectLayout::Horizontal => {
-                imp.lists_box.set_orientation(gtk::Orientation::Horizontal);
+                imp.sections_box
+                    .set_orientation(gtk::Orientation::Horizontal);
                 if let Some(controller) = self.drag_scroll_controller() {
                     self.remove_controller(&controller);
                 }
             }
             ProjectLayout::Vertical => {
-                imp.lists_box.set_orientation(gtk::Orientation::Vertical);
+                imp.sections_box.set_orientation(gtk::Orientation::Vertical);
                 if let Some(controller) = self.drag_scroll_controller() {
                     self.add_controller(controller);
                 } else {

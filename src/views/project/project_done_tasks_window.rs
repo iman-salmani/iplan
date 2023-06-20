@@ -1,9 +1,9 @@
 use adw::{prelude::*, subclass::prelude::*};
 use gettextrs::gettext;
-use gtk::{glib, glib::once_cell::sync::Lazy};
+use gtk::{glib, glib::Properties};
 use std::cell::RefCell;
 
-use crate::db::models::{List, Task};
+use crate::db::models::{Section, Task};
 use crate::db::operations::{read_task, read_tasks};
 use crate::views::task::{TaskRow, TaskWindow};
 use crate::views::IPlanWindow;
@@ -11,10 +11,12 @@ use crate::views::IPlanWindow;
 mod imp {
     use super::*;
 
-    #[derive(Default, gtk::CompositeTemplate)]
+    #[derive(Default, gtk::CompositeTemplate, Properties)]
     #[template(resource = "/ir/imansalmani/iplan/ui/project/project_done_tasks_window.ui")]
+    #[properties(wrapper_type=super::ProjectDoneTasksWindow)]
     pub struct ProjectDoneTasksWindow {
-        pub list: RefCell<List>,
+        #[property(get, set)]
+        pub section: RefCell<Section>,
         #[template_child]
         pub name_label: TemplateChild<gtk::Label>,
         #[template_child]
@@ -45,7 +47,7 @@ mod imp {
                 imp.tasks_box.remove(&row);
                 obj.transient_for()
                     .unwrap()
-                    .activate_action("project.open", None) // TODO: just add task to list
+                    .activate_action("project.open", None) // TODO: just add task to section
                     .expect("Failed to activate project.open action");
             });
         }
@@ -57,24 +59,15 @@ mod imp {
 
     impl ObjectImpl for ProjectDoneTasksWindow {
         fn properties() -> &'static [glib::ParamSpec] {
-            static PROPERTIES: Lazy<Vec<glib::ParamSpec>> =
-                Lazy::new(|| vec![glib::ParamSpecObject::builder::<List>("list").build()]);
-            PROPERTIES.as_ref()
+            Self::derived_properties()
         }
-        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
-            match pspec.name() {
-                "list" => {
-                    let value = value.get::<List>().expect("value must be a List");
-                    self.list.replace(value);
-                }
-                _ => unimplemented!(),
-            }
+
+        fn property(&self, id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+            self.derived_property(id, pspec)
         }
-        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
-            match pspec.name() {
-                "list" => self.list.borrow().to_value(),
-                _ => unimplemented!(),
-            }
+
+        fn set_property(&self, id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
+            self.derived_set_property(id, value, pspec)
         }
     }
     impl WidgetImpl for ProjectDoneTasksWindow {}
@@ -90,26 +83,24 @@ glib::wrapper! {
 
 #[gtk::template_callbacks]
 impl ProjectDoneTasksWindow {
-    pub fn new(application: gtk::Application, app_window: &IPlanWindow, list: List) -> Self {
+    pub fn new(application: gtk::Application, app_window: &IPlanWindow, section: Section) -> Self {
         let win: Self = glib::Object::builder()
             .property("application", application)
-            .property("list", list)
             .build();
         win.set_transient_for(Some(app_window));
         let imp = win.imp();
-        let list: List = win.property("list");
         imp.name_label.set_label(&gettext("Done Tasks"));
-        for task in read_tasks(
-            Some(list.project()),
-            Some(list.id()),
+        let tasks = read_tasks(
+            Some(section.project()),
+            Some(section.id()),
             Some(true),
             Some(0),
             None,
         )
-        .expect("Failed to read tasks")
-        {
-            let project_list_task = TaskRow::new(task, false);
-            imp.tasks_box.append(&project_list_task);
+        .unwrap();
+        for task in tasks {
+            let task_row = TaskRow::new(task, false);
+            imp.tasks_box.append(&task_row);
         }
         imp.tasks_box.set_sort_func(|row1, row2| {
             let row1_p = row1.property::<Task>("task").position();
@@ -140,10 +131,9 @@ impl ProjectDoneTasksWindow {
         let tasks = imp.tasks_box.observe_children();
         let task = read_task(task_id).expect("Failed to read task");
         for i in 0..tasks.n_items() - 1 {
-            if let Some(project_list_task) = tasks.item(i).and_downcast::<TaskRow>() {
-                let list_task = project_list_task.task();
-                if list_task.position() == task.position() {
-                    project_list_task.grab_focus();
+            if let Some(task_row) = tasks.item(i).and_downcast::<TaskRow>() {
+                if task_row.task().position() == task.position() {
+                    task_row.grab_focus();
                     break;
                 }
             }
@@ -164,7 +154,7 @@ impl ProjectDoneTasksWindow {
                 let main_window = obj.transient_for().unwrap();
                 if !task.done() {
                     obj.imp().tasks_box.remove(&row);
-                    main_window.activate_action("project.open", None) // TODO: just add task to list (consider the task duration could be changed)
+                    main_window.activate_action("project.open", None) // TODO: just add task to section (consider the task duration could be changed)
                         .expect("Failed to activate project.open action");
                 } else {
                     row.reset(task);
