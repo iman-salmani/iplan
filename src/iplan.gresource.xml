@@ -22,13 +22,13 @@
     <file preprocess="xml-stripblanks">ui/project/project_lists.ui</file>
     <file preprocess="xml-stripblanks">ui/project/section_box.ui</file>
     <file preprocess="xml-stripblanks">ui/project/project_edit_window.ui</file>
-    <file preprocess="xml-stripblanks">ui/project/project_done_tasks_window.ui</file>
 
     <file preprocess="xml-stripblanks">ui/task/task_row.ui</file>
     <file preprocess="xml-stripblanks">ui/task/task_window.ui</file>
     <file preprocess="xml-stripblanks">ui/task/task_page.ui</file>
     <file preprocess="xml-stripblanks">ui/task/tasks_box.ui</file>
     <file preprocess="xml-stripblanks">ui/task/subtask_row.ui</file>
+    <file preprocess="xml-stripblanks">ui/task/tasks_done_window.ui</file>
 
     <file preprocess="xml-stripblanks">ui/record/record_row.ui</file>
     <file preprocess="xml-stripblanks">ui/record/record_window.ui</file>

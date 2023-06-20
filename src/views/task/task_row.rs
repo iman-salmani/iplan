@@ -8,8 +8,7 @@ use crate::db::models::{Record, Task};
 use crate::db::operations::{
     create_record, delete_task, read_reminders, read_tasks, update_record, update_task,
 };
-use crate::views::project::ProjectDoneTasksWindow;
-use crate::views::task::{SubtaskRow, TaskWindow};
+use crate::views::task::{SubtaskRow, TaskWindow, TasksDoneWindow};
 use crate::views::IPlanWindow;
 
 #[derive(Default, PartialEq, Clone, Copy)]
@@ -449,7 +448,7 @@ impl TaskRow {
             }
             "ProjectDoneTasksWindow" => {
                 window
-                    .downcast::<ProjectDoneTasksWindow>()
+                    .downcast::<TasksDoneWindow>()
                     .unwrap()
                     .imp()
                     .toast_overlay

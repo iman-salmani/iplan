@@ -12,3 +12,6 @@ pub use task_page::TaskPage;
 
 mod tasks_box;
 pub use tasks_box::{TasksBox, TasksBoxWrapper};
+
+mod tasks_done_window;
+pub use tasks_done_window::TasksDoneWindow;

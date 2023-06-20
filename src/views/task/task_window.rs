@@ -5,8 +5,7 @@ use std::unimplemented;
 
 use crate::db::models::Task;
 use crate::db::operations::read_task;
-use crate::views::project::ProjectDoneTasksWindow;
-use crate::views::task::{TaskPage, TaskRow};
+use crate::views::task::{TaskPage, TaskRow, TasksDoneWindow};
 use crate::views::IPlanWindow;
 mod imp {
     use super::*;
@@ -185,7 +184,7 @@ impl TaskWindow {
                 }));
                 transient_for.imp().toast_overlay.add_toast(toast);
             } else if transient_for_name == "ProjectDoneTasksWindow" {
-                let transient_for = transient_for.downcast::<ProjectDoneTasksWindow>().unwrap();
+                let transient_for = transient_for.downcast::<TasksDoneWindow>().unwrap();
                 toast.connect_button_clicked(glib::clone!(@weak task, @weak transient_for =>
                     move |_toast| {
                         let tasks_rows = transient_for.imp().tasks_box.observe_children();

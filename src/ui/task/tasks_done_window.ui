@@ -3,7 +3,7 @@
 <interface>
   <requires lib="gtk" version="4.0" />
   <requires lib="Adw" version="1.0" />
-  <template class="ProjectDoneTasksWindow" parent="AdwWindow">
+  <template class="TasksDoneWindow" parent="AdwWindow">
     <property name="width-request">320</property>
     <property name="modal">true</property>
     <property name="destroy-with-parent">true</property>
@@ -23,8 +23,7 @@
               <class name="flat" />
             </style>
           </object>
-        </child>
-        <!-- End Header -->
+        </child><!-- End Header -->
         <child>
           <object class="AdwToastOverlay" id="toast_overlay">
             <child><!-- Scrolled Window -->
@@ -56,15 +55,12 @@
                       </object>
                     </child>
                   </object>
-                </child>
-                <!-- End Tasks Box -->
+                </child><!-- End Tasks Box -->
               </object>
-            </child>
-            <!-- Scrolled Window -->
+            </child><!-- Scrolled Window -->
           </object>
         </child>
       </object>
-    </property>
-    <!-- End Content -->
+    </property><!-- End Content -->
   </template>
 </interface>

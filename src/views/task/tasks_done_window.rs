@@ -12,9 +12,9 @@ mod imp {
     use super::*;
 
     #[derive(Default, gtk::CompositeTemplate, Properties)]
-    #[template(resource = "/ir/imansalmani/iplan/ui/project/project_done_tasks_window.ui")]
-    #[properties(wrapper_type=super::ProjectDoneTasksWindow)]
-    pub struct ProjectDoneTasksWindow {
+    #[template(resource = "/ir/imansalmani/iplan/ui/task/tasks_done_window.ui")]
+    #[properties(wrapper_type=super::TasksDoneWindow)]
+    pub struct TasksDoneWindow {
         #[property(get, set)]
         pub section: RefCell<Section>,
         #[template_child]
@@ -28,9 +28,9 @@ mod imp {
     }
 
     #[glib::object_subclass]
-    impl ObjectSubclass for ProjectDoneTasksWindow {
-        const NAME: &'static str = "ProjectDoneTasksWindow";
-        type Type = super::ProjectDoneTasksWindow;
+    impl ObjectSubclass for TasksDoneWindow {
+        const NAME: &'static str = "TasksDoneWindow";
+        type Type = super::TasksDoneWindow;
         type ParentType = adw::Window;
 
         fn class_init(klass: &mut Self::Class) {
@@ -57,7 +57,7 @@ mod imp {
         }
     }
 
-    impl ObjectImpl for ProjectDoneTasksWindow {
+    impl ObjectImpl for TasksDoneWindow {
         fn properties() -> &'static [glib::ParamSpec] {
             Self::derived_properties()
         }
@@ -70,19 +70,19 @@ mod imp {
             self.derived_set_property(id, value, pspec)
         }
     }
-    impl WidgetImpl for ProjectDoneTasksWindow {}
-    impl WindowImpl for ProjectDoneTasksWindow {}
-    impl AdwWindowImpl for ProjectDoneTasksWindow {}
+    impl WidgetImpl for TasksDoneWindow {}
+    impl WindowImpl for TasksDoneWindow {}
+    impl AdwWindowImpl for TasksDoneWindow {}
 }
 
 glib::wrapper! {
-    pub struct ProjectDoneTasksWindow(ObjectSubclass<imp::ProjectDoneTasksWindow>)
+    pub struct TasksDoneWindow(ObjectSubclass<imp::TasksDoneWindow>)
         @extends gtk::Widget, gtk::Window, adw::Window,
         @implements gtk::Buildable, gtk::Native, gtk::Root;
 }
 
 #[gtk::template_callbacks]
-impl ProjectDoneTasksWindow {
+impl TasksDoneWindow {
     pub fn new(application: gtk::Application, app_window: &IPlanWindow, section: Section) -> Self {
         let win: Self = glib::Object::builder()
             .property("application", application)

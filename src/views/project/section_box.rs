@@ -7,8 +7,8 @@ use crate::db::models::{Section, Task};
 use crate::db::operations::{
     create_task, delete_section, read_section, read_tasks, update_section, update_task,
 };
-use crate::views::project::{ProjectDoneTasksWindow, ProjectLayout};
-use crate::views::task::{TaskRow, TaskWindow, TasksBox, TasksBoxWrapper};
+use crate::views::project::ProjectLayout;
+use crate::views::task::{TaskRow, TaskWindow, TasksBox, TasksBoxWrapper, TasksDoneWindow};
 use crate::views::IPlanWindow;
 
 mod imp {
@@ -281,7 +281,7 @@ impl SectionBox {
         let imp = self.imp();
         imp.options_button.popdown();
         let win: IPlanWindow = self.root().and_downcast().unwrap();
-        let window = ProjectDoneTasksWindow::new(win.application().unwrap(), &win, self.section());
+        let window = TasksDoneWindow::new(win.application().unwrap(), &win, self.section());
         window.present();
     }
 
