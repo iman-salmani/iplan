@@ -6,7 +6,7 @@
   <template class="SubtaskRow" parent="GtkBox">
     <property name="margin-bottom">9</property>
     <property name="margin-start">11</property>
-    <property name="margin-end">6</property>
+    <property name="margin-end">15</property>
     <property name="spacing">6</property>
     <style>
       <class name="dim-label" />
@@ -16,6 +16,7 @@
     </child>
     <child>
       <object class="GtkLabel" id="name">
+        <property name="ellipsize">end</property>
       </object>
     </child>
   </template>
