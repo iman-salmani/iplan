@@ -234,7 +234,10 @@ impl IPlanWindow {
             imp.project_layout_button
                 .set_icon_name("view-columns-symbolic");
             imp.project_lists
-                .set_layout(&window, ProjectLayout::Horizontal);
+                .set_layout(ProjectLayout::Horizontal);
+        } else {
+            imp.project_lists
+                .set_layout(ProjectLayout::Vertical);
         }
         imp.settings.replace(Some(settings));
         window
@@ -269,7 +272,7 @@ impl IPlanWindow {
                 if icon_name == "list-symbolic" {
                     button.set_icon_name("view-columns-symbolic");
                     imp.project_lists
-                        .set_layout(self, ProjectLayout::Horizontal);
+                        .set_layout(ProjectLayout::Horizontal);
                     imp.settings
                         .borrow()
                         .as_ref()
@@ -278,7 +281,7 @@ impl IPlanWindow {
                         .expect("Could not set setting.");
                 } else {
                     button.set_icon_name("list-symbolic");
-                    imp.project_lists.set_layout(self, ProjectLayout::Vertical);
+                    imp.project_lists.set_layout(ProjectLayout::Vertical);
                     imp.settings
                         .borrow()
                         .as_ref()

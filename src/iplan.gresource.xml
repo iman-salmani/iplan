@@ -29,6 +29,7 @@
     <file preprocess="xml-stripblanks">ui/project/record_window.ui</file>
     <file preprocess="xml-stripblanks">ui/project/reminder_window.ui</file>
     <file preprocess="xml-stripblanks">ui/project/reminder_row.ui</file>
+    <file preprocess="xml-stripblanks">ui/project/tasks_box.ui</file>
 
     <file preprocess="xml-stripblanks">ui/search/search_window.ui</file>
     <file preprocess="xml-stripblanks">ui/search/search_result.ui</file>

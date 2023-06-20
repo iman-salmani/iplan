@@ -60,11 +60,9 @@
               </object>
             </child>
           </object>
-        </child>
-        <!-- End Description -->
+        </child><!-- End Description -->
       </object>
-    </child>
-    <!-- End Task Info -->
+    </child><!-- End Task Info -->
     <child><!-- List Header -->
       <object class="GtkBox">
         <property name="margin-start">12</property>
@@ -102,8 +100,7 @@
               <class name="flat" />
             </style>
           </object>
-        </child>
-        <!-- End Lists menu -->
+        </child><!-- End Lists menu -->
         <child><!-- New Record Button -->
           <object class="GtkButton" id="new_record_button">
             <property name="icon-name">appointment-new-symbolic</property>
@@ -114,106 +111,26 @@
               bind-flags="sync-create|invert-boolean" />
             <signal name="clicked" handler="handle_new_record_button_clicked" swapped="true" />
           </object>
-        </child>
-        <!-- End Record Button -->
+        </child><!-- End Record Button -->
         <child><!-- New SubTask Button -->
           <object class="GtkButton" id="new_subtask_button">
             <property name="icon-name">list-add-symbolic</property>
             <property name="has_frame">false</property>
             <signal name="clicked" handler="handle_new_subtask_button_clicked" swapped="true" />
           </object>
-        </child>
-        <!-- End SubTask Button -->
+        </child><!-- End SubTask Button -->
       </object>
-    </child>
-    <!-- End List Header -->
+    </child><!-- End List Header -->
     <child><!-- SubTasks Page -->
-      <object class="GtkScrolledWindow" id="subtasks_page">
-        <child><!-- SubTasks -->
-          <object class="GtkListBox" id="subtasks_box">
-            <property name="selection-mode">none</property>
-            <property name="vexpand">true</property>
-            <property name="margin-top">6</property>
-            <property name="margin-bottom">6</property>
-            <property name="margin-start">12</property>
-            <property name="margin-end">12</property>
-            <signal name="row-activated" handler="handle_subtasks_box_row_activated" swapped="true" />
-            <style>
-              <class name="tasks_box" />
-            </style>
-            <child><!-- Add task to Bottom -->
-              <object class="GtkListBoxRow" id="bottom_add_task">
-                <property name="activatable">false</property>
-                <child>
-                  <object class="GtkButton">
-                    <property name="height-request">48</property>
-                    <signal name="clicked" handler="handle_add_subtask_to_bottom_clicked" swapped="true" />
-                    <style>
-                      <class name="flat" />
-                    </style>
-                    <child>
-                      <object class="GtkBox">
-                        <property name="spacing">9</property>
-                        <property name="valign">center</property>
-                        <property name="halign">center</property>
-                        <child>
-                          <object class="GtkImage">
-                            <property name="icon-name">list-add-symbolic</property>
-                          </object>
-                        </child>
-                        <child>
-                          <object class="GtkLabel">
-                            <property name="label" translatable="yes">Add task</property>
-                            <style>
-                              <class name="heading" />
-                            </style>
-                          </object>
-                        </child>
-                      </object>
-                    </child>
-                  </object>
-                </child>
-              </object>
-            </child><!-- End Add task to Bottom -->
-            <child type="placeholder"><!-- Placeholder -->
-              <object class="GtkButton">
-                <property name="height-request">150</property>
-                <signal name="clicked" handler="handle_new_subtask_button_clicked" swapped="true" />
-                <style>
-                  <class name="card" />
-                </style>
-                <child>
-                  <object class="GtkBox">
-                    <property name="spacing">12</property>
-                    <property name="valign">center</property>
-                    <property name="halign">center</property>
-                    <child>
-                      <object class="GtkImage">
-                        <property name="icon-name">list-add-symbolic</property>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkLabel">
-                        <property name="label" translatable="yes">Add task</property>
-                        <style>
-                          <class name="title-4" />
-                        </style>
-                      </object>
-                    </child>
-                  </object>
-                </child>
-              </object>
-            </child><!-- End Placeholder -->
-          </object>
-        </child>
-        <!-- End SubTasks -->
+      <object class="TasksBox" id="subtasks_box">
+        <property name="vexpand">true</property>
+        <signal name="task-activated" handler="subtask_activated" swapped="true" />
       </object>
-    </child>
-    <!-- End SubTasks Page -->
-    <child><!-- SubTasks Page -->
+    </child> <!-- End SubTasks Page -->
+    <child><!-- Records Page -->
       <object class="GtkScrolledWindow" id="records_page">
         <property name="visible"
-          bind-source="subtasks_page"
+          bind-source="subtasks_box"
           bind-property="visible"
           bind-flags="sync-create|invert-boolean" />
         <child><!-- Records Box -->
@@ -238,10 +155,8 @@
               </object>
             </child>
           </object>
-        </child>
-        <!-- End Records Box -->
+        </child><!-- End Records Box -->
       </object>
-    </child>
-    <!-- End SubTasks Page -->
+    </child><!-- End Records Page -->
   </template>
 </interface>

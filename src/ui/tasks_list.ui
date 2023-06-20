@@ -40,13 +40,9 @@
       </object><!-- end header -->
     </child>
     <child><!-- Task List -->
-      <object class="GtkListBox" id="tasks_box">
-        <property name="valign">start</property>
-        <property name="selection_mode">none</property>
-        <signal name="row-activated" handler="handle_tasks_box_row_activated" swapped="true" />
-        <style>
-          <class name="tasks_box" />
-        </style>
+      <object class="TasksBox" id="tasks_box">
+        <property name="scrollable">false</property>
+        <signal name="task-activated" handler="task_activated" swapped="true" />
       </object>
     </child><!-- End Task List -->
   </template>

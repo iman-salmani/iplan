@@ -23,8 +23,7 @@
               bind-flags="sync-create" />
             <signal name="clicked" handler="handle_name_button_clicked" swapped="true" />
           </object>
-        </child>
-        <!-- End Name Button -->
+        </child><!-- End Name Button -->
         <child><!-- Name Entry -->
           <object class="GtkEntry" id="name_entry">
             <property name="margin-start">12</property>
@@ -42,8 +41,7 @@
               <attribute name="weight" value="PANGO_WEIGHT_BOLD" />
             </attributes>
           </object>
-        </child>
-        <!-- End Name Entry -->
+        </child><!-- End Name Entry -->
         <child><!-- New Task Button -->
           <object class="GtkButton" id="new_task_button">
             <property name="icon-name">list-add-symbolic</property>
@@ -51,104 +49,22 @@
             <property name="tooltip-text" translatable="yes">Add task</property>
             <signal name="clicked" handler="handle_new_button_clicked" swapped="true" />
           </object>
-        </child>
-        <!-- End New Task Button -->
+        </child><!-- End New Task Button -->
         <child><!-- Project Options Button -->
           <object class="GtkMenuButton" id="options_button">
             <property name="icon_name">view-more-horizontal-symbolic</property>
             <property name="has_frame">false</property>
             <property name="popover">options_popover</property>
           </object>
-        </child>
-        <!-- End Project Options Button -->
+        </child><!-- End Project Options Button -->
+      </object>
+    </child><!-- End Header -->
+    <child>
+      <object class="TasksBox" id="tasks_box">
+        <property name="vexpand">true</property>
+        <signal name="task-activated" handler="task_activated" swapped="true" />
       </object>
     </child>
-    <!-- End Header -->
-    <child><!-- Task List -->
-      <object class="GtkListBox" id="tasks_box">
-        <property name="valign">start</property>
-        <property name="selection_mode">none</property>
-        <property name="margin-top">3</property>
-        <property name="margin-bottom">9</property>
-        <property name="margin-start">15</property>
-        <property name="margin-end">15</property>
-        <signal name="row-activated" handler="handle_tasks_box_row_activated" swapped="true" />
-        <style>
-          <class name="tasks_box" />
-          <class name="flat" />
-        </style>
-        <child><!-- Add task to Bottom -->
-          <object class="GtkListBoxRow" id="bottom_add_task">
-            <property name="activatable">false</property>
-            <child>
-              <object class="GtkButton">
-                <property name="height-request">48</property>
-                <signal name="clicked" handler="handle_add_task_to_bottom_clicked" swapped="true" />
-                <style>
-                  <class name="flat" />
-                </style>
-                <child>
-                  <object class="GtkBox">
-                    <property name="spacing">9</property>
-                    <property name="valign">center</property>
-                    <property name="halign">center</property>
-                    <child>
-                      <object class="GtkImage">
-                        <property name="icon-name">list-add-symbolic</property>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkLabel">
-                        <property name="label" translatable="yes">Add task</property>
-                        <style>
-                          <class name="heading" />
-                        </style>
-                      </object>
-                    </child>
-                  </object>
-                </child>
-              </object>
-            </child>
-          </object>
-        </child><!-- End Add task to Bottom -->
-        <child type="placeholder"><!-- Placeholder -->
-          <object class="GtkButton">
-            <property name="height-request">150</property>
-            <signal name="clicked" handler="handle_new_button_clicked" swapped="true" />
-            <style>
-              <class name="card" />
-            </style>
-            <child>
-              <object class="GtkBox">
-                <property name="spacing">12</property>
-                <property name="valign">center</property>
-                <property name="halign">center</property>
-                <child>
-                  <object class="GtkImage">
-                    <property name="icon-name">list-add-symbolic</property>
-                  </object>
-                </child>
-                <child>
-                  <object class="GtkLabel">
-                    <property name="label" translatable="yes">Add task</property>
-                    <style>
-                      <class name="title-4" />
-                    </style>
-                  </object>
-                </child>
-              </object>
-            </child>
-          </object>
-        </child><!-- End Placeholder -->
-      </object>
-    </child><!-- End Task List -->
-    <child><!-- Scrolled Window - Its for horizontal layout-->
-      <object class="GtkScrolledWindow" id="scrolled_window">
-        <property name="vexpand">true</property>
-        <property name="visible">false</property>
-        <property name="hscrollbar-policy">never</property>
-      </object>
-    </child><!-- End Scrolled Window -->
   </template>
   <!-- Options Popover -->
   <object class="GtkPopover" id="options_popover">

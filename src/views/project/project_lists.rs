@@ -1,6 +1,9 @@
 use gettextrs::gettext;
-use gtk::{glib, prelude::*, subclass::prelude::*};
+use gtk::glib::Properties;
+use gtk::{gdk, glib, prelude::*, subclass::prelude::*};
 use std::cell::{Cell, RefCell};
+use std::thread;
+use std::time::Duration;
 
 use crate::db::operations::{create_list, read_list, read_lists, read_task};
 use crate::views::project::{ProjectList, TaskRow};
@@ -16,12 +19,15 @@ pub enum ProjectLayout {
 mod imp {
     use super::*;
 
-    #[derive(Default, gtk::CompositeTemplate)]
+    #[derive(Default, gtk::CompositeTemplate, Properties)]
     #[template(resource = "/ir/imansalmani/iplan/ui/project/project_lists.ui")]
+    #[properties(wrapper_type=super::ProjectLists)]
     pub struct ProjectLists {
         pub layout: Cell<ProjectLayout>,
-        pub shift_pressed: Cell<bool>,
-        pub shift_controller: RefCell<Option<gtk::EventControllerKey>>,
+        #[property(get, set)]
+        pub drag_scroll_controller: RefCell<Option<gtk::DropTarget>>,
+        #[property(get, set)]
+        pub scroll: Cell<i8>,
         #[template_child]
         pub scrolled_window: TemplateChild<gtk::ScrolledWindow>,
         #[template_child]
@@ -42,6 +48,12 @@ mod imp {
 
         fn class_init(klass: &mut Self::Class) {
             klass.bind_template();
+            klass.install_action("hscroll", Some("x"), move |obj, _, value| {
+                let imp = obj.imp();
+                let value = value.unwrap().get::<f64>().unwrap();
+                let adjustment = imp.scrolled_window.hadjustment();
+                adjustment.set_value(adjustment.value() + (adjustment.step_increment() * value));
+            });
         }
 
         fn instance_init(obj: &glib::subclass::InitializingObject<Self>) {
@@ -59,8 +71,21 @@ mod imp {
             self.placeholder_subtitle_end
                 .set_label(placeholder_subtitle.1);
         }
+
         fn dispose(&self) {
             self.obj().first_child().unwrap().unparent();
+        }
+
+        fn properties() -> &'static [glib::ParamSpec] {
+            Self::derived_properties()
+        }
+
+        fn property(&self, id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+            self.derived_property(id, pspec)
+        }
+
+        fn set_property(&self, id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
+            self.derived_set_property(id, value, pspec)
         }
     }
     impl BuildableImpl for ProjectLists {}
@@ -178,60 +203,78 @@ impl ProjectLists {
         });
     }
 
-    pub fn set_layout(&self, window: &IPlanWindow, layout: ProjectLayout) {
+    pub fn set_layout(&self, layout: ProjectLayout) {
         let imp = self.imp();
         match layout {
             ProjectLayout::Horizontal => {
                 imp.lists_box.set_orientation(gtk::Orientation::Horizontal);
-                let mut shift_controller = imp.shift_controller.borrow().to_owned();
-                if let Some(shift_controller) = shift_controller {
-                    window.add_controller(shift_controller);
-                } else {
-                    let new_shift_controller = gtk::EventControllerKey::new();
-                    new_shift_controller.connect_key_pressed(glib::clone!(
-                        @weak self as obj => @default-return gtk::Inhibit(false),
-                        move |_controller, _keyval, keycode, _state| {
-                            if keycode == 50 {
-                                let imp = obj.imp();
-                                imp.shift_pressed.set(true);
-                                let lists = imp.lists_box.observe_children();
-                                for i in 0..lists.n_items() {
-                                    lists.item(i)
-                                        .and_downcast::<ProjectList>()
-                                        .unwrap()
-                                        .imp()
-                                        .scrolled_window
-                                        .vscrollbar()
-                                        .set_sensitive(false);
-                                }}
-                            gtk::Inhibit(true)}));
-                    new_shift_controller.connect_key_released(glib::clone!(
-                    @weak self as obj =>
-                    move |_controller, _keyval, keycode, _state| {
-                        if keycode == 50 {
-                            let imp = obj.imp();
-                            imp.shift_pressed.set(false);
-                            let lists = imp.lists_box.observe_children();
-                            for i in 0..lists.n_items() {
-                                lists.item(i)
-                                    .and_downcast::<ProjectList>()
-                                    .unwrap()
-                                    .imp()
-                                    .scrolled_window
-                                    .vscrollbar()
-                                    .set_sensitive(true);
-                            }}}));
-                    window.add_controller(new_shift_controller.clone());
-                    shift_controller.replace(new_shift_controller);
+                if let Some(controller) = self.drag_scroll_controller() {
+                    self.remove_controller(&controller);
                 }
             }
             ProjectLayout::Vertical => {
                 imp.lists_box.set_orientation(gtk::Orientation::Vertical);
-                if let Some(shift_controller) = imp.shift_controller.borrow().as_ref() {
-                    window.remove_controller(shift_controller);
+                if let Some(controller) = self.drag_scroll_controller() {
+                    self.add_controller(controller);
+                } else {
+                    self.add_drag_scroll_controller();
                 }
             }
         }
         imp.layout.set(layout);
+    }
+
+    fn add_drag_scroll_controller(&self) {
+        let controller = gtk::DropTarget::new(TaskRow::static_type(), gdk::DragAction::MOVE);
+        controller.set_preload(true);
+        controller.connect_motion(|controller, _, y| {
+            let obj = controller.widget().downcast::<Self>().unwrap();
+            let height = obj.height();
+            if height - (y as i32) < 50 {
+                if obj.scroll() != 1 {
+                    obj.set_scroll(1);
+                    obj.start_scroll();
+                }
+            } else if y < 50.0 {
+                if obj.scroll() != -1 {
+                    obj.set_scroll(-1);
+                    obj.start_scroll();
+                }
+            } else {
+                obj.set_scroll(0)
+            }
+            gdk::DragAction::empty()
+        });
+        controller.connect_leave(|controller| {
+            let obj = controller.widget().downcast::<Self>().unwrap();
+            obj.set_scroll(0);
+        });
+        self.set_drag_scroll_controller(controller.clone());
+        self.add_controller(controller);
+    }
+
+    fn start_scroll(&self) {
+        let (tx, rx) = glib::MainContext::channel(glib::PRIORITY_DEFAULT);
+        thread::spawn(move || loop {
+            if tx.send(()).is_err() {
+                break;
+            }
+            thread::sleep(Duration::from_secs_f32(0.1));
+        });
+        rx.attach(
+            None,
+            glib::clone!(@weak self as obj => @default-return glib::Continue(false), move |_| {
+                let scroll = obj.scroll();
+                if scroll == 0 {
+                    glib::Continue(false)
+                } else if scroll.is_positive() {
+                    obj.imp().scrolled_window.emit_scroll_child(gtk::ScrollType::StepDown, false);
+                    glib::Continue(true)
+                } else {
+                    obj.imp().scrolled_window.emit_scroll_child(gtk::ScrollType::StepUp, false);
+                    glib::Continue(true)
+                }
+            }),
+        );
     }
 }

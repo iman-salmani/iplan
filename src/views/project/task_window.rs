@@ -242,14 +242,9 @@ impl TaskWindow {
             .visible_child()
             .and_downcast::<TaskPage>()
             .unwrap();
-        let subtasks_rows = target_page.imp().subtasks_box.observe_children();
-        for i in 0..subtasks_rows.n_items() {
-            let row = subtasks_rows.item(i).and_downcast::<TaskRow>().unwrap();
-            if row.task().id() == from_task.id() {
-                row.reset(from_task);
-                row.changed();
-                break;
-            }
+        if let Some(task_row) = target_page.imp().subtasks_box.item_by_id(from_task.id()) {
+            task_row.reset(from_task);
+            task_row.changed();
         }
         let task = target_page.task();
         let parent_id = task.parent();

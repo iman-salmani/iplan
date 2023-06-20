@@ -6,7 +6,7 @@ use std::cell::{Cell, RefCell};
 
 use crate::db::models::{Record, Task};
 use crate::db::operations::read_tasks;
-use crate::views::project::{TaskRow, TaskWindow};
+use crate::views::project::{TaskRow, TaskWindow, TasksBox, TasksBoxWrapper};
 
 mod imp {
     use super::*;
@@ -24,7 +24,7 @@ mod imp {
         #[template_child]
         pub duration_label: TemplateChild<gtk::Label>,
         #[template_child]
-        pub tasks_box: TemplateChild<gtk::ListBox>,
+        pub tasks_box: TemplateChild<TasksBox>,
     }
 
     #[glib::object_subclass]
@@ -36,9 +36,7 @@ mod imp {
         fn class_init(klass: &mut Self::Class) {
             klass.bind_template();
             klass.bind_template_instance_callbacks();
-            klass.install_action("task.check", Some("i"), move |obj, _, _| {
-                obj.imp().tasks_box.invalidate_sort();
-            });
+            klass.install_action("task.check", Some("i"), move |_, _, _| {});
         }
 
         fn instance_init(obj: &glib::subclass::InitializingObject<Self>) {
@@ -60,7 +58,6 @@ mod imp {
         fn constructed(&self) {
             self.parent_constructed();
             let obj = self.obj();
-            obj.set_tasks_box_funcs();
             obj.add_bindings();
         }
 
@@ -113,14 +110,15 @@ impl TasksList {
         let tasks = read_tasks(None, None, None, None, Some((datetime.to_unix(), end)))
             .expect("Failed to read tasks");
         let mut duration = 0;
+        imp.tasks_box.set_scrollable(false);
+        imp.tasks_box
+            .set_items_wrapper(TasksBoxWrapper::Date(datetime.to_unix()));
         if tasks.is_empty() {
             imp.name.add_css_class("dim-label");
-            imp.tasks_box.set_visible(false);
         } else {
             for task in tasks {
                 duration += task.duration();
-                let task_row = TaskRow::new(task, false);
-                imp.tasks_box.append(&task_row);
+                imp.tasks_box.add_task(task);
             }
         }
         obj.set_duration(duration);
@@ -131,7 +129,7 @@ impl TasksList {
 
     pub fn add_row(&self, row: TaskRow) {
         let imp = self.imp();
-        imp.tasks_box.append(&row);
+        imp.tasks_box.add_item(&row);
         imp.tasks_box.set_visible(true);
         imp.name.remove_css_class("dim-label");
         self.set_duration(self.duration() + row.task().duration());
@@ -152,22 +150,9 @@ impl TasksList {
             .build();
     }
 
-    fn set_tasks_box_funcs(&self) {
-        let imp = self.imp();
-        imp.tasks_box.set_filter_func(|row| {
-            let row = row.downcast_ref::<TaskRow>().unwrap();
-            if row.task().suspended() {
-                false
-            } else {
-                !row.imp().moving_out.get()
-            }
-        });
-    }
-
     #[template_callback]
-    fn handle_tasks_box_row_activated(&self, row: gtk::ListBoxRow, tasks_box: gtk::ListBox) {
+    fn task_activated(&self, row: TaskRow, tasks_box: gtk::ListBox) {
         let win = self.root().and_downcast::<gtk::Window>().unwrap();
-        let row = row.downcast::<TaskRow>().unwrap();
         let modal = TaskWindow::new(&win.application().unwrap(), &win, row.task());
         modal.present();
         row.cancel_timer();

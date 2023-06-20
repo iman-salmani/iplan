@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE interface SYSTEM "../schema.dtd">
+<interface>
+  <requires lib="gtk" version="4.0" />
+  <requires lib="Adw" version="1.0" />
+  <template class="TasksBox" parent="GtkWidget">
+    <property name="width-request">480</property>
+    <child><!-- Scrolled Window - Its for horizontal layout-->
+      <object class="GtkScrolledWindow" id="scrolled_window">
+        <property name="hscrollbar-policy">never</property>
+        <child><!-- Task List -->
+          <object class="GtkListBox" id="items_box">
+            <property name="valign">start</property>
+            <property name="selection_mode">none</property>
+            <property name="margin-top">3</property>
+            <property name="margin-bottom">9</property>
+            <property name="margin-start">15</property>
+            <property name="margin-end">15</property>
+            <signal name="row-activated" handler="task_activated" swapped="true" />
+            <style>
+              <class name="tasks_box" />
+              <class name="flat" />
+            </style>
+            <child><!-- Add task to Bottom -->
+              <object class="GtkListBoxRow" id="bottom_add_task">
+                <property name="activatable">false</property>
+                <child>
+                  <object class="GtkButton">
+                    <property name="height-request">48</property>
+                    <signal name="clicked" handler="new_task_bottom" swapped="true" />
+                    <style>
+                      <class name="flat" />
+                    </style>
+                    <child>
+                      <object class="GtkBox">
+                        <property name="spacing">9</property>
+                        <property name="valign">center</property>
+                        <property name="halign">center</property>
+                        <child>
+                          <object class="GtkImage">
+                            <property name="icon-name">list-add-symbolic</property>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkLabel">
+                            <property name="label" translatable="yes">Add task</property>
+                            <style>
+                              <class name="heading" />
+                            </style>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child><!-- End Add task to Bottom -->
+            <child type="placeholder"><!-- Placeholder -->
+              <object class="GtkButton">
+                <property name="height-request">150</property>
+                <signal name="clicked" handler="new_task" swapped="true" />
+                <style>
+                  <class name="card" />
+                </style>
+                <child>
+                  <object class="GtkBox">
+                    <property name="spacing">12</property>
+                    <property name="valign">center</property>
+                    <property name="halign">center</property>
+                    <child>
+                      <object class="GtkImage">
+                        <property name="icon-name">list-add-symbolic</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkLabel">
+                        <property name="label" translatable="yes">Add task</property>
+                        <style>
+                          <class name="title-4" />
+                        </style>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child><!-- End Placeholder -->
+          </object>
+        </child><!-- End Task List -->
+      </object>
+    </child><!-- End Scrolled Window -->
+  </template>
+</interface>

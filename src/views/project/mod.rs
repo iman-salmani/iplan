@@ -36,3 +36,6 @@ pub use reminder_row::ReminderRow;
 
 mod reminder_window;
 pub use reminder_window::ReminderWindow;
+
+mod tasks_box;
+pub use tasks_box::{TasksBox, TasksBoxWrapper};
