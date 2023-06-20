@@ -570,6 +570,7 @@ impl TasksBox {
     }
 
     fn task_drop_target_leave(&self, target: &gtk::DropTarget) {
+        self.set_scroll(0);
         if let Some(row) = target.value_as::<TaskRow>() {
             row.set_moving_out(true);
             let items_box: &gtk::ListBox = self.imp().items_box.as_ref();
