@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE interface SYSTEM "schema.dtd">
+<!DOCTYPE interface SYSTEM "../schema.dtd">
 <interface>
   <requires lib="gtk" version="4.0" />
   <requires lib="Adw" version="1.0" />

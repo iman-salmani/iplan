@@ -7,16 +7,16 @@ use crate::db::models::{Record, Reminder, Task};
 use crate::db::operations::{
     create_task, read_record, read_records, read_reminder, read_reminders, read_tasks, update_task,
 };
-use crate::views::project::{
-    RecordRow, RecordWindow, ReminderRow, ReminderWindow, TaskRow, TasksBox, TasksBoxWrapper,
-};
-use crate::views::DateRow;
+use crate::views::record::{RecordRow, RecordWindow};
+use crate::views::reminder::{ReminderRow, ReminderWindow};
+use crate::views::snippets::DateRow;
+use crate::views::task::{TaskRow, TasksBox, TasksBoxWrapper};
 
 mod imp {
     use super::*;
 
     #[derive(Default, gtk::CompositeTemplate)]
-    #[template(resource = "/ir/imansalmani/iplan/ui/project/task_page.ui")]
+    #[template(resource = "/ir/imansalmani/iplan/ui/task/task_page.ui")]
     pub struct TaskPage {
         #[template_child]
         pub task_row: TemplateChild<TaskRow>,

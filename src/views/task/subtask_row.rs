@@ -5,7 +5,7 @@ mod imp {
     use super::*;
 
     #[derive(Default, gtk::CompositeTemplate)]
-    #[template(resource = "/ir/imansalmani/iplan/ui/project/subtask_row.ui")]
+    #[template(resource = "/ir/imansalmani/iplan/ui/task/subtask_row.ui")]
     pub struct SubtaskRow {
         #[template_child]
         pub done: TemplateChild<gtk::Image>,

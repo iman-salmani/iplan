@@ -8,7 +8,7 @@ mod imp {
     use super::*;
 
     #[derive(gtk::CompositeTemplate, Properties)]
-    #[template(resource = "/ir/imansalmani/iplan/ui/day_indicator.ui")]
+    #[template(resource = "/ir/imansalmani/iplan/ui/calendar/day_indicator.ui")]
     #[properties(type_wrapper=super::DayIndicator)]
     pub struct DayIndicator {
         #[property(get, set)]

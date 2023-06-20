@@ -7,13 +7,13 @@ use std::cell::RefCell;
 
 use crate::db::models::Reminder;
 use crate::db::operations::read_reminder;
-use crate::views::project::ReminderWindow;
+use crate::views::reminder::ReminderWindow;
 
 mod imp {
     use super::*;
 
     #[derive(Default, gtk::CompositeTemplate, Properties)]
-    #[template(resource = "/ir/imansalmani/iplan/ui/project/reminder_row.ui")]
+    #[template(resource = "/ir/imansalmani/iplan/ui/reminder/reminder_row.ui")]
     #[properties(wrapper_type=super::ReminderRow)]
     pub struct ReminderRow {
         #[property(get, set)]

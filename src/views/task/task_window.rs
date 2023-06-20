@@ -5,13 +5,14 @@ use std::unimplemented;
 
 use crate::db::models::Task;
 use crate::db::operations::read_task;
-use crate::views::project::{ProjectDoneTasksWindow, TaskPage, TaskRow};
+use crate::views::project::ProjectDoneTasksWindow;
+use crate::views::task::{TaskPage, TaskRow};
 use crate::views::IPlanWindow;
 mod imp {
     use super::*;
 
     #[derive(Default, gtk::CompositeTemplate)]
-    #[template(resource = "/ir/imansalmani/iplan/ui/project/task_window.ui")]
+    #[template(resource = "/ir/imansalmani/iplan/ui/task/task_window.ui")]
     pub struct TaskWindow {
         pub parent_task: Cell<i64>,
         #[template_child]

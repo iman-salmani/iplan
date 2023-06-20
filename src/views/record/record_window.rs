@@ -5,13 +5,13 @@ use std::cell::{Cell, RefCell};
 
 use crate::db::models::Record;
 use crate::db::operations::{create_record, delete_record, update_record};
-use crate::views::{DateRow, TimeRow};
+use crate::views::snippets::{DateRow, TimeRow};
 
 mod imp {
     use super::*;
 
     #[derive(Default, gtk::CompositeTemplate, Properties)]
-    #[template(resource = "/ir/imansalmani/iplan/ui/project/record_window.ui")]
+    #[template(resource = "/ir/imansalmani/iplan/ui/record/record_window.ui")]
     #[properties(wrapper_type=super::RecordWindow)]
     pub struct RecordWindow {
         #[property(get, set)]

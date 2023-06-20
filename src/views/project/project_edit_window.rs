@@ -145,9 +145,10 @@ impl ProjectEditWindow {
 
     #[template_callback]
     fn handle_delete_button_clicked(&self, _button: gtk::Button) {
-        let dialog = gtk::Builder::from_resource("/ir/imansalmani/iplan/ui/delete_dialog.ui")
-            .object::<adw::MessageDialog>("dialog")
-            .unwrap();
+        let dialog =
+            gtk::Builder::from_resource("/ir/imansalmani/iplan/ui/snippets/delete_dialog.ui")
+                .object::<adw::MessageDialog>("dialog")
+                .unwrap();
         dialog.set_transient_for(self.transient_for().as_ref());
         let project = self.project();
         let dialog_heading = gettext("Delete \"{}\" project?");

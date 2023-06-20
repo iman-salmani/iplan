@@ -26,10 +26,9 @@ use std::cell::RefCell;
 use crate::db::models::Project;
 use crate::db::operations::{create_list, create_project, read_projects, read_task};
 use crate::views::project::{
-    ProjectEditWindow, ProjectHeader, ProjectLayout, ProjectLists, TaskWindow,
+    ProjectEditWindow, ProjectHeader, ProjectLayout, ProjectLists
 };
-use crate::views::sidebar::SidebarProjects;
-use crate::views::Calendar;
+use crate::views::{calendar::Calendar, task::TaskWindow, sidebar::SidebarProjects};
 
 mod imp {
     use super::*;

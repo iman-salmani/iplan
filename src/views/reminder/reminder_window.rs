@@ -7,13 +7,13 @@ use std::time::{SystemTime, UNIX_EPOCH};
 use crate::application::IPlanApplication;
 use crate::db::models::Reminder;
 use crate::db::operations::{create_reminder, delete_reminder, update_reminder};
-use crate::views::{DateRow, TimeRow};
+use crate::views::snippets::{DateRow, TimeRow};
 
 mod imp {
     use super::*;
 
     #[derive(Default, gtk::CompositeTemplate, Properties)]
-    #[template(resource = "/ir/imansalmani/iplan/ui/project/reminder_window.ui")]
+    #[template(resource = "/ir/imansalmani/iplan/ui/reminder/reminder_window.ui")]
     #[properties(wrapper_type=super::ReminderWindow)]
     pub struct ReminderWindow {
         #[property(get, set)]

@@ -10,7 +10,7 @@ mod imp {
     use super::*;
 
     #[derive(Default, gtk::CompositeTemplate, Properties)]
-    #[template(resource = "/ir/imansalmani/iplan/ui/time_row.ui")]
+    #[template(resource = "/ir/imansalmani/iplan/ui/snippets/time_row.ui")]
     #[properties(wrapper_type=super::TimeRow)]
     pub struct TimeRow {
         #[property(get, set)]

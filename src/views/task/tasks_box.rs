@@ -7,7 +7,7 @@ use std::time::Duration;
 
 use crate::db::models::Task;
 use crate::db::operations::{create_task, new_position, read_task, update_task};
-use crate::views::project::TaskRow;
+use crate::views::task::TaskRow;
 
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
 pub enum TasksBoxWrapper {
@@ -20,7 +20,7 @@ mod imp {
     use super::*;
 
     #[derive(gtk::CompositeTemplate, Properties)]
-    #[template(resource = "/ir/imansalmani/iplan/ui/project/tasks_box.ui")]
+    #[template(resource = "/ir/imansalmani/iplan/ui/task/tasks_box.ui")]
     #[properties(wrapper_type=super::TasksBox)]
     pub struct TasksBox {
         pub items_wrapper: Cell<Option<TasksBoxWrapper>>,

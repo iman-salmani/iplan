@@ -8,7 +8,8 @@ use crate::db::models::{Record, Task};
 use crate::db::operations::{
     create_record, delete_task, read_reminders, read_tasks, update_record, update_task,
 };
-use crate::views::project::{ProjectDoneTasksWindow, SubtaskRow, TaskWindow};
+use crate::views::project::ProjectDoneTasksWindow;
+use crate::views::task::{SubtaskRow, TaskWindow};
 use crate::views::IPlanWindow;
 
 #[derive(Default, PartialEq, Clone, Copy)]
@@ -23,7 +24,7 @@ mod imp {
     use super::*;
 
     #[derive(Default, gtk::CompositeTemplate, Properties)]
-    #[template(resource = "/ir/imansalmani/iplan/ui/project/task_row.ui")]
+    #[template(resource = "/ir/imansalmani/iplan/ui/task/task_row.ui")]
     #[properties(wrapper_type=super::TaskRow)]
     pub struct TaskRow {
         #[property(get, set = Self::set_task)]

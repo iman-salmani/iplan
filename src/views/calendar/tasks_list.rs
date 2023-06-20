@@ -6,13 +6,13 @@ use std::cell::{Cell, RefCell};
 
 use crate::db::models::{Record, Task};
 use crate::db::operations::read_tasks;
-use crate::views::project::{TaskRow, TaskWindow, TasksBox, TasksBoxWrapper};
+use crate::views::task::{TaskRow, TaskWindow, TasksBox, TasksBoxWrapper};
 
 mod imp {
     use super::*;
 
     #[derive(gtk::CompositeTemplate, Properties)]
-    #[template(resource = "/ir/imansalmani/iplan/ui/tasks_list.ui")]
+    #[template(resource = "/ir/imansalmani/iplan/ui/calendar/tasks_list.ui")]
     #[properties(wrapper_type=super::TasksList)]
     pub struct TasksList {
         #[property(get, set)]

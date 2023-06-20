@@ -10,7 +10,7 @@ mod imp {
     use super::*;
 
     #[derive(Default, gtk::CompositeTemplate, Properties)]
-    #[template(resource = "/ir/imansalmani/iplan/ui/date_row.ui")]
+    #[template(resource = "/ir/imansalmani/iplan/ui/snippets/date_row.ui")]
     #[properties(type_wrapper=super::DateRow)]
     pub struct DateRow {
         #[template_child]

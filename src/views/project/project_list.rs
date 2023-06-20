@@ -7,9 +7,8 @@ use crate::db::models::{List, Task};
 use crate::db::operations::{
     create_task, delete_list, read_list, read_tasks, update_list, update_task,
 };
-use crate::views::project::{
-    ProjectDoneTasksWindow, ProjectLayout, TaskRow, TaskWindow, TasksBox, TasksBoxWrapper,
-};
+use crate::views::project::{ProjectDoneTasksWindow, ProjectLayout};
+use crate::views::task::{TaskRow, TaskWindow, TasksBox, TasksBoxWrapper};
 use crate::views::IPlanWindow;
 
 mod imp {
@@ -239,9 +238,10 @@ impl ProjectList {
     fn handle_delete_button_clicked(&self, _button: gtk::Button) {
         let imp = self.imp();
         imp.options_button.popdown();
-        let dialog = gtk::Builder::from_resource("/ir/imansalmani/iplan/ui/delete_dialog.ui")
-            .object::<adw::MessageDialog>("dialog")
-            .unwrap();
+        let dialog =
+            gtk::Builder::from_resource("/ir/imansalmani/iplan/ui/snippets/delete_dialog.ui")
+                .object::<adw::MessageDialog>("dialog")
+                .unwrap();
         dialog.set_transient_for(self.root().and_downcast::<gtk::Window>().as_ref());
         let dialog_heading = gettext("Delete \"{}\" list?");
         dialog.set_heading(Some(&dialog_heading.replace("{}", &self.list().name())));

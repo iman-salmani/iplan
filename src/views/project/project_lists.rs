@@ -6,8 +6,7 @@ use std::thread;
 use std::time::Duration;
 
 use crate::db::operations::{create_list, read_list, read_lists, read_task};
-use crate::views::project::{ProjectList, TaskRow};
-use crate::views::IPlanWindow;
+use crate::views::{project::ProjectList, task::TaskRow, IPlanWindow};
 
 #[derive(Default, Clone, Copy, PartialEq)]
 pub enum ProjectLayout {

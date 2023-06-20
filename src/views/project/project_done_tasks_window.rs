@@ -5,7 +5,8 @@ use std::cell::RefCell;
 
 use crate::db::models::{List, Task};
 use crate::db::operations::{read_task, read_tasks};
-use crate::views::{project::TaskRow, project::TaskWindow, IPlanWindow};
+use crate::views::task::{TaskRow, TaskWindow};
+use crate::views::IPlanWindow;
 
 mod imp {
     use super::*;

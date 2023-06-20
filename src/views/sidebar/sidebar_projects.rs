@@ -7,7 +7,7 @@ use crate::db::operations::{
     create_list, create_project, new_position, read_lists, read_project, read_projects,
     update_project, update_task,
 };
-use crate::views::{project::TaskRow, sidebar::ProjectRow, IPlanWindow};
+use crate::views::{sidebar::ProjectRow, task::TaskRow, IPlanWindow};
 mod imp {
     use super::*;
 

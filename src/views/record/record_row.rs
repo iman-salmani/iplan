@@ -7,13 +7,13 @@ use std::cell::RefCell;
 
 use crate::db::models::Record;
 use crate::db::operations::read_record;
-use crate::views::project::RecordWindow;
+use crate::views::record::RecordWindow;
 
 mod imp {
     use super::*;
 
     #[derive(Default, gtk::CompositeTemplate, Properties)]
-    #[template(resource = "/ir/imansalmani/iplan/ui/project/record_row.ui")]
+    #[template(resource = "/ir/imansalmani/iplan/ui/record/record_row.ui")]
     #[properties(wrapper_type=super::RecordRow)]
     pub struct RecordRow {
         #[property(get, set)]

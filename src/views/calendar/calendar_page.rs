@@ -3,13 +3,13 @@ use gtk::glib::Properties;
 use gtk::{glib, subclass::prelude::*};
 use std::cell::RefCell;
 
-use crate::views::{project::TaskRow, TasksList};
+use crate::views::{calendar::TasksList, task::TaskRow};
 
 mod imp {
     use super::*;
 
     #[derive(gtk::CompositeTemplate, Properties)]
-    #[template(resource = "/ir/imansalmani/iplan/ui/calendar_page.ui")]
+    #[template(resource = "/ir/imansalmani/iplan/ui/calendar/calendar_page.ui")]
     #[properties(wrapper_type=super::CalendarPage)]
     pub struct CalendarPage {
         #[property(get, set)]
