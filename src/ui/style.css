@@ -18,15 +18,34 @@ row.expander textview {
 }
 
 .date_row_calendar {
-  background-color: rgba(0, 0, 0, 0);
+  background-color: transparent;
   border: 0;
 }
 
 .tasks_box {
-  background-color: rgba(0, 0, 0, 0);
+  background-color: transparent;
   box-shadow: none;
 }
 
 .tasks_box .activatable:hover {
   background-color: @card_bg_color;
+}
+
+.dragged {
+  border: 2px dashed @card_shade_color;
+  background-color: transparent;
+  box-shadow: none;
+}
+
+.dragged * {
+  opacity: 0;
+}
+
+.subtask_drop_target {
+  border: 2px dashed @card_shade_color;
+  border-radius: 6px;
+}
+
+.projects_box {
+  box-shadow: none;
 }

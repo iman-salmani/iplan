@@ -78,7 +78,23 @@ pub fn update_task(task: &Task) -> Result<()> {
 
     if task.position() != old_task.position() {
         position_stmt.push_str(&format!("position = {},", task.position()));
-        if task.section() != old_task.section() {
+        if task.parent() != old_task.parent() {
+            if old_task.parent() == 0 {
+                // Decrease tasks position in previous section
+                conn.execute(
+                    "UPDATE tasks SET position = position - 1
+                    WHERE position > ?1 AND section = ?2",
+                    (old_task.position(), old_task.section()),
+                )?;
+            } else {
+                // Decrease subtasks position in previous parent
+                conn.execute(
+                    "UPDATE tasks SET position = position - 1
+                    WHERE position > ?1 AND parent = ?2",
+                    (old_task.position(), old_task.parent()),
+                )?;
+            }
+        } else if task.section() != old_task.section() {
             // Decrease tasks position in previous section
             conn.execute(
                 "UPDATE tasks SET position = position - 1
@@ -167,6 +183,18 @@ pub fn new_position(section_id: i64) -> i32 {
         .prepare("SELECT position FROM tasks WHERE section = ? ORDER BY position DESC")
         .expect("Failed to find new task position");
     let first_row = stmt.query_row([section_id], |row| row.get::<_, i32>(0));
+    match first_row {
+        Ok(first_row) => first_row + 1,
+        Err(_) => 0,
+    }
+}
+
+pub fn new_subtask_position(parent: i64) -> i32 {
+    let conn = get_connection();
+    let mut stmt = conn
+        .prepare("SELECT position FROM tasks WHERE parent = ? ORDER BY position DESC")
+        .expect("Failed to find new task position");
+    let first_row = stmt.query_row([parent], |row| row.get::<_, i32>(0));
     match first_row {
         Ok(first_row) => first_row + 1,
         Err(_) => 0,

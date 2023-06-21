@@ -1,12 +1,15 @@
 use adw::prelude::*;
 use glib::{once_cell::sync::Lazy, subclass::Signal};
-use gtk::{gdk, glib, glib::Properties, subclass::prelude::*};
+use gtk::{gdk, glib, glib::Properties, graphene, subclass::prelude::*};
 use std::cell::Cell;
+use std::cmp::Ordering;
 use std::thread;
 use std::time::Duration;
 
 use crate::db::models::Task;
-use crate::db::operations::{create_task, new_position, read_task, update_task};
+use crate::db::operations::{
+    create_task, new_position, new_subtask_position, read_task, update_task,
+};
 use crate::views::task::TaskRow;
 
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
@@ -224,8 +227,8 @@ impl TasksBox {
     pub fn item_by_position(&self, position: i32) -> Option<TaskRow> {
         let imp = self.imp();
         let items = imp.items_box.observe_children();
-        let index = items.n_items() - 1 - position as u32;
-        if let Some(item) = items.item(index) {
+        let index = items.n_items() as i32 - 1 - position;
+        if let Some(item) = items.item(index as u32) {
             if let Ok(task_row) = item.downcast::<TaskRow>() {
                 return Some(task_row);
             }
@@ -409,33 +412,38 @@ impl TasksBox {
         _x: f64,
         _y: f64,
     ) -> bool {
-        // Source row moved by motion signal so it should drop on itself
         let imp = self.imp();
         imp.items_box.drag_unhighlight_row();
         imp.items_box.set_height_request(-1);
         let row: TaskRow = value.get().unwrap();
         let task = row.task();
-        let task_db = read_task(task.id()).expect("Failed to read task");
+        let task_db = read_task(task.id()).unwrap();
         if let TasksBoxWrapper::Date(_) = self.items_wrapper().unwrap() {
-            update_task(&task).expect("Failed to update task");
+            update_task(&task).unwrap();
+        } else if row.moving_out() {
+            let task_parent = task.parent();
+            task.set_section(0);
+            task.set_project(0);
+            task.set_position(new_subtask_position(task_parent));
+            update_task(&task).unwrap();
+            imp.items_box.remove(&row);
+            if let Some(parent_row) = self.item_by_id(task_parent) {
+                parent_row.add_subtask(task);
+                parent_row.reset_timer();
+                parent_row.imp().subtask_drop_target.set_visible(false);
+            }
         } else if task_db.position() != task.position() || task_db.section() != task.section() {
-            update_task(&task).expect("Failed to update task");
+            update_task(&task).unwrap();
         }
         row.grab_focus();
         true
     }
 
-    fn task_drop_target_motion(
-        &self,
-        target: &gtk::DropTarget,
-        _x: f64,
-        y: f64,
-    ) -> gdk::DragAction {
+    fn task_drop_target_motion(&self, target: &gtk::DropTarget, x: f64, y: f64) -> gdk::DragAction {
         let imp = self.imp();
 
         let source_row: Option<TaskRow> = target.value_as();
         let target_row = imp.items_box.row_at_y(y as i32);
-
         if self.imp().items_box.observe_children().n_items() == 2 {
             return gdk::DragAction::MOVE;
         } else if source_row.is_none() || target_row.is_none() {
@@ -456,34 +464,46 @@ impl TasksBox {
         let source_task = source_row.task();
         let target_task = target_row.task();
         if source_task.id() != target_task.id() {
-            let source_i = source_row.index();
-            let target_i = target_row.index();
-            let source_p = source_task.position();
-            let target_p = target_task.position();
-            if source_i - target_i == 1 {
-                source_task.set_property("position", source_p + 1);
-                target_task.set_property("position", target_p - 1);
-            } else if source_i > target_i {
-                for i in target_i..source_i {
-                    let row: TaskRow = imp.items_box.row_at_index(i).and_downcast().unwrap();
-                    row.task()
-                        .set_property("position", row.task().position() - 1);
-                }
-                source_task.set_property("position", target_p)
-            } else if source_i - target_i == -1 {
-                source_task.set_property("position", source_p - 1);
-                target_task.set_property("position", target_p + 1);
-            } else if source_i < target_i {
-                for i in source_i + 1..target_i + 1 {
-                    let row: TaskRow = imp.items_box.row_at_index(i).and_downcast().unwrap();
-                    row.task()
-                        .set_property("position", row.task().position() + 1);
-                }
-                source_task.set_property("position", target_p)
-            }
+            let point_on_target = imp
+                .items_box
+                .compute_point(&target_row, &graphene::Point::new(x as f32, y as f32))
+                .unwrap();
+            let move_task = |step: i32, order: Ordering| {
+                let target_i = target_row.index();
+                let source_i: i32 = source_row.index();
+                let source_p = source_task.position();
+                let target_p = target_task.position();
+                source_row.set_moving_out(false);
+                source_task.set_parent(target_task.parent());
 
-            // Should use invalidate_sort() insteed of changed() for refresh highlight shape
-            imp.items_box.invalidate_sort();
+                for i in (target_i - 2)..(target_i + 2) {
+                    if let Some(row) = imp.items_box.row_at_index(i) {
+                        if let Ok(task_row) = row.downcast::<TaskRow>() {
+                            task_row.imp().subtask_drop_target.set_visible(false);
+                        }
+                    }
+                }
+                if source_i - target_i == step {
+                    source_task.set_position(source_p + step);
+                    target_task.set_position(target_p - step);
+                } else if source_i.cmp(&target_i) == order {
+                    for i in target_i..source_i {
+                        let row: TaskRow = imp.items_box.row_at_index(i).and_downcast().unwrap();
+                        row.task().set_position(row.task().position() - 1);
+                    }
+                    source_task.set_position(target_p)
+                }
+            };
+            if point_on_target.y() <= 6.0 {
+                move_task(1, Ordering::Greater);
+            } else if target_row.height() - point_on_target.y() as i32 <= 6 {
+                move_task(-1, Ordering::Less);
+            } else if source_task.parent() != target_task.id() {
+                target_row.imp().subtask_drop_target.set_visible(true);
+                source_task.set_parent(target_task.id());
+                source_row.set_moving_out(true);
+            }
+            source_row.changed();
         }
 
         // Scroll
@@ -550,7 +570,6 @@ impl TasksBox {
                     imp.items_box.set_height_request(320);
                 }
                 imp.items_box.prepend(&row);
-                imp.items_box.drag_highlight_row(&row);
             }
             if let TasksBoxWrapper::Date(date) = items_wrapper {
                 row.set_moving_out(false);
@@ -562,7 +581,6 @@ impl TasksBox {
                     imp.items_box.set_height_request(320);
                 }
                 imp.items_box.prepend(&row);
-                imp.items_box.drag_highlight_row(&row);
                 row.reset(task);
             }
         }
@@ -572,10 +590,13 @@ impl TasksBox {
     fn task_drop_target_leave(&self, target: &gtk::DropTarget) {
         self.set_scroll(0);
         if let Some(row) = target.value_as::<TaskRow>() {
+            let imp = self.imp();
+            if let Some(parent_row) = self.item_by_id(row.task().parent()) {
+                parent_row.imp().subtask_drop_target.set_visible(false);
+            }
             row.set_moving_out(true);
-            let items_box: &gtk::ListBox = self.imp().items_box.as_ref();
-            items_box.invalidate_filter();
-            items_box.set_height_request(-1);
+            imp.items_box.invalidate_filter();
+            imp.items_box.set_height_request(-1);
         }
     }
 

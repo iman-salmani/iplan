@@ -66,6 +66,8 @@ mod imp {
         #[template_child]
         pub subtasks: TemplateChild<gtk::Box>,
         #[template_child]
+        pub subtask_drop_target: TemplateChild<gtk::Widget>,
+        #[template_child]
         pub footer: TemplateChild<gtk::Box>,
         #[template_child]
         pub date_indicator: TemplateChild<gtk::Label>,
@@ -184,25 +186,6 @@ impl TaskRow {
                 imp.body.set_visible(true);
             }
 
-            loop {
-                if let Some(subtask) = imp.subtasks.first_child() {
-                    imp.subtasks.remove(&subtask);
-                } else {
-                    break;
-                }
-            }
-
-            let subtasks = read_tasks(None, None, None, Some(task.id()), None).unwrap();
-            if subtasks.is_empty() {
-                imp.subtasks.set_visible(false);
-            } else {
-                imp.subtasks.set_visible(true);
-                for subtask in subtasks {
-                    let subtask_row = SubtaskRow::new(subtask);
-                    imp.subtasks.append(&subtask_row);
-                }
-            }
-
             if let Some(datetime) = task.date_datetime() {
                 imp.date_indicator
                     .set_label(&datetime.format("%A").unwrap());
@@ -227,6 +210,40 @@ impl TaskRow {
 
         self.set_task(task);
         self.reset_timer();
+        if !self.compact() {
+            self.reset_subtasks();
+        }
+    }
+
+    pub fn reset_subtasks(&self) {
+        let imp = self.imp();
+        let task = self.task();
+
+        loop {
+            if let Some(subtask) = imp.subtasks.first_child() {
+                imp.subtasks.remove(&subtask);
+            } else {
+                break;
+            }
+        }
+
+        let subtasks = read_tasks(None, None, None, Some(task.id()), None).unwrap();
+        if subtasks.is_empty() {
+            imp.subtasks.set_visible(false);
+        } else {
+            imp.subtasks.set_visible(true);
+            for subtask in subtasks {
+                let subtask_row = SubtaskRow::new(subtask);
+                imp.subtasks.append(&subtask_row);
+            }
+        }
+    }
+
+    pub fn add_subtask(&self, subtask: Task) {
+        let imp = self.imp();
+        imp.subtasks.set_visible(true);
+        let subtask_row = SubtaskRow::new(subtask);
+        imp.subtasks.prepend(&subtask_row);
     }
 
     pub fn cancel_timer(&self) {
@@ -475,13 +492,23 @@ impl TaskRow {
 
     #[template_callback]
     fn handle_drag_begin(&self, drag: gdk::Drag) {
-        self.parent()
-            .and_downcast::<gtk::ListBox>()
-            .unwrap()
-            .drag_highlight_row(self);
         let drag_icon: gtk::DragIcon = gtk::DragIcon::for_drag(&drag).downcast().unwrap();
-        let label = gtk::Label::builder().label("").build();
+        let label = gtk::Builder::from_resource("/ir/imansalmani/iplan/ui/task/task_drag_icon.ui")
+            .object::<gtk::Box>("task_drag_icon")
+            .unwrap();
+        label
+            .last_child()
+            .unwrap()
+            .set_property("label", &self.task().name());
+        // let label = Self::new(self.task(), true);
+        // label.set_margin_top(12);
+        // label.set_margin_bottom(12);
+        // label.set_margin_start(12);
+        // label.set_margin_end(12);
+        // label.set_size_request(320, 0);
+        // label.add_css_class("card");
         drag_icon.set_child(Some(&label));
+        self.add_css_class("dragged");
         drag.set_hotspot(0, 0);
     }
 
@@ -490,5 +517,10 @@ impl TaskRow {
         self.set_moving_out(false);
         self.changed();
         false
+    }
+
+    #[template_callback]
+    fn handle_drag_end(&self, _drag: gdk::Drag, _: bool) {
+        self.remove_css_class("dragged");
     }
 }

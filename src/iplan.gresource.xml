@@ -28,6 +28,7 @@
     <file preprocess="xml-stripblanks">ui/task/task_page.ui</file>
     <file preprocess="xml-stripblanks">ui/task/tasks_box.ui</file>
     <file preprocess="xml-stripblanks">ui/task/subtask_row.ui</file>
+    <file preprocess="xml-stripblanks">ui/task/task_drag_icon.ui</file>
     <file preprocess="xml-stripblanks">ui/task/tasks_done_window.ui</file>
 
     <file preprocess="xml-stripblanks">ui/record/record_row.ui</file>

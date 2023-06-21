@@ -50,6 +50,7 @@
         <signal name="row-activated" handler="handle_projects_box_row_activated" swapped="true" />
         <style>
           <class name="navigation-sidebar" />
+          <class name="projects_box" />
         </style>
       </object>
     </child><!-- Projects Box -->
