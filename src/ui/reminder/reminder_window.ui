@@ -10,6 +10,7 @@
     <property name="destroy-with-parent">true</property>
     <property name="titlebar">
       <object class="AdwHeaderBar">
+        <property name="show-start-title-buttons">false</property>
         <property name="show-end-title-buttons">false</property>
         <property name="title-widget">
           <object class="GtkLabel">

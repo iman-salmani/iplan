@@ -72,6 +72,7 @@ impl ProjectHeader {
         imp.icon_label.set_text(&project.icon());
         imp.name_label.set_text(&project.name());
         imp.name_entry.buffer().set_text(&project.name());
+        imp.name_button.set_visible(true);
 
         imp.duration_button_content
             .set_label(&Record::duration_display(project.duration()));

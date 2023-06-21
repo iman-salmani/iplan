@@ -72,14 +72,6 @@ mod imp {
                 imp.sidebar_projects.check_archive_hidden();
                 win.close_calendar();
             });
-            klass.install_action("project.new", None, move |win, _, _| {
-                let imp = win.imp();
-                let project = win.project();
-                imp.project_header.open_project(&project);
-                imp.project_lists.open_project(project.id());
-                imp.project_header.imp().name_button.emit_clicked();
-                imp.sidebar_projects.check_archive_hidden();
-            });
             klass.install_action("project.edit", None, move |win, _, _| {
                 let window = ProjectEditWindow::new(win.application().unwrap(), win, win.project());
                 window.present();
@@ -101,7 +93,7 @@ mod imp {
                     project.clone()
                 } else {
                     let project =
-                        create_project(&gettext("Personal")).expect("Failed to create project");
+                        create_project(&gettext("Personal"), "", "").expect("Failed to create project");
                     create_section(&gettext("Tasks"), project.id()).unwrap();
                     project
                 };
@@ -215,7 +207,7 @@ impl IPlanWindow {
             project.clone()
         } else {
             let project: Project =
-                create_project(&gettext("Personal")).expect("Failed to create project");
+                create_project(&gettext("Personal"), "", "").expect("Failed to create project");
             create_section(&gettext("Tasks"), project.id()).unwrap();
             project
         };

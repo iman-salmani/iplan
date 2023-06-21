@@ -5,20 +5,20 @@ use rusqlite::Result;
 use crate::db::get_connection;
 use crate::db::models::Project;
 
-pub fn create_project(name: &str) -> Result<Project> {
+pub fn create_project(name: &str, icon: &str, description: &str) -> Result<Project> {
     let index = new_index();
     let conn = get_connection();
     conn.execute(
-        "INSERT INTO projects(name, i) VALUES (?1,?2)",
-        (name, index),
+        "INSERT INTO projects(name, i, icon, description) VALUES (?1,?2,?3,?4)",
+        (name, index, icon, description),
     )?;
     Ok(Project::new(
         conn.last_insert_rowid(),
-        String::from(name),
+        name.to_string(),
         false,
         index,
-        String::new(),
-        String::new(),
+        icon.to_string(),
+        description.to_string(),
     ))
 }
 

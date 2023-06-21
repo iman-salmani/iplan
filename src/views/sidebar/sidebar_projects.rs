@@ -1,13 +1,11 @@
-use gettextrs::gettext;
 use gtk::{gdk, gio, glib, prelude::*, subclass::prelude::*};
 use std::cell::RefCell;
 
 use crate::db::models::Project;
 use crate::db::operations::{
-    create_project, create_section, new_position, read_project, read_projects, read_sections,
-    update_project, update_task,
+    new_position, read_project, read_projects, read_sections, update_project, update_task,
 };
-use crate::views::{sidebar::ProjectRow, task::TaskRow, IPlanWindow};
+use crate::views::{project::ProjectCreateWindow, sidebar::ProjectRow, task::TaskRow, IPlanWindow};
 mod imp {
     use super::*;
 
@@ -208,18 +206,21 @@ impl SidebarProjects {
 
     #[template_callback]
     fn handle_new_button_clicked(&self, _button: gtk::Button) {
-        let project = create_project("").unwrap();
-        create_section(&gettext("Tasks"), project.id()).unwrap();
-        let row = ProjectRow::new(project.clone());
-        let imp = self.imp();
-        imp.projects_box.append(&row);
-        imp.projects_box.select_row(Some(&row));
-        self.root()
-            .and_downcast::<IPlanWindow>()
-            .unwrap()
-            .set_property("project", project);
-        self.activate_action("project.new", None)
-            .expect("Failed to start project.new action");
+        let win = self.root().and_downcast::<IPlanWindow>().unwrap();
+        let modal = ProjectCreateWindow::new(&win.application().unwrap(), &win);
+        modal.present();
+        modal.connect_closure(
+            "project-created",
+            true,
+            glib::closure_local!(@watch self as obj => move |_win: ProjectCreateWindow, project: Project| {
+                let imp = obj.imp();
+                obj.root().and_downcast::<IPlanWindow>().unwrap().set_property("project", &project);
+                let row = ProjectRow::new(project);
+                imp.projects_box.append(&row);
+                imp.projects_box.select_row(Some(&row));
+                obj.activate_action("project.open", None).unwrap();
+            }),
+        );
     }
 
     #[template_callback]

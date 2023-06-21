@@ -8,7 +8,7 @@ src/ui/calendar/calendar.ui
 src/ui/calendar/calendar_page.ui
 src/ui/calendar/day_indicator.ui
 src/ui/calendar/tasks_list.ui
-src/ui/project/project_done_tasks_window.ui
+src/ui/project/project_create_window.ui
 src/ui/project/project_edit_window.ui
 src/ui/project/project_header.ui
 src/ui/project/project_lists.ui
@@ -29,6 +29,7 @@ src/ui/task/subtask_row.ui
 src/ui/task/task_window.ui
 src/ui/task/task_page.ui
 src/ui/task/tasks_box.ui
+src/ui/task/tasks_done_window.ui
 src/application.rs
 src/views/window.rs
 src/views/backup_window.rs
@@ -36,7 +37,7 @@ src/views/calendar/calendar.rs
 src/views/calendar/calendar_page.rs
 src/views/calendar/day_indicator.rs
 src/views/calendar/tasks_list.rs
-src/views/project/project_done_tasks_window.rs
+src/views/project/project_create_window.rs
 src/views/project/project_edit_window.rs
 src/views/project/project_header.rs
 src/views/project/project_lists.rs
@@ -56,3 +57,4 @@ src/views/task/task_row.rs
 src/views/task/subtask_row.rs
 src/views/task/task_window.rs
 src/views/task/task_page.rs
+src/views/task/tasks_done_window.rs

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: iplan\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-06-20 15:50+0330\n"
+"POT-Creation-Date: 2023-06-22 01:06+0330\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Iman Salmani <contact.imansalmani@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -326,25 +326,38 @@ msgstr "هفته قبل"
 msgid "Next week"
 msgstr "هفته بعد"
 
-#: src/ui/project/project_done_tasks_window.ui:52
-msgid "no done tasks found"
-msgstr "هیچ کار انجام شده ای پیدا نشد"
+#: src/ui/project/project_create_window.ui:19
+#, fuzzy
+msgid "New Project"
+msgstr "پروژه جدید"
 
-#: src/ui/project/project_edit_window.ui:17
-msgid "Edit Project"
-msgstr "ویرایش پروژه"
+#: src/ui/project/project_create_window.ui:27 src/ui/record/record_window.ui:25
+#: src/ui/reminder/reminder_window.ui:25
+msgid "Cancel"
+msgstr "لغو"
 
+#: src/ui/project/project_create_window.ui:33
+msgid "Add"
+msgstr ""
+
+#: src/ui/project/project_create_window.ui:60
 #: src/ui/project/project_edit_window.ui:48
 msgid "Name"
 msgstr "نام"
 
+#: src/ui/project/project_create_window.ui:67
 #: src/ui/project/project_edit_window.ui:56
 msgid "Icon"
 msgstr "نماد"
 
+#: src/ui/project/project_create_window.ui:85
 #: src/ui/project/project_edit_window.ui:75 src/ui/task/task_page.ui:44
 msgid "Description"
 msgstr "شرح"
+
+#: src/ui/project/project_edit_window.ui:17
+msgid "Edit Project"
+msgstr "ویرایش پروژه"
 
 #: src/ui/project/project_edit_window.ui:105
 msgid "Archive"
@@ -382,45 +395,41 @@ msgstr "وظایف انجام شده"
 msgid "Delete section"
 msgstr "حذف فهرست"
 
-#: src/ui/record/record_window.ui:16
+#: src/ui/record/record_window.ui:17
 msgid "New Record"
 msgstr "رکورد جدید"
 
-#: src/ui/record/record_window.ui:24 src/ui/reminder/reminder_window.ui:24
-msgid "Cancel"
-msgstr "لغو"
-
-#: src/ui/record/record_window.ui:30 src/ui/reminder/reminder_window.ui:30
+#: src/ui/record/record_window.ui:31 src/ui/reminder/reminder_window.ui:31
 msgid "Done"
 msgstr "انجام شد"
 
-#: src/ui/record/record_window.ui:47
+#: src/ui/record/record_window.ui:48
 msgid "Starts"
 msgstr "شروع"
 
-#: src/ui/record/record_window.ui:50 src/ui/record/record_window.ui:70
-#: src/ui/reminder/reminder_window.ui:49
+#: src/ui/record/record_window.ui:51 src/ui/record/record_window.ui:71
+#: src/ui/reminder/reminder_window.ui:50
 msgid "Date"
 msgstr "تاریخ"
 
-#: src/ui/record/record_window.ui:57 src/ui/record/record_window.ui:77
-#: src/ui/reminder/reminder_window.ui:55
+#: src/ui/record/record_window.ui:58 src/ui/record/record_window.ui:78
+#: src/ui/reminder/reminder_window.ui:56
 msgid "Time"
 msgstr "زمان"
 
-#: src/ui/record/record_window.ui:67
+#: src/ui/record/record_window.ui:68
 msgid "Ends"
 msgstr "پایان"
 
-#: src/ui/record/record_window.ui:86
+#: src/ui/record/record_window.ui:87
 msgid "Duration"
 msgstr "مدت"
 
-#: src/ui/record/record_window.ui:98 src/ui/reminder/reminder_window.ui:66
+#: src/ui/record/record_window.ui:99 src/ui/reminder/reminder_window.ui:67
 msgid "delete"
 msgstr "حذف"
 
-#: src/ui/reminder/reminder_window.ui:16
+#: src/ui/reminder/reminder_window.ui:17
 msgid "Reminder"
 msgstr "یادآور"
 
@@ -456,11 +465,11 @@ msgstr "حذف"
 msgid "No Date"
 msgstr "بدون تاریخ"
 
-#: src/ui/task/task_row.ui:194 src/views/task/task_row.rs:248
+#: src/ui/task/task_row.ui:208 src/views/task/task_row.rs:264
 msgid "Start _timer"
 msgstr "شروع _تایمر"
 
-#: src/ui/task/task_row.ui:210
+#: src/ui/task/task_row.ui:224
 msgid "_Delete task"
 msgstr "حذف وظیفه_"
 
@@ -480,6 +489,10 @@ msgstr "هیچ رکوردی پیدا نشد"
 msgid "Use add button up there or start a timer"
 msgstr "از دکمه افزودن در بالا استفاده کنید یا تایمر را شروع کنید"
 
+#: src/ui/task/tasks_done_window.ui:51
+msgid "no done tasks found"
+msgstr "هیچ کار انجام شده ای پیدا نشد"
+
 #. Translators: Replace "translator-credits" with your names, one name per line
 #: src/application.rs:202
 msgid "translator-credits"
@@ -489,12 +502,12 @@ msgstr "ایمان سلمانی <contact.imansalmani@gmail.com>"
 msgid "IPlan needs to run in the background to send reminders"
 msgstr "برای ارسال یادآوری، آپلن باید در پس‌زمینه اجرا شود"
 
-#: src/views/window.rs:104 src/views/window.rs:218
+#: src/views/window.rs:96 src/views/window.rs:210
 msgid "Personal"
 msgstr "شخصی"
 
-#: src/views/window.rs:105 src/views/window.rs:219
-#: src/views/sidebar/sidebar_projects.rs:212
+#: src/views/window.rs:97 src/views/window.rs:211
+#: src/views/project/project_create_window.rs:138
 msgid "Tasks"
 msgstr "وظایف"
 
@@ -509,10 +522,6 @@ msgstr "خطا هنگام ذخیره داده های قبلی"
 #: src/views/backup_window.rs:114
 msgid "Error while importing data"
 msgstr "خطا هنگام وارد کردن داده ها"
-
-#: src/views/project/project_done_tasks_window.rs:92
-msgid "Done Tasks"
-msgstr "کارهای انجام شده"
 
 #: src/views/project/project_edit_window.rs:154
 msgid "Delete \"{}\" project?"
@@ -533,21 +542,21 @@ msgstr "از منوی اصلی {} برای افزودن لیست های جدید
 msgid "New Section"
 msgstr "رکورد جدید"
 
-#: src/views/project/section_box.rs:68
+#: src/views/project/section_box.rs:69
 #, fuzzy
 msgid "\"{}\" moved to the done tasks section"
 msgstr "\"{}\" به فهرست کارهای انجام شده منتقل شد"
 
-#: src/views/project/section_box.rs:71 src/views/task/task_row.rs:414
+#: src/views/project/section_box.rs:72 src/views/task/task_row.rs:430
 msgid "Undo"
 msgstr "برگرد"
 
-#: src/views/project/section_box.rs:250
+#: src/views/project/section_box.rs:251
 #, fuzzy
 msgid "Delete \"{}\" section?"
 msgstr "پروژه \"{}\" لیست شود؟"
 
-#: src/views/project/section_box.rs:253
+#: src/views/project/section_box.rs:254
 #, fuzzy
 msgid "The section and its tasks will be permanently lost."
 msgstr "فهرست و وظایف آن برای همیشه از بین خواهد رفت."
@@ -572,9 +581,13 @@ msgstr "پروژه"
 msgid "Task"
 msgstr "وظیفه"
 
-#: src/views/task/task_row.rs:413
+#: src/views/task/task_row.rs:429
 msgid "\"{}\" is going to delete"
 msgstr "درحال حذف \"{}\""
+
+#: src/views/task/tasks_done_window.rs:92
+msgid "Done Tasks"
+msgstr "کارهای انجام شده"
 
 #~ msgid "_New List"
 #~ msgstr "_فهرست جدید"

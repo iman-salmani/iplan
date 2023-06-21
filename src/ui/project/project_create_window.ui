@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE interface SYSTEM "../schema.dtd">
+<interface>
+  <requires lib="gtk" version="4.0" />
+  <requires lib="Adw" version="1.0" />
+  <template class="ProjectCreateWindow" parent="GtkWindow">
+    <property name="width-request">480</property>
+    <property name="modal">true</property>
+    <property name="destroy-with-parent">true</property>
+    <child type="titlebar"><!-- Header -->
+      <object class="AdwHeaderBar">
+        <property name="show-start-title-buttons">false</property>
+        <property name="show-end-title-buttons">false</property>
+        <property name="title-widget">
+          <object class="GtkLabel">
+            <property name="label" translatable="yes">New Project</property>
+            <style>
+              <class name="heading" />
+            </style>
+          </object>
+        </property>
+        <child type="start">
+          <object class="GtkButton">
+            <property name="label" translatable="yes">Cancel</property>
+            <signal name="clicked" handler="handle_cancel_button_clicked" swapped="true" />
+          </object>
+        </child>
+        <child type="end">
+          <object class="GtkButton">
+            <property name="label" translatable="yes">Add</property>
+            <signal name="clicked" handler="handle_add_button_clicked" swapped="true" />
+            <style>
+              <class name="suggested-action" />
+            </style>
+          </object>
+        </child>
+      </object>
+    </child><!-- End Header -->
+    <child><!-- Content -->
+      <object class="AdwToastOverlay" id="toast_overlay">
+        <child>
+          <object class="GtkBox">
+            <property name="orientation">vertical</property>
+            <child><!-- Icon -->
+              <object class="GtkLabel" id="icon_label">
+                <property name="margin-top">12</property>
+                <property name="margin-bottom">12</property>
+                <style>
+                  <class name="project-icon" />
+                  <class name="large" />
+                </style>
+              </object>
+            </child><!-- End Icon -->
+            <child><!-- Profile -->
+              <object class="AdwPreferencesGroup">
+                <property name="margin-top">12</property>
+                <property name="margin-bottom">12</property>
+                <property name="margin-start">12</property>
+                <property name="margin-end">12</property>
+                <child><!-- Name -->
+                  <object class="AdwEntryRow" id="name_entry_row">
+                    <property name="title" translatable="yes">Name</property>
+                    <property name="show-apply-button">true</property>
+                    <signal name="apply" handler="handle_name_entry_row_apply" swapped="true" />
+                  </object>
+                </child><!-- End Name -->
+                <child><!-- Icon Row -->
+                  <object class="AdwActionRow">
+                    <property name="title" translatable="yes">Icon</property>
+                    <property name="activatable-widget">icon_menu_button</property>
+                    <child type="suffix">
+                      <object class="GtkMenuButton" id="icon_menu_button">
+                        <property name="has-frame">false</property>
+                        <property name="valign">center</property>
+                        <property name="popover">
+                          <object class="GtkEmojiChooser">
+                            <signal name="emoji-picked" handler="handle_project_emoji_picked"
+                              swapped="true" />
+                          </object>
+                        </property>
+                      </object>
+                    </child>
+                  </object>
+                </child><!-- End Icon Row -->
+                <child><!-- Description -->
+                  <object class="AdwExpanderRow" id="description_expander_row">
+                    <property name="title" translatable="yes">Description</property>
+                    <property name="subtitle-lines">1</property>
+                    <child>
+                      <object class="GtkTextView">
+                        <property name="height-request">128</property>
+                        <property name="top-margin">3</property>
+                        <property name="bottom-margin">3</property>
+                        <property name="left-margin">3</property>
+                        <property name="right-margin">3</property>
+                        <property name="wrap-mode">word</property>
+                        <property name="buffer">
+                          <object class="GtkTextBuffer" id="description_buffer">
+                          </object>
+                        </property>
+                      </object>
+                    </child>
+                  </object>
+                </child><!-- End Description -->
+              </object>
+            </child><!-- End Profile -->
+          </object>
+        </child>
+      </object>
+    </child><!-- End Content -->
+  </template>
+</interface>
