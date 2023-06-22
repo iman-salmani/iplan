@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: iplan\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-06-22 01:06+0330\n"
+"POT-Creation-Date: 2023-06-22 18:32+0330\n"
 "PO-Revision-Date: 2023-06-11 20:32+0200\n"
 "Last-Translator: Irénée Thirion <irenee.thirion@e.email>\n"
 "Language-Team: \n"
@@ -334,31 +334,31 @@ msgstr ""
 msgid "Next week"
 msgstr ""
 
-#: src/ui/project/project_create_window.ui:19
+#: src/ui/project/project_create_window.ui:16
 #, fuzzy
 msgid "New Project"
 msgstr "Nouveau projet"
 
-#: src/ui/project/project_create_window.ui:27 src/ui/record/record_window.ui:25
+#: src/ui/project/project_create_window.ui:24 src/ui/record/record_window.ui:25
 #: src/ui/reminder/reminder_window.ui:25
 msgid "Cancel"
 msgstr "Annuler"
 
-#: src/ui/project/project_create_window.ui:33
+#: src/ui/project/project_create_window.ui:30
 msgid "Add"
 msgstr ""
 
-#: src/ui/project/project_create_window.ui:60
+#: src/ui/project/project_create_window.ui:62
 #: src/ui/project/project_edit_window.ui:48
 msgid "Name"
 msgstr "Nom"
 
-#: src/ui/project/project_create_window.ui:67
+#: src/ui/project/project_create_window.ui:69
 #: src/ui/project/project_edit_window.ui:56
 msgid "Icon"
 msgstr "Icône"
 
-#: src/ui/project/project_create_window.ui:85
+#: src/ui/project/project_create_window.ui:87
 #: src/ui/project/project_edit_window.ui:75 src/ui/task/task_page.ui:44
 msgid "Description"
 msgstr "Description"
@@ -389,16 +389,16 @@ msgstr "Aucun chronomètre trouvé"
 msgid "New section"
 msgstr "Nouveau chronomètre"
 
-#: src/ui/project/section_box.ui:49 src/ui/task/tasks_box.ui:46
-#: src/ui/task/tasks_box.ui:77
+#: src/ui/project/section_box.ui:49 src/ui/task/tasks_box.ui:47
+#: src/ui/task/tasks_box.ui:78
 msgid "Add task"
 msgstr ""
 
-#: src/ui/project/section_box.ui:91
+#: src/ui/project/section_box.ui:90
 msgid "Done tasks"
 msgstr "Tâches accomplies"
 
-#: src/ui/project/section_box.ui:121
+#: src/ui/project/section_box.ui:120
 #, fuzzy
 msgid "Delete section"
 msgstr "Supprimer la liste"
@@ -445,7 +445,7 @@ msgstr "Rappel"
 msgid "Search"
 msgstr "Chercher"
 
-#: src/ui/search/search_window.ui:55
+#: src/ui/search/search_window.ui:54
 msgid "no results found"
 msgstr "Aucun résultat trouvé"
 
@@ -474,7 +474,7 @@ msgstr "_Supprimer"
 msgid "No Date"
 msgstr "Date"
 
-#: src/ui/task/task_row.ui:208 src/views/task/task_row.rs:264
+#: src/ui/task/task_row.ui:208 src/views/task/task_row.rs:272
 msgid "Start _timer"
 msgstr ""
 
@@ -504,11 +504,11 @@ msgid "no done tasks found"
 msgstr "Aucune tâche accomplie trouvée"
 
 #. Translators: Replace "translator-credits" with your names, one name per line
-#: src/application.rs:202
+#: src/application.rs:205
 msgid "translator-credits"
 msgstr "Irénée Thirion <irenee.thirion@e.email>"
 
-#: src/application.rs:248
+#: src/application.rs:266
 msgid "IPlan needs to run in the background to send reminders"
 msgstr ""
 "IPlan nécessite de fonctionner en arrière-plan pour envoyer des rappels"
@@ -518,7 +518,7 @@ msgid "Personal"
 msgstr "Personnel"
 
 #: src/views/window.rs:97 src/views/window.rs:211
-#: src/views/project/project_create_window.rs:138
+#: src/views/project/project_create_window.rs:148
 msgid "Tasks"
 msgstr "Tâches"
 
@@ -533,6 +533,10 @@ msgstr "Erreur lors de la mise en cache des données précédentes"
 #: src/views/backup_window.rs:114
 msgid "Error while importing data"
 msgstr "Erreur lors de l’importation des données"
+
+#: src/views/project/project_create_window.rs:140
+msgid "Project should have a name!"
+msgstr ""
 
 #: src/views/project/project_edit_window.rs:154
 msgid "Delete \"{}\" project?"
@@ -558,7 +562,7 @@ msgstr "Nouveau chronomètre"
 msgid "\"{}\" moved to the done tasks section"
 msgstr "« {} » déplacé vers la liste des tâches accomplies"
 
-#: src/views/project/section_box.rs:72 src/views/task/task_row.rs:430
+#: src/views/project/section_box.rs:72 src/views/task/task_row.rs:438
 msgid "Undo"
 msgstr "Annuler"
 
@@ -592,7 +596,16 @@ msgstr "Projet"
 msgid "Task"
 msgstr "Tâche"
 
-#: src/views/task/task_row.rs:429
+#: src/views/sidebar/sidebar_projects.rs:351
+msgid "Task moved to {}"
+msgstr ""
+
+#: src/views/sidebar/sidebar_projects.rs:358
+#, fuzzy
+msgid "{} doesn't have any section"
+msgstr "« {} » déplacé vers la liste des tâches accomplies"
+
+#: src/views/task/task_row.rs:437
 msgid "\"{}\" is going to delete"
 msgstr "« {} » sera supprimée"
 

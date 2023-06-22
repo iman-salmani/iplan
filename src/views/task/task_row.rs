@@ -19,6 +19,13 @@ pub enum TimerStatus {
     Cancel,
 }
 
+pub struct DragBackup {
+    position: i32,
+    section: i64,
+    parent_task: i64,
+    parent_widget: gtk::ListBox,
+}
+
 mod imp {
     use super::*;
 
@@ -34,6 +41,7 @@ mod imp {
         pub compact: Cell<bool>,
         #[property(get, set)]
         pub lazy: Cell<bool>,
+        pub drag_backup: Cell<Option<DragBackup>>,
         #[template_child]
         pub row_box: TemplateChild<gtk::Box>,
         #[template_child]
@@ -500,21 +508,31 @@ impl TaskRow {
             .last_child()
             .unwrap()
             .set_property("label", &self.task().name());
-        // let label = Self::new(self.task(), true);
-        // label.set_margin_top(12);
-        // label.set_margin_bottom(12);
-        // label.set_margin_start(12);
-        // label.set_margin_end(12);
-        // label.set_size_request(320, 0);
-        // label.add_css_class("card");
         drag_icon.set_child(Some(&label));
         self.add_css_class("dragged");
         drag.set_hotspot(0, 0);
+        let task = self.task();
+        self.imp().drag_backup.set(Some(DragBackup {
+            position: task.position(),
+            section: task.section(),
+            parent_task: task.parent(),
+            parent_widget: self.parent().and_downcast::<gtk::ListBox>().unwrap(),
+        }))
     }
 
     #[template_callback]
     fn handle_drag_cancel(&self, _drag: gdk::Drag) -> bool {
         self.set_moving_out(false);
+        let drag_backup = self.imp().drag_backup.take().unwrap();
+        let task = self.task();
+        task.set_position(drag_backup.position);
+        task.set_section(drag_backup.section);
+        task.set_parent(drag_backup.parent_task);
+        let parent = self.parent().and_downcast::<gtk::ListBox>().unwrap();
+        if parent != drag_backup.parent_widget {
+            parent.remove(self);
+            drag_backup.parent_widget.append(self);
+        }
         self.changed();
         false
     }

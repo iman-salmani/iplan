@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: iplan\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-06-22 01:06+0330\n"
+"POT-Creation-Date: 2023-06-22 18:32+0330\n"
 "PO-Revision-Date: 2023-06-10 12:30-0300\n"
 "Last-Translator: Fúlvio Leo <fulviokaldas@outlook.com>\n"
 "Language: pt_BR\n"
@@ -329,31 +329,31 @@ msgstr ""
 msgid "Next week"
 msgstr ""
 
-#: src/ui/project/project_create_window.ui:19
+#: src/ui/project/project_create_window.ui:16
 #, fuzzy
 msgid "New Project"
 msgstr "Novo projeto"
 
-#: src/ui/project/project_create_window.ui:27 src/ui/record/record_window.ui:25
+#: src/ui/project/project_create_window.ui:24 src/ui/record/record_window.ui:25
 #: src/ui/reminder/reminder_window.ui:25
 msgid "Cancel"
 msgstr "Cancelar"
 
-#: src/ui/project/project_create_window.ui:33
+#: src/ui/project/project_create_window.ui:30
 msgid "Add"
 msgstr ""
 
-#: src/ui/project/project_create_window.ui:60
+#: src/ui/project/project_create_window.ui:62
 #: src/ui/project/project_edit_window.ui:48
 msgid "Name"
 msgstr "Nome"
 
-#: src/ui/project/project_create_window.ui:67
+#: src/ui/project/project_create_window.ui:69
 #: src/ui/project/project_edit_window.ui:56
 msgid "Icon"
 msgstr "Ícone"
 
-#: src/ui/project/project_create_window.ui:85
+#: src/ui/project/project_create_window.ui:87
 #: src/ui/project/project_edit_window.ui:75 src/ui/task/task_page.ui:44
 msgid "Description"
 msgstr "Descrição"
@@ -384,16 +384,16 @@ msgstr "nenhum registro encontrado"
 msgid "New section"
 msgstr "Novo Registro"
 
-#: src/ui/project/section_box.ui:49 src/ui/task/tasks_box.ui:46
-#: src/ui/task/tasks_box.ui:77
+#: src/ui/project/section_box.ui:49 src/ui/task/tasks_box.ui:47
+#: src/ui/task/tasks_box.ui:78
 msgid "Add task"
 msgstr ""
 
-#: src/ui/project/section_box.ui:91
+#: src/ui/project/section_box.ui:90
 msgid "Done tasks"
 msgstr "Tarefas concluídas"
 
-#: src/ui/project/section_box.ui:121
+#: src/ui/project/section_box.ui:120
 #, fuzzy
 msgid "Delete section"
 msgstr "Deletar lista"
@@ -440,7 +440,7 @@ msgstr "Lembrete"
 msgid "Search"
 msgstr "Buscar"
 
-#: src/ui/search/search_window.ui:55
+#: src/ui/search/search_window.ui:54
 msgid "no results found"
 msgstr "nenhum resultado encontrado"
 
@@ -469,7 +469,7 @@ msgstr "_Deletar"
 msgid "No Date"
 msgstr "Data"
 
-#: src/ui/task/task_row.ui:208 src/views/task/task_row.rs:264
+#: src/ui/task/task_row.ui:208 src/views/task/task_row.rs:272
 #, fuzzy
 msgid "Start _timer"
 msgstr "começar"
@@ -500,11 +500,11 @@ msgid "no done tasks found"
 msgstr "nenhuma tarefa concluída encontrada"
 
 #. Translators: Replace "translator-credits" with your names, one name per line
-#: src/application.rs:202
+#: src/application.rs:205
 msgid "translator-credits"
 msgstr "Fúlvio Leo <fulviokaldas@outlook.com>"
 
-#: src/application.rs:248
+#: src/application.rs:266
 msgid "IPlan needs to run in the background to send reminders"
 msgstr "O IPlan precisa ser executado em segundo plano para enviar lembretes"
 
@@ -513,7 +513,7 @@ msgid "Personal"
 msgstr "Pessoal"
 
 #: src/views/window.rs:97 src/views/window.rs:211
-#: src/views/project/project_create_window.rs:138
+#: src/views/project/project_create_window.rs:148
 msgid "Tasks"
 msgstr "Tarefas"
 
@@ -528,6 +528,10 @@ msgstr "Erro ao armazenar dados anteriores em cache"
 #: src/views/backup_window.rs:114
 msgid "Error while importing data"
 msgstr "Erro ao importar dados"
+
+#: src/views/project/project_create_window.rs:140
+msgid "Project should have a name!"
+msgstr ""
 
 #: src/views/project/project_edit_window.rs:154
 msgid "Delete \"{}\" project?"
@@ -553,7 +557,7 @@ msgstr "Novo Registro"
 msgid "\"{}\" moved to the done tasks section"
 msgstr "\"{}\" movido para a lista de tarefas concluídas"
 
-#: src/views/project/section_box.rs:72 src/views/task/task_row.rs:430
+#: src/views/project/section_box.rs:72 src/views/task/task_row.rs:438
 msgid "Undo"
 msgstr "Desfazer"
 
@@ -587,7 +591,16 @@ msgstr "Projeto"
 msgid "Task"
 msgstr "Tarefa"
 
-#: src/views/task/task_row.rs:429
+#: src/views/sidebar/sidebar_projects.rs:351
+msgid "Task moved to {}"
+msgstr ""
+
+#: src/views/sidebar/sidebar_projects.rs:358
+#, fuzzy
+msgid "{} doesn't have any section"
+msgstr "\"{}\" movido para a lista de tarefas concluídas"
+
+#: src/views/task/task_row.rs:437
 msgid "\"{}\" is going to delete"
 msgstr "\"{}\" irá deletar"
 

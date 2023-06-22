@@ -1,3 +1,4 @@
+use gettextrs::gettext;
 use gtk::{gdk, gio, glib, prelude::*, subclass::prelude::*};
 use std::cell::RefCell;
 
@@ -333,22 +334,36 @@ impl SidebarProjects {
         let row: TaskRow = value.get().unwrap();
         let task = row.task();
         let project_row = self.imp().projects_box.row_at_y(y as i32).unwrap();
-        let project_id = project_row.property::<Project>("project").id();
-        task.set_project(project_id);
-        let section_id = read_sections(project_id)
-            .unwrap()
-            .first()
-            .expect("Project should have section")
-            .id();
-        task.set_section(section_id);
-        task.set_position(new_position(section_id));
-        row.parent()
-            .and_downcast::<gtk::ListBox>()
-            .unwrap()
-            .remove(&row);
-        update_task(&task).unwrap();
+        let project = project_row.property::<Project>("project");
+        let project_id = project.id();
+        let window = self.root().and_downcast::<IPlanWindow>().unwrap();
+        let project_name = format!("{} {}", project.icon(), project.name());
+        let is_moved: bool;
+        let toast_title: String;
+
+        if let Some(section) = read_sections(project_id).unwrap().first() {
+            let section_id = section.id();
+            task.set_project(project_id);
+            task.set_section(section_id);
+            task.set_position(new_position(section_id));
+            update_task(&task).unwrap();
+
+            toast_title = gettext("Task moved to {}").replace("{}", &project_name);
+            row.parent()
+                .and_downcast::<gtk::ListBox>()
+                .unwrap()
+                .remove(&row);
+            is_moved = true;
+        } else {
+            toast_title = gettext("{} doesn't have any section").replace("{}", &project_name);
+            is_moved = false;
+        }
+
+        let toast = adw::Toast::new(&toast_title);
+        window.imp().toast_overlay.add_toast(toast);
         self.select_active_project();
-        true
+
+        is_moved
     }
 
     fn task_drop_target_motion(
