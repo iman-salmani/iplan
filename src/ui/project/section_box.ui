@@ -61,7 +61,6 @@
     </child><!-- End Header -->
     <child>
       <object class="TasksBox" id="tasks_box">
-        <property name="vexpand">true</property>
         <signal name="task-activated" handler="task_activated" swapped="true" />
       </object>
     </child>
