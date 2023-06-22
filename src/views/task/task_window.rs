@@ -114,13 +114,23 @@ mod imp {
     impl WindowImpl for TaskWindow {
         fn close_request(&self) -> glib::signal::Inhibit {
             let obj = self.obj();
-            let page = obj
-                .imp()
+            let page = self
                 .task_pages_stack
                 .visible_child()
                 .and_downcast::<TaskPage>()
                 .unwrap();
-            obj.emit_by_name::<()>("task-window-close", &[&page.task()]);
+            let mut task = page.task();
+            let mut parent_id = task.parent();
+            while parent_id != 0 {
+                let parent_name = parent_id.to_string();
+                task = if let Some(page) = self.task_pages_stack.child_by_name(&parent_name) {
+                    page.downcast::<TaskPage>().unwrap().task()
+                } else {
+                    read_task(parent_id).unwrap()
+                };
+                parent_id = task.parent();
+            }
+            obj.emit_by_name::<()>("task-window-close", &[&task]);
             self.parent_close_request()
         }
     }
