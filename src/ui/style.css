@@ -32,7 +32,7 @@ row.expander textview {
 }
 
 .dragged {
-  border: 2px dashed @card_shade_color;
+  border: 2px dashed @borders;
   background-color: transparent;
   box-shadow: none;
 }
@@ -42,7 +42,7 @@ row.expander textview {
 }
 
 .subtask_drop_target {
-  border: 2px dashed @card_shade_color;
+  border: 2px dashed @borders;
   border-radius: 6px;
 }
 
