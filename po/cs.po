@@ -1,14 +1,14 @@
 # Czech translation for IPlan.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the iplan package.
-# FIRST AUTHOR Amerey.eu <info@amerey.eu>, 2023.
+# Amerey.eu <info@amerey.eu>, 2023.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: iplan\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-06-22 18:55+0330\n"
-"PO-Revision-Date: 2023-06-11 15:03+0200\n"
+"PO-Revision-Date: 2023-06-22 19:06+0200\n"
 "Last-Translator: Amerey.eu <info@amerey.eu>\n"
 "Language-Team: \n"
 "Language: cs\n"
@@ -102,44 +102,47 @@ msgstr "Nové funkce a aktualizace"
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:67
 msgid "The task row shows the description, subtasks, due date, and reminder"
 msgstr ""
+"Řádek úkolu zobrazuje popis, dílčí úkoly, termín dokončení a připomenutí"
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:68
 msgid "New design for task rows"
-msgstr ""
+msgstr "Nový design řádků úkolů"
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:69
 msgid "Add task button below tasks list"
-msgstr ""
+msgstr "Přidat tlačítko pod seznam úkolů"
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:70
 msgid "One week per calendar page"
-msgstr ""
+msgstr "Jeden týden na stránku kalendáře"
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:71
 msgid "Today and No Date buttons on top of the date picker"
-msgstr ""
+msgstr "Tlačítka Dnes a Žádné datum v horní části nástroje pro výběr data"
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:72
 msgid "Click on a searched task will open the task window"
-msgstr ""
+msgstr "Kliknutím na hledaný úkol se otevře okno úkolu"
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:73
 msgid ""
 "Auto start (if the user lets the app run in the background) and checking for "
 "reminders in the startup"
 msgstr ""
+"Automatické spuštění (pokud uživatel nechá aplikaci běžet na pozadí) a "
+"kontrola připomenutí při spuštění"
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:74
-#, fuzzy
 msgid ""
 "Czech and French and Brazilian Portuguese Translations Added or updated "
 "thanks to Amerey.eu, Irénée Thirion, and Fúlvio Leo"
-msgstr "Přidán překlad brazilské portugalštiny díky Fúlvio Leovi"
+msgstr ""
+"Překlady do češtiny, francouzštiny a brazilské portugalštiny přidány nebo "
+"aktualizovány díky Amerey.eu, Irénée Thirion a Fúlvio Leo"
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:75
-#, fuzzy
 msgid "Code refactoring, Bug fixes, and UI improvements"
-msgstr "Úprava kódu a vylepšení uživatelského rozhraní"
+msgstr "Úprava kódu, oprava chyb a vylepšení uživatelského rozhraní"
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:83
 msgid "Backing up system"
@@ -235,9 +238,8 @@ msgid "Today"
 msgstr "Dnes"
 
 #: src/ui/window.ui:178
-#, fuzzy
 msgid "New _Section"
-msgstr "Nový záznam"
+msgstr "Nová _sekce"
 
 #: src/ui/window.ui:182
 msgid "_Edit Project"
@@ -315,14 +317,13 @@ msgstr "Při importu budou předchozí data uložena do mezipaměti"
 
 #: src/ui/calendar/calendar.ui:18
 msgid "Previous week"
-msgstr ""
+msgstr "Minulý týden"
 
 #: src/ui/calendar/calendar.ui:36
 msgid "Next week"
-msgstr ""
+msgstr "Příští týden"
 
 #: src/ui/project/project_create_window.ui:16
-#, fuzzy
 msgid "New Project"
 msgstr "Nový projekt"
 
@@ -333,7 +334,7 @@ msgstr "Zrušit"
 
 #: src/ui/project/project_create_window.ui:30
 msgid "Add"
-msgstr ""
+msgstr "Přidat"
 
 #: src/ui/project/project_create_window.ui:62
 #: src/ui/project/project_edit_window.ui:48
@@ -367,28 +368,25 @@ msgid "Time spent per day"
 msgstr "Čas strávený denně"
 
 #: src/ui/project/project_lists.ui:35
-#, fuzzy
 msgid "no sections found"
-msgstr "nebyly nalezeny žádné záznamy"
+msgstr "nebyly nalezeny žádné sekce"
 
 #: src/ui/project/project_lists.ui:64
-#, fuzzy
 msgid "New section"
-msgstr "Nový záznam"
+msgstr "Nová sekce"
 
 #: src/ui/project/section_box.ui:49 src/ui/task/tasks_box.ui:47
 #: src/ui/task/tasks_box.ui:78
 msgid "Add task"
-msgstr ""
+msgstr "Přidat úkol"
 
 #: src/ui/project/section_box.ui:90
 msgid "Done tasks"
 msgstr "Hotové úkoly"
 
 #: src/ui/project/section_box.ui:120
-#, fuzzy
 msgid "Delete section"
-msgstr "Smazat seznam"
+msgstr "Smazat sekci"
 
 #: src/ui/record/record_window.ui:17
 msgid "New Record"
@@ -457,22 +455,20 @@ msgid "_Delete"
 msgstr "_Smazat"
 
 #: src/ui/snippets/date_row.ui:38
-#, fuzzy
 msgid "No Date"
-msgstr "Datum"
+msgstr "Bez data"
 
 #: src/ui/task/task_row.ui:208 src/views/task/task_row.rs:272
 msgid "Start _timer"
-msgstr ""
+msgstr "Spustit _časovač"
 
 #: src/ui/task/task_row.ui:224
-#, fuzzy
 msgid "_Delete task"
-msgstr "_Smazat"
+msgstr "_Smazat úkol"
 
 #: src/ui/task/task_page.ui:25
 msgid "Due date"
-msgstr ""
+msgstr "Termín"
 
 #: src/ui/task/task_page.ui:31
 msgid "Reminders"
@@ -526,7 +522,7 @@ msgstr "Chyba při importování dat"
 
 #: src/views/project/project_create_window.rs:140
 msgid "Project should have a name!"
-msgstr ""
+msgstr "Projekt by měl mít jméno!"
 
 #: src/views/project/project_edit_window.rs:154
 msgid "Delete \"{}\" project?"
@@ -538,33 +534,28 @@ msgstr "Projekt a jeho úkoly budou trvale ztraceny."
 
 #. Translators: {} Will be replaced with a shortcut label.
 #: src/views/project/project_lists.rs:66
-#, fuzzy
 msgid "Use the primary menu {} for adding a new section"
-msgstr "Pro přidávání nových seznamů použijte primární nabídku {}"
+msgstr "Pro přidání nové sekce použijte primární nabídku {}"
 
 #: src/views/project/project_lists.rs:189
-#, fuzzy
 msgid "New Section"
-msgstr "Nový záznam"
+msgstr "Nová sekce"
 
 #: src/views/project/section_box.rs:69
-#, fuzzy
 msgid "\"{}\" moved to the done tasks section"
-msgstr "Položka „{}“ byla přesunuta do seznamu dokončených úkolů"
+msgstr "Položka „{}“ byla přesunuta do sekce dokončených úkolů"
 
 #: src/views/project/section_box.rs:72 src/views/task/task_row.rs:438
 msgid "Undo"
 msgstr "Zpět"
 
 #: src/views/project/section_box.rs:251
-#, fuzzy
 msgid "Delete \"{}\" section?"
-msgstr "Smazat seznam „{}“?"
+msgstr "Smazat sekci „{}“?"
 
 #: src/views/project/section_box.rs:254
-#, fuzzy
 msgid "The section and its tasks will be permanently lost."
-msgstr "Seznam a jeho úkoly budou nenávratně ztraceny."
+msgstr "Sekce a její úkoly budou nenávratně ztraceny."
 
 #: src/views/record/record_row.rs:92
 msgid "until"
@@ -588,12 +579,11 @@ msgstr "Úkol"
 
 #: src/views/sidebar/sidebar_projects.rs:351
 msgid "Task moved to {}"
-msgstr ""
+msgstr "Úkol přesunut do {}"
 
 #: src/views/sidebar/sidebar_projects.rs:358
-#, fuzzy
 msgid "{} doesn't have any section"
-msgstr "Položka „{}“ byla přesunuta do seznamu dokončených úkolů"
+msgstr "{} nemá žádnou sekci"
 
 #: src/views/task/task_row.rs:437
 msgid "\"{}\" is going to delete"
