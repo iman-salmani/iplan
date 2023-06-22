@@ -6,7 +6,8 @@ use std::time::{Duration, SystemTime};
 
 use crate::db::models::{Record, Task};
 use crate::db::operations::{
-    create_record, delete_task, read_reminders, read_tasks, update_record, update_task,
+    create_record, delete_task, read_project, read_reminders, read_tasks, update_record,
+    update_task,
 };
 use crate::views::task::{SubtaskRow, TaskWindow, TasksDoneWindow};
 use crate::views::IPlanWindow;
@@ -41,6 +42,8 @@ mod imp {
         pub compact: Cell<bool>,
         #[property(get, set)]
         pub lazy: Cell<bool>,
+        #[property(get, set)]
+        pub visible_project_label: Cell<bool>,
         pub drag_backup: Cell<Option<DragBackup>>,
         #[template_child]
         pub row_box: TemplateChild<gtk::Box>,
@@ -81,6 +84,8 @@ mod imp {
         pub date_indicator: TemplateChild<gtk::Label>,
         #[template_child]
         pub reminders_indicator: TemplateChild<gtk::Image>,
+        #[template_child]
+        pub project_label: TemplateChild<gtk::Label>,
     }
 
     #[glib::object_subclass]
@@ -156,15 +161,17 @@ glib::wrapper! {
 
 #[gtk::template_callbacks]
 impl TaskRow {
-    pub fn new(task: Task, compact: bool) -> Self {
+    pub fn new(task: Task, compact: bool, visible_project_label: bool) -> Self {
         let obj = glib::Object::new::<Self>();
         obj.set_compact(compact);
+        obj.set_visible_project_label(visible_project_label);
         obj.reset(task);
         obj
     }
 
-    pub fn new_lazy(task: &Task) -> Self {
+    pub fn new_lazy(task: &Task, visible_project_label: bool) -> Self {
         let obj = glib::Object::new::<Self>();
+        obj.set_visible_project_label(visible_project_label);
         obj.set_task(task);
         obj.set_lazy(true);
         obj.connect_lazy_notify(|obj| {
@@ -209,7 +216,23 @@ impl TaskRow {
                 imp.reminders_indicator.set_visible(true);
             }
 
-            if !imp.date_indicator.get_visible() && !imp.reminders_indicator.get_visible() {
+            if self.visible_project_label() {
+                let project_id = task.project();
+                if project_id != 0 {
+                    let project = read_project(project_id).unwrap();
+                    imp.project_label.set_label(&project.name());
+                } else {
+                    imp.project_label.set_label(&gettext("Inbox"));
+                }
+                imp.project_label.set_visible(true);
+            } else {
+                imp.project_label.set_visible(false);
+            }
+
+            if !imp.date_indicator.get_visible()
+                && !imp.reminders_indicator.get_visible()
+                && !imp.project_label.get_visible()
+            {
                 imp.footer.set_visible(false);
             } else {
                 imp.footer.set_visible(true);

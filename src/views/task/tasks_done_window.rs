@@ -99,7 +99,7 @@ impl TasksDoneWindow {
         )
         .unwrap();
         for task in tasks {
-            let task_row = TaskRow::new(task, false);
+            let task_row = TaskRow::new(task, false, false);
             imp.tasks_box.append(&task_row);
         }
         imp.tasks_box.set_sort_func(|row1, row2| {

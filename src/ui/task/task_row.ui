@@ -171,11 +171,30 @@
                 </style>
               </object>
             </child>
+            <child>
+              <object class="GtkSeparator">
+                <property name="hexpand">true</property>
+                <binding name="visible">
+                  <lookup name="visible">date_indicator</lookup>
+                </binding>
+                <style>
+                  <class name="spacer" />
+                </style>
+              </object>
+            </child>
+            <child>
+              <object class="GtkLabel" id="project_label">
+                <property name="visible">false</property>
+                <style>
+                  <class name="caption" />
+                  <class name="dim-label" />
+                </style>
+              </object>
+            </child>
           </object>
         </child><!-- End Footer -->
       </object>
-    </child>
-    <!-- End Box -->
+    </child><!-- End Box -->
     <child><!-- Drag Source -->
       <object class="GtkDragSource">
         <property name="actions">move</property>
@@ -185,8 +204,7 @@
         <signal name="drag-cancel" handler="handle_drag_cancel" swapped="true" />
         <signal name="drag-end" handler="handle_drag_end" swapped="true" />
       </object>
-    </child>
-    <!-- End Drag Source -->
+    </child><!-- End Drag Source -->
   </template>
   <!-- Options Popover -->
   <object class="GtkPopover" id="options_popover">
@@ -226,8 +244,7 @@
               </object>
             </child>
           </object>
-        </child>
-        <!-- End Delete Task -->
+        </child><!-- End Delete Task -->
       </object>
     </child>
   </object>

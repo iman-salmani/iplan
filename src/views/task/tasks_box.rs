@@ -164,20 +164,21 @@ impl TasksBox {
     }
 
     pub fn add_task(&self, task: Task) {
-        let row = TaskRow::new(task, false);
+        let row = self.create_task_row(task);
+        row.set_visible_project_label(true);
         self.imp().items_box.append(&row);
     }
 
     pub fn add_tasks(&self, tasks: Vec<Task>) {
         let imp = self.imp();
         for task in tasks {
-            let row = TaskRow::new(task, false);
+            let row = self.create_task_row(task);
             imp.items_box.append(&row);
         }
     }
 
     pub fn add_fresh_task(&self, task: Task) {
-        let row = TaskRow::new(task, false);
+        let row = self.create_task_row(task);
         self.imp().items_box.prepend(&row);
         let row_imp = row.imp();
         row_imp.name_button.set_visible(false);
@@ -190,16 +191,16 @@ impl TasksBox {
         if tasks.len() > page_size && self.scrollable() {
             let (first_rows, other_rows) = tasks.split_at(page_size); // FIXME: check if height += 50 have a better better performance
             for task in first_rows {
-                let task_row = TaskRow::new(task.to_owned(), false);
+                let task_row = self.create_task_row(task.to_owned());
                 imp.items_box.append(&task_row);
             }
             for task in other_rows {
-                let task_row = TaskRow::new_lazy(task);
+                let task_row = self.create_lazy_task_row(task);
                 imp.items_box.append(&task_row);
             }
         } else {
             for task in tasks {
-                let task_row = TaskRow::new(task, false);
+                let task_row = self.create_task_row(task);
                 imp.items_box.append(&task_row);
             }
         }
@@ -290,6 +291,28 @@ impl TasksBox {
                 task
             }
         }
+    }
+
+    fn create_task_row(&self, task: Task) -> TaskRow {
+        let visible_project_label = if let TasksBoxWrapper::Date(_) = self.items_wrapper().unwrap()
+        {
+            true
+        } else {
+            false
+        };
+        let row = TaskRow::new(task, false, visible_project_label);
+        row
+    }
+
+    fn create_lazy_task_row(&self, task: &Task) -> TaskRow {
+        let visible_project_label = if let TasksBoxWrapper::Date(_) = self.items_wrapper().unwrap()
+        {
+            true
+        } else {
+            false
+        };
+        let row = TaskRow::new_lazy(task, visible_project_label);
+        row
     }
 
     fn set_items_box_funcs(&self) {
@@ -634,7 +657,7 @@ impl TasksBox {
     #[template_callback]
     fn new_task(&self, _button: gtk::Button) {
         let task = self.create_empty_task();
-        let task_ui = TaskRow::new(task, false);
+        let task_ui = self.create_task_row(task);
         let imp = self.imp();
         imp.items_box.prepend(&task_ui);
         let task_imp = task_ui.imp();
@@ -658,7 +681,7 @@ impl TasksBox {
 
         update_task(&task).unwrap();
 
-        let task_ui = TaskRow::new(task, false);
+        let task_ui = self.create_task_row(task);
         imp.items_box.append(&task_ui);
         let task_imp = task_ui.imp();
         task_imp.name_button.set_visible(false);
