@@ -22,7 +22,7 @@
         </child><!-- End Task Row -->
         <child><!-- Date Row -->
           <object class="DateRow" id="date_row">
-            <property name="title">Date</property>
+            <property name="title" translatable="yes">Due date</property>
             <signal name="date-changed" handler="handle_task_date_changed" swapped="true" />
           </object>
         </child><!-- End Date Row -->
