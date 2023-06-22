@@ -102,8 +102,8 @@ mod imp {
             // Cancel name entry on Escape key pressed
             let name_entry_controller = gtk::EventControllerKey::new();
             name_entry_controller.connect_key_released(
-                glib::clone!(@weak obj => move |_controller, _keyval, keycode, _state| {
-                    if keycode == 9 {   // Escape key
+                glib::clone!(@weak obj => move |_controller, keyval, _keycode, _state| {
+                    if keyval == gdk::Key::Escape {
                         let imp = obj.imp();
                         imp.name_button.set_visible(true);
                         imp.name_entry.buffer().set_text(obj.task().name());

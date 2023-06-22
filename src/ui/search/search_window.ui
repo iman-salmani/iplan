@@ -15,8 +15,7 @@
             <property name="hexpand">true</property>
             <property name="placeholder-text" translatable="yes">Search</property>
             <signal name="activate" handler="handle_search_entry_activate" swapped="true" />
-            <signal name="search-changed" handler="handle_search_entry_search_changed"
-              swapped="true" />
+            <signal name="search-changed" handler="handle_search_entry_search_changed" swapped="true" />
           </object>
         </property>
         <child type="start">

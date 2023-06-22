@@ -147,13 +147,14 @@ impl TaskWindow {
         let task_id = task.id().to_string();
         let parent_id = task.parent();
         if parent_id != 0 {
-            let parent_task = read_task(parent_id).expect("Failed to read task");
+            let parent_task = read_task(parent_id).unwrap();
             win.set_property("parent-task", parent_id);
             imp.back_button_content.set_label(&parent_task.name());
             imp.back_button.set_visible(true);
         }
         imp.task_pages_stack
             .add_named(&TaskPage::new(task), Some(&task_id));
+
         win
     }
 

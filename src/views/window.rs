@@ -239,7 +239,7 @@ impl IPlanWindow {
         if let Some(display) = gdk::Display::default() {
             let provider = gtk::CssProvider::new();
             provider.load_from_resource("/ir/imansalmani/iplan/ui/style.css");
-            gtk::style_context_add_provider_for_display(&display, &provider, 400)
+            gtk::style_context_add_provider_for_display(&display, &provider, 400);
         }
 
         window

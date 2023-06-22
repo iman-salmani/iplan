@@ -66,6 +66,7 @@ mod imp {
             obj.set_accels_for_action("app.quit", &["<primary>q"]);
             obj.set_accels_for_action("app.shortcuts", &["<primary>question"]);
             obj.set_accels_for_action("app.search", &["<primary>f"]);
+            obj.set_accels_for_action("app.modal-close", &["Escape"]);
         }
     }
 
@@ -85,7 +86,6 @@ mod imp {
 
         fn activate(&self) {
             let application = self.obj();
-            // Get the current window or create one if necessary
             let window = if let Some(window) = application.active_window() {
                 window
             } else {
@@ -96,7 +96,6 @@ mod imp {
                 window.upcast()
             };
 
-            // Ask the window manager/compositor to present the window
             window.present();
         }
     }
@@ -151,12 +150,16 @@ impl IPlanApplication {
         let backup_action = gio::ActionEntry::builder("backup")
             .activate(move |app: &Self, _, _| app.show_backup())
             .build();
+        let modal_close_action = gio::ActionEntry::builder("modal-close")
+            .activate(move |app: &Self, _, _| app.close_modal())
+            .build();
         self.add_action_entries([
             quit_action,
             about_action,
             shortcuts_action,
             search_action,
             backup_action,
+            modal_close_action,
         ]);
     }
 
@@ -203,6 +206,21 @@ impl IPlanApplication {
             .build();
 
         about.present();
+    }
+
+    fn close_modal(&self) {
+        if let Some(window) = self.active_window() {
+            let window_name = window.widget_name();
+            if window_name == "SearchWindow" || window_name == "ProjectEditWindow" {
+                window.close();
+            } else if window_name != "IPlanWindow" {
+                if let Some(child) = window.focus_widget() {
+                    if child.widget_name() != "GtkText" {
+                        window.close();
+                    }
+                }
+            }
+        }
     }
 
     pub fn send_reminder(&self, reminder: Reminder) {

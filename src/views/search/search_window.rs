@@ -64,11 +64,6 @@ impl SearchWindow {
             move |_controller, keyval, _keycode, _state| {
                 let imp = win.imp();
 
-                if keyval == gdk::Key::Escape {
-                    win.close();
-                    return gtk::Inhibit(false);
-                }
-
                 if let Some(first_child) =
                     imp.search_results.first_child().and_downcast::<gtk::ListBoxRow>() {
                     let step = match keyval {
