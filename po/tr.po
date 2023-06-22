@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ir.imansalmani.IPlan\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-06-22 18:32+0330\n"
+"POT-Creation-Date: 2023-06-22 18:55+0330\n"
 "PO-Revision-Date: 2023-06-03 10:00+0300\n"
 "Last-Translator: Sabri Ünal <libreajans@gmail.com>\n"
 "Language-Team: Türkçe <takim@gnome.org.tr>\n"
@@ -476,6 +476,10 @@ msgstr "başlangıç saati"
 #, fuzzy
 msgid "_Delete task"
 msgstr "_Sil"
+
+#: src/ui/task/task_page.ui:25
+msgid "Due date"
+msgstr ""
 
 #: src/ui/task/task_page.ui:31
 msgid "Reminders"

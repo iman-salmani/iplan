@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: iplan\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-06-22 18:32+0330\n"
+"POT-Creation-Date: 2023-06-22 18:55+0330\n"
 "PO-Revision-Date: 2023-06-10 12:30-0300\n"
 "Last-Translator: Fúlvio Leo <fulviokaldas@outlook.com>\n"
 "Language: pt_BR\n"
@@ -479,6 +479,11 @@ msgstr "começar"
 msgid "_Delete task"
 msgstr "_Deletar"
 
+#: src/ui/task/task_page.ui:25
+#, fuzzy
+msgid "Due date"
+msgstr "data"
+
 #: src/ui/task/task_page.ui:31
 msgid "Reminders"
 msgstr "Lembretes"
@@ -645,9 +650,6 @@ msgstr "Tarefas Concluídas"
 #~ "Keyboard\n"
 #~ "                  Shortcuts"
 #~ msgstr "Atalhos de Teclado"
-
-#~ msgid "date"
-#~ msgstr "data"
 
 #~ msgid "hour"
 #~ msgstr "hora"

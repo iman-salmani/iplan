@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: iplan\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-06-22 18:32+0330\n"
+"POT-Creation-Date: 2023-06-22 18:55+0330\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Iman Salmani <contact.imansalmani@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -472,6 +472,10 @@ msgstr "شروع _تایمر"
 #: src/ui/task/task_row.ui:224
 msgid "_Delete task"
 msgstr "حذف وظیفه_"
+
+#: src/ui/task/task_page.ui:25
+msgid "Due date"
+msgstr ""
 
 #: src/ui/task/task_page.ui:31
 msgid "Reminders"
