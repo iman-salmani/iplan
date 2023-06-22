@@ -74,11 +74,15 @@ impl SidebarProjects {
             .project()
             .id();
         let projects_box = &self.imp().projects_box;
-        for project_row in projects_box.observe_children().into_iter() {
-            let project_row: ProjectRow = project_row.unwrap().downcast().unwrap();
-            if project_id == project_row.project().id() {
-                projects_box.select_row(Some(&project_row));
-                break;
+        if project_id == 0 {
+            projects_box.select_row(None::<&gtk::ListBoxRow>);
+        } else {
+            for project_row in projects_box.observe_children().into_iter() {
+                let project_row: ProjectRow = project_row.unwrap().downcast().unwrap();
+                if project_id == project_row.project().id() {
+                    projects_box.select_row(Some(&project_row));
+                    break;
+                }
             }
         }
     }
