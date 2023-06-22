@@ -284,7 +284,7 @@ impl TasksBox {
             TasksBoxWrapper::Section(id, project) => create_task("", project, id, 0).unwrap(),
             TasksBoxWrapper::Task(id, _) => create_task("", 0, 0, id).unwrap(),
             TasksBoxWrapper::Date(date) => {
-                let task = create_task("", 1, 0, 0).unwrap();
+                let task = create_task("", 0, 0, 0).unwrap();
                 task.set_date(date);
                 update_task(&task).unwrap();
                 task

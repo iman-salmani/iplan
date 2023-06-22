@@ -181,25 +181,24 @@ impl SearchWindow {
         if let Some(project) = row_imp.project.take() {
             if app_win_project_id != project.id() {
                 app_win.set_property("project", project);
-                app_win
-                    .activate_action("search.project", None)
-                    .expect("Failed to send project.open action");
+                app_win.activate_action("search.project", None).unwrap();
             }
         } else if let Some(task) = row_imp.task.take() {
-            let project = read_project(task.project()).expect("Failed to read project");
-            let project_changed = if app_win_project_id != project.id() {
-                app_win.set_property("project", project);
-                true
-            } else {
-                false
-            };
+            let mut change_project = false;
+            if task.project() != 0 {
+                let project = read_project(task.project()).unwrap();
+                if app_win_project_id != project.id() {
+                    app_win.set_property("project", project);
+                    change_project = true;
+                }
+            }
 
             app_win
                 .activate_action(
                     "search.task",
-                    Some(&(project_changed, task.id()).to_variant()),
+                    Some(&(change_project, task.id()).to_variant()),
                 )
-                .expect("Failed to send project.open action");
+                .unwrap();
         }
         self.close();
     }
