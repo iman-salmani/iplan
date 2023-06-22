@@ -286,6 +286,21 @@ impl TaskRow {
         }
     }
 
+    pub fn keep_after_dnd(&self) {
+        self.set_moving_out(false);
+        let drag_backup = self.imp().drag_backup.take().unwrap();
+        let task = self.task();
+        task.set_position(drag_backup.position);
+        task.set_section(drag_backup.section);
+        task.set_parent(drag_backup.parent_task);
+        let parent = self.parent().and_downcast::<gtk::ListBox>().unwrap();
+        if parent != drag_backup.parent_widget {
+            parent.remove(self);
+            drag_backup.parent_widget.append(self);
+        }
+        self.changed();
+    }
+
     fn add_bindings(&self) {
         let imp = self.imp();
         let task = self.task();
@@ -522,18 +537,7 @@ impl TaskRow {
 
     #[template_callback]
     fn handle_drag_cancel(&self, _drag: gdk::Drag) -> bool {
-        self.set_moving_out(false);
-        let drag_backup = self.imp().drag_backup.take().unwrap();
-        let task = self.task();
-        task.set_position(drag_backup.position);
-        task.set_section(drag_backup.section);
-        task.set_parent(drag_backup.parent_task);
-        let parent = self.parent().and_downcast::<gtk::ListBox>().unwrap();
-        if parent != drag_backup.parent_widget {
-            parent.remove(self);
-            drag_backup.parent_widget.append(self);
-        }
-        self.changed();
+        self.keep_after_dnd();
         false
     }
 

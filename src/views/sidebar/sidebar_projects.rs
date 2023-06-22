@@ -337,6 +337,7 @@ impl SidebarProjects {
         let project = project_row.property::<Project>("project");
         let project_id = project.id();
         let window = self.root().and_downcast::<IPlanWindow>().unwrap();
+        let win_imp = window.imp();
         let project_name = format!("{} {}", project.icon(), project.name());
         let is_moved: bool;
         let toast_title: String;
@@ -349,10 +350,16 @@ impl SidebarProjects {
             update_task(&task).unwrap();
 
             toast_title = gettext("Task moved to {}").replace("{}", &project_name);
-            row.parent()
-                .and_downcast::<gtk::ListBox>()
-                .unwrap()
-                .remove(&row);
+
+            if win_imp.calendar.is_visible() {
+                row.keep_after_dnd();
+            } else {
+                row.parent()
+                    .and_downcast::<gtk::ListBox>()
+                    .unwrap()
+                    .remove(&row);
+            }
+
             is_moved = true;
         } else {
             toast_title = gettext("{} doesn't have any section").replace("{}", &project_name);
@@ -360,7 +367,7 @@ impl SidebarProjects {
         }
 
         let toast = adw::Toast::new(&toast_title);
-        window.imp().toast_overlay.add_toast(toast);
+        win_imp.toast_overlay.add_toast(toast);
         self.select_active_project();
 
         is_moved
