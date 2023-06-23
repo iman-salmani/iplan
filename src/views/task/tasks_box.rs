@@ -256,6 +256,7 @@ impl TasksBox {
 
     pub fn add_item(&self, item: &TaskRow) {
         self.imp().items_box.append(item);
+        self.imp().items_box.invalidate_filter();
     }
 
     pub fn send_hscroll(&self) {

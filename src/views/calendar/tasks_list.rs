@@ -129,8 +129,8 @@ impl TasksList {
 
     pub fn add_row(&self, row: TaskRow) {
         let imp = self.imp();
-        imp.tasks_box.add_item(&row);
         imp.tasks_box.set_visible(true);
+        imp.tasks_box.add_item(&row);
         imp.name.remove_css_class("dim-label");
         self.set_duration(self.duration() + row.task().duration());
     }
@@ -156,9 +156,9 @@ impl TasksList {
         let modal = TaskWindow::new(&win.application().unwrap(), &win, row.task());
         modal.present();
         row.cancel_timer();
-        let page_datetime = self.datetime().to_unix();
+        let tasks_list_datetime = self.datetime().to_unix();
         modal.connect_closure(
-            "task-window-close",
+            "page-close",
             true,
             glib::closure_local!(@watch self as obj, @weak-allow-none row, @weak-allow-none tasks_box => move |_win: TaskWindow, task: Task| {
                 let tasks_box = tasks_box.unwrap();
@@ -167,10 +167,11 @@ impl TasksList {
                 let task_duration = task.duration();
                 row.reset(task);
                 row.changed();
-                if task_date != page_datetime {
+                if task_date != tasks_list_datetime {
                     obj.set_duration(obj.duration() - task_duration);
                     tasks_box.remove(&row);
-                    if tasks_box.first_child().is_none() {
+                    tasks_box.invalidate_filter();
+                    if tasks_box.first_child().and_downcast::<TaskRow>().is_none() {
                         obj.imp().name.add_css_class("dim-label");
                     }
                     obj.emit_by_name::<()>("task-moveout", &[&row]);

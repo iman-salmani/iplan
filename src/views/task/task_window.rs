@@ -80,9 +80,14 @@ mod imp {
     impl ObjectImpl for TaskWindow {
         fn signals() -> &'static [glib::subclass::Signal] {
             static SIGNALS: Lazy<Vec<Signal>> = Lazy::new(|| {
-                vec![Signal::builder("task-window-close")
-                    .param_types([Task::static_type()])
-                    .build()]
+                vec![
+                    Signal::builder("task-window-close")
+                        .param_types([Task::static_type()])
+                        .build(),
+                    Signal::builder("page-close")
+                        .param_types([Task::static_type()])
+                        .build(),
+                ]
             });
             SIGNALS.as_ref()
         }
@@ -120,6 +125,9 @@ mod imp {
                 .and_downcast::<TaskPage>()
                 .unwrap();
             let mut task = page.task();
+
+            obj.emit_by_name::<()>("page-close", &[&task]);
+
             let mut parent_id = task.parent();
             while parent_id != 0 {
                 let parent_name = parent_id.to_string();
