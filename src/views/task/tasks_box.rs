@@ -447,7 +447,6 @@ impl TasksBox {
     ) -> bool {
         let imp = self.imp();
         imp.items_box.drag_unhighlight_row();
-        imp.items_box.set_height_request(-1);
         let row: TaskRow = value.get().unwrap();
         let task = row.task();
         let task_db = read_task(task.id()).unwrap();
@@ -599,9 +598,6 @@ impl TasksBox {
                     task.set_position(task.position() - 1);
                 }
                 parent.remove(&row);
-                if imp.items_box.observe_children().n_items() == 2 {
-                    imp.items_box.set_height_request(320);
-                }
                 imp.items_box.prepend(&row);
             }
             if let TasksBoxWrapper::Date(date) = items_wrapper {
@@ -610,9 +606,6 @@ impl TasksBox {
                 task.set_date(date);
                 let parent = row.parent().and_downcast::<gtk::ListBox>().unwrap();
                 parent.remove(&row);
-                if imp.items_box.observe_children().n_items() == 2 {
-                    imp.items_box.set_height_request(320);
-                }
                 imp.items_box.prepend(&row);
                 row.reset(task);
             }
@@ -629,7 +622,6 @@ impl TasksBox {
             }
             row.set_moving_out(true);
             imp.items_box.invalidate_filter();
-            imp.items_box.set_height_request(-1);
         }
     }
 
