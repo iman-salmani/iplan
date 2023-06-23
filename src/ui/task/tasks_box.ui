@@ -58,7 +58,7 @@
             </child><!-- End Add task to Bottom -->
             <child type="placeholder"><!-- Placeholder -->
               <object class="GtkButton">
-                <property name="height-request">150</property>
+                <property name="height-request">100</property>
                 <signal name="clicked" handler="new_task" swapped="true" />
                 <style>
                   <class name="card" />
