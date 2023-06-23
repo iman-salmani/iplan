@@ -121,7 +121,6 @@ impl SearchWindow {
         let text = text.trim();
 
         if text == imp.prev_search.borrow().as_str() {
-            println!("same!");
             return;
         }
 

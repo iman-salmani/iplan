@@ -164,6 +164,10 @@ impl IPlanApplication {
     }
 
     fn show_search(&self) {
+        if self.active_window().unwrap().widget_name() == "SearchWindow" {
+            return;
+        }
+
         let window = SearchWindow::new(
             self.upcast_ref::<gtk::Application>(),
             &self.active_window().unwrap(),
