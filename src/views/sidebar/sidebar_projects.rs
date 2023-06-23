@@ -356,6 +356,7 @@ impl SidebarProjects {
             toast_title = gettext("Task moved to {}").replace("{}", &project_name);
 
             if win_imp.calendar.is_visible() {
+                row.imp().project_label.set_label(&project.name());
                 row.keep_after_dnd();
             } else {
                 row.parent()

@@ -6,7 +6,7 @@ use std::time::{Duration, SystemTime};
 
 use crate::db::models::{Record, Task};
 use crate::db::operations::{
-    create_record, delete_task, read_project, read_reminders, read_tasks, update_record,
+    create_record, delete_task, read_project, read_reminders, read_task, read_tasks, update_record,
     update_task,
 };
 use crate::views::task::{SubtaskRow, TaskWindow, TasksDoneWindow};
@@ -221,12 +221,21 @@ impl TaskRow {
             }
 
             if self.visible_project_label() {
-                let project_id = task.project();
-                if project_id != 0 {
-                    let project = read_project(project_id).unwrap();
-                    imp.project_label.set_label(&project.name());
-                } else {
-                    imp.project_label.set_label(&gettext("Inbox"));
+                let mut project_id = task.project();
+                let mut parent = task.parent();
+                loop {
+                    if project_id != 0 {
+                        let project = read_project(project_id).unwrap();
+                        imp.project_label.set_label(&project.name());
+                        break;
+                    } else if parent == 0 {
+                        imp.project_label.set_label(&gettext("Inbox"));
+                        break;
+                    } else {
+                        let task = read_task(parent).unwrap();
+                        project_id = task.project();
+                        parent = task.parent();
+                    }
                 }
                 imp.project_label.set_visible(true);
             } else {
