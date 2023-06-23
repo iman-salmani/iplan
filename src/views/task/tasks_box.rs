@@ -476,9 +476,7 @@ impl TasksBox {
 
         let source_row: Option<TaskRow> = target.value_as();
         let target_row = imp.items_box.row_at_y(y as i32);
-        if self.imp().items_box.observe_children().n_items() == 2 {
-            return gdk::DragAction::MOVE;
-        } else if source_row.is_none() || target_row.is_none() {
+        if source_row.is_none() || target_row.is_none() {
             return gdk::DragAction::empty();
         }
         let source_row = source_row.unwrap();
@@ -616,12 +614,13 @@ impl TasksBox {
     fn task_drop_target_leave(&self, target: &gtk::DropTarget) {
         self.set_scroll(0);
         if let Some(row) = target.value_as::<TaskRow>() {
-            let imp = self.imp();
             if let Some(parent_row) = self.item_by_id(row.task().parent()) {
                 parent_row.imp().subtask_drop_target.set_visible(false);
             }
-            row.set_moving_out(true);
-            imp.items_box.invalidate_filter();
+            if row.has_css_class("dragged") {
+                row.set_moving_out(true);
+                row.changed();
+            }
         }
     }
 
