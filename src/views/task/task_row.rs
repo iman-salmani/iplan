@@ -44,6 +44,8 @@ mod imp {
         pub lazy: Cell<bool>,
         #[property(get, set)]
         pub visible_project_label: Cell<bool>,
+        #[property(get, set)]
+        pub draggable: Cell<bool>,
         pub drag_backup: Cell<Option<DragBackup>>,
         #[template_child]
         pub row_box: TemplateChild<gtk::Box>,
@@ -166,6 +168,7 @@ impl TaskRow {
         obj.set_compact(compact);
         obj.set_visible_project_label(visible_project_label);
         obj.reset(task);
+        obj.set_draggable(true);
         obj
     }
 
@@ -174,6 +177,7 @@ impl TaskRow {
         obj.set_visible_project_label(visible_project_label);
         obj.set_task(task);
         obj.set_lazy(true);
+        obj.set_draggable(true);
         obj.connect_lazy_notify(|obj| {
             let task = obj.task();
             obj.reset(task);
@@ -529,7 +533,9 @@ impl TaskRow {
 
     #[template_callback]
     fn handle_drag_prepare(&self, _x: f64, _y: f64) -> Option<gdk::ContentProvider> {
-        if self.imp().name_entry.get_visible() {
+        if !self.draggable() {
+            None
+        } else if self.imp().name_entry.get_visible() {
             None
         } else {
             Some(gdk::ContentProvider::for_value(&self.to_value()))
