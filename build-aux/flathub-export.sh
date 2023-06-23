@@ -9,5 +9,6 @@ rsync -a --exclude-from='../.gitignore' --exclude='ir.imansalmani.IPlan.Devel.js
 cp ir.imansalmani.IPlan.json $DIST/
 mkdir $DIST/.cargo
 cargo vendor "$DIST"/vendor | sed 's/^directory = ".*"/directory = "vendor"/g' > $DIST/.cargo/config.toml
-tar -zcf "$FLATHUB"/iplan.tar.gz $DIST
-sha256sum "$FLATHUB"/iplan.tar.gz > "$FLATHUB"/checksum
+cd $FLATHUB
+tar -zcf iplan.tar.gz iplan/
+sha256sum iplan.tar.gz > checksum
