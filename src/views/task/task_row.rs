@@ -323,6 +323,7 @@ impl TaskRow {
         let parent = self.parent().and_downcast::<gtk::ListBox>().unwrap();
         if parent != drag_backup.parent_widget {
             parent.remove(self);
+            parent.invalidate_filter();
             drag_backup.parent_widget.append(self);
         }
         self.changed();
