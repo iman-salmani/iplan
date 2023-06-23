@@ -37,6 +37,8 @@ mod imp {
         #[property(get, set = Self::set_task)]
         pub task: RefCell<Task>,
         #[property(get, set)]
+        pub backup_task_name: RefCell<String>,
+        #[property(get, set)]
         pub moving_out: Cell<bool>,
         #[property(get, set)]
         pub compact: Cell<bool>,
@@ -119,9 +121,7 @@ mod imp {
             name_entry_controller.connect_key_released(
                 glib::clone!(@weak obj => move |_controller, keyval, _keycode, _state| {
                     if keyval == gdk::Key::Escape {
-                        let imp = obj.imp();
-                        imp.name_button.set_visible(true);
-                        imp.name_entry.buffer().set_text(obj.task().name());
+                        obj.cancel_edit_name();
                     }
                 }),
             );
@@ -368,21 +368,40 @@ impl TaskRow {
     fn handle_name_button_clicked(&self, button: gtk::Button) {
         button.set_visible(false); // Entry visible param binded to this
         self.imp().name_entry.grab_focus_without_selecting();
+        self.set_backup_task_name(self.task().name());
     }
 
     #[template_callback]
-    fn handle_name_entry_activate(&self, entry: gtk::Entry) {
+    fn handle_name_entry_changed(&self, entry: gtk::Entry) {
         let task = self.task();
+        let text = entry.text();
+
+        if task.id() == 0 || task.name() == text {
+            return;
+        }
+
+        task.set_name(text);
+        update_task(&task).unwrap();
+    }
+
+    #[template_callback]
+    fn handle_name_entry_activate(&self, _entry: gtk::Entry) {
         self.imp().name_button.set_visible(true);
-        task.set_name(entry.buffer().text());
-        update_task(&task).expect("Failed to update task");
     }
 
     #[template_callback]
     fn handle_name_entry_icon_press(&self, _: gtk::EntryIconPosition) {
+        self.cancel_edit_name();
+    }
+
+    fn cancel_edit_name(&self) {
         let imp = self.imp();
-        imp.name_entry.buffer().set_text(self.task().name());
+        let name = self.backup_task_name();
+        let task = self.task();
+        imp.name_entry.buffer().set_text(&name);
         imp.name_button.set_visible(true);
+        task.set_name(name);
+        update_task(&task).unwrap();
     }
 
     fn move_timer_button(&self, indicate: bool) {
