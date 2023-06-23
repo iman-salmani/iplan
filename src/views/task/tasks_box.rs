@@ -345,14 +345,24 @@ impl TasksBox {
         imp.items_box.set_filter_func(
             glib::clone!(@weak self as obj => @default-return false, move |row| {
                 let imp = obj.imp();
-                let first_child = imp.items_box.first_child().unwrap();
-                if first_child.widget_name() == "GtkListBoxRow" {
+
+                let items = imp.items_box.observe_children();
+                let items_len = items.n_items();
+                if items_len == 2 {
                     imp.bottom_add_task.set_visible(false);
-                } else if !imp.bottom_add_task.is_visible() {
-                    imp.bottom_add_task.set_visible(true);
                 } else {
-                    let row = first_child.downcast::<TaskRow>().unwrap();
-                    if row.task().suspended() || row.moving_out() {
+                    let mut visible_task_row = false;
+                    for i in 0..items_len {
+                        if let Some(task_row) = items.item(i).and_downcast::<TaskRow>() {
+                            if !task_row.moving_out() && !task_row.task().suspended() {
+                                visible_task_row = true;
+                                break;
+                            }
+                        }
+                    }
+                    if visible_task_row {
+                        imp.bottom_add_task.set_visible(true);
+                    } else {
                         imp.bottom_add_task.set_visible(false);
                     }
                 }
