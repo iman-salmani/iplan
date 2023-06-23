@@ -88,16 +88,16 @@ impl RecordWindow {
         record: Record,
         state: bool,
     ) -> Self {
-        let win: Self = glib::Object::builder()
+        let obj: Self = glib::Object::builder()
             .property("application", application)
             .property("state", state)
             .build();
-        win.set_transient_for(Some(app_window));
-        let imp = win.imp();
+        obj.set_transient_for(Some(app_window));
+        let imp = obj.imp();
         let start_unix = record.start();
         let start = glib::DateTime::from_unix_local(start_unix).unwrap();
         let duration = record.duration();
-        win.set_record(record);
+        obj.set_record(record);
         imp.start_date_row.set_datetime(&start);
         imp.start_time_row
             .set_time_from_digits(start.hour(), start.minute(), start.seconds());
@@ -105,7 +105,22 @@ impl RecordWindow {
         if state {
             imp.delete_group.set_visible(true);
         }
-        win
+        obj.record()
+            .connect_duration_notify(glib::clone!(@weak obj => move |record| {
+                let imp = obj.imp();
+                let difference = obj.end_datetime() - record.start();
+                if difference > 0 {
+                    imp.end_date_row.remove_css_class("error");
+                    imp.end_time_row.remove_css_class("error");
+                } else if difference > 24 * 60 * -60 {
+                    imp.end_date_row.remove_css_class("error");
+                    imp.end_time_row.add_css_class("error");
+                } else  {
+                    imp.end_date_row.add_css_class("error");
+                    imp.end_time_row.remove_css_class("error");
+                }
+            }));
+        obj
     }
 
     fn add_bindings(&self) {
@@ -122,11 +137,8 @@ impl RecordWindow {
             })
             .transform_from(|binding, end_datetime: i64| {
                 let obj = binding.target().and_downcast::<Self>().unwrap();
-                let imp = obj.imp();
-                imp.end_time_row.remove_css_class("error");
                 let duration = end_datetime - obj.record().start();
                 if duration.is_negative() {
-                    imp.end_time_row.add_css_class("error");
                     Some(0)
                 } else {
                     Some(duration as i32)
@@ -175,7 +187,7 @@ impl RecordWindow {
     fn handle_done_button_clicked(&self, _button: gtk::Button) {
         let record = self.record();
 
-        if record.duration() == 0 {
+        if record.duration() <= 0 {
             let toast = adw::Toast::builder()
                 .title(gettext("Duration can't be 0"))
                 .build();
@@ -213,8 +225,7 @@ impl RecordWindow {
             .add_seconds(imp.start_time_row.time() as f64)
             .unwrap()
             .to_unix();
-        let record = self.record();
-        record.set_start(datetime);
+        self.record().set_start(datetime);
         self.set_duration(self.end_datetime() - datetime);
     }
 
