@@ -87,6 +87,16 @@ impl SearchWindow {
         win
     }
 
+    fn clear_search_results(&self) {
+        let imp = self.imp();
+        let results = imp.search_results.observe_children();
+        for _i in 0..results.n_items() {
+            if let Some(row) = results.item(0).and_downcast::<gtk::ListBoxRow>() {
+                imp.search_results.remove(&row);
+            }
+        }
+    }
+
     #[template_callback]
     fn handle_search_entry_activate(&self, _entry: gtk::SearchEntry) {
         let imp = self.imp();
@@ -111,35 +121,28 @@ impl SearchWindow {
         let text = text.trim();
 
         if text == imp.prev_search.borrow().as_str() {
+            println!("same!");
             return;
         }
 
         if text.is_empty() {
-            let results = imp.search_results.observe_children();
-            for _i in 0..results.n_items() {
-                if let Some(row) = results.item(0).and_downcast::<gtk::ListBoxRow>() {
-                    imp.search_results.remove(&row);
-                }
-            }
+            self.clear_search_results();
             imp.search_results_placeholder.set_visible(false);
             return;
         } else {
-            imp.search_results_placeholder.set_visible(false);
             let archive = imp.show_done_tasks_toggle_button.is_active();
             let projects = find_projects(text, archive).expect("Failed to search projects");
             let tasks = find_tasks(text, archive).expect("Failed to search tasks");
+
+            imp.search_results_placeholder.set_visible(true);
             if imp.search_results.observe_children().n_items()
                 == (projects.len() + tasks.len() + 1) as u32
             {
                 // One for placeholder
+                // FIXME: check it work with fuzzy match
                 return;
             }
-            let results = imp.search_results.observe_children();
-            for _i in 0..results.n_items() {
-                if let Some(row) = results.item(0).and_downcast::<gtk::ListBoxRow>() {
-                    imp.search_results.remove(&row);
-                }
-            }
+            self.clear_search_results();
             for project in projects {
                 imp.search_results
                     .append(&SearchResult::new(Some(project), None));
@@ -157,11 +160,9 @@ impl SearchWindow {
             .first_child()
             .and_downcast::<SearchResult>()
         {
-            imp.search_results_placeholder.set_visible(false);
             imp.search_results.select_row(Some(&first_row));
         } else {
             imp.search_entry.grab_focus();
-            imp.search_results_placeholder.set_visible(true);
         }
     }
 
