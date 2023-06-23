@@ -18,9 +18,7 @@
               <class name="toolbar" />
             </style>
             <child><!-- Check Button -->
-              <object class="GtkCheckButton" id="checkbox">
-
-              </object>
+              <object class="GtkCheckButton" id="checkbox"></object>
             </child><!-- End Check Button -->
             <child><!-- Name Button -->
               <object class="GtkButton" id="name_button">
@@ -46,8 +44,7 @@
                   </object>
                 </child>
               </object>
-            </child>
-            <!-- End Name Button -->
+            </child><!-- End Name Button -->
             <child><!-- Name Entry -->
               <object class="GtkEntry" id="name_entry">
                 <property name="margin-start">1</property>
@@ -68,6 +65,9 @@
             <child>
               <object class="GtkSeparator">
                 <property name="hexpand">true</property>
+                <binding name="visible">
+                  <lookup name="visible">name_button</lookup>
+                </binding>
                 <style>
                   <class name="spacer" />
                 </style>
