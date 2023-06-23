@@ -24,11 +24,9 @@ use gtk::{gdk, gio, glib, glib::once_cell::sync::Lazy, prelude::*};
 use std::cell::RefCell;
 
 use crate::db::models::Project;
-use crate::db::operations::{create_section, create_project, read_projects, read_task};
-use crate::views::project::{
-    ProjectEditWindow, ProjectHeader, ProjectLayout, ProjectLists
-};
-use crate::views::{calendar::Calendar, task::TaskWindow, sidebar::SidebarProjects};
+use crate::db::operations::{create_project, create_section, read_projects, read_task};
+use crate::views::project::{ProjectEditWindow, ProjectHeader, ProjectLayout, ProjectLists};
+use crate::views::{calendar::Calendar, sidebar::SidebarProjects, task::TaskWindow};
 
 mod imp {
     use super::*;
@@ -92,8 +90,8 @@ mod imp {
                 let home_project = if let Some(project) = projects.get(0) {
                     project.clone()
                 } else {
-                    let project =
-                        create_project(&gettext("Personal"), "", "").expect("Failed to create project");
+                    let project = create_project(&gettext("Personal"), "", "")
+                        .expect("Failed to create project");
                     create_section(&gettext("Tasks"), project.id()).unwrap();
                     project
                 };
@@ -224,11 +222,9 @@ impl IPlanWindow {
         if settings.int("default-project-layout") == 1 {
             imp.project_layout_button
                 .set_icon_name("view-columns-symbolic");
-            imp.project_lists
-                .set_layout(ProjectLayout::Horizontal);
+            imp.project_lists.set_layout(ProjectLayout::Horizontal);
         } else {
-            imp.project_lists
-                .set_layout(ProjectLayout::Vertical);
+            imp.project_lists.set_layout(ProjectLayout::Vertical);
         }
         imp.settings.replace(Some(settings));
         window
@@ -262,8 +258,7 @@ impl IPlanWindow {
             Some(icon_name) => {
                 if icon_name == "list-symbolic" {
                     button.set_icon_name("view-columns-symbolic");
-                    imp.project_lists
-                        .set_layout(ProjectLayout::Horizontal);
+                    imp.project_lists.set_layout(ProjectLayout::Horizontal);
                     imp.settings
                         .borrow()
                         .as_ref()
