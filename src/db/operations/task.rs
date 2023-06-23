@@ -145,18 +145,32 @@ pub fn update_task(task: &Task) -> Result<()> {
     Ok(())
 }
 
-pub fn delete_task(task_id: i64, section_id: i64, position: i32) -> Result<()> {
+pub fn delete_task(task: &Task) -> Result<()> {
     let conn = get_connection();
     // Notify: Not return error when id not exists
+    let task_id = task.id();
     conn.execute("DELETE FROM tasks WHERE id = ?", (task_id,))?;
-    conn.execute("DELETE FROM tasks WHERE parent = ?", (task_id,))?;
     conn.execute("DELETE FROM records WHERE task = ?", (task_id,))?;
     conn.execute("DELETE FROM reminders WHERE task = ?", (task_id,))?;
+
+    let subtasks = read_tasks(None, None, None, Some(task_id), None).unwrap();
+    for subtask in subtasks {
+        delete_task(&subtask).unwrap();
+    }
+
     // Decrease upper tasks position
-    conn.execute(
-        "UPDATE tasks SET position = position - 1 WHERE position > ?1 AND section = ?2",
-        (position, section_id),
-    )?;
+    if task.parent() == 0 {
+        conn.execute(
+            "UPDATE tasks SET position = position - 1 WHERE position > ?1 AND section = ?2",
+            (task.position(), task.section()),
+        )?;
+    } else {
+        conn.execute(
+            "UPDATE tasks SET position = position - 1 WHERE position > ?1 AND parent = ?2",
+            (task.position(), task.parent()),
+        )?;
+    }
+
     Ok(())
 }
 

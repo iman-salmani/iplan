@@ -523,8 +523,7 @@ impl TaskRow {
             move |_toast| {
                 let task = obj.task();
                 if task.suspended() {    // Checking Undo button
-                    delete_task(task.id(), task.section(), task.position())
-                        .expect("Failed to delete task");
+                    delete_task(&task).unwrap();
                 }
             }
         ));
