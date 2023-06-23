@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: iplan\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-06-22 18:55+0330\n"
+"POT-Creation-Date: 2023-06-23 13:31+0330\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Iman Salmani <contact.imansalmani@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -465,11 +465,11 @@ msgstr "حذف"
 msgid "No Date"
 msgstr "بدون تاریخ"
 
-#: src/ui/task/task_row.ui:208 src/views/task/task_row.rs:272
+#: src/ui/task/task_row.ui:226 src/views/task/task_row.rs:295
 msgid "Start _timer"
 msgstr "شروع _تایمر"
 
-#: src/ui/task/task_row.ui:224
+#: src/ui/task/task_row.ui:242
 msgid "_Delete task"
 msgstr "حذف وظیفه_"
 
@@ -555,7 +555,7 @@ msgstr "رکورد جدید"
 msgid "\"{}\" moved to the done tasks section"
 msgstr "\"{}\" به فهرست کارهای انجام شده منتقل شد"
 
-#: src/views/project/section_box.rs:72 src/views/task/task_row.rs:438
+#: src/views/project/section_box.rs:72 src/views/task/task_row.rs:476
 msgid "Undo"
 msgstr "برگرد"
 
@@ -577,6 +577,11 @@ msgstr "تا"
 msgid "Duration can't be 0"
 msgstr "مدت زمان نمی تواند 0 باشد"
 
+#: src/views/record/record_window.rs:188
+#, fuzzy
+msgid "Record end time can't be in future"
+msgstr "زمان نمی تواند در گذشته باشد"
+
 #: src/views/reminder/reminder_window.rs:111
 msgid "Time can't be in the past"
 msgstr "زمان نمی تواند در گذشته باشد"
@@ -589,16 +594,20 @@ msgstr "پروژه"
 msgid "Task"
 msgstr "وظیفه"
 
-#: src/views/sidebar/sidebar_projects.rs:351
+#: src/views/sidebar/sidebar_projects.rs:356
 msgid "Task moved to {}"
 msgstr ""
 
-#: src/views/sidebar/sidebar_projects.rs:358
+#: src/views/sidebar/sidebar_projects.rs:369
 #, fuzzy
 msgid "{} doesn't have any section"
 msgstr "\"{}\" به فهرست کارهای انجام شده منتقل شد"
 
-#: src/views/task/task_row.rs:437
+#: src/views/task/task_row.rs:225
+msgid "Inbox"
+msgstr ""
+
+#: src/views/task/task_row.rs:475
 msgid "\"{}\" is going to delete"
 msgstr "درحال حذف \"{}\""
 

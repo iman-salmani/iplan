@@ -183,6 +183,14 @@ impl RecordWindow {
             return;
         }
 
+        if self.end_datetime() > glib::DateTime::now_local().unwrap().to_unix() {
+            let toast = adw::Toast::builder()
+                .title(gettext("Record end time can't be in future"))
+                .build();
+            self.imp().toast_overlay.add_toast(toast);
+            return;
+        }
+
         if self.state() {
             update_record(&record).expect("Failed to update record");
         } else {

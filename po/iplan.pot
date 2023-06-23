@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: iplan\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-06-22 18:55+0330\n"
+"POT-Creation-Date: 2023-06-23 13:31+0330\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -449,11 +449,11 @@ msgstr ""
 msgid "No Date"
 msgstr ""
 
-#: src/ui/task/task_row.ui:208 src/views/task/task_row.rs:272
+#: src/ui/task/task_row.ui:226 src/views/task/task_row.rs:295
 msgid "Start _timer"
 msgstr ""
 
-#: src/ui/task/task_row.ui:224
+#: src/ui/task/task_row.ui:242
 msgid "_Delete task"
 msgstr ""
 
@@ -536,7 +536,7 @@ msgstr ""
 msgid "\"{}\" moved to the done tasks section"
 msgstr ""
 
-#: src/views/project/section_box.rs:72 src/views/task/task_row.rs:438
+#: src/views/project/section_box.rs:72 src/views/task/task_row.rs:476
 msgid "Undo"
 msgstr ""
 
@@ -556,6 +556,10 @@ msgstr ""
 msgid "Duration can't be 0"
 msgstr ""
 
+#: src/views/record/record_window.rs:188
+msgid "Record end time can't be in future"
+msgstr ""
+
 #: src/views/reminder/reminder_window.rs:111
 msgid "Time can't be in the past"
 msgstr ""
@@ -568,15 +572,19 @@ msgstr ""
 msgid "Task"
 msgstr ""
 
-#: src/views/sidebar/sidebar_projects.rs:351
+#: src/views/sidebar/sidebar_projects.rs:356
 msgid "Task moved to {}"
 msgstr ""
 
-#: src/views/sidebar/sidebar_projects.rs:358
+#: src/views/sidebar/sidebar_projects.rs:369
 msgid "{} doesn't have any section"
 msgstr ""
 
-#: src/views/task/task_row.rs:437
+#: src/views/task/task_row.rs:225
+msgid "Inbox"
+msgstr ""
+
+#: src/views/task/task_row.rs:475
 msgid "\"{}\" is going to delete"
 msgstr ""
 

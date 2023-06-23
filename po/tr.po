@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ir.imansalmani.IPlan\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-06-22 18:55+0330\n"
+"POT-Creation-Date: 2023-06-23 13:31+0330\n"
 "PO-Revision-Date: 2023-06-03 10:00+0300\n"
 "Last-Translator: Sabri Ünal <libreajans@gmail.com>\n"
 "Language-Team: Türkçe <takim@gnome.org.tr>\n"
@@ -467,12 +467,12 @@ msgstr "_Sil"
 msgid "No Date"
 msgstr "Tarih"
 
-#: src/ui/task/task_row.ui:208 src/views/task/task_row.rs:272
+#: src/ui/task/task_row.ui:226 src/views/task/task_row.rs:295
 #, fuzzy
 msgid "Start _timer"
 msgstr "başlangıç saati"
 
-#: src/ui/task/task_row.ui:224
+#: src/ui/task/task_row.ui:242
 #, fuzzy
 msgid "_Delete task"
 msgstr "_Sil"
@@ -561,7 +561,7 @@ msgstr "Yeni Kayıt"
 msgid "\"{}\" moved to the done tasks section"
 msgstr "\"{}\" tamamlanmış görevler listesine taşındı"
 
-#: src/views/project/section_box.rs:72 src/views/task/task_row.rs:438
+#: src/views/project/section_box.rs:72 src/views/task/task_row.rs:476
 msgid "Undo"
 msgstr "Geri Al"
 
@@ -583,6 +583,11 @@ msgstr "şu zamana kadar"
 msgid "Duration can't be 0"
 msgstr "Süre 0 olamaz"
 
+#: src/views/record/record_window.rs:188
+#, fuzzy
+msgid "Record end time can't be in future"
+msgstr "Günlük harcanan zaman"
+
 #: src/views/reminder/reminder_window.rs:111
 #, fuzzy
 msgid "Time can't be in the past"
@@ -596,16 +601,20 @@ msgstr "Proje"
 msgid "Task"
 msgstr "Görev"
 
-#: src/views/sidebar/sidebar_projects.rs:351
+#: src/views/sidebar/sidebar_projects.rs:356
 msgid "Task moved to {}"
 msgstr ""
 
-#: src/views/sidebar/sidebar_projects.rs:358
+#: src/views/sidebar/sidebar_projects.rs:369
 #, fuzzy
 msgid "{} doesn't have any section"
 msgstr "\"{}\" tamamlanmış görevler listesine taşındı"
 
-#: src/views/task/task_row.rs:437
+#: src/views/task/task_row.rs:225
+msgid "Inbox"
+msgstr ""
+
+#: src/views/task/task_row.rs:475
 msgid "\"{}\" is going to delete"
 msgstr "“{}” silinecek"
 

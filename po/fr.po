@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: iplan\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-06-22 18:55+0330\n"
+"POT-Creation-Date: 2023-06-23 13:31+0330\n"
 "PO-Revision-Date: 2023-06-11 20:32+0200\n"
 "Last-Translator: Irénée Thirion <irenee.thirion@e.email>\n"
 "Language-Team: \n"
@@ -474,11 +474,11 @@ msgstr "_Supprimer"
 msgid "No Date"
 msgstr "Date"
 
-#: src/ui/task/task_row.ui:208 src/views/task/task_row.rs:272
+#: src/ui/task/task_row.ui:226 src/views/task/task_row.rs:295
 msgid "Start _timer"
 msgstr ""
 
-#: src/ui/task/task_row.ui:224
+#: src/ui/task/task_row.ui:242
 #, fuzzy
 msgid "_Delete task"
 msgstr "_Supprimer"
@@ -566,7 +566,7 @@ msgstr "Nouveau chronomètre"
 msgid "\"{}\" moved to the done tasks section"
 msgstr "« {} » déplacé vers la liste des tâches accomplies"
 
-#: src/views/project/section_box.rs:72 src/views/task/task_row.rs:438
+#: src/views/project/section_box.rs:72 src/views/task/task_row.rs:476
 msgid "Undo"
 msgstr "Annuler"
 
@@ -588,6 +588,11 @@ msgstr "jusqu’à"
 msgid "Duration can't be 0"
 msgstr "La durée ne peut être 0"
 
+#: src/views/record/record_window.rs:188
+#, fuzzy
+msgid "Record end time can't be in future"
+msgstr "L’heure ne peut être dans le passé"
+
 #: src/views/reminder/reminder_window.rs:111
 msgid "Time can't be in the past"
 msgstr "L’heure ne peut être dans le passé"
@@ -600,16 +605,20 @@ msgstr "Projet"
 msgid "Task"
 msgstr "Tâche"
 
-#: src/views/sidebar/sidebar_projects.rs:351
+#: src/views/sidebar/sidebar_projects.rs:356
 msgid "Task moved to {}"
 msgstr ""
 
-#: src/views/sidebar/sidebar_projects.rs:358
+#: src/views/sidebar/sidebar_projects.rs:369
 #, fuzzy
 msgid "{} doesn't have any section"
 msgstr "« {} » déplacé vers la liste des tâches accomplies"
 
-#: src/views/task/task_row.rs:437
+#: src/views/task/task_row.rs:225
+msgid "Inbox"
+msgstr ""
+
+#: src/views/task/task_row.rs:475
 msgid "\"{}\" is going to delete"
 msgstr "« {} » sera supprimée"
 
