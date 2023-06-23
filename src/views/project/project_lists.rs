@@ -212,25 +212,59 @@ impl ProjectLists {
                 if let Some(controller) = self.drag_scroll_controller() {
                     self.remove_controller(&controller);
                 }
+                self.add_drag_hscroll_controller();
             }
             ProjectLayout::Vertical => {
                 imp.sections_box.set_orientation(gtk::Orientation::Vertical);
                 if let Some(controller) = self.drag_scroll_controller() {
-                    self.add_controller(controller);
-                } else {
-                    self.add_drag_scroll_controller();
+                    self.remove_controller(&controller);
                 }
+                self.add_drag_vscroll_controller();
             }
         }
         imp.layout.set(layout);
     }
 
-    fn add_drag_scroll_controller(&self) {
+    fn add_drag_hscroll_controller(&self) {
         let controller = gtk::DropTarget::new(TaskRow::static_type(), gdk::DragAction::MOVE);
         controller.set_preload(true);
+
+        controller.connect_motion(|controller, x, _| {
+            let obj = controller.widget().downcast::<Self>().unwrap();
+            let width = obj.width();
+
+            if width - (x as i32) < 50 {
+                if obj.scroll() != 2 {
+                    obj.set_scroll(2);
+                    obj.start_scroll();
+                }
+            } else if x < 50.0 {
+                if obj.scroll() != -2 {
+                    obj.set_scroll(-2);
+                    obj.start_scroll();
+                }
+            } else {
+                obj.set_scroll(0)
+            }
+
+            gdk::DragAction::empty()
+        });
+        controller.connect_leave(|controller| {
+            let obj = controller.widget().downcast::<Self>().unwrap();
+            obj.set_scroll(0);
+        });
+        self.set_drag_scroll_controller(controller.clone());
+        self.add_controller(controller);
+    }
+
+    fn add_drag_vscroll_controller(&self) {
+        let controller = gtk::DropTarget::new(TaskRow::static_type(), gdk::DragAction::MOVE);
+        controller.set_preload(true);
+
         controller.connect_motion(|controller, _, y| {
             let obj = controller.widget().downcast::<Self>().unwrap();
             let height = obj.height();
+
             if height - (y as i32) < 50 {
                 if obj.scroll() != 1 {
                     obj.set_scroll(1);
@@ -244,6 +278,7 @@ impl ProjectLists {
             } else {
                 obj.set_scroll(0)
             }
+
             gdk::DragAction::empty()
         });
         controller.connect_leave(|controller| {
@@ -266,14 +301,25 @@ impl ProjectLists {
             None,
             glib::clone!(@weak self as obj => @default-return glib::Continue(false), move |_| {
                 let scroll = obj.scroll();
-                if scroll == 0 {
-                    glib::Continue(false)
-                } else if scroll.is_positive() {
-                    obj.imp().scrolled_window.emit_scroll_child(gtk::ScrollType::StepDown, false);
-                    glib::Continue(true)
-                } else {
-                    obj.imp().scrolled_window.emit_scroll_child(gtk::ScrollType::StepUp, false);
-                    glib::Continue(true)
+                match scroll {
+                    0 => glib::Continue(false),
+                    1 => {
+                        obj.imp().scrolled_window.emit_scroll_child(gtk::ScrollType::StepDown, false);
+                        glib::Continue(true)
+                    }
+                    -1 => {
+                        obj.imp().scrolled_window.emit_scroll_child(gtk::ScrollType::StepUp, false);
+                        glib::Continue(true)
+                    }
+                    2 => {
+                        obj.imp().scrolled_window.emit_scroll_child(gtk::ScrollType::StepRight, false);
+                        glib::Continue(true)
+                    }
+                    -2 => {
+                        obj.imp().scrolled_window.emit_scroll_child(gtk::ScrollType::StepLeft, false);
+                        glib::Continue(true)
+                    }
+                    _ => glib::Continue(false),
                 }
             }),
         );

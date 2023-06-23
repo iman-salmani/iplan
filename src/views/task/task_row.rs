@@ -314,7 +314,6 @@ impl TaskRow {
     }
 
     pub fn keep_after_dnd(&self) {
-        println!("1");
         self.set_moving_out(false);
         let drag_backup = self.imp().drag_backup.take().unwrap();
         let task = self.task();
