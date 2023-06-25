@@ -1,5 +1,6 @@
 use adw::{prelude::*, subclass::prelude::*};
 use gettextrs::gettext;
+use glib::{once_cell::sync::Lazy, subclass::Signal};
 use gtk::{glib, glib::Properties};
 use std::cell::RefCell;
 
@@ -45,10 +46,7 @@ mod imp {
                     upper_row.grab_focus();
                 }
                 imp.tasks_box.remove(&row);
-                obj.transient_for()
-                    .unwrap()
-                    .activate_action("project.open", None) // TODO: just add task to section
-                    .unwrap();
+                obj.emit_by_name::<()>("task-undo", &[&row.property::<Task>("task")]);
             });
         }
 
@@ -58,6 +56,15 @@ mod imp {
     }
 
     impl ObjectImpl for TasksDoneWindow {
+        fn signals() -> &'static [glib::subclass::Signal] {
+            static SIGNALS: Lazy<Vec<Signal>> = Lazy::new(|| {
+                vec![Signal::builder("task-undo")
+                    .param_types([Task::static_type()])
+                    .build()]
+            });
+            SIGNALS.as_ref()
+        }
+
         fn properties() -> &'static [glib::ParamSpec] {
             Self::derived_properties()
         }
@@ -151,16 +158,15 @@ impl TasksDoneWindow {
             true,
             glib::closure_local!(@watch self as obj, @weak-allow-none row => move |_win: TaskWindow, task: Task| {
                 let row = row.unwrap();
-                let main_window = obj.transient_for().unwrap();
                 if !task.done() {
                     obj.imp().tasks_box.remove(&row);
-                    main_window.activate_action("project.open", None) // TODO: just add task to section (consider the task duration could be changed)
-                        .expect("Failed to activate project.open action");
+                    obj.emit_by_name::<()>("task-undo", &[&task]);
                 } else {
                     row.reset(task);
                     row.changed();
-                    main_window.activate_action("project.update", None).expect("Failed to send project.update signal");
                 }
+                let main_window = obj.transient_for().unwrap();
+                main_window.activate_action("project.update", None).expect("Failed to send project.update signal");
             }
         ));
     }

@@ -51,11 +51,13 @@ mod imp {
                 let imp = obj.imp();
                 let value: i32 = value.unwrap().get().unwrap();
                 let index = value as u32;
-                let upper_row = imp.tasks_box.item_by_index(index - 1);
                 let row = imp.tasks_box.item_by_index(index).unwrap();
                 let task = row.task();
-                if let Some(upper_row) = upper_row {
-                    upper_row.grab_focus();
+                if index != 0 {
+                    let upper_row = imp.tasks_box.item_by_index(index - 1);
+                    if let Some(upper_row) = upper_row {
+                        upper_row.grab_focus();
+                    }
                 }
                 imp.tasks_box.remove_item(&row);
 
@@ -284,6 +286,14 @@ impl SectionBox {
         let win: IPlanWindow = self.root().and_downcast().unwrap();
         let window = TasksDoneWindow::new(win.application().unwrap(), &win, self.section());
         window.present();
+        window.connect_closure(
+            "task-undo",
+            true,
+            glib::closure_local!(@watch self as obj => move |_: TasksDoneWindow, task: Task| {
+                let imp = obj.imp();
+                imp.tasks_box.add_task(task);
+            }),
+        );
     }
 
     fn section_drop_target_drop(
