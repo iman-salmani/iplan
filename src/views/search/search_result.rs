@@ -1,8 +1,20 @@
 use gettextrs::gettext;
-use gtk::{glib, prelude::*, subclass::prelude::*};
+use gtk::{
+    glib::{self, PropertySet},
+    prelude::*,
+    subclass::prelude::*,
+};
 use std::cell::RefCell;
 
 use crate::db::models::{Project, Task};
+
+#[derive(Clone, Default, PartialEq, Eq)]
+pub enum SearchResultData {
+    Project(Project),
+    Task(Task),
+    #[default]
+    None,
+}
 
 mod imp {
     use super::*;
@@ -10,14 +22,15 @@ mod imp {
     #[derive(Default, gtk::CompositeTemplate)]
     #[template(resource = "/ir/imansalmani/iplan/ui/search/search_result.ui")]
     pub struct SearchResult {
-        pub project: RefCell<Option<Project>>,
-        pub task: RefCell<Option<Task>>,
+        pub data: RefCell<SearchResultData>,
         #[template_child]
-        pub name_label: TemplateChild<gtk::Label>,
+        pub icon: TemplateChild<gtk::Image>,
+        #[template_child]
+        pub emoji: TemplateChild<gtk::Label>,
+        #[template_child]
+        pub name: TemplateChild<gtk::Label>,
         #[template_child]
         pub type_label: TemplateChild<gtk::Label>,
-        #[template_child]
-        pub done_check_button: TemplateChild<gtk::CheckButton>,
     }
 
     #[glib::object_subclass]
@@ -47,20 +60,38 @@ glib::wrapper! {
 }
 
 impl SearchResult {
-    pub fn new(project: Option<Project>, task: Option<Task>) -> Self {
-        let win: Self = glib::Object::builder().build();
-        let imp = win.imp();
-        if let Some(project) = project {
-            imp.name_label.set_label(&project.name());
-            imp.type_label.set_label(&gettext("Project"));
-            imp.done_check_button.set_visible(false);
-            imp.project.replace(Some(project));
-        } else if let Some(task) = task {
-            imp.name_label.set_label(&task.name());
-            imp.type_label.set_label(&gettext("Task"));
-            imp.done_check_button.set_active(task.done());
-            imp.task.replace(Some(task));
+    pub fn new(data: SearchResultData) -> Self {
+        let obj: Self = glib::Object::builder().build();
+        let imp = obj.imp();
+        match data {
+            SearchResultData::Project(project) => {
+                imp.name.set_label(&project.name());
+                imp.emoji.set_visible(true);
+                imp.emoji.set_label(&project.icon());
+                imp.type_label.set_label(&gettext("Project"));
+                obj.set_data(SearchResultData::Project(project));
+            }
+            SearchResultData::Task(task) => {
+                imp.name.set_label(&task.name());
+                let icon_name = if task.done() {
+                    "check-round-outline-whole-symbolic"
+                } else {
+                    "circle-outline-thick-symbolic"
+                };
+                imp.icon.set_icon_name(Some(icon_name));
+                imp.type_label.set_label(&gettext("Task"));
+                obj.set_data(SearchResultData::Task(task));
+            }
+            SearchResultData::None => unimplemented!(),
         }
-        win
+        obj
+    }
+
+    pub fn data(&self) -> SearchResultData {
+        self.imp().data.take()
+    }
+
+    pub fn set_data(&self, data: SearchResultData) {
+        self.imp().data.set(data);
     }
 }

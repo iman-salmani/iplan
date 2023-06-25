@@ -29,9 +29,12 @@ use std::thread;
 use std::time::{SystemTime, UNIX_EPOCH};
 
 use crate::config::{APPLICATION_ID, VERSION};
-use crate::db::models::Reminder;
-use crate::db::operations::{read_reminder, read_reminders, read_task, update_reminder};
+use crate::db::models::{Project, Reminder, Task};
+use crate::db::operations::{
+    read_project, read_reminder, read_reminders, read_task, update_reminder,
+};
 use crate::views::search::SearchWindow;
+use crate::views::task::TaskWindow;
 use crate::views::{BackupWindow, IPlanWindow};
 
 mod imp {
@@ -118,6 +121,42 @@ impl IPlanApplication {
             .build()
     }
 
+    pub fn send_reminder(&self, reminder: Reminder) {
+        let (tx, rx) = glib::MainContext::channel(glib::PRIORITY_DEFAULT);
+        let now = SystemTime::now()
+            .duration_since(UNIX_EPOCH)
+            .expect("Time went backwards");
+        let datetime = reminder.datetime_duration();
+
+        if datetime < now {
+            reminder.set_past(true);
+            update_reminder(&reminder).unwrap();
+            return;
+        }
+
+        let remains = datetime - now;
+        thread::spawn(move || {
+            thread::sleep(remains);
+            if tx.send("").is_err() {}
+        });
+        rx.attach(None,glib::clone!(@weak self as obj => @default-return glib::Continue(false), move |_: &str| {
+            let fresh_reminder = read_reminder(reminder.id()).expect("Failed to read reminder");
+
+            if fresh_reminder.past() || fresh_reminder.datetime() != reminder.datetime() {
+                return glib::Continue(false);
+            }
+
+            let task = read_task(fresh_reminder.task()).expect("Failed to read task");
+            let notification = gio::Notification::new(&task.name());
+            notification.set_priority(gio::NotificationPriority::High);
+            obj.send_notification(Some(&format!("reminder-{}", fresh_reminder.id())), &notification);
+            fresh_reminder.set_past(true);
+            update_reminder(&fresh_reminder).expect("Failed to update reminder");
+
+            glib::Continue(false)
+        }));
+    }
+
     fn setup_settings(&self) {
         self.imp().settings.connect_changed(
             Some("background-play"),
@@ -164,15 +203,46 @@ impl IPlanApplication {
     }
 
     fn show_search(&self) {
-        if self.active_window().unwrap().widget_name() == "SearchWindow" {
+        let active_window = self.active_window().unwrap();
+        if active_window.widget_name() == "SearchWindow" {
             return;
         }
+        if active_window.widget_name() != "IPlanWindow" {
+            active_window.close()
+        }
 
-        let window = SearchWindow::new(
+        let modal = SearchWindow::new(
             self.upcast_ref::<gtk::Application>(),
             &self.active_window().unwrap(),
         );
-        window.present();
+        modal.present();
+        modal.connect_closure(
+            "project-activated",
+            true,
+            glib::closure_local!(@watch self as obj => move |_: SearchWindow, project: Project| {
+                let main_window = obj.window_by_name("IPlanWindow").unwrap().downcast::<IPlanWindow>().unwrap();
+                main_window.change_project(project);
+            }),
+        );
+        modal.connect_closure(
+            "task-activated",
+            true,
+            glib::closure_local!(@watch self as obj => move |_: SearchWindow, task: Task| {
+                let project = read_project(task.project()).unwrap();
+                let main_window = obj.window_by_name("IPlanWindow").unwrap().downcast::<IPlanWindow>().unwrap();
+                main_window.change_project(project);
+
+                let modal = TaskWindow::new(obj.upcast_ref::<gtk::Application>(), &main_window, task);
+                modal.present();
+                modal.connect_closure(
+                    "task-window-close",
+                    true,
+                    glib::closure_local!(@watch main_window => move |_win: TaskWindow, task: Task| {
+                        main_window.imp().project_lists.reset_task(task);
+                    }),
+                );
+            }),
+        );
     }
 
     fn show_shortcuts(&self) {
@@ -227,40 +297,13 @@ impl IPlanApplication {
         }
     }
 
-    pub fn send_reminder(&self, reminder: Reminder) {
-        let (tx, rx) = glib::MainContext::channel(glib::PRIORITY_DEFAULT);
-        let now = SystemTime::now()
-            .duration_since(UNIX_EPOCH)
-            .expect("Time went backwards");
-        let datetime = reminder.datetime_duration();
-
-        if datetime < now {
-            reminder.set_past(true);
-            update_reminder(&reminder).unwrap();
-            return;
-        }
-
-        let remains = datetime - now;
-        thread::spawn(move || {
-            thread::sleep(remains);
-            if tx.send("").is_err() {}
-        });
-        rx.attach(None,glib::clone!(@weak self as obj => @default-return glib::Continue(false), move |_: &str| {
-            let fresh_reminder = read_reminder(reminder.id()).expect("Failed to read reminder");
-
-            if fresh_reminder.past() || fresh_reminder.datetime() != reminder.datetime() {
-                return glib::Continue(false);
+    fn window_by_name(&self, name: &str) -> Option<gtk::Window> {
+        for window in self.windows() {
+            if window.widget_name() == name {
+                return Some(window);
             }
-
-            let task = read_task(fresh_reminder.task()).expect("Failed to read task");
-            let notification = gio::Notification::new(&task.name());
-            notification.set_priority(gio::NotificationPriority::High);
-            obj.send_notification(Some(&format!("reminder-{}", fresh_reminder.id())), &notification);
-            fresh_reminder.set_past(true);
-            update_reminder(&fresh_reminder).expect("Failed to update reminder");
-
-            glib::Continue(false)
-        }));
+        }
+        None
     }
 
     #[cfg(any(target_os = "linux", target_os = "freebsd"))]

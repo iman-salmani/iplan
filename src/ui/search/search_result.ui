@@ -12,13 +12,22 @@
         <property name="margin-start">12</property>
         <property name="margin-end">12</property>
         <child>
-          <object class="GtkCheckButton" id="done_check_button">
+          <object class="GtkImage" id="icon">
             <property name="margin-end">6</property>
-            <property name="sensitive">false</property>
+            <property name="visible" bind-source="emoji" bind-property="visible" bind-flags="sync-create|invert-boolean" />
           </object>
         </child>
         <child>
-          <object class="GtkLabel" id="name_label">
+          <object class="GtkLabel" id="emoji">
+            <property name="visible">false</property>
+            <property name="margin-end">6</property>
+            <style>
+              <class name="title-3" />
+            </style>
+          </object>
+        </child>
+        <child>
+          <object class="GtkLabel" id="name">
             <property name="halign">start</property>
             <property name="hexpand">true</property>
             <property name="ellipsize">end</property>

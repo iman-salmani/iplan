@@ -5,6 +5,7 @@ use std::cell::{Cell, RefCell};
 use std::thread;
 use std::time::Duration;
 
+use crate::db::models::Task;
 use crate::db::operations::{create_section, read_section, read_sections, read_task};
 use crate::views::{project::SectionBox, task::TaskRow, IPlanWindow};
 
@@ -155,6 +156,22 @@ impl ProjectLists {
         }
     }
 
+    pub fn reset_task(&self, task: Task) {
+        if let Some(section_box) = self.section_by_id(task.section()) {
+            let tasks_box = section_box.imp().tasks_box.get();
+            if let Some(row) = tasks_box.item_by_id(task.id()) {
+                if task.done() {
+                    tasks_box.remove_item(&row);
+                } else {
+                    row.reset(task);
+                    row.changed();
+                    row.activate_action("project.update", None)
+                        .expect("Failed to send project.update signal");
+                }
+            }
+        }
+    }
+
     pub fn select_task(&self, task_id: Option<i64>) {
         let imp = self.imp();
         if let Some(task_id) = task_id {
@@ -223,6 +240,19 @@ impl ProjectLists {
             }
         }
         imp.layout.set(layout);
+    }
+
+    fn section_by_id(&self, id: i64) -> Option<SectionBox> {
+        let sections_box = self.imp().sections_box.observe_children();
+        for i in 0..sections_box.n_items() {
+            let item = sections_box.item(i).and_downcast::<SectionBox>();
+            if let Some(item) = item {
+                if item.section().id() == id {
+                    return Some(item);
+                }
+            }
+        }
+        None
     }
 
     fn add_drag_hscroll_controller(&self) {

@@ -20,10 +20,10 @@
 
 use adw::subclass::prelude::*;
 use gettextrs::gettext;
-use gtk::{gdk, gio, glib, glib::once_cell::sync::Lazy, prelude::*};
+use gtk::{gdk, gio, glib, glib::Properties, prelude::*};
 use std::cell::RefCell;
 
-use crate::db::models::Project;
+use crate::db::models::{Project, Task};
 use crate::db::operations::{create_project, create_section, read_projects, read_task};
 use crate::views::project::{ProjectEditWindow, ProjectHeader, ProjectLayout, ProjectLists};
 use crate::views::{calendar::Calendar, sidebar::SidebarProjects, task::TaskWindow};
@@ -31,10 +31,13 @@ use crate::views::{calendar::Calendar, sidebar::SidebarProjects, task::TaskWindo
 mod imp {
     use super::*;
 
-    #[derive(Default, gtk::CompositeTemplate)]
+    #[derive(Default, gtk::CompositeTemplate, Properties)]
     #[template(resource = "/ir/imansalmani/iplan/ui/window.ui")]
+    #[properties(type_wrapper=super::IPlanWindow)]
     pub struct IPlanWindow {
+        #[property(get, set)]
         pub settings: RefCell<Option<gio::Settings>>,
+        #[property(get, set)]
         pub project: RefCell<Project>,
         #[template_child]
         pub project_layout_button: TemplateChild<gtk::Button>,
@@ -95,7 +98,7 @@ mod imp {
                     create_section(&gettext("Tasks"), project.id()).unwrap();
                     project
                 };
-                win.set_property("project", home_project);
+                win.set_project(home_project);
                 projects_section.select_active_project();
                 win.activate_action("project.open", None)
                     .expect("Failed to send project.open action");
@@ -103,38 +106,6 @@ mod imp {
             klass.install_action("section.new", None, move |win, _, _| {
                 let imp = win.imp();
                 imp.project_lists.new_section(win.project().id());
-            });
-            klass.install_action("search.project", None, move |win, _, _| {
-                let imp = win.imp();
-                let project = win.project();
-                imp.project_header.open_project(&project);
-                imp.project_lists.open_project(project.id());
-                imp.project_lists.select_task(None);
-                imp.sidebar_projects.select_active_project();
-                imp.sidebar_projects.check_archive_hidden();
-                win.close_calendar();
-            });
-            klass.install_action("search.task", Some("(x)"), move |win, _, value| {
-                let imp = win.imp();
-                let (project_changed, task_id) = value.unwrap().get::<(bool, i64)>().unwrap();
-                if project_changed {
-                    let project = win.project();
-                    imp.project_header.open_project(&project);
-                    imp.project_lists.open_project(project.id());
-                    imp.sidebar_projects.select_active_project();
-                    imp.sidebar_projects.check_archive_hidden();
-                }
-                
-                let task = read_task(task_id).expect("Failed to read task");
-                let modal = TaskWindow::new(&win.application().unwrap(), win, task);
-                modal.present();
-                modal.connect_close_request(glib::clone!(@weak win => @default-return gtk::Inhibit(false),
-                    move |_| {
-                        win.activate_action("project.open", None).expect("Failed to activate project.open action");
-                        gtk::Inhibit(false)
-                    }),
-                );
-                win.close_calendar();
             });
         }
 
@@ -145,45 +116,34 @@ mod imp {
 
     impl ObjectImpl for IPlanWindow {
         fn properties() -> &'static [glib::ParamSpec] {
-            static PROPERTIES: Lazy<Vec<glib::ParamSpec>> =
-                Lazy::new(|| vec![glib::ParamSpecObject::builder::<Project>("project").build()]);
-            PROPERTIES.as_ref()
+            Self::derived_properties()
         }
 
-        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
-            match pspec.name() {
-                "project" => {
-                    let value = value.get::<Project>().expect("value must be a Project");
-                    self.project.replace(value);
-                }
-                _ => unimplemented!(),
-            }
+        fn property(&self, id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+            self.derived_property(id, pspec)
         }
 
-        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
-            match pspec.name() {
-                "project" => self.project.borrow().to_value(),
-                _ => unimplemented!(),
-            }
+        fn set_property(&self, id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
+            self.derived_set_property(id, value, pspec)
         }
     }
     impl WidgetImpl for IPlanWindow {}
     impl WindowImpl for IPlanWindow {
         fn close_request(&self) -> glib::signal::Inhibit {
-            if let Some(settings) = self.settings.borrow().as_ref() {
-                let obj = self.obj();
+            let obj = self.obj();
+            if let Some(settings) = obj.settings() {
                 settings
-                    .set_int("width", obj.property("default-width"))
+                    .set_int("width", obj.default_width())
                     .expect("failed to set width in settings");
                 settings
-                    .set_int("height", obj.property("default-height"))
+                    .set_int("height", obj.default_height())
                     .expect("failed to set height in settings");
                 settings
-                    .set_boolean("is-maximized", obj.property("maximized"))
-                    .expect("failed to set width in settings");
+                    .set_boolean("is-maximized", obj.is_maximized())
+                    .expect("failed to set is-maximized in settings");
                 settings
-                    .set_boolean("is-fullscreen", obj.property("fullscreened"))
-                    .expect("failed to set width in settings");
+                    .set_boolean("is-fullscreen", obj.is_fullscreened())
+                    .expect("failed to set is-fullscreen in settings");
             }
             self.parent_close_request()
         }
@@ -210,7 +170,7 @@ impl IPlanWindow {
             project
         };
         let settings = gio::Settings::new("ir.imansalmani.IPlan.State");
-        let window = glib::Object::builder::<IPlanWindow>()
+        let obj = glib::Object::builder::<IPlanWindow>()
             .property("application", application)
             .property("project", home_project)
             .property("default-width", settings.int("width"))
@@ -218,7 +178,7 @@ impl IPlanWindow {
             .property("maximized", settings.boolean("is-maximized"))
             .property("fullscreened", settings.boolean("is-fullscreen"))
             .build();
-        let imp = window.imp();
+        let imp = obj.imp();
         if settings.int("default-project-layout") == 1 {
             imp.project_layout_button
                 .set_icon_name("view-columns-symbolic");
@@ -226,9 +186,8 @@ impl IPlanWindow {
         } else {
             imp.project_lists.set_layout(ProjectLayout::Vertical);
         }
-        imp.settings.replace(Some(settings));
-        window
-            .activate_action("project.open", None)
+        obj.set_settings(settings);
+        obj.activate_action("project.open", None)
             .expect("Failed to open project");
         imp.sidebar_projects.select_active_project();
 
@@ -238,11 +197,18 @@ impl IPlanWindow {
             gtk::style_context_add_provider_for_display(&display, &provider, 400);
         }
 
-        window
+        obj
     }
 
-    pub fn project(&self) -> Project {
-        self.property("project")
+    pub fn change_project(&self, project: Project) {
+        let imp = self.imp();
+        self.set_project(&project);
+        imp.project_header.open_project(&project);
+        imp.project_lists.open_project(project.id());
+        imp.project_lists.select_task(None);
+        imp.sidebar_projects.select_active_project();
+        imp.sidebar_projects.check_archive_hidden();
+        self.close_calendar();
     }
 
     fn close_calendar(&self) {
@@ -259,18 +225,14 @@ impl IPlanWindow {
                 if icon_name == "list-symbolic" {
                     button.set_icon_name("view-columns-symbolic");
                     imp.project_lists.set_layout(ProjectLayout::Horizontal);
-                    imp.settings
-                        .borrow()
-                        .as_ref()
+                    self.settings()
                         .unwrap()
                         .set_int("default-project-layout", 1)
                         .expect("Could not set setting.");
                 } else {
                     button.set_icon_name("list-symbolic");
                     imp.project_lists.set_layout(ProjectLayout::Vertical);
-                    imp.settings
-                        .borrow()
-                        .as_ref()
+                    self.settings()
                         .unwrap()
                         .set_int("default-project-layout", 0)
                         .expect("Could not set setting.");

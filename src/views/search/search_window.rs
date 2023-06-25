@@ -1,16 +1,19 @@
-use gtk::{gdk, glib, prelude::*, subclass::prelude::*};
+use glib::{once_cell::sync::Lazy, subclass::Signal};
+use gtk::{gdk, glib, glib::Properties, prelude::*, subclass::prelude::*};
 use std::cell::RefCell;
 
-use crate::db::models::Project;
-use crate::db::operations::{find_projects, find_tasks, read_project};
-use crate::views::search::SearchResult;
+use crate::db::models::{Project, Task};
+use crate::db::operations::{find_projects, find_tasks};
+use crate::views::search::{SearchResult, SearchResultData};
 
 mod imp {
     use super::*;
 
-    #[derive(Default, gtk::CompositeTemplate)]
+    #[derive(Default, gtk::CompositeTemplate, Properties)]
     #[template(resource = "/ir/imansalmani/iplan/ui/search/search_window.ui")]
+    #[properties(type_wrapper=super::SearchWindow)]
     pub struct SearchWindow {
+        #[property(get, set)]
         pub prev_search: RefCell<String>,
         #[template_child]
         pub search_entry: TemplateChild<gtk::SearchEntry>,
@@ -38,7 +41,33 @@ mod imp {
         }
     }
 
-    impl ObjectImpl for SearchWindow {}
+    impl ObjectImpl for SearchWindow {
+        fn signals() -> &'static [glib::subclass::Signal] {
+            static SIGNALS: Lazy<Vec<Signal>> = Lazy::new(|| {
+                vec![
+                    Signal::builder("project-activated")
+                        .param_types([Project::static_type()])
+                        .build(),
+                    Signal::builder("task-activated")
+                        .param_types([Task::static_type()])
+                        .build(),
+                ]
+            });
+            SIGNALS.as_ref()
+        }
+        fn properties() -> &'static [glib::ParamSpec] {
+            Self::derived_properties()
+        }
+
+        fn property(&self, id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+            self.derived_property(id, pspec)
+        }
+
+        fn set_property(&self, id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
+            self.derived_set_property(id, value, pspec)
+        }
+    }
+
     impl WidgetImpl for SearchWindow {}
     impl WindowImpl for SearchWindow {}
 }
@@ -120,7 +149,7 @@ impl SearchWindow {
         let text = entry.text().to_lowercase();
         let text = text.trim();
 
-        if text == imp.prev_search.borrow().as_str() {
+        if text == self.prev_search() {
             return;
         }
 
@@ -144,15 +173,15 @@ impl SearchWindow {
             self.clear_search_results();
             for project in projects {
                 imp.search_results
-                    .append(&SearchResult::new(Some(project), None));
+                    .append(&SearchResult::new(SearchResultData::Project(project)));
             }
             for task in tasks {
                 imp.search_results
-                    .append(&SearchResult::new(None, Some(task)));
+                    .append(&SearchResult::new(SearchResultData::Task(task)));
             }
         }
 
-        imp.prev_search.replace(text.to_string());
+        self.set_prev_search(text.to_string());
 
         if let Some(first_row) = imp
             .search_results
@@ -168,37 +197,21 @@ impl SearchWindow {
     #[template_callback]
     fn handle_show_done_tasks_toggle_button_toggled(&self, _button: gtk::ToggleButton) {
         let imp = self.imp();
-        imp.prev_search.replace(String::new());
+        self.set_prev_search(String::new());
         self.handle_search_entry_search_changed(self.imp().search_entry.get());
         imp.search_entry.grab_focus();
     }
 
     #[template_callback]
     fn handle_search_results_row_activated(&self, row: SearchResult) {
-        let row_imp = row.imp();
-        let app_win = self.transient_for().unwrap();
-        let app_win_project_id = app_win.property::<Project>("project").id();
-        if let Some(project) = row_imp.project.take() {
-            if app_win_project_id != project.id() {
-                app_win.set_property("project", project);
-                app_win.activate_action("search.project", None).unwrap();
+        match row.data() {
+            SearchResultData::Project(project) => {
+                self.emit_by_name::<()>("project-activated", &[&project]);
             }
-        } else if let Some(task) = row_imp.task.take() {
-            let mut change_project = false;
-            if task.project() != 0 {
-                let project = read_project(task.project()).unwrap();
-                if app_win_project_id != project.id() {
-                    app_win.set_property("project", project);
-                    change_project = true;
-                }
+            SearchResultData::Task(task) => {
+                self.emit_by_name::<()>("task-activated", &[&task]);
             }
-
-            app_win
-                .activate_action(
-                    "search.task",
-                    Some(&(change_project, task.id()).to_variant()),
-                )
-                .unwrap();
+            SearchResultData::None => unimplemented!(),
         }
         self.close();
     }
