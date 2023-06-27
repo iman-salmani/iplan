@@ -49,3 +49,11 @@ row.expander textview {
 .projects_box {
   box-shadow: none;
 }
+
+.chart-bar .filled {
+  border-radius: 0 6px 6px 0;
+}
+
+.chart-bar .empty {
+  background: transparent;
+}

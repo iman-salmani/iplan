@@ -12,4 +12,4 @@ ashpd = {version = "0.4.0", features = ["gtk4"]}
 [dependencies.adw]
 package = "libadwaita"
 version = "0.4"
-features = ["v1_2"]
+features = ["v1_3"]

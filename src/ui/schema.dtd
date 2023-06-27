@@ -16,7 +16,7 @@
 <!ATTLIST binding name NMTOKEN #REQUIRED>
 <!ELEMENT lookup (#PCDATA)>
 <!ATTLIST lookup name NMTOKEN #REQUIRED>
-<!ELEMENT object (property*,binding*,signal*,style?,child*,responses?,attributes?)>
+<!ELEMENT object (property*,binding*,layout?,signal*,style?,child*,responses?,attributes?)>
 <!ATTLIST object class NMTOKEN #REQUIRED>
 <!ATTLIST object id NMTOKEN #IMPLIED>
 <!ELEMENT style (class+)>
@@ -42,3 +42,4 @@
 <!ATTLIST response id NMTOKEN #IMPLIED>
 <!ATTLIST response translatable NMTOKEN #IMPLIED>
 <!ATTLIST response appearance NMTOKEN #IMPLIED>
+<!ELEMENT layout (property*)>

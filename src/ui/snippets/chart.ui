@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE interface SYSTEM "../schema.dtd">
+<interface>
+  <requires lib="gtk" version="4.0" />
+  <requires lib="Adw" version="1.0" />
+  <template class="Chart" parent="GtkGrid">
+    <property name="hexpand">true</property>
+    <property name="column-spacing">6</property>
+    <property name="row-spacing">6</property>
+    <child>
+      <object class="GtkOverlay" id="overlay">
+        <layout>
+          <property name="column">1</property>
+          <property name="row">0</property>
+        </layout>
+        <child type="overlay">
+          <object class="GtkBox" id="levels">
+            <property name="orientation">vertical</property>
+            <property name="spacing">6</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkBox" id="lines">
+          </object>
+        </child>
+      </object>
+    </child>
+  </template>
+</interface>

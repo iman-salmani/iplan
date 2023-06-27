@@ -5,12 +5,13 @@
   <requires lib="Adw" version="1.0" />
   <template class="ProjectHeader" parent="GtkBox">
     <child><!-- Name Button -->
-      <object class="GtkButton" id="name_button">
-        <property name="has-frame">false</property>
+      <object class="GtkMenuButton" id="name_button">
+        <property name="popover">project_popover</property>
         <property name="margin-start">3</property>
-        <property name="hexpand">true</property>
         <property name="halign">start</property>
-        <signal name="clicked" handler="handle_name_button_clicked" swapped="true" />
+        <style>
+          <class name="flat" />
+        </style>
         <child>
           <object class="GtkBox">
             <property name="orientation">horizontal</property>
@@ -33,54 +34,102 @@
         </child>
       </object>
     </child><!-- End Name Button -->
-    <child><!-- Name Entry -->
-      <object class="GtkEntry" id="name_entry">
-        <property name="margin-start">7</property>
-        <property name="hexpand">true</property>
-        <property name="visible"
-          bind-source="name_button"
-          bind-property="visible"
-          bind-flags="invert-boolean">false</property>
-        <signal name="activate" handler="handle_name_entry_activate" swapped="true" />
-        <attributes>
-          <attribute name="weight" value="PANGO_WEIGHT_BOLD" />
-        </attributes>
-      </object>
-    </child>
-    <!-- End Name Entry -->
-    <child><!-- Project Duration button -->
-      <object class="GtkMenuButton">
-        <property name="popover">duration_popover</property>
-        <property name="margin-start">3</property>
-        <style>
-          <class name="flat" />
-        </style>
-        <child>
-          <object class="AdwButtonContent" id="duration_button_content">
-            <property name="icon-name">preferences-system-time-symbolic</property>
-          </object>
-        </child>
-      </object>
-    </child>
-    <!-- End Project Duration button -->
   </template>
-  <!-- Project duration Popover -->
-  <object class="GtkPopover" id="duration_popover">
-    <signal name="show" handler="handle_duration_popover_show" swapped="true" />
+  <!-- Project Popover -->
+  <object class="GtkPopover" id="project_popover">
+    <property name="has-arrow">false</property>
+    <property name="halign">start</property>
+    <property name="width-request">256</property>
+    <signal name="show" handler="handle_popover_show" swapped="true" />
     <style>
       <class name="menu" />
     </style>
     <child>
-      <object class="GtkListBox" id="stat_box">
-        <property name="selection-mode">none</property>
-        <child type="placeholder">
-          <object class="GtkBox">
+      <object class="GtkBox">
+        <property name="orientation">vertical</property>
+        <property name="margin-top">12</property>
+        <property name="margin-bottom">12</property>
+        <property name="margin-start">12</property>
+        <property name="margin-end">12</property>
+        <child>
+          <object class="GtkLabel" id="description">
+            <property name="hexpand">true</property>
+            <property name="halign">start</property>
+            <property name="lines">3</property>
+            <property name="ellipsize">end</property>
+            <property name="max-width-chars">32</property>
+            <property name="margin-bottom">12</property>
+          </object>
+        </child>
+        <child><!-- Chart header -->
+          <object class="GtkBox" id="chart_header">
+            <property name="visible" bind-source="placeholder" bind-property="visible" bind-flags="sync-create|invert-boolean" />
+            <child>
+              <object class="GtkBox">
+                <property name="orientation">vertical</property>
+                <property name="hexpand">true</property>
+                <child><!-- Last 7 days spended time -->
+                  <object class="GtkLabel" id="chart_title">
+                    <property name="halign">start</property>
+                    <property name="margin-bottom">3</property>
+                    <style>
+                      <class name="title-3" />
+                    </style>
+                  </object>
+                </child><!-- End Last 7 days spended time -->
+                <child><!-- End Last 7 days range -->
+                  <object class="GtkLabel" id="chart_subtitle">
+                    <property name="halign">start</property>
+                    <property name="margin-bottom">9</property>
+                    <style>
+                      <class name="dim-label" />
+                    </style>
+                  </object>
+                </child><!-- End Last 7 days range -->
+              </object>
+            </child>
+            <child>
+              <object class="GtkBox">
+                <property name="orientation">vertical</property>
+                <child><!-- Total time -->
+                  <object class="GtkLabel" id="total_time">
+                    <property name="halign">start</property>
+                    <property name="margin-bottom">3</property>
+                    <property name="halign">end</property>
+                    <style>
+                      <class name="title-3" />
+                    </style>
+                  </object>
+                </child><!-- End Total time -->
+                <child><!-- End Total time subtitle -->
+                  <object class="GtkLabel">
+                    <property name="halign">start</property>
+                    <property name="margin-bottom">9</property>
+                    <property name="label" translatable="yes">Time spent</property>
+                    <property name="halign">end</property>
+                    <style>
+                      <class name="dim-label" />
+                    </style>
+                  </object>
+                </child><!-- End Total time subtitle -->
+              </object>
+            </child>
+          </object>
+        </child><!-- End Chart header -->
+        <child><!-- Last 7 days Stat -->
+          <object class="Chart" id="chart">
+            <property name="visible" bind-source="placeholder" bind-property="visible" bind-flags="sync-create|invert-boolean" />
+          </object>
+        </child><!-- End Last 7 days Stat -->
+        <child><!-- Placeholder -->
+          <object class="GtkBox" id="placeholder">
             <property name="orientation">vertical</property>
             <property name="spacing">12</property>
             <property name="margin-start">18</property>
             <property name="margin-end">18</property>
             <property name="margin-top">18</property>
             <property name="margin-bottom">18</property>
+            <property name="visible">false</property>
             <child>
               <object class="GtkImage">
                 <property name="icon-name">profit-symbolic</property>
@@ -93,9 +142,9 @@
               </object>
             </child>
           </object>
-        </child>
+        </child><!-- End Placeholder -->
       </object>
     </child>
   </object>
-  <!-- End Project duration Popover -->
+  <!-- End Project Popover -->
 </interface>

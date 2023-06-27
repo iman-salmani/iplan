@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE interface SYSTEM "../schema.dtd">
+<interface>
+  <requires lib="gtk" version="4.0" />
+  <requires lib="Adw" version="1.0" />
+  <template class="ChartBar" parent="GtkBox">
+    <child>
+      <object class="GtkLevelBar" id="level">
+        <property name="hexpand">true</property>
+        <property name="vexpand">true</property>
+        <style>
+          <class name="chart-bar" />
+        </style>
+      </object>
+    </child>
+  </template>
+</interface>

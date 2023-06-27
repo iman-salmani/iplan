@@ -23,10 +23,10 @@ use gettextrs::gettext;
 use gtk::{gdk, gio, glib, glib::Properties, prelude::*};
 use std::cell::RefCell;
 
-use crate::db::models::{Project, Task};
-use crate::db::operations::{create_project, create_section, read_projects, read_task};
+use crate::db::models::Project;
+use crate::db::operations::{create_project, create_section, read_projects};
 use crate::views::project::{ProjectEditWindow, ProjectHeader, ProjectLayout, ProjectLists};
-use crate::views::{calendar::Calendar, sidebar::SidebarProjects, task::TaskWindow};
+use crate::views::{calendar::Calendar, sidebar::SidebarProjects};
 
 mod imp {
     use super::*;

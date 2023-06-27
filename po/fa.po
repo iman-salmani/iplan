@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: iplan\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-06-23 13:31+0330\n"
+"POT-Creation-Date: 2023-06-27 12:40+0330\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Iman Salmani <contact.imansalmani@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -34,17 +34,17 @@ msgstr ""
 "شخصی یا شغل خود را سازماندهی کنند."
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:10
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:132
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:147
 msgid "Features:"
 msgstr "ویژگی ها:"
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:12
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:134
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:149
 msgid "Grouping tasks with project and list"
 msgstr "گروه بندی وظایف با پروژه و لیست"
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:13
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:135
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:150
 msgid "Timer for tasks"
 msgstr "تایمر برای وظایف"
 
@@ -54,17 +54,17 @@ msgid "Subtasks"
 msgstr "وظایف فرعی"
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:15
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:84
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:99
 msgid "Calendar for Exploring tasks by date"
 msgstr "تقویم برای کاوش وظایف بر اساس تاریخ"
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:16
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:136
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:151
 msgid "Global search"
 msgstr "جستجوی سراسری"
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:17
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:137
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:152
 msgid "Arranging projects, lists, and tasks by drag and drop"
 msgstr "مرتب سازی پروژه ها، فهرست ها و وظایف با کشیدن و رها کردن"
 
@@ -94,35 +94,73 @@ msgid "Iman Salmani"
 msgstr "ایمان سلمانی"
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:65
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:81
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:80
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:96
 msgid "New features and updates"
 msgstr "ویژگی ها و به روز رسانی های جدید"
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:67
+#, fuzzy
+msgid "New design for drag and drop"
+msgstr "طراحی جدید برای ردیف های وظیفه"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:68
+#, fuzzy
+msgid "New Project create window"
+msgstr "پروژه جدید"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:69
+msgid "Close windows with escape key"
+msgstr ""
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:70
+#, fuzzy
+msgid "Scroll while dragging task"
+msgstr "خطا هنگام وارد کردن داده ها"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:71
+#, fuzzy
+msgid "Add task inside calendar page"
+msgstr "یک هفته برای هر صفحه تقویم"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:72
+msgid "Drop task on each other"
+msgstr ""
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:73
+msgid "Rename tasks list to section"
+msgstr ""
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:74
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:90
+msgid "Code refactoring, Bug fixes, and UI improvements"
+msgstr "بازسازی کد، رفع اشکال و بهبود رابط کاربری"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:82
 msgid "The task row shows the description, subtasks, due date, and reminder"
 msgstr "ردیف وظیفه توضیحات، وظایف فرعی، تاریخ سررسید و یادآوری را نشان می دهد"
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:68
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:83
 msgid "New design for task rows"
 msgstr "طراحی جدید برای ردیف های وظیفه"
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:69
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:84
 msgid "Add task button below tasks list"
 msgstr "دکمه اضافه کردن کار زیر فهرست کارها"
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:70
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:85
 msgid "One week per calendar page"
 msgstr "یک هفته برای هر صفحه تقویم"
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:71
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:86
 msgid "Today and No Date buttons on top of the date picker"
 msgstr "دکمه های امروز و بدون تاریخ در بالای انتخابگر تاریخ"
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:72
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:87
 msgid "Click on a searched task will open the task window"
 msgstr "با کلیک بر روی یک کار جستجو شده، پنجره کار باز می شود"
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:73
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:88
 msgid ""
 "Auto start (if the user lets the app run in the background) and checking for "
 "reminders in the startup"
@@ -130,7 +168,7 @@ msgstr ""
 "شروع خودکار (اگر کاربر اجازه دهد برنامه در پس‌زمینه اجرا شود) و یادآوری را در "
 "راه‌اندازی بررسی می‌کند"
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:74
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:89
 msgid ""
 "Czech and French and Brazilian Portuguese Translations Added or updated "
 "thanks to Amerey.eu, Irénée Thirion, and Fúlvio Leo"
@@ -138,15 +176,11 @@ msgstr ""
 "ترجمه چک و فرانسوی و پرتغالی برزیل به لطف Amerey.eu، Irénée Thirion و Fúlvio "
 "Leo اضافه یا به روز شد"
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:75
-msgid "Code refactoring, Bug fixes, and UI improvements"
-msgstr "بازسازی کد، رفع اشکال و بهبود رابط کاربری"
-
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:83
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:98
 msgid "Backing up system"
 msgstr "پشتیبان گیری از سیستم"
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:85
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:100
 msgid ""
 "Tasks can have date and reminders (Application will remain in background for "
 "handling reminders)"
@@ -154,83 +188,83 @@ msgstr ""
 "وظایف می توانند تاریخ و یادآوری داشته باشند (برنامه برای مدیریت یادآوری ها "
 "در پس زمینه باقی می ماند)"
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:86
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:101
 msgid "When a task doesn't have record, Timer button will move to options"
 msgstr ""
 "هنگامی که یک کار سابقه نداشته باشد، دکمه تایمر به گزینه ها منتقل می شود"
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:87
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:102
 msgid "Record edit window"
 msgstr "پنجره ویرایش سوابق"
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:88
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:103
 msgid "Now users able to edit record duration by changing start time"
 msgstr ""
 "اکنون کاربران می توانند مدت زمان سوابق را با تغییر زمان شروع ویرایش کنند"
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:89
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:104
 msgid "Bug fixes, and UI improvements"
 msgstr "رفع اشکال و بهبود رابط کاربری"
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:95
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:110
 msgid "Bug fix"
 msgstr "رفع اشکال"
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:100
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:115
 msgid "Code refactoring, and UI improvements"
 msgstr "بازسازی کد و بهبود رابط کاربری"
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:102
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:117
 msgid "New widgets for selecting Date and Time"
 msgstr "ویجت های جدید برای انتخاب تاریخ و زمان"
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:103
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:118
 msgid "Changing duration of the new record by setting end time"
 msgstr "تغییر مدت زمان رکورد جدید با تنظیم زمان پایان"
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:104
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:119
 msgid "Add Brazilian Portuguese Translation thanks to Fúlvio Leo"
 msgstr "اضافه کردن ترجمه پرتغالی برزیل به لطف Fúlvio Leo"
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:110
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:125
 msgid "Subtasks, Bug fixes, and UI improvements"
 msgstr "وظایف فرعی، رفع اشکال و بهبود رابط کاربری"
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:112
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:127
 msgid "Task Window which contains task info, subtasks, and records"
 msgstr "پنجره وظیفه که حاوی اطلاعات کار، وظایف فرعی و سوابق است"
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:113
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:128
 msgid "Translation to Persian and Turkish languages thanks to Sabri Ünal"
 msgstr "ترجمه به زبان های فارسی و ترکی با تشکر از صبری اونال"
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:114
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:129
 msgid "New toast message for moving back task from the tasks done list"
 msgstr "پیام نان تست جدید برای برگرداندن کار از لیست کارهای انجام شده"
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:115
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:130
 msgid "Users are now able to pick emojis for their projects in the edit window"
 msgstr ""
 "کاربران اکنون می‌توانند شکلک‌هایی را برای پروژه‌های خود در پنجره ویرایش انتخاب "
 "کنند"
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:116
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:131
 msgid "Projects and Tasks now can have descriptions"
 msgstr "پروژه ها و وظایف اکنون می توانند شرح داشته باشند"
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:122
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:137
 msgid "Performance improvement and records window"
 msgstr "بهبود عملکرد و پنجره سوابق"
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:124
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:139
 msgid "Lazy loading for project tasks and stat"
 msgstr "پیاده سازی Lazy loading برای وظایف پروژه و آمار"
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:125
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:140
 msgid "Records window for creating, editing, and deleting records"
 msgstr "پنجره رکوردها برای ایجاد، ویرایش و حذف رکوردها"
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:131
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:146
 msgid "First stable release."
 msgstr "اولین انتشار پایدار."
 
@@ -367,7 +401,12 @@ msgstr "بایگانی"
 msgid "Delete"
 msgstr "حذف"
 
-#: src/ui/project/project_header.ui:92
+#: src/ui/project/project_header.ui:108
+#, fuzzy
+msgid "Time spent"
+msgstr "زمان صرف شده در روز"
+
+#: src/ui/project/project_header.ui:141
 msgid "Time spent per day"
 msgstr "زمان صرف شده در روز"
 
@@ -465,11 +504,11 @@ msgstr "حذف"
 msgid "No Date"
 msgstr "بدون تاریخ"
 
-#: src/ui/task/task_row.ui:226 src/views/task/task_row.rs:295
+#: src/ui/task/task_row.ui:227 src/views/task/task_row.rs:308
 msgid "Start _timer"
 msgstr "شروع _تایمر"
 
-#: src/ui/task/task_row.ui:242
+#: src/ui/task/task_row.ui:243
 msgid "_Delete task"
 msgstr "حذف وظیفه_"
 
@@ -498,19 +537,19 @@ msgid "no done tasks found"
 msgstr "هیچ کار انجام شده ای پیدا نشد"
 
 #. Translators: Replace "translator-credits" with your names, one name per line
-#: src/application.rs:205
+#: src/application.rs:279
 msgid "translator-credits"
 msgstr "ایمان سلمانی <contact.imansalmani@gmail.com>"
 
-#: src/application.rs:266
+#: src/application.rs:313
 msgid "IPlan needs to run in the background to send reminders"
 msgstr "برای ارسال یادآوری، آپلن باید در پس‌زمینه اجرا شود"
 
-#: src/views/window.rs:96 src/views/window.rs:210
+#: src/views/window.rs:96 src/views/window.rs:168
 msgid "Personal"
 msgstr "شخصی"
 
-#: src/views/window.rs:97 src/views/window.rs:211
+#: src/views/window.rs:98 src/views/window.rs:169
 #: src/views/project/project_create_window.rs:148
 msgid "Tasks"
 msgstr "وظایف"
@@ -540,31 +579,31 @@ msgid "The project and its tasks will be permanently lost."
 msgstr "پروژه و وظایف آن برای همیشه از بین خواهد رفت."
 
 #. Translators: {} Will be replaced with a shortcut label.
-#: src/views/project/project_lists.rs:66
+#: src/views/project/project_lists.rs:67
 #, fuzzy
 msgid "Use the primary menu {} for adding a new section"
 msgstr "از منوی اصلی {} برای افزودن لیست های جدید استفاده کنید"
 
-#: src/views/project/project_lists.rs:189
+#: src/views/project/project_lists.rs:206
 #, fuzzy
 msgid "New Section"
 msgstr "رکورد جدید"
 
-#: src/views/project/section_box.rs:69
+#: src/views/project/section_box.rs:71
 #, fuzzy
 msgid "\"{}\" moved to the done tasks section"
 msgstr "\"{}\" به فهرست کارهای انجام شده منتقل شد"
 
-#: src/views/project/section_box.rs:72 src/views/task/task_row.rs:476
+#: src/views/project/section_box.rs:74 src/views/task/task_row.rs:509
 msgid "Undo"
 msgstr "برگرد"
 
-#: src/views/project/section_box.rs:251
+#: src/views/project/section_box.rs:253
 #, fuzzy
 msgid "Delete \"{}\" section?"
 msgstr "پروژه \"{}\" لیست شود؟"
 
-#: src/views/project/section_box.rs:254
+#: src/views/project/section_box.rs:256
 #, fuzzy
 msgid "The section and its tasks will be permanently lost."
 msgstr "فهرست و وظایف آن برای همیشه از بین خواهد رفت."
@@ -573,11 +612,11 @@ msgstr "فهرست و وظایف آن برای همیشه از بین خواهد
 msgid "until"
 msgstr "تا"
 
-#: src/views/record/record_window.rs:180
+#: src/views/record/record_window.rs:192
 msgid "Duration can't be 0"
 msgstr "مدت زمان نمی تواند 0 باشد"
 
-#: src/views/record/record_window.rs:188
+#: src/views/record/record_window.rs:200
 #, fuzzy
 msgid "Record end time can't be in future"
 msgstr "زمان نمی تواند در گذشته باشد"
@@ -586,11 +625,11 @@ msgstr "زمان نمی تواند در گذشته باشد"
 msgid "Time can't be in the past"
 msgstr "زمان نمی تواند در گذشته باشد"
 
-#: src/views/search/search_result.rs:55
+#: src/views/search/search_result.rs:71
 msgid "Project"
 msgstr "پروژه"
 
-#: src/views/search/search_result.rs:60
+#: src/views/search/search_result.rs:82
 msgid "Task"
 msgstr "وظیفه"
 
@@ -598,20 +637,20 @@ msgstr "وظیفه"
 msgid "Task moved to {}"
 msgstr ""
 
-#: src/views/sidebar/sidebar_projects.rs:369
+#: src/views/sidebar/sidebar_projects.rs:370
 #, fuzzy
 msgid "{} doesn't have any section"
 msgstr "\"{}\" به فهرست کارهای انجام شده منتقل شد"
 
-#: src/views/task/task_row.rs:225
+#: src/views/task/task_row.rs:232
 msgid "Inbox"
 msgstr ""
 
-#: src/views/task/task_row.rs:475
+#: src/views/task/task_row.rs:508
 msgid "\"{}\" is going to delete"
 msgstr "درحال حذف \"{}\""
 
-#: src/views/task/tasks_done_window.rs:92
+#: src/views/task/tasks_done_window.rs:99
 msgid "Done Tasks"
 msgstr "کارهای انجام شده"
 
