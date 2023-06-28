@@ -172,7 +172,6 @@ impl IPlanApplication {
             Some("background-run"),
             glib::clone!(@weak self as obj => move |settings, _| {
                 let background_run = settings.boolean("background-run");
-                println!("{background_run}");
                 if background_run {
                     obj.request_background();
                 } else {
@@ -217,18 +216,17 @@ impl IPlanApplication {
     }
 
     fn show_search(&self) {
-        let active_window = self.active_window().unwrap();
-        if active_window.widget_name() == "SearchWindow" {
+        let mut active_window = self.active_window().unwrap();
+        let window_name = active_window.widget_name();
+
+        if window_name == "SearchWindow" {
             return;
-        }
-        if active_window.widget_name() != "IPlanWindow" {
-            active_window.close()
+        } else if window_name != "IPlanWindow" {
+            active_window.close();
+            active_window = self.active_window().unwrap();
         }
 
-        let modal = SearchWindow::new(
-            self.upcast_ref::<gtk::Application>(),
-            &self.active_window().unwrap(),
-        );
+        let modal = SearchWindow::new(self.upcast_ref::<gtk::Application>(), &active_window);
         modal.present();
         modal.connect_closure(
             "project-activated",
@@ -260,7 +258,16 @@ impl IPlanApplication {
     }
 
     fn show_preferences(&self) {
-        let active_window = self.active_window().unwrap();
+        let mut active_window = self.active_window().unwrap();
+        let window_name = active_window.widget_name();
+
+        if window_name == "PreferencesWindow" {
+            return;
+        } else if window_name != "IPlanWindow" {
+            active_window.close();
+            active_window = self.active_window().unwrap();
+        }
+
         let preferences_window = PreferencesWindow::new(self);
         preferences_window.set_transient_for(Some(&active_window));
         preferences_window.present();
