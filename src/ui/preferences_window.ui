@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE interface SYSTEM "schema.dtd">
+<interface>
+  <requires lib="gtk" version="4.0" />
+  <requires lib="Adw" version="1.0" />
+  <template class="PreferencesWindow" parent="AdwPreferencesWindow">
+    <property name="width-request">320</property>
+    <property name="height-request">320</property>
+    <child>
+      <object class="AdwPreferencesPage">
+        <child>
+          <object class="AdwPreferencesGroup">
+            <child><!-- Run in Background row -->
+              <object class="AdwActionRow">
+                <property name="title" translatable="yes">Run in Background</property>
+                <property name="subtitle" translatable="yes">Allow send reminders when the app is closed</property>
+                <property name="activatable-widget">background_run</property>
+                <child type="suffix">
+                  <object class="GtkSwitch" id="background_run">
+                    <property name="valign">center</property>
+                  </object>
+                </child>
+              </object>
+            </child><!-- Run in Background row -->
+          </object>
+        </child>
+      </object>
+    </child>
+  </template>
+</interface>

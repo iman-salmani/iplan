@@ -2,6 +2,7 @@ data/ir.imansalmani.IPlan.desktop.in
 data/ir.imansalmani.IPlan.gschema.xml
 data/ir.imansalmani.IPlan.metainfo.xml.in
 src/ui/window.ui
+src/ui/preferences_window.ui
 src/ui/shortcuts_window.ui
 src/ui/backup_window.ui
 src/ui/calendar/calendar.ui
@@ -32,6 +33,7 @@ src/ui/task/tasks_box.ui
 src/ui/task/tasks_done_window.ui
 src/application.rs
 src/views/window.rs
+src/views/preferences_window.rs
 src/views/backup_window.rs
 src/views/calendar/calendar.rs
 src/views/calendar/calendar_page.rs

@@ -22,8 +22,7 @@ use adw::subclass::prelude::*;
 #[cfg(any(target_os = "linux", target_os = "freebsd"))]
 use ashpd::{desktop::background::Background, WindowIdentifier};
 use gettextrs::gettext;
-use gtk::prelude::*;
-use gtk::{gio, glib};
+use gtk::{gio, glib, glib::Properties, prelude::*};
 use std::cell::RefCell;
 use std::thread;
 use std::time::{SystemTime, UNIX_EPOCH};
@@ -35,15 +34,17 @@ use crate::db::operations::{
 };
 use crate::views::search::SearchWindow;
 use crate::views::task::TaskWindow;
-use crate::views::{BackupWindow, IPlanWindow};
+use crate::views::{BackupWindow, IPlanWindow, PreferencesWindow};
 
 mod imp {
     use super::*;
 
-    #[derive(Debug)]
+    #[derive(Default, Debug, Properties)]
+    #[properties(type_wrapper=super::IPlanApplication)]
     pub struct IPlanApplication {
         pub background_hold: RefCell<Option<ApplicationHoldGuard>>,
-        pub settings: gio::Settings,
+        #[property(get, set)]
+        pub settings: RefCell<Option<gio::Settings>>,
     }
 
     #[glib::object_subclass]
@@ -51,39 +52,47 @@ mod imp {
         const NAME: &'static str = "IPlanApplication";
         type Type = super::IPlanApplication;
         type ParentType = adw::Application;
-
-        fn new() -> Self {
-            Self {
-                background_hold: RefCell::default(),
-                settings: gio::Settings::new("ir.imansalmani.IPlan.State"),
-            }
-        }
     }
 
     impl ObjectImpl for IPlanApplication {
         fn constructed(&self) {
             self.parent_constructed();
             let obj = self.obj();
-            obj.setup_gactions();
+            obj.set_settings(gio::Settings::new("ir.imansalmani.IPlan.State"));
             obj.setup_settings();
+            obj.setup_gactions();
             obj.set_accels_for_action("app.quit", &["<primary>q"]);
+            obj.set_accels_for_action("app.preferences", &["<primary>comma"]);
             obj.set_accels_for_action("app.shortcuts", &["<primary>question"]);
             obj.set_accels_for_action("app.search", &["<primary>f"]);
             obj.set_accels_for_action("app.modal-close", &["Escape"]);
+        }
+        fn properties() -> &'static [glib::ParamSpec] {
+            Self::derived_properties()
+        }
+
+        fn property(&self, id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+            self.derived_property(id, pspec)
+        }
+
+        fn set_property(&self, id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
+            self.derived_set_property(id, value, pspec)
         }
     }
 
     impl ApplicationImpl for IPlanApplication {
         fn startup(&self) {
             self.parent_startup();
-            let application = self.obj();
+            let obj = self.obj();
 
             #[cfg(any(target_os = "linux", target_os = "freebsd"))]
-            application.request_background();
+            if obj.settings().unwrap().boolean("background-run") {
+                obj.request_background();
+            }
 
             let reminders = read_reminders(None).unwrap();
             for reminder in reminders {
-                application.send_reminder(reminder);
+                obj.send_reminder(reminder);
             }
         }
 
@@ -158,19 +167,20 @@ impl IPlanApplication {
     }
 
     fn setup_settings(&self) {
-        self.imp().settings.connect_changed(
-            Some("background-play"),
-            glib::clone!(@weak self as this => move |settings, _| {
-                let background_play = settings.boolean("background-play");
-                if background_play {
-                    this.request_background();
+        let settings = self.settings().unwrap();
+        settings.connect_changed(
+            Some("background-run"),
+            glib::clone!(@weak self as obj => move |settings, _| {
+                let background_run = settings.boolean("background-run");
+                println!("{background_run}");
+                if background_run {
+                    obj.request_background();
                 } else {
-                    this.imp().background_hold.replace(None);
+                    obj.request_disable_background();
+                    obj.imp().background_hold.replace(None);
                 }
             }),
         );
-
-        let _dummy = self.imp().settings.boolean("background-play");
     }
 
     fn setup_gactions(&self) {
@@ -179,6 +189,9 @@ impl IPlanApplication {
             .build();
         let about_action = gio::ActionEntry::builder("about")
             .activate(move |app: &Self, _, _| app.show_about())
+            .build();
+        let preferences_action = gio::ActionEntry::builder("preferences")
+            .activate(move |app: &Self, _, _| app.show_preferences())
             .build();
         let shortcuts_action = gio::ActionEntry::builder("shortcuts")
             .activate(move |app: &Self, _, _| app.show_shortcuts())
@@ -195,6 +208,7 @@ impl IPlanApplication {
         self.add_action_entries([
             quit_action,
             about_action,
+            preferences_action,
             shortcuts_action,
             search_action,
             backup_action,
@@ -243,6 +257,13 @@ impl IPlanApplication {
                 );
             }),
         );
+    }
+
+    fn show_preferences(&self) {
+        let active_window = self.active_window().unwrap();
+        let preferences_window = PreferencesWindow::new(self);
+        preferences_window.set_transient_for(Some(&active_window));
+        preferences_window.present();
     }
 
     fn show_shortcuts(&self) {
@@ -308,7 +329,7 @@ impl IPlanApplication {
 
     #[cfg(any(target_os = "linux", target_os = "freebsd"))]
     async fn portal_request_background(&self) {
-        let mut request: ashpd::desktop::background::BackgroundRequest = Background::request()
+        let mut request = Background::request()
             .reason(Some(
                 gettext("IPlan needs to run in the background to send reminders").as_str(),
             ))
@@ -326,10 +347,10 @@ impl IPlanApplication {
                 self.imp().background_hold.replace(Some(self.hold()));
             }
             Err(_) => {
-                self.imp()
-                    .settings
-                    .set_boolean("background-play", false)
-                    .expect("Unable to set background-play settings key");
+                self.settings()
+                    .unwrap()
+                    .set_boolean("background-run", false)
+                    .unwrap();
             }
         }
     }
@@ -339,6 +360,37 @@ impl IPlanApplication {
         let ctx = glib::MainContext::default();
         ctx.spawn_local(glib::clone!(@weak self as app => async move {
             app.portal_request_background().await
+        }));
+    }
+
+    #[cfg(any(target_os = "linux", target_os = "freebsd"))]
+    async fn portal_request_disable_background(&self) {
+        let mut request = Background::request()
+            .reason(Some(
+                gettext("IPlan needs to run in the background to send reminders").as_str(),
+            ))
+            .auto_start(false)
+            .command(&["iplan", "--gapplication-service"]);
+
+        if let Some(window) = self.active_window() {
+            let root = window.native().unwrap();
+            let identifier = WindowIdentifier::from_native(&root).await;
+            request = request.identifier(identifier);
+        }
+
+        match request.send().await.and_then(|r| r.response()) {
+            Ok(_) => {}
+            Err(err) => {
+                println!("Disable autostart: {err}");
+            }
+        }
+    }
+
+    #[cfg(any(target_os = "linux", target_os = "freebsd"))]
+    fn request_disable_background(&self) {
+        let ctx = glib::MainContext::default();
+        ctx.spawn_local(glib::clone!(@weak self as app => async move {
+            app.portal_request_disable_background().await
         }));
     }
 }

@@ -2,6 +2,7 @@
 <gresources>
   <gresource prefix="/ir/imansalmani/iplan">
     <file preprocess="xml-stripblanks">ui/window.ui</file>
+    <file preprocess="xml-stripblanks">ui/preferences_window.ui</file>
     <file preprocess="xml-stripblanks">ui/shortcuts_window.ui</file>
     <file preprocess="xml-stripblanks">ui/backup_window.ui</file>
     <file>ui/style.css</file>

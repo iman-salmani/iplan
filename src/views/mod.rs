@@ -1,6 +1,9 @@
 mod window;
 pub use window::IPlanWindow;
 
+mod preferences_window;
+pub use preferences_window::PreferencesWindow;
+
 mod backup_window;
 pub use backup_window::BackupWindow;
 

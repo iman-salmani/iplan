@@ -16,7 +16,7 @@
     <key name="is-fullscreen" type="b">
       <default>false</default>
     </key>
-    <key name="background-play" type="b">
+    <key name="background-run" type="b">
       <default>true</default>
     </key>
   </schema>

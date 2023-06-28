@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: iplan\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-06-27 12:40+0330\n"
+"POT-Creation-Date: 2023-06-28 16:00+0330\n"
 "PO-Revision-Date: 2023-06-10 12:30-0300\n"
 "Last-Translator: Fúlvio Leo <fulviokaldas@outlook.com>\n"
 "Language: pt_BR\n"
@@ -283,6 +283,10 @@ msgstr "Novo Registro"
 msgid "_Edit Project"
 msgstr "_Editar Projeto"
 
+#: src/ui/window.ui:188
+msgid "_Preferences"
+msgstr ""
+
 #: src/ui/window.ui:192
 msgid "_Backup"
 msgstr "_Backup"
@@ -299,32 +303,45 @@ msgstr "_Sobre o IPlan"
 msgid "_Quit"
 msgstr "_Sair"
 
+#: src/ui/preferences_window.ui:15
+msgid "Run in Background"
+msgstr ""
+
+#: src/ui/preferences_window.ui:16
+msgid "Allow send reminders when the app is closed"
+msgstr ""
+
 #: src/ui/shortcuts_window.ui:13
 msgctxt "shortcut window"
 msgid "Application"
 msgstr "Aplicação"
 
-#: src/ui/shortcuts_window.ui:24
+#: src/ui/shortcuts_window.ui:16
+msgctxt "shortcut window"
+msgid "Preferences"
+msgstr ""
+
+#: src/ui/shortcuts_window.ui:23
 msgctxt "shortcut window"
 msgid "Keyboard Shortcuts"
 msgstr "Atalhos de Teclado"
 
-#: src/ui/shortcuts_window.ui:31
+#: src/ui/shortcuts_window.ui:30
 msgctxt "shortcut window"
 msgid "Primary Menu"
 msgstr "Menu Principal"
 
-#: src/ui/shortcuts_window.ui:37
+#: src/ui/shortcuts_window.ui:36
 msgctxt "shortcut window"
 msgid "Quit"
 msgstr "Sair"
 
-#: src/ui/shortcuts_window.ui:47
+#: src/ui/shortcuts_window.ui:46
 msgctxt "shortcut window"
 msgid "Tasks"
 msgstr "Tarefas"
 
-#: src/ui/shortcuts_window.ui:50
+#: src/ui/shortcuts_window.ui:49
 msgctxt "shortcut window"
 msgid "Search"
 msgstr "Buscar"
@@ -542,11 +559,11 @@ msgid "no done tasks found"
 msgstr "nenhuma tarefa concluída encontrada"
 
 #. Translators: Replace "translator-credits" with your names, one name per line
-#: src/application.rs:279
+#: src/application.rs:300
 msgid "translator-credits"
 msgstr "Fúlvio Leo <fulviokaldas@outlook.com>"
 
-#: src/application.rs:313
+#: src/application.rs:334 src/application.rs:370
 msgid "IPlan needs to run in the background to send reminders"
 msgstr "O IPlan precisa ser executado em segundo plano para enviar lembretes"
 

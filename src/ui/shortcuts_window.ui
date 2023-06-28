@@ -11,14 +11,13 @@
         <child><!-- Application -->
           <object class="GtkShortcutsGroup">
             <property name="title" translatable="yes" context="shortcut window">Application</property>
-            <!-- <child> -->
-            <!-- <object class="GtkShortcutsShortcut"> -->
-            <!-- <property name="title" translatable="yes" context="shortcut
-            window">Preferences</property> -->
-            <!-- <property name="action-name">app.preferences</property> -->
-            <!-- <property name="accelerator">&lt;Primary&gt;comma</property> -->
-            <!-- </object> -->
-            <!-- </child> -->
+            <child>
+              <object class="GtkShortcutsShortcut">
+                <property name="title" translatable="yes" context="shortcut window">Preferences</property>
+                <property name="action-name">app.preferences</property>
+                <property name="accelerator">&lt;Primary&gt;comma</property>
+              </object>
+            </child>
             <child>
               <object class="GtkShortcutsShortcut">
                 <property name="title" translatable="yes" context="shortcut window">Keyboard Shortcuts</property>
