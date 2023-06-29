@@ -25,8 +25,7 @@ Flatpak installed, you can get it from [the Flatpak website](https://flatpak.org
 flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 flatpak install flathub ir.imansalmani.IPlan
 ```
-
-<a href="https://flathub.org/apps/details/ir.imansalmani.IPlan"><img src="https://flathub.org/assets/badges/flathub-badge-en.png" alt="Flathub IPlan" width="200"></a>
+<a href="https://flathub.org/apps/details/ir.imansalmani.IPlan"><img src="https://flathub.org/assets/badges/flathub-badge-en.png" alt="Download on Flathub" width="240"></a>
 
 ## Contributing
 
