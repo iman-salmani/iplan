@@ -105,21 +105,6 @@ impl RecordWindow {
         if state {
             imp.delete_group.set_visible(true);
         }
-        obj.record()
-            .connect_duration_notify(glib::clone!(@weak obj => move |record| {
-                let imp = obj.imp();
-                let difference = obj.end_datetime() - record.start();
-                if difference > 0 {
-                    imp.end_date_row.remove_css_class("error");
-                    imp.end_time_row.remove_css_class("error");
-                } else if difference > 24 * 60 * -60 {
-                    imp.end_date_row.remove_css_class("error");
-                    imp.end_time_row.add_css_class("error");
-                } else  {
-                    imp.end_date_row.add_css_class("error");
-                    imp.end_time_row.remove_css_class("error");
-                }
-            }));
         obj
     }
 
@@ -167,6 +152,22 @@ impl RecordWindow {
             .sync_create()
             .bidirectional()
             .build();
+
+        self.connect_end_datetime_notify(|obj| {
+            let imp = obj.imp();
+            let record = obj.record();
+            let difference = obj.end_datetime() - record.start();
+            if difference > 0 {
+                imp.end_date_row.remove_css_class("error");
+                imp.end_time_row.remove_css_class("error");
+            } else if difference > 24 * 60 * -60 {
+                imp.end_date_row.remove_css_class("error");
+                imp.end_time_row.add_css_class("error");
+            } else {
+                imp.end_date_row.add_css_class("error");
+                imp.end_time_row.remove_css_class("error");
+            }
+        });
     }
 
     fn set_duration(&self, duration: i64) {

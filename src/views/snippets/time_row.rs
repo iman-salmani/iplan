@@ -146,8 +146,16 @@ impl TimeRow {
             .build();
 
         self.connect_time_notify(|obj| {
+            let imp = obj.imp();
             let time = obj.time();
             obj.set_subtitle(&Record::duration_display(time as i64));
+            if time == 0 {
+                imp.seconds_spin_button.add_css_class("error");
+            } else {
+                imp.seconds_spin_button.remove_css_class("error");
+                imp.minute_spin_button.remove_css_class("error");
+                imp.hour_spin_button.remove_css_class("error");
+            }
             obj.emit_by_name::<()>("time-changed", &[&time]);
         });
     }
@@ -161,12 +169,8 @@ impl TimeRow {
         ];
         let mut time = 0;
         for (i, entry) in entries.iter().enumerate() {
-            entry.remove_css_class("error");
             let value = entry.value_as_int();
             time += value * 60_i32.pow(i as u32);
-        }
-        if time == 0 {
-            imp.seconds_spin_button.add_css_class("error");
         }
         time
     }
