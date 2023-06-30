@@ -1,3 +1,4 @@
+use gettextrs::gettext;
 use gtk::{glib, glib::Properties, prelude::*, subclass::prelude::*};
 use rusqlite::{Error, Result, Row};
 use std::cell::Cell;
@@ -54,14 +55,24 @@ impl Record {
 
     pub fn duration_display(duration: i64) -> String {
         if duration == 0 {
-            return "0:0".to_string();
+            return "0:00".to_string();
         }
         let (min, sec) = (duration / 60, duration % 60);
-        if min > 60 {
-            let (hour, min) = (min / 60, min % 60);
-            format!("{}:{}:{}", hour, min, sec)
+        if min < 60 {
+            format!("{}:{:0>2}", min, sec)
         } else {
-            format!("{}:{}", min, sec)
+            let (hour, min) = (min / 60, min % 60);
+            if hour < 24 {
+                format!("{}:{:0>2}:{:0>2}", hour, min, sec)
+            } else {
+                let (day, hour) = (hour / 24, hour % 24);
+                let day_label = if day == 1 {
+                    gettext("day")
+                } else {
+                    gettext("days")
+                };
+                format!("{} {} {:0>2}:{:0>2}", day, day_label, hour, min)
+            }
         }
     }
 }

@@ -190,8 +190,8 @@ impl ProjectHeader {
                     imp.chart_header.set_visible(true);
                 }
 
-                imp.total_time.set_label(&Record::duration_display(total_time / 60));
-                imp.chart_title.set_label(&Record::duration_display(last_7_days / 60));
+                imp.total_time.set_label(&Record::duration_display(total_time));
+                imp.chart_title.set_label(&Record::duration_display(last_7_days));
 
                 let now = glib::DateTime::now_local().unwrap();
                 let start = now.add_days(-6).unwrap();

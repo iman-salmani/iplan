@@ -32,6 +32,7 @@ src/ui/task/task_page.ui
 src/ui/task/tasks_box.ui
 src/ui/task/tasks_done_window.ui
 src/application.rs
+src/db/models/record.rs
 src/views/window.rs
 src/views/preferences_window.rs
 src/views/backup_window.rs
