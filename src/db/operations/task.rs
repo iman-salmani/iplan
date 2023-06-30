@@ -175,7 +175,10 @@ pub fn delete_task(task: &Task) -> Result<()> {
 }
 
 pub fn find_tasks(text: &str, done: bool) -> Result<Vec<Task>> {
-    let filters = if done { "" } else { "AND done = false" };
+    let mut filters = "AND suspended = false".to_string();
+    if !done {
+        filters.push_str(" AND done = false");
+    };
     // Replace % and _ with \% and \_ because they have meaning
     // FIXME: do this without copy string
     let text = text.replace('%', r"\%").replace('_', r"\_");
