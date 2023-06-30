@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: iplan\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-06-30 20:32+0330\n"
+"POT-Creation-Date: 2023-06-30 21:01+0330\n"
 "PO-Revision-Date: 2023-06-22 19:06+0200\n"
 "Last-Translator: Amerey.eu <info@amerey.eu>\n"
 "Language-Team: \n"
@@ -35,17 +35,17 @@ msgstr ""
 "organizovat svůj osobní život nebo práci."
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:10
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:147
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:160
 msgid "Features:"
 msgstr "Funkce:"
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:12
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:149
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:162
 msgid "Grouping tasks with project and list"
 msgstr "Seskupování úkolů s projektem a seznamem"
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:13
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:150
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:163
 msgid "Timer for tasks"
 msgstr "Časomíra pro úkoly"
 
@@ -55,17 +55,17 @@ msgid "Subtasks"
 msgstr "Dílčí úkoly"
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:15
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:99
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:112
 msgid "Calendar for Exploring tasks by date"
 msgstr "Kalendář pro prozkoumávání úkolů podle data"
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:16
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:151
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:164
 msgid "Global search"
 msgstr "Globální vyhledávání"
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:17
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:152
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:165
 msgid "Arranging projects, lists, and tasks by drag and drop"
 msgstr "Uspořádání projektů, seznamů a úkolů přetažením"
 
@@ -95,74 +95,96 @@ msgid "Iman Salmani"
 msgstr "Iman Salmani"
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:65
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:80
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:96
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:78
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:93
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:109
 msgid "New features and updates"
 msgstr "Nové funkce a aktualizace"
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:67
+msgid "Chart of Time spent in last 7 days"
+msgstr ""
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:68
+msgid "Record delete button moved to record row"
+msgstr ""
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:69
+msgid "Improve usability for the phone form factor"
+msgstr ""
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:70
+msgid "Option to disable run in background"
+msgstr ""
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:71
+msgid "Improve duration format"
+msgstr ""
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:72
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:87
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:103
+msgid "Code refactoring, Bug fixes, and UI improvements"
+msgstr "Úprava kódu, oprava chyb a vylepšení uživatelského rozhraní"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:80
 #, fuzzy
 msgid "New design for drag and drop"
 msgstr "Nový design řádků úkolů"
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:68
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:81
 #, fuzzy
 msgid "New Project create window"
 msgstr "Nový projekt"
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:69
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:82
 msgid "Close windows with escape key"
 msgstr ""
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:70
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:83
 #, fuzzy
 msgid "Scroll while dragging task"
 msgstr "Chyba při importování dat"
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:71
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:84
 #, fuzzy
 msgid "Add task inside calendar page"
 msgstr "Jeden týden na stránku kalendáře"
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:72
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:85
 msgid "Drop task on each other"
 msgstr ""
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:73
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:86
 msgid "Rename tasks list to section"
 msgstr ""
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:74
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:90
-msgid "Code refactoring, Bug fixes, and UI improvements"
-msgstr "Úprava kódu, oprava chyb a vylepšení uživatelského rozhraní"
-
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:82
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:95
 msgid "The task row shows the description, subtasks, due date, and reminder"
 msgstr ""
 "Řádek úkolu zobrazuje popis, dílčí úkoly, termín dokončení a připomenutí"
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:83
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:96
 msgid "New design for task rows"
 msgstr "Nový design řádků úkolů"
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:84
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:97
 msgid "Add task button below tasks list"
 msgstr "Přidat tlačítko pod seznam úkolů"
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:85
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:98
 msgid "One week per calendar page"
 msgstr "Jeden týden na stránku kalendáře"
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:86
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:99
 msgid "Today and No Date buttons on top of the date picker"
 msgstr "Tlačítka Dnes a Žádné datum v horní části nástroje pro výběr data"
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:87
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:100
 msgid "Click on a searched task will open the task window"
 msgstr "Kliknutím na hledaný úkol se otevře okno úkolu"
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:88
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:101
 msgid ""
 "Auto start (if the user lets the app run in the background) and checking for "
 "reminders in the startup"
@@ -170,7 +192,7 @@ msgstr ""
 "Automatické spuštění (pokud uživatel nechá aplikaci běžet na pozadí) a "
 "kontrola připomenutí při spuštění"
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:89
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:102
 msgid ""
 "Czech and French and Brazilian Portuguese Translations Added or updated "
 "thanks to Amerey.eu, Irénée Thirion, and Fúlvio Leo"
@@ -178,11 +200,11 @@ msgstr ""
 "Překlady do češtiny, francouzštiny a brazilské portugalštiny přidány nebo "
 "aktualizovány díky Amerey.eu, Irénée Thirion a Fúlvio Leo"
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:98
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:111
 msgid "Backing up system"
 msgstr "Zálohování systému"
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:100
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:113
 msgid ""
 "Tasks can have date and reminders (Application will remain in background for "
 "handling reminders)"
@@ -190,79 +212,79 @@ msgstr ""
 "Úkoly mohou mít datum a připomenutí (Aplikace zůstane na pozadí pro "
 "zpracování připomenutí)"
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:101
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:114
 msgid "When a task doesn't have record, Timer button will move to options"
 msgstr "Když úkol nemá záznam, tlačítko Časovač se přesune na možností"
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:102
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:115
 msgid "Record edit window"
 msgstr "Okno pro úpravu záznamu"
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:103
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:116
 msgid "Now users able to edit record duration by changing start time"
 msgstr "Nyní mohou uživatelé upravovat délku záznamu změnou času zahájení"
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:104
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:117
 msgid "Bug fixes, and UI improvements"
 msgstr "Opravy chyb a vylepšení uživatelského rozhraní"
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:110
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:123
 msgid "Bug fix"
 msgstr "Oprava chyby"
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:115
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:128
 msgid "Code refactoring, and UI improvements"
 msgstr "Úprava kódu a vylepšení uživatelského rozhraní"
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:117
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:130
 msgid "New widgets for selecting Date and Time"
 msgstr "Nové widgety pro výběr data a času"
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:118
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:131
 msgid "Changing duration of the new record by setting end time"
 msgstr "Změna doby trvání nového záznamu nastavením času ukončení"
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:119
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:132
 msgid "Add Brazilian Portuguese Translation thanks to Fúlvio Leo"
 msgstr "Přidán překlad brazilské portugalštiny díky Fúlvio Leovi"
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:125
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:138
 msgid "Subtasks, Bug fixes, and UI improvements"
 msgstr "Dílčí úkoly, opravy chyb a vylepšení uživatelského rozhraní"
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:127
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:140
 msgid "Task Window which contains task info, subtasks, and records"
 msgstr "Okno úkolu, které obsahuje informace o úkolu, dílčí úkoly a záznamy"
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:128
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:141
 msgid "Translation to Persian and Turkish languages thanks to Sabri Ünal"
 msgstr "Překlad do perštiny a turečtiny díky Sabri Ünal"
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:129
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:142
 msgid "New toast message for moving back task from the tasks done list"
 msgstr "Nová zpráva pro přesun zpět úkolu ze seznamu dokončených úkolů"
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:130
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:143
 msgid "Users are now able to pick emojis for their projects in the edit window"
 msgstr "Uživatelé si nyní mohou vybrat emotikony pro své projekty v okně úprav"
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:131
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:144
 msgid "Projects and Tasks now can have descriptions"
 msgstr "Projekty a úkoly nyní mohou mít popisy"
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:137
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:150
 msgid "Performance improvement and records window"
 msgstr "Zlepšení výkonu"
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:139
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:152
 msgid "Lazy loading for project tasks and stat"
 msgstr "Postupné načítání pro projektové úkoly"
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:140
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:153
 msgid "Records window for creating, editing, and deleting records"
 msgstr "Okno záznamů pro vytváření, úpravy a mazání záznamů"
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:146
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:159
 msgid "First stable release."
 msgstr "První stabilní verze."
 

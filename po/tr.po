@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ir.imansalmani.IPlan\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-06-30 20:32+0330\n"
+"POT-Creation-Date: 2023-06-30 21:01+0330\n"
 "PO-Revision-Date: 2023-06-03 10:00+0300\n"
 "Last-Translator: Sabri Ünal <libreajans@gmail.com>\n"
 "Language-Team: Türkçe <takim@gnome.org.tr>\n"
@@ -37,17 +37,17 @@ msgstr ""
 "kullanıcı dostu bir araç olmaktır."
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:10
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:147
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:160
 msgid "Features:"
 msgstr "Özellikler:"
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:12
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:149
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:162
 msgid "Grouping tasks with project and list"
 msgstr "Proje ve listelerle görev gruplama"
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:13
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:150
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:163
 msgid "Timer for tasks"
 msgstr "Görev zamanlayıcısı"
 
@@ -57,17 +57,17 @@ msgid "Subtasks"
 msgstr "Alt görevler"
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:15
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:99
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:112
 msgid "Calendar for Exploring tasks by date"
 msgstr ""
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:16
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:151
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:164
 msgid "Global search"
 msgstr "Genel arama"
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:17
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:152
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:165
 msgid "Arranging projects, lists, and tasks by drag and drop"
 msgstr "Projeleri, listeleri ve görevleri sürükleyip bırakarak düzenleme"
 
@@ -97,170 +97,192 @@ msgid "Iman Salmani"
 msgstr "Iman Salmani"
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:65
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:80
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:96
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:78
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:93
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:109
 #, fuzzy
 msgid "New features and updates"
 msgstr "Özellikler:"
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:67
-msgid "New design for drag and drop"
+msgid "Chart of Time spent in last 7 days"
 msgstr ""
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:68
-#, fuzzy
-msgid "New Project create window"
-msgstr "Yeni proje"
+msgid "Record delete button moved to record row"
+msgstr ""
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:69
-msgid "Close windows with escape key"
+msgid "Improve usability for the phone form factor"
 msgstr ""
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:70
-msgid "Scroll while dragging task"
+msgid "Option to disable run in background"
 msgstr ""
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:71
-msgid "Add task inside calendar page"
+msgid "Improve duration format"
 msgstr ""
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:72
-msgid "Drop task on each other"
-msgstr ""
-
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:73
-msgid "Rename tasks list to section"
-msgstr ""
-
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:74
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:90
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:87
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:103
 #, fuzzy
 msgid "Code refactoring, Bug fixes, and UI improvements"
 msgstr "Kod yeniden düzenleme ve kullanıcı arabirimi iyileştirmeleri"
 
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:80
+msgid "New design for drag and drop"
+msgstr ""
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:81
+#, fuzzy
+msgid "New Project create window"
+msgstr "Yeni proje"
+
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:82
-msgid "The task row shows the description, subtasks, due date, and reminder"
+msgid "Close windows with escape key"
 msgstr ""
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:83
-msgid "New design for task rows"
+msgid "Scroll while dragging task"
 msgstr ""
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:84
-msgid "Add task button below tasks list"
+msgid "Add task inside calendar page"
 msgstr ""
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:85
-msgid "One week per calendar page"
+msgid "Drop task on each other"
 msgstr ""
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:86
+msgid "Rename tasks list to section"
+msgstr ""
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:95
+msgid "The task row shows the description, subtasks, due date, and reminder"
+msgstr ""
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:96
+msgid "New design for task rows"
+msgstr ""
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:97
+msgid "Add task button below tasks list"
+msgstr ""
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:98
+msgid "One week per calendar page"
+msgstr ""
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:99
 msgid "Today and No Date buttons on top of the date picker"
 msgstr ""
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:87
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:100
 msgid "Click on a searched task will open the task window"
 msgstr ""
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:88
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:101
 msgid ""
 "Auto start (if the user lets the app run in the background) and checking for "
 "reminders in the startup"
 msgstr ""
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:89
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:102
 #, fuzzy
 msgid ""
 "Czech and French and Brazilian Portuguese Translations Added or updated "
 "thanks to Amerey.eu, Irénée Thirion, and Fúlvio Leo"
 msgstr "Brezilya Portekizcesi çevirisi eklendi, teşekkürler Fúlvio Leo"
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:98
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:111
 msgid "Backing up system"
 msgstr ""
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:100
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:113
 msgid ""
 "Tasks can have date and reminders (Application will remain in background for "
 "handling reminders)"
 msgstr ""
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:101
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:114
 msgid "When a task doesn't have record, Timer button will move to options"
 msgstr ""
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:102
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:115
 msgid "Record edit window"
 msgstr ""
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:103
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:116
 msgid "Now users able to edit record duration by changing start time"
 msgstr ""
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:104
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:117
 #, fuzzy
 msgid "Bug fixes, and UI improvements"
 msgstr "Alt görevler, Hata düzeltmeler ve arayüz iyileştirmeleri"
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:110
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:123
 msgid "Bug fix"
 msgstr ""
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:115
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:128
 msgid "Code refactoring, and UI improvements"
 msgstr "Kod yeniden düzenleme ve kullanıcı arabirimi iyileştirmeleri"
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:117
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:130
 msgid "New widgets for selecting Date and Time"
 msgstr "Tarih ve Saat seçimi için yeni parçacık"
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:118
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:131
 msgid "Changing duration of the new record by setting end time"
 msgstr "Bitiş zamanını ayarlayarak yeni kaydın süresini değiştirme"
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:119
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:132
 msgid "Add Brazilian Portuguese Translation thanks to Fúlvio Leo"
 msgstr "Brezilya Portekizcesi çevirisi eklendi, teşekkürler Fúlvio Leo"
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:125
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:138
 msgid "Subtasks, Bug fixes, and UI improvements"
 msgstr "Alt görevler, Hata düzeltmeler ve arayüz iyileştirmeleri"
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:127
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:140
 msgid "Task Window which contains task info, subtasks, and records"
 msgstr "Görev bilgilerini, alt görevleri ve kayıtları içeren Görev Penceresi"
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:128
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:141
 msgid "Translation to Persian and Turkish languages thanks to Sabri Ünal"
 msgstr "Farsça ve Türkçe çeviriler eklendi, teşekkürler Sabri Ünal"
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:129
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:142
 msgid "New toast message for moving back task from the tasks done list"
 msgstr ""
 "Tamamlanmış görevler listesinden görevi geri alırken yeni bildirim mesajı"
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:130
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:143
 msgid "Users are now able to pick emojis for their projects in the edit window"
 msgstr ""
 "Kullanıcılar artık düzenleme penceresinde projeleri için emoji seçebiliyor"
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:131
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:144
 msgid "Projects and Tasks now can have descriptions"
 msgstr "Projeler ve Görevlere artık açıklama eklenebiliyor"
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:137
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:150
 msgid "Performance improvement and records window"
 msgstr "Performans iyileştirmesi ve kayıtlar penceresi"
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:139
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:152
 msgid "Lazy loading for project tasks and stat"
 msgstr "Proje görevleri ve istatistikler için geç yükleme"
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:140
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:153
 msgid "Records window for creating, editing, and deleting records"
 msgstr "Kayıt oluşturmak, düzenlemek ve silmek için kayıtlar penceresi"
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:146
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:159
 msgid "First stable release."
 msgstr "İlk stabil sürüm."
 
