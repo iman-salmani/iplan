@@ -202,7 +202,7 @@ impl TaskWindow {
                         }
                 }));
                 transient_for.imp().toast_overlay.add_toast(toast);
-            } else if transient_for_name == "ProjectDoneTasksWindow" {
+            } else if transient_for_name == "TasksDoneWindow" {
                 let transient_for = transient_for.downcast::<TasksDoneWindow>().unwrap();
                 toast.connect_button_clicked(glib::clone!(@weak task, @weak transient_for =>
                     move |_toast| {

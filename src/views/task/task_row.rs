@@ -541,7 +541,7 @@ impl TaskRow {
                     .toast_overlay
                     .add_toast(toast);
             }
-            "ProjectDoneTasksWindow" => {
+            "TasksDoneWindow" => {
                 window
                     .downcast::<TasksDoneWindow>()
                     .unwrap()
