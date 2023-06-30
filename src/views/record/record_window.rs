@@ -1,5 +1,6 @@
 use gettextrs::gettext;
 use glib::Properties;
+use glib::{once_cell::sync::Lazy, subclass::Signal};
 use gtk::{glib, prelude::*, subclass::prelude::*};
 use std::cell::{Cell, RefCell};
 
@@ -57,6 +58,19 @@ mod imp {
             self.parent_constructed();
             let obj = self.obj();
             obj.add_bindings();
+        }
+        fn signals() -> &'static [glib::subclass::Signal] {
+            static SIGNALS: Lazy<Vec<Signal>> = Lazy::new(|| {
+                vec![
+                    Signal::builder("record-created")
+                        .param_types([Record::static_type()])
+                        .build(),
+                    Signal::builder("record-updated")
+                        .param_types([Record::static_type()])
+                        .build(),
+                ]
+            });
+            SIGNALS.as_ref()
         }
         fn properties() -> &'static [glib::ParamSpec] {
             Self::derived_properties()
@@ -206,14 +220,10 @@ impl RecordWindow {
 
         if self.state() {
             update_record(&record).expect("Failed to update record");
+            self.emit_by_name::<()>("record-updated", &[&record]);
         } else {
-            let record = create_record(record.start(), record.task(), record.duration())
-                .expect("Failed to create record");
-            self.transient_for()
-                .and_downcast::<gtk::Window>()
-                .unwrap()
-                .activate_action("record.created", Some(&record.id().to_variant()))
-                .expect("Failed to send record.created action");
+            let record = create_record(record.start(), record.task(), record.duration()).unwrap();
+            self.emit_by_name::<()>("record-created", &[&record]);
         }
 
         self.close();

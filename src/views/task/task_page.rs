@@ -1,4 +1,4 @@
-use adw::traits::ExpanderRowExt;
+use adw::traits::{ActionRowExt, ExpanderRowExt};
 use gtk::{glib, prelude::*, subclass::prelude::*};
 use std::time::{SystemTime, UNIX_EPOCH};
 use std::unimplemented;
@@ -66,9 +66,6 @@ mod imp {
                     let row = RecordRow::new(records.last().unwrap().to_owned());
                     imp.records_box.append(&row);
                 }
-            });
-            klass.install_action("record.delete", None, move |obj, _, _value| {
-                obj.imp().task_row.refresh_timer();
             });
         }
 
@@ -146,14 +143,6 @@ impl TaskPage {
 
     pub fn task(&self) -> Task {
         self.imp().task_row.task()
-    }
-
-    pub fn add_record(&self, record_id: i64) {
-        let imp = self.imp();
-        imp.task_row.refresh_timer();
-        let record = read_record(record_id).expect("Failed to read record");
-        let row = RecordRow::new(record);
-        imp.records_box.append(&row);
     }
 
     pub fn add_reminder(&self, reminder_id: i64) {
@@ -234,6 +223,17 @@ impl TaskPage {
         let record = Record::new(0, now as i64, 0, self.task().id());
         let modal = RecordWindow::new(&win.application().unwrap(), &win, record, false);
         modal.present();
+        modal.connect_closure(
+            "record-created",
+            true,
+            glib::closure_local!(@watch self as obj => move |_win: RecordWindow, record: Record| {
+                let imp = obj.imp();
+                imp.task_row.refresh_timer();
+                let row = RecordRow::new(record);
+                imp.records_box.append(&row);
+                }
+            ),
+        );
     }
 
     #[template_callback]

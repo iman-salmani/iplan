@@ -98,8 +98,7 @@ impl RecordRow {
     fn refresh(&self) {
         self.set_labels();
         if self.parent().is_some() {
-            self.activate_action("task.duration-update", None)
-                .expect("Failed to send task.duration-update action");
+            self.activate_action("task.duration-update", None).unwrap();
         }
     }
 
@@ -108,24 +107,13 @@ impl RecordRow {
         let win = self.root().and_downcast::<gtk::Window>().unwrap();
         let modal = RecordWindow::new(&win.application().unwrap(), &win, self.record(), true);
         modal.present();
-        modal.connect_close_request(
-            glib::clone!(@weak self as obj => @default-return gtk::Inhibit(false), move |_| {
-                match read_record(obj.record().id()) {
-                    Ok(reminder) => {
-                        obj.set_record(reminder);
-                        obj.refresh();
-                    }
-                    Err(err) => match err {
-                        rusqlite::Error::QueryReturnedNoRows  => {
-                            obj.activate_action("record.delete", None)
-                                .expect("Failed to send record.delete action");
-                            let records_box = obj.parent().and_downcast::<gtk::ListBox>().unwrap();
-                            records_box.remove(&obj);
-                        },
-                        err => panic!("{err}")
-                    }
-                }
-                gtk::Inhibit(false)
+        modal.connect_closure(
+            "record-updated",
+            true,
+            glib::closure_local!(@watch self as obj => move |_win: RecordWindow, record: Record| {
+                obj.set_record(record);
+                obj.refresh();
+                obj.changed();
             }),
         );
     }
@@ -133,7 +121,7 @@ impl RecordRow {
     #[template_callback]
     fn handle_delete_button_clicked(&self, _: gtk::Button) {
         delete_record(self.record().id()).unwrap();
-        self.activate_action("record.delete", None).unwrap();
+        self.activate_action("task.duration-update", None).unwrap();
         let parent = self.parent().and_downcast::<gtk::ListBox>().unwrap();
         parent.remove(self);
     }
