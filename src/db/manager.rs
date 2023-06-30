@@ -4,7 +4,7 @@ use std::cmp::Ordering;
 
 use crate::db::migrate::MIGRATIONS;
 
-const DB_VERSION: u8 = 8;
+const DB_VERSION: u8 = 9;
 
 pub fn get_connection() -> Connection {
     Connection::open(glib::user_data_dir().join("data.db")).expect("Failed connect to database")

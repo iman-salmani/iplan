@@ -240,9 +240,11 @@ impl IPlanApplication {
             "task-activated",
             true,
             glib::closure_local!(@watch self as obj => move |_: SearchWindow, task: Task| {
-                let project = read_project(task.project()).unwrap();
                 let main_window = obj.window_by_name("IPlanWindow").unwrap().downcast::<IPlanWindow>().unwrap();
-                main_window.change_project(project);
+
+                if let Ok(project) = read_project(task.project()) {
+                    main_window.change_project(project)
+                }
 
                 let modal = TaskWindow::new(obj.upcast_ref::<gtk::Application>(), &main_window, task);
                 modal.present();

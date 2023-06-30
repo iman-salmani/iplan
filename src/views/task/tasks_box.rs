@@ -284,7 +284,7 @@ impl TasksBox {
     fn create_empty_task(&self) -> Task {
         match self.items_wrapper().expect("items_wrapper cant be None") {
             TasksBoxWrapper::Section(id, project) => create_task("", project, id, 0).unwrap(),
-            TasksBoxWrapper::Task(id, _) => create_task("", 0, 0, id).unwrap(),
+            TasksBoxWrapper::Task(id, project) => create_task("", project, 0, id).unwrap(),
             TasksBoxWrapper::Date(date) => {
                 let task = create_task("", 0, 0, 0).unwrap();
                 task.set_date(date);
@@ -456,7 +456,6 @@ impl TasksBox {
         } else if row.moving_out() {
             let task_parent = task.parent();
             task.set_section(0);
-            task.set_project(0);
             task.set_position(new_subtask_position(task_parent));
             update_task(&task).unwrap();
             imp.items_box.remove(&row);

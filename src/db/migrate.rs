@@ -2,7 +2,7 @@ use rusqlite::Result;
 
 use crate::db::get_connection;
 
-pub static MIGRATIONS: [fn() -> Result<()>; 8] = [to1, to2, to3, to4, to5, to6, to7, to8];
+pub static MIGRATIONS: [fn() -> Result<()>; 9] = [to1, to2, to3, to4, to5, to6, to7, to8, to9];
 
 fn to1() -> Result<()> {
     // Create records from duration column in tasks table and drop it.
@@ -127,5 +127,33 @@ fn to8() -> Result<()> {
     let conn = get_connection();
     conn.execute("ALTER TABLE lists RENAME TO sections;", ())?;
     conn.execute("ALTER TABLE tasks RENAME COLUMN list TO section;", ())?;
+    Ok(())
+}
+
+fn to9() -> Result<()> {
+    // Set project id for subtasks
+    let conn = get_connection();
+    let mut stmt = conn.prepare("SELECT id, parent FROM tasks WHERE parent != 0")?;
+    let mut subtasks = stmt.query([])?;
+    while let Some(subtask) = subtasks.next()? {
+        let id = subtask.get::<usize, i64>(0)?;
+        let mut parent_id = subtask.get::<usize, i64>(1)?;
+        let mut project = None;
+        while project == None {
+            // FIXME: needs to have a max cycle or refactor
+            let mut stmt = conn.prepare("SELECT parent, project FROM tasks WHERE id = ?")?;
+            let parent = stmt.query_row([parent_id], |row| {
+                Ok((row.get::<usize, i64>(0)?, row.get::<usize, i64>(1)?))
+            })?;
+            parent_id = parent.0;
+            if parent_id == 0 {
+                project = Some(parent.1);
+            }
+        }
+        conn.execute(
+            &format!("UPDATE tasks SET project = ?2 WHERE id = ?1"),
+            (id, project.unwrap()),
+        )?;
+    }
     Ok(())
 }
