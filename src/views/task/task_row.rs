@@ -317,8 +317,14 @@ impl TaskRow {
     pub fn refresh_timer(&self) {
         let imp = self.imp();
         if imp.timer_status.get() != TimerStatus::On {
+            let duration = self.task().duration();
             imp.timer_button_content
-                .set_label(&self.task().duration_display());
+                .set_label(&Record::duration_display(duration));
+            if duration == 0 {
+                self.move_timer_button(false);
+            } else {
+                self.move_timer_button(true);
+            }
         }
     }
 
@@ -467,8 +473,7 @@ impl TaskRow {
                         update_record(&record).expect("Failed to update record");
                         imp.timer_button_content.set_label(&obj.task().duration_display());
                         if obj.parent().is_some() {
-                            obj.activate_action("project.update", None)
-                                .expect("Failed to send project.update");
+                            obj.activate_action("project.update", None).unwrap();
                         }
                         glib::Continue(false)
                     },

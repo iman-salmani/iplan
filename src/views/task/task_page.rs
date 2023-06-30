@@ -58,10 +58,9 @@ mod imp {
             klass.install_action("project.update", None, move |obj, _, _value| {
                 let task = obj.task();
                 let imp = obj.imp();
-                let mut records =
-                    read_records(task.id(), false, None, None).expect("Failed to read records");
+                let mut records = read_records(task.id(), false, None, None).unwrap();
                 imp.task_row.refresh_timer();
-                if imp.records_box.observe_children().n_items() != (records.len() + 1) as u32 {
+                if imp.records_box.observe_children().n_items() - 1 != records.len() as u32 {
                     records.sort_by_key(|record| record.id());
                     let row = RecordRow::new(records.last().unwrap().to_owned());
                     imp.records_box.append(&row);
