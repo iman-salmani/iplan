@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: iplan\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-06-30 18:56+0330\n"
+"POT-Creation-Date: 2023-06-30 20:10+0330\n"
 "PO-Revision-Date: 2023-06-10 12:30-0300\n"
 "Last-Translator: Fúlvio Leo <fulviokaldas@outlook.com>\n"
 "Language: pt_BR\n"
@@ -269,37 +269,41 @@ msgstr "Janela de registros para criar, editar e excluir registros"
 msgid "First stable release."
 msgstr "Primeira versão estável"
 
-#: src/ui/window.ui:140 src/ui/snippets/date_row.ui:24
+#: src/ui/window.ui:120
+msgid "Main Menu"
+msgstr ""
+
+#: src/ui/window.ui:141 src/ui/snippets/date_row.ui:24
 #: src/views/calendar/tasks_list.rs:104 src/views/snippets/date_row.rs:121
 msgid "Today"
 msgstr "Hoje"
 
-#: src/ui/window.ui:178
+#: src/ui/window.ui:179
 #, fuzzy
 msgid "New _Section"
 msgstr "Novo Registro"
 
-#: src/ui/window.ui:182
+#: src/ui/window.ui:183
 msgid "_Edit Project"
 msgstr "_Editar Projeto"
 
-#: src/ui/window.ui:188
+#: src/ui/window.ui:189 src/ui/window.ui:217
 msgid "_Preferences"
 msgstr ""
 
-#: src/ui/window.ui:192
+#: src/ui/window.ui:193 src/ui/window.ui:221
 msgid "_Backup"
 msgstr "_Backup"
 
-#: src/ui/window.ui:196
+#: src/ui/window.ui:197 src/ui/window.ui:225
 msgid "_Keyboard Shortcuts"
 msgstr "_Atalhos de Teclado"
 
-#: src/ui/window.ui:200
+#: src/ui/window.ui:201 src/ui/window.ui:229
 msgid "_About IPlan"
 msgstr "_Sobre o IPlan"
 
-#: src/ui/window.ui:206
+#: src/ui/window.ui:207 src/ui/window.ui:235
 msgid "_Quit"
 msgstr "_Sair"
 
@@ -572,11 +576,11 @@ msgstr "Hoje"
 msgid "days"
 msgstr ""
 
-#: src/views/window.rs:96 src/views/window.rs:168
+#: src/views/window.rs:102 src/views/window.rs:174
 msgid "Personal"
 msgstr "Pessoal"
 
-#: src/views/window.rs:98 src/views/window.rs:169
+#: src/views/window.rs:104 src/views/window.rs:175
 #: src/views/project/project_create_window.rs:148
 msgid "Tasks"
 msgstr "Tarefas"
@@ -621,7 +625,7 @@ msgstr "Novo Registro"
 msgid "\"{}\" moved to the done tasks section"
 msgstr "\"{}\" movido para a lista de tarefas concluídas"
 
-#: src/views/project/section_box.rs:74 src/views/task/task_row.rs:509
+#: src/views/project/section_box.rs:74 src/views/task/task_row.rs:514
 msgid "Undo"
 msgstr "Desfazer"
 
@@ -678,7 +682,7 @@ msgstr "\"{}\" movido para a lista de tarefas concluídas"
 msgid "Inbox"
 msgstr ""
 
-#: src/views/task/task_row.rs:508
+#: src/views/task/task_row.rs:513
 msgid "\"{}\" is going to delete"
 msgstr "\"{}\" irá deletar"
 

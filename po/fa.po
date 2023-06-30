@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: iplan\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-06-30 18:56+0330\n"
+"POT-Creation-Date: 2023-06-30 20:10+0330\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Iman Salmani <contact.imansalmani@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -268,37 +268,41 @@ msgstr "پنجره رکوردها برای ایجاد، ویرایش و حذف �
 msgid "First stable release."
 msgstr "اولین انتشار پایدار."
 
-#: src/ui/window.ui:140 src/ui/snippets/date_row.ui:24
+#: src/ui/window.ui:120
+msgid "Main Menu"
+msgstr ""
+
+#: src/ui/window.ui:141 src/ui/snippets/date_row.ui:24
 #: src/views/calendar/tasks_list.rs:104 src/views/snippets/date_row.rs:121
 msgid "Today"
 msgstr "امروز"
 
-#: src/ui/window.ui:178
+#: src/ui/window.ui:179
 #, fuzzy
 msgid "New _Section"
 msgstr "رکورد جدید"
 
-#: src/ui/window.ui:182
+#: src/ui/window.ui:183
 msgid "_Edit Project"
 msgstr "_ویرایش پروژه"
 
-#: src/ui/window.ui:188
+#: src/ui/window.ui:189 src/ui/window.ui:217
 msgid "_Preferences"
 msgstr ""
 
-#: src/ui/window.ui:192
+#: src/ui/window.ui:193 src/ui/window.ui:221
 msgid "_Backup"
 msgstr "_پشتیبان گیری"
 
-#: src/ui/window.ui:196
+#: src/ui/window.ui:197 src/ui/window.ui:225
 msgid "_Keyboard Shortcuts"
 msgstr "_میانبرهای صفحه کلید"
 
-#: src/ui/window.ui:200
+#: src/ui/window.ui:201 src/ui/window.ui:229
 msgid "_About IPlan"
 msgstr "_درباره آیپلن"
 
-#: src/ui/window.ui:206
+#: src/ui/window.ui:207 src/ui/window.ui:235
 msgid "_Quit"
 msgstr "_خروج"
 
@@ -567,11 +571,11 @@ msgstr "امروز"
 msgid "days"
 msgstr ""
 
-#: src/views/window.rs:96 src/views/window.rs:168
+#: src/views/window.rs:102 src/views/window.rs:174
 msgid "Personal"
 msgstr "شخصی"
 
-#: src/views/window.rs:98 src/views/window.rs:169
+#: src/views/window.rs:104 src/views/window.rs:175
 #: src/views/project/project_create_window.rs:148
 msgid "Tasks"
 msgstr "وظایف"
@@ -616,7 +620,7 @@ msgstr "رکورد جدید"
 msgid "\"{}\" moved to the done tasks section"
 msgstr "\"{}\" به فهرست کارهای انجام شده منتقل شد"
 
-#: src/views/project/section_box.rs:74 src/views/task/task_row.rs:509
+#: src/views/project/section_box.rs:74 src/views/task/task_row.rs:514
 msgid "Undo"
 msgstr "برگرد"
 
@@ -673,7 +677,7 @@ msgstr "\"{}\" به فهرست کارهای انجام شده منتقل شد"
 msgid "Inbox"
 msgstr ""
 
-#: src/views/task/task_row.rs:508
+#: src/views/task/task_row.rs:513
 msgid "\"{}\" is going to delete"
 msgstr "درحال حذف \"{}\""
 

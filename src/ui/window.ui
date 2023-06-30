@@ -113,10 +113,11 @@
                       </object>
                     </child><!-- End Calendar header -->
                     <child type="end"><!-- Primary Menu Button -->
-                      <object class="GtkMenuButton">
+                      <object class="GtkMenuButton" id="primary_menu_button">
                         <property name="icon-name">open-menu-symbolic</property>
-                        <property name="menu-model">primary_menu_model</property>
+                        <property name="menu-model">primary_project_menu_model</property>
                         <property name="primary">true</property>
+                        <property name="tooltip-text" translatable="yes">Main Menu</property>
                       </object>
                     </child><!-- End Primary Menu Button -->
                     <child type="end">
@@ -171,8 +172,8 @@
     </property>
     <!-- End Flap -->
   </template>
-  <!-- Primary Menu Model -->
-  <menu id='primary_menu_model'>
+  <!-- Primary Project Menu Model -->
+  <menu id='primary_project_menu_model'>
     <section>
       <item>
         <attribute name='label' translatable='yes'>New _Section</attribute>
@@ -208,5 +209,33 @@
       </item>
     </section>
   </menu>
-  <!-- End Primary Menu Model -->
+  <!-- End Primary Project Menu Model -->
+  <!-- Primary Calendar Menu Model -->
+  <menu id='primary_calendar_menu_model'>
+    <section>
+      <item>
+        <attribute name='label' translatable='yes'>_Preferences</attribute>
+        <attribute name='action'>app.preferences</attribute>
+      </item>
+      <item>
+        <attribute name="label" translatable="yes">_Backup</attribute>
+        <attribute name='action'>app.backup</attribute>
+      </item>
+      <item>
+        <attribute name='label' translatable='yes'>_Keyboard Shortcuts</attribute>
+        <attribute name='action'>app.shortcuts</attribute>
+      </item>
+      <item>
+        <attribute name='label' translatable='yes'>_About IPlan</attribute>
+        <attribute name='action'>app.about</attribute>
+      </item>
+    </section>
+    <section>
+      <item>
+        <attribute name='label' translatable='yes'>_Quit</attribute>
+        <attribute name='action'>app.quit</attribute>
+      </item>
+    </section>
+  </menu>
+  <!-- End Primary Calendar Menu Model -->
 </interface>

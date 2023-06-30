@@ -42,6 +42,12 @@ mod imp {
         #[template_child]
         pub project_layout_button: TemplateChild<gtk::Button>,
         #[template_child]
+        pub primary_menu_button: TemplateChild<gtk::MenuButton>,
+        #[template_child]
+        pub primary_project_menu_model: TemplateChild<gio::MenuModel>,
+        #[template_child]
+        pub primary_calendar_menu_model: TemplateChild<gio::MenuModel>,
+        #[template_child]
         pub sidebar_projects: TemplateChild<SidebarProjects>,
         #[template_child]
         pub project_header: TemplateChild<ProjectHeader>,
@@ -215,6 +221,8 @@ impl IPlanWindow {
         let imp = self.imp();
         imp.calendar.set_visible(false);
         imp.calendar_button.add_css_class("flat");
+        imp.primary_menu_button
+            .set_menu_model(Some(&imp.primary_project_menu_model.get()));
     }
 
     #[template_callback]
@@ -261,6 +269,9 @@ impl IPlanWindow {
         }
         let projects_box: &gtk::ListBox = imp.sidebar_projects.imp().projects_box.as_ref();
         projects_box.unselect_row(&projects_box.selected_row().unwrap());
+
+        imp.primary_menu_button
+            .set_menu_model(Some(&imp.primary_calendar_menu_model.get()));
     }
 
     #[template_callback]
