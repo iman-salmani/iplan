@@ -3,137 +3,133 @@
 <interface>
   <requires lib="gtk" version="4.0" />
   <requires lib="Adw" version="1.0" />
-  <template class="ProjectEditWindow" parent="AdwWindow">
-    <property name="width-request">480</property>
+  <template class="ProjectEditWindow" parent="GtkWindow">
+    <property name="width-request">360</property>
+    <property name="height-request">294</property>
+    <property name="default-height">480</property>
     <property name="modal">true</property>
     <property name="destroy-with-parent">true</property>
-    <property name="content"><!-- Content -->
-      <object class="GtkBox">
-        <property name="orientation">vertical</property>
-        <child><!-- Header -->
-          <object class="AdwHeaderBar">
-            <property name="title-widget">
-              <object class="GtkLabel">
-                <property name="label" translatable="yes">Edit Project</property>
+    <property name="titlebar"><!-- Header -->
+      <object class="AdwHeaderBar">
+        <property name="title-widget">
+          <object class="GtkLabel">
+            <property name="label" translatable="yes">Edit Project</property>
+            <style>
+              <class name="heading" />
+            </style>
+          </object>
+        </property>
+        <style>
+          <class name="flat" />
+        </style>
+      </object>
+    </property><!-- End Header -->
+    <child><!-- Content -->
+      <object class="GtkScrolledWindow">
+        <child>
+          <object class="GtkBox">
+            <property name="orientation">vertical</property>
+            <child><!-- Icon -->
+              <object class="GtkLabel" id="icon_label">
+                <property name="margin-top">12</property>
+                <property name="margin-bottom">12</property>
                 <style>
-                  <class name="heading" />
+                  <class name="project-icon" />
+                  <class name="large" />
                 </style>
               </object>
-            </property>
-            <style>
-              <class name="flat" />
-            </style>
-          </object>
-        </child>
-        <!-- End Header -->
-        <child><!-- Icon -->
-          <object class="GtkLabel" id="icon_label">
-            <property name="margin-top">12</property>
-            <property name="margin-bottom">12</property>
-            <style>
-              <class name="project-icon" />
-              <class name="large" />
-            </style>
-          </object>
-        </child>
-        <!-- End Icon -->
-        <child><!-- Profile -->
-          <object class="AdwPreferencesGroup">
-            <property name="margin-top">12</property>
-            <property name="margin-bottom">12</property>
-            <property name="margin-start">12</property>
-            <property name="margin-end">12</property>
-            <child><!-- Name -->
-              <object class="AdwEntryRow" id="name_entry_row">
-                <property name="title" translatable="yes">Name</property>
-                <property name="show-apply-button">true</property>
-                <signal name="apply" handler="handle_name_entry_row_apply" swapped="true" />
-              </object>
-            </child>
-            <!-- End Name -->
-            <child><!-- Icon Row -->
-              <object class="AdwActionRow">
-                <property name="title" translatable="yes">Icon</property>
-                <property name="activatable-widget">icon_menu_button</property>
-                <child type="suffix">
-                  <object class="GtkMenuButton" id="icon_menu_button">
-                    <property name="has-frame">false</property>
-                    <property name="valign">center</property>
-                    <property name="popover">
-                      <object class="GtkEmojiChooser">
-                        <signal name="emoji-picked" handler="handle_project_emoji_picked"
-                          swapped="true" />
+            </child><!-- End Icon -->
+            <child><!-- Profile -->
+              <object class="AdwPreferencesGroup">
+                <property name="margin-top">12</property>
+                <property name="margin-bottom">12</property>
+                <property name="margin-start">12</property>
+                <property name="margin-end">12</property>
+                <child><!-- Name -->
+                  <object class="AdwEntryRow" id="name_entry_row">
+                    <property name="title" translatable="yes">Name</property>
+                    <property name="show-apply-button">true</property>
+                    <signal name="apply" handler="handle_name_entry_row_apply" swapped="true" />
+                  </object>
+                </child><!-- End Name -->
+                <child><!-- Icon Row -->
+                  <object class="AdwActionRow">
+                    <property name="title" translatable="yes">Icon</property>
+                    <property name="activatable-widget">icon_menu_button</property>
+                    <child type="suffix">
+                      <object class="GtkMenuButton" id="icon_menu_button">
+                        <property name="has-frame">false</property>
+                        <property name="valign">center</property>
+                        <property name="popover">
+                          <object class="GtkEmojiChooser">
+                            <signal name="emoji-picked" handler="handle_project_emoji_picked"
+                              swapped="true" />
+                          </object>
+                        </property>
                       </object>
-                    </property>
+                    </child>
                   </object>
-                </child>
-              </object>
-            </child>
-            <!-- End Icon Row -->
-            <child><!-- Description -->
-              <object class="AdwExpanderRow" id="description_expander_row">
-                <property name="title" translatable="yes">Description</property>
-                <property name="subtitle-lines">1</property>
-                <child>
-                  <object class="GtkTextView">
-                    <property name="height-request">128</property>
-                    <property name="top-margin">3</property>
-                    <property name="bottom-margin">3</property>
-                    <property name="left-margin">3</property>
-                    <property name="right-margin">3</property>
-                    <property name="wrap-mode">word</property>
-                    <property name="buffer">
-                      <object class="GtkTextBuffer" id="description_buffer">
+                </child><!-- End Icon Row -->
+                <child><!-- Description -->
+                  <object class="AdwExpanderRow" id="description_expander_row">
+                    <property name="title" translatable="yes">Description</property>
+                    <property name="subtitle-lines">1</property>
+                    <child>
+                      <object class="GtkTextView">
+                        <property name="height-request">80</property>
+                        <property name="top-margin">3</property>
+                        <property name="bottom-margin">3</property>
+                        <property name="left-margin">3</property>
+                        <property name="right-margin">3</property>
+                        <property name="wrap-mode">word</property>
+                        <property name="buffer">
+                          <object class="GtkTextBuffer" id="description_buffer">
+                          </object>
+                        </property>
                       </object>
-                    </property>
+                    </child>
                   </object>
-                </child>
+                </child><!-- End Description -->
               </object>
-            </child>
-            <!-- End Description -->
+            </child><!-- End Profile -->
+            <child><!-- Delete & Archive -->
+              <object class="AdwPreferencesGroup">
+                <property name="margin-top">12</property>
+                <property name="margin-bottom">12</property>
+                <property name="margin-start">12</property>
+                <property name="margin-end">12</property>
+                <child><!-- Archive -->
+                  <object class="AdwActionRow">
+                    <property name="title" translatable="yes">Archive</property>
+                    <property name="activatable-widget">archive_switch</property>
+                    <child type="suffix">
+                      <object class="GtkSwitch" id="archive_switch">
+                        <property name="valign">center</property>
+                      </object>
+                    </child>
+                  </object>
+                </child><!-- End Archive-->
+                <child><!-- Delete -->
+                  <object class="AdwActionRow">
+                    <property name="title" translatable="yes">Delete</property>
+                    <property name="activatable-widget">delete_button</property>
+                    <child type="suffix">
+                      <object class="GtkButton" id="delete_button">
+                        <property name="valign">center</property>
+                        <property name="icon-name">user-trash-symbolic</property>
+                        <signal name="clicked" handler="handle_delete_button_clicked" swapped="true" />
+                        <style>
+                          <class name="flat" />
+                        </style>
+                      </object>
+                    </child>
+                  </object>
+                </child><!-- Delete -->
+              </object>
+            </child><!-- End Delete & Archive -->
           </object>
         </child>
-        <!-- End Profile -->
-        <child><!-- Delete & Archive -->
-          <object class="AdwPreferencesGroup">
-            <property name="margin-top">12</property>
-            <property name="margin-bottom">12</property>
-            <property name="margin-start">12</property>
-            <property name="margin-end">12</property>
-            <child><!-- Archive -->
-              <object class="AdwActionRow">
-                <property name="title" translatable="yes">Archive</property>
-                <property name="activatable-widget">archive_switch</property>
-                <child type="suffix">
-                  <object class="GtkSwitch" id="archive_switch">
-                    <property name="valign">center</property>
-                  </object>
-                </child>
-              </object>
-            </child>
-            <!-- End Archive-->
-            <child><!-- Delete -->
-              <object class="AdwActionRow">
-                <property name="title" translatable="yes">Delete</property>
-                <property name="activatable-widget">delete_button</property>
-                <child type="suffix">
-                  <object class="GtkButton" id="delete_button">
-                    <property name="valign">center</property>
-                    <property name="icon-name">user-trash-symbolic</property>
-                    <signal name="clicked" handler="handle_delete_button_clicked" swapped="true" />
-                    <style>
-                      <class name="flat" />
-                    </style>
-                  </object>
-                </child>
-              </object>
-            </child>
-            <!-- Delete -->
-          </object>
-        </child>
-        <!-- End Delete & Archive -->
       </object>
-    </property>
-    <!-- End Content -->
+    </child><!-- End Content -->
   </template>
 </interface>

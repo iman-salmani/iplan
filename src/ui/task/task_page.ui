@@ -124,38 +124,53 @@
     <child><!-- SubTasks Page -->
       <object class="TasksBox" id="subtasks_box">
         <property name="vexpand">true</property>
+        <property name="scrollable">false</property>
         <signal name="task-activated" handler="subtask_activated" swapped="true" />
       </object>
     </child> <!-- End SubTasks Page -->
     <child><!-- Records Page -->
-      <object class="GtkScrolledWindow" id="records_page">
+      <object class="GtkListBox" id="records_box">
+        <property name="selection-mode">none</property>
+        <property name="margin-top">6</property>
+        <property name="margin-bottom">6</property>
+        <property name="margin-start">12</property>
+        <property name="margin-end">12</property>
         <property name="visible"
           bind-source="subtasks_box"
           bind-property="visible"
           bind-flags="sync-create|invert-boolean" />
-        <child><!-- Records Box -->
-          <object class="GtkListBox" id="records_box">
-            <property name="selection-mode">none</property>
-            <property name="margin-top">6</property>
-            <property name="margin-bottom">6</property>
-            <property name="margin-start">12</property>
-            <property name="margin-end">12</property>
-            <property name="vexpand">true</property>
+        <style>
+          <class name="boxed-list" />
+        </style>
+        <child type="placeholder">
+          <object class="GtkButton">
+            <property name="height-request">100</property>
+            <signal name="clicked" handler="handle_new_record_button_clicked" swapped="true" />
             <style>
-              <class name="boxed-list" />
+              <class name="card" />
             </style>
-            <child type="placeholder">
-              <object class="AdwStatusPage" id="search_results_placeholder">
-                <property name="icon-name">preferences-system-time-symbolic</property>
-                <property name="title" translatable="yes">no records found</property>
-                <property name="description" translatable="yes">Use add button up there or start a timer</property>
-                <style>
-                  <class name="compact" />
-                </style>
+            <child>
+              <object class="GtkBox">
+                <property name="spacing">12</property>
+                <property name="valign">center</property>
+                <property name="halign">center</property>
+                <child>
+                  <object class="GtkImage">
+                    <property name="icon-name">preferences-system-time-symbolic</property>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkLabel">
+                    <property name="label" translatable="yes">New Record</property>
+                    <style>
+                      <class name="title-4" />
+                    </style>
+                  </object>
+                </child>
               </object>
             </child>
           </object>
-        </child><!-- End Records Box -->
+        </child>
       </object>
     </child><!-- End Records Page -->
   </template>

@@ -4,7 +4,8 @@
   <requires lib="gtk" version="4.0" />
   <requires lib="Adw" version="1.0" />
   <template class="TasksDoneWindow" parent="AdwWindow">
-    <property name="width-request">320</property>
+    <property name="width-request">360</property>
+    <property name="height-request">294</property>
     <property name="modal">true</property>
     <property name="destroy-with-parent">true</property>
     <property name="content"><!-- Content -->
@@ -29,8 +30,6 @@
             <child><!-- Scrolled Window -->
               <object class="GtkScrolledWindow" id="scrolled_window">
                 <property name="vexpand">true</property>
-                <property name="height-request">320</property>
-                <property name="width-request">480</property>
                 <property name="hscrollbar-policy">never</property>
                 <child><!-- Tasks Box -->
                   <object class="GtkListBox" id="tasks_box">

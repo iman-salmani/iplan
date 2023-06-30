@@ -5,7 +5,6 @@
   <requires lib="Adw" version="1.0" />
   <template class="CalendarPage" parent="GtkBox">
     <property name="orientation">vertical</property>
-    <property name="width-request">480</property>
     <child><!-- Scrolled Window - Its for horizontal layout-->
       <object class="GtkScrolledWindow" id="scrolled_window">
         <property name="vexpand">true</property>

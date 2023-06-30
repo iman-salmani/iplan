@@ -37,8 +37,6 @@ mod imp {
         #[template_child]
         pub subtasks_box: TemplateChild<TasksBox>,
         #[template_child]
-        pub records_page: TemplateChild<gtk::ScrolledWindow>,
-        #[template_child]
         pub records_box: TemplateChild<gtk::ListBox>,
         #[template_child]
         pub date_row: TemplateChild<DateRow>,
@@ -119,6 +117,7 @@ impl TaskPage {
             .set_subtitle(&obj.description_display(&task_description));
         imp.description_buffer.set_text(&task_description);
 
+        imp.subtasks_box.set_scrollable(false);
         let tasks =
             read_tasks(None, None, None, Some(task_id), None).expect("Failed to read subtasks");
         imp.subtasks_box

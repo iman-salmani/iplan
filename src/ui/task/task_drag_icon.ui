@@ -4,7 +4,7 @@
   <requires lib="gtk" version="4.0" />
   <requires lib="Adw" version="1.0" />
   <object class="GtkBox" id="task_drag_icon">
-    <property name="width-request">280</property>
+    <property name="width-request">256</property>
     <property name="margin-start">9</property>
     <property name="margin-end">9</property>
     <property name="margin-bottom">9</property>

@@ -5,7 +5,6 @@
   <requires lib="Adw" version="1.0" />
   <template class="TasksList" parent="GtkBox">
     <property name="orientation">vertical</property>
-    <property name="width-request">480</property>
     <property name="margin-bottom">24</property>
     <child>
       <object class="GtkBox"><!-- header -->

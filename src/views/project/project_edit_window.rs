@@ -33,7 +33,7 @@ mod imp {
     impl ObjectSubclass for ProjectEditWindow {
         const NAME: &'static str = "ProjectEditWindow";
         type Type = super::ProjectEditWindow;
-        type ParentType = adw::Window;
+        type ParentType = gtk::Window;
 
         fn class_init(klass: &mut Self::Class) {
             klass.bind_template();
@@ -60,12 +60,11 @@ mod imp {
     }
     impl WidgetImpl for ProjectEditWindow {}
     impl WindowImpl for ProjectEditWindow {}
-    impl AdwWindowImpl for ProjectEditWindow {}
 }
 
 glib::wrapper! {
     pub struct ProjectEditWindow(ObjectSubclass<imp::ProjectEditWindow>)
-        @extends gtk::Widget, gtk::Window, adw::Window,
+        @extends gtk::Widget, gtk::Window,
         @implements gtk::Buildable, gtk::Native, gtk::Root;
 }
 

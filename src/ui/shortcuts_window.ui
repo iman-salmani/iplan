@@ -39,8 +39,7 @@
               </object>
             </child>
           </object>
-        </child>
-        <!-- End Application -->
+        </child><!-- End Application -->
         <child><!-- Tasks -->
           <object class="GtkShortcutsGroup">
             <property name="title" translatable="yes" context="shortcut window">Tasks</property>
@@ -52,8 +51,7 @@
               </object>
             </child>
           </object>
-        </child>
-        <!-- End Tasks -->
+        </child><!-- End Tasks -->
       </object>
     </child>
   </object>

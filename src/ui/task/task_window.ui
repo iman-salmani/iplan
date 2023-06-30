@@ -4,8 +4,10 @@
   <requires lib="gtk" version="4.0" />
   <requires lib="Adw" version="1.0" />
   <template class="TaskWindow" parent="GtkWindow">
-    <property name="width-request">480</property>
-    <property name="height-request">600</property>
+    <property name="width-request">360</property>
+    <property name="height-request">294</property>
+    <property name="default-width">480</property>
+    <property name="default-height">600</property>
     <property name="modal">true</property>
     <property name="destroy-with-parent">true</property>
     <property name="titlebar">
@@ -27,16 +29,19 @@
               </object>
             </child>
           </object>
-        </child>
-        <!-- End Back Button -->
+        </child><!-- End Back Button -->
       </object>
     </property>
     <child><!-- Toast Overlay -->
       <object class="AdwToastOverlay" id="toast_overlay">
-        <child><!-- Stack -->
-          <object class="GtkStack" id="task_pages_stack">
+        <child>
+          <object class="GtkScrolledWindow">
+            <child><!-- Stack -->
+              <object class="GtkStack" id="task_pages_stack">
+              </object>
+            </child><!-- Stack -->
           </object>
-        </child><!-- Stack -->
+        </child>
       </object>
     </child><!-- End Toast Overlay -->
   </template>

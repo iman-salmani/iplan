@@ -4,8 +4,10 @@
   <requires lib="gtk" version="4.0" />
   <requires lib="Adw" version="1.0" />
   <template class="SearchWindow" parent="GtkWindow">
-    <property name="width-request">480</property>
-    <property name="height-request">480</property>
+    <property name="width-request">360</property>
+    <property name="height-request">294</property>
+    <property name="default-width">480</property>
+    <property name="default-height">480</property>
     <property name="modal">true</property>
     <property name="destroy-with-parent">true</property>
     <property name="titlebar">
@@ -21,8 +23,7 @@
         <child type="start">
           <object class="GtkToggleButton" id="show_done_tasks_toggle_button">
             <property name="icon-name">object-select-symbolic</property>
-            <signal name="toggled" handler="handle_show_done_tasks_toggle_button_toggled"
-              swapped="true" />
+            <signal name="toggled" handler="handle_show_done_tasks_toggle_button_toggled" swapped="true" />
           </object>
         </child>
       </object>
@@ -53,6 +54,9 @@
                     <property name="icon-name">system-search-symbolic</property>
                     <property name="title" translatable="yes">no results found</property>
                     <property name="visible">false</property>
+                    <style>
+                      <class name="compact" />
+                    </style>
                   </object>
                 </child>
               </object>
