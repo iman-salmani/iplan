@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: iplan\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-06-28 16:00+0330\n"
+"POT-Creation-Date: 2023-06-30 18:56+0330\n"
 "PO-Revision-Date: 2023-06-11 20:32+0200\n"
 "Last-Translator: Irénée Thirion <irenee.thirion@e.email>\n"
 "Language-Team: \n"
@@ -308,11 +308,11 @@ msgstr "À _propos de IPlan"
 msgid "_Quit"
 msgstr "_Quitter"
 
-#: src/ui/preferences_window.ui:15
+#: src/ui/preferences_window.ui:17
 msgid "Run in Background"
 msgstr ""
 
-#: src/ui/preferences_window.ui:16
+#: src/ui/preferences_window.ui:18
 msgid "Allow send reminders when the app is closed"
 msgstr ""
 
@@ -341,12 +341,12 @@ msgctxt "shortcut window"
 msgid "Quit"
 msgstr "Quitter"
 
-#: src/ui/shortcuts_window.ui:46
+#: src/ui/shortcuts_window.ui:45
 msgctxt "shortcut window"
 msgid "Tasks"
 msgstr "Tâches"
 
-#: src/ui/shortcuts_window.ui:49
+#: src/ui/shortcuts_window.ui:48
 msgctxt "shortcut window"
 msgid "Search"
 msgstr "Chercher"
@@ -375,11 +375,11 @@ msgstr "Importer"
 msgid "While importing, previous data will be cached"
 msgstr "Pendant l’importation, les données précédentes seront mises en cache"
 
-#: src/ui/calendar/calendar.ui:18
+#: src/ui/calendar/calendar.ui:17
 msgid "Previous week"
 msgstr ""
 
-#: src/ui/calendar/calendar.ui:36
+#: src/ui/calendar/calendar.ui:35
 msgid "Next week"
 msgstr ""
 
@@ -388,7 +388,7 @@ msgstr ""
 msgid "New Project"
 msgstr "Nouveau projet"
 
-#: src/ui/project/project_create_window.ui:24 src/ui/record/record_window.ui:25
+#: src/ui/project/project_create_window.ui:24 src/ui/record/record_window.ui:26
 #: src/ui/reminder/reminder_window.ui:25
 msgid "Cancel"
 msgstr "Annuler"
@@ -398,12 +398,12 @@ msgid "Add"
 msgstr ""
 
 #: src/ui/project/project_create_window.ui:62
-#: src/ui/project/project_edit_window.ui:48
+#: src/ui/project/project_edit_window.ui:50
 msgid "Name"
 msgstr "Nom"
 
 #: src/ui/project/project_create_window.ui:69
-#: src/ui/project/project_edit_window.ui:56
+#: src/ui/project/project_edit_window.ui:57
 msgid "Icon"
 msgstr "Icône"
 
@@ -412,15 +412,15 @@ msgstr "Icône"
 msgid "Description"
 msgstr "Description"
 
-#: src/ui/project/project_edit_window.ui:17
+#: src/ui/project/project_edit_window.ui:16
 msgid "Edit Project"
 msgstr "Modifier le projet"
 
-#: src/ui/project/project_edit_window.ui:105
+#: src/ui/project/project_edit_window.ui:103
 msgid "Archive"
 msgstr "Archiver"
 
-#: src/ui/project/project_edit_window.ui:117
+#: src/ui/project/project_edit_window.ui:114
 msgid "Delete"
 msgstr "Supprimer"
 
@@ -433,18 +433,17 @@ msgstr "Temps passé par jour"
 msgid "Time spent per day"
 msgstr "Temps passé par jour"
 
-#: src/ui/project/project_lists.ui:35
+#: src/ui/project/project_lists.ui:34
 #, fuzzy
 msgid "no sections found"
 msgstr "Aucun chronomètre trouvé"
 
-#: src/ui/project/project_lists.ui:64
+#: src/ui/project/project_lists.ui:63
 #, fuzzy
 msgid "New section"
 msgstr "Nouveau chronomètre"
 
 #: src/ui/project/section_box.ui:49 src/ui/task/tasks_box.ui:47
-#: src/ui/task/tasks_box.ui:78
 msgid "Add task"
 msgstr ""
 
@@ -457,24 +456,24 @@ msgstr "Tâches accomplies"
 msgid "Delete section"
 msgstr "Supprimer la liste"
 
-#: src/ui/record/record_window.ui:17
+#: src/ui/record/record_window.ui:18 src/ui/task/task_page.ui:164
 msgid "New Record"
 msgstr "Nouveau chronomètre"
 
-#: src/ui/record/record_window.ui:31 src/ui/reminder/reminder_window.ui:31
+#: src/ui/record/record_window.ui:32 src/ui/reminder/reminder_window.ui:31
 msgid "Done"
 msgstr "Fait"
 
-#: src/ui/record/record_window.ui:48
+#: src/ui/record/record_window.ui:49
 msgid "Starts"
 msgstr "Commence le"
 
-#: src/ui/record/record_window.ui:51 src/ui/record/record_window.ui:71
+#: src/ui/record/record_window.ui:52 src/ui/record/record_window.ui:71
 #: src/ui/reminder/reminder_window.ui:50
 msgid "Date"
 msgstr "Date"
 
-#: src/ui/record/record_window.ui:58 src/ui/record/record_window.ui:78
+#: src/ui/record/record_window.ui:59 src/ui/record/record_window.ui:78
 #: src/ui/reminder/reminder_window.ui:56
 msgid "Time"
 msgstr "Heure"
@@ -487,19 +486,19 @@ msgstr "Finit le"
 msgid "Duration"
 msgstr "Durée"
 
-#: src/ui/record/record_window.ui:99 src/ui/reminder/reminder_window.ui:67
-msgid "delete"
-msgstr "Supprimer"
-
 #: src/ui/reminder/reminder_window.ui:17
 msgid "Reminder"
 msgstr "Rappel"
 
-#: src/ui/search/search_window.ui:16
+#: src/ui/reminder/reminder_window.ui:67
+msgid "delete"
+msgstr "Supprimer"
+
+#: src/ui/search/search_window.ui:18
 msgid "Search"
 msgstr "Chercher"
 
-#: src/ui/search/search_window.ui:54
+#: src/ui/search/search_window.ui:55
 msgid "no results found"
 msgstr "Aucun résultat trouvé"
 
@@ -549,27 +548,33 @@ msgstr "Rappels"
 msgid "Records"
 msgstr "Chronomètres"
 
-#: src/ui/task/task_page.ui:150
-msgid "no records found"
-msgstr "Aucun chronomètre trouvé"
+#: src/ui/task/tasks_box.ui:78
+#, fuzzy
+msgid "Add Task"
+msgstr "Tâche"
 
-#: src/ui/task/task_page.ui:151
-msgid "Use add button up there or start a timer"
-msgstr "Utilisez le bouton Ajouter ci-dessus ou démarrez un minuteur"
-
-#: src/ui/task/tasks_done_window.ui:51
+#: src/ui/task/tasks_done_window.ui:50
 msgid "no done tasks found"
 msgstr "Aucune tâche accomplie trouvée"
 
 #. Translators: Replace "translator-credits" with your names, one name per line
-#: src/application.rs:300
+#: src/application.rs:309
 msgid "translator-credits"
 msgstr "Irénée Thirion <irenee.thirion@e.email>"
 
-#: src/application.rs:334 src/application.rs:370
+#: src/application.rs:343 src/application.rs:379
 msgid "IPlan needs to run in the background to send reminders"
 msgstr ""
 "IPlan nécessite de fonctionner en arrière-plan pour envoyer des rappels"
+
+#: src/db/models/record.rs:70
+#, fuzzy
+msgid "day"
+msgstr "Aujourd’hui"
+
+#: src/db/models/record.rs:72
+msgid "days"
+msgstr ""
 
 #: src/views/window.rs:96 src/views/window.rs:168
 msgid "Personal"
@@ -596,11 +601,11 @@ msgstr "Erreur lors de l’importation des données"
 msgid "Project should have a name!"
 msgstr ""
 
-#: src/views/project/project_edit_window.rs:154
+#: src/views/project/project_edit_window.rs:153
 msgid "Delete \"{}\" project?"
 msgstr "Supprimer le projet « {} » ?"
 
-#: src/views/project/project_edit_window.rs:157
+#: src/views/project/project_edit_window.rs:156
 msgid "The project and its tasks will be permanently lost."
 msgstr "Le projet et les tâches qu’il contient seront définitivement perdus."
 
@@ -638,11 +643,16 @@ msgstr "La liste et ses tâches seront définitivement perdues."
 msgid "until"
 msgstr "jusqu’à"
 
-#: src/views/record/record_window.rs:192
+#: src/views/record/record_window.rs:120
+#, fuzzy
+msgid "Edit Record"
+msgstr "Nouveau chronomètre"
+
+#: src/views/record/record_window.rs:207
 msgid "Duration can't be 0"
 msgstr "La durée ne peut être 0"
 
-#: src/views/record/record_window.rs:200
+#: src/views/record/record_window.rs:215
 #, fuzzy
 msgid "Record end time can't be in future"
 msgstr "L’heure ne peut être dans le passé"
@@ -679,6 +689,12 @@ msgstr "« {} » sera supprimée"
 #: src/views/task/tasks_done_window.rs:99
 msgid "Done Tasks"
 msgstr "Tâches accomplies"
+
+#~ msgid "no records found"
+#~ msgstr "Aucun chronomètre trouvé"
+
+#~ msgid "Use add button up there or start a timer"
+#~ msgstr "Utilisez le bouton Ajouter ci-dessus ou démarrez un minuteur"
 
 #~ msgid "_New List"
 #~ msgstr "_Nouvelle liste"

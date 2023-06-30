@@ -1,11 +1,11 @@
-use adw::traits::{ActionRowExt, ExpanderRowExt};
+use adw::traits::ExpanderRowExt;
 use gtk::{glib, prelude::*, subclass::prelude::*};
 use std::time::{SystemTime, UNIX_EPOCH};
 use std::unimplemented;
 
 use crate::db::models::{Record, Reminder, Task};
 use crate::db::operations::{
-    create_task, read_record, read_records, read_reminder, read_reminders, read_tasks, update_task,
+    create_task, read_records, read_reminder, read_reminders, read_tasks, update_task,
 };
 use crate::views::record::{RecordRow, RecordWindow};
 use crate::views::reminder::{ReminderRow, ReminderWindow};

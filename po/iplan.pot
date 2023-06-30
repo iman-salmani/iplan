@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: iplan\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-06-28 16:00+0330\n"
+"POT-Creation-Date: 2023-06-30 18:56+0330\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -286,11 +286,11 @@ msgstr ""
 msgid "_Quit"
 msgstr ""
 
-#: src/ui/preferences_window.ui:15
+#: src/ui/preferences_window.ui:17
 msgid "Run in Background"
 msgstr ""
 
-#: src/ui/preferences_window.ui:16
+#: src/ui/preferences_window.ui:18
 msgid "Allow send reminders when the app is closed"
 msgstr ""
 
@@ -319,12 +319,12 @@ msgctxt "shortcut window"
 msgid "Quit"
 msgstr ""
 
-#: src/ui/shortcuts_window.ui:46
+#: src/ui/shortcuts_window.ui:45
 msgctxt "shortcut window"
 msgid "Tasks"
 msgstr ""
 
-#: src/ui/shortcuts_window.ui:49
+#: src/ui/shortcuts_window.ui:48
 msgctxt "shortcut window"
 msgid "Search"
 msgstr ""
@@ -353,11 +353,11 @@ msgstr ""
 msgid "While importing, previous data will be cached"
 msgstr ""
 
-#: src/ui/calendar/calendar.ui:18
+#: src/ui/calendar/calendar.ui:17
 msgid "Previous week"
 msgstr ""
 
-#: src/ui/calendar/calendar.ui:36
+#: src/ui/calendar/calendar.ui:35
 msgid "Next week"
 msgstr ""
 
@@ -365,7 +365,7 @@ msgstr ""
 msgid "New Project"
 msgstr ""
 
-#: src/ui/project/project_create_window.ui:24 src/ui/record/record_window.ui:25
+#: src/ui/project/project_create_window.ui:24 src/ui/record/record_window.ui:26
 #: src/ui/reminder/reminder_window.ui:25
 msgid "Cancel"
 msgstr ""
@@ -375,12 +375,12 @@ msgid "Add"
 msgstr ""
 
 #: src/ui/project/project_create_window.ui:62
-#: src/ui/project/project_edit_window.ui:48
+#: src/ui/project/project_edit_window.ui:50
 msgid "Name"
 msgstr ""
 
 #: src/ui/project/project_create_window.ui:69
-#: src/ui/project/project_edit_window.ui:56
+#: src/ui/project/project_edit_window.ui:57
 msgid "Icon"
 msgstr ""
 
@@ -389,15 +389,15 @@ msgstr ""
 msgid "Description"
 msgstr ""
 
-#: src/ui/project/project_edit_window.ui:17
+#: src/ui/project/project_edit_window.ui:16
 msgid "Edit Project"
 msgstr ""
 
-#: src/ui/project/project_edit_window.ui:105
+#: src/ui/project/project_edit_window.ui:103
 msgid "Archive"
 msgstr ""
 
-#: src/ui/project/project_edit_window.ui:117
+#: src/ui/project/project_edit_window.ui:114
 msgid "Delete"
 msgstr ""
 
@@ -409,16 +409,15 @@ msgstr ""
 msgid "Time spent per day"
 msgstr ""
 
-#: src/ui/project/project_lists.ui:35
+#: src/ui/project/project_lists.ui:34
 msgid "no sections found"
 msgstr ""
 
-#: src/ui/project/project_lists.ui:64
+#: src/ui/project/project_lists.ui:63
 msgid "New section"
 msgstr ""
 
 #: src/ui/project/section_box.ui:49 src/ui/task/tasks_box.ui:47
-#: src/ui/task/tasks_box.ui:78
 msgid "Add task"
 msgstr ""
 
@@ -430,24 +429,24 @@ msgstr ""
 msgid "Delete section"
 msgstr ""
 
-#: src/ui/record/record_window.ui:17
+#: src/ui/record/record_window.ui:18 src/ui/task/task_page.ui:164
 msgid "New Record"
 msgstr ""
 
-#: src/ui/record/record_window.ui:31 src/ui/reminder/reminder_window.ui:31
+#: src/ui/record/record_window.ui:32 src/ui/reminder/reminder_window.ui:31
 msgid "Done"
 msgstr ""
 
-#: src/ui/record/record_window.ui:48
+#: src/ui/record/record_window.ui:49
 msgid "Starts"
 msgstr ""
 
-#: src/ui/record/record_window.ui:51 src/ui/record/record_window.ui:71
+#: src/ui/record/record_window.ui:52 src/ui/record/record_window.ui:71
 #: src/ui/reminder/reminder_window.ui:50
 msgid "Date"
 msgstr ""
 
-#: src/ui/record/record_window.ui:58 src/ui/record/record_window.ui:78
+#: src/ui/record/record_window.ui:59 src/ui/record/record_window.ui:78
 #: src/ui/reminder/reminder_window.ui:56
 msgid "Time"
 msgstr ""
@@ -460,19 +459,19 @@ msgstr ""
 msgid "Duration"
 msgstr ""
 
-#: src/ui/record/record_window.ui:99 src/ui/reminder/reminder_window.ui:67
-msgid "delete"
-msgstr ""
-
 #: src/ui/reminder/reminder_window.ui:17
 msgid "Reminder"
 msgstr ""
 
-#: src/ui/search/search_window.ui:16
+#: src/ui/reminder/reminder_window.ui:67
+msgid "delete"
+msgstr ""
+
+#: src/ui/search/search_window.ui:18
 msgid "Search"
 msgstr ""
 
-#: src/ui/search/search_window.ui:54
+#: src/ui/search/search_window.ui:55
 msgid "no results found"
 msgstr ""
 
@@ -520,25 +519,29 @@ msgstr ""
 msgid "Records"
 msgstr ""
 
-#: src/ui/task/task_page.ui:150
-msgid "no records found"
+#: src/ui/task/tasks_box.ui:78
+msgid "Add Task"
 msgstr ""
 
-#: src/ui/task/task_page.ui:151
-msgid "Use add button up there or start a timer"
-msgstr ""
-
-#: src/ui/task/tasks_done_window.ui:51
+#: src/ui/task/tasks_done_window.ui:50
 msgid "no done tasks found"
 msgstr ""
 
 #. Translators: Replace "translator-credits" with your names, one name per line
-#: src/application.rs:300
+#: src/application.rs:309
 msgid "translator-credits"
 msgstr ""
 
-#: src/application.rs:334 src/application.rs:370
+#: src/application.rs:343 src/application.rs:379
 msgid "IPlan needs to run in the background to send reminders"
+msgstr ""
+
+#: src/db/models/record.rs:70
+msgid "day"
+msgstr ""
+
+#: src/db/models/record.rs:72
+msgid "days"
 msgstr ""
 
 #: src/views/window.rs:96 src/views/window.rs:168
@@ -566,11 +569,11 @@ msgstr ""
 msgid "Project should have a name!"
 msgstr ""
 
-#: src/views/project/project_edit_window.rs:154
+#: src/views/project/project_edit_window.rs:153
 msgid "Delete \"{}\" project?"
 msgstr ""
 
-#: src/views/project/project_edit_window.rs:157
+#: src/views/project/project_edit_window.rs:156
 msgid "The project and its tasks will be permanently lost."
 msgstr ""
 
@@ -603,11 +606,15 @@ msgstr ""
 msgid "until"
 msgstr ""
 
-#: src/views/record/record_window.rs:192
+#: src/views/record/record_window.rs:120
+msgid "Edit Record"
+msgstr ""
+
+#: src/views/record/record_window.rs:207
 msgid "Duration can't be 0"
 msgstr ""
 
-#: src/views/record/record_window.rs:200
+#: src/views/record/record_window.rs:215
 msgid "Record end time can't be in future"
 msgstr ""
 

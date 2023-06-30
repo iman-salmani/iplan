@@ -6,7 +6,7 @@ use gtk::{glib, glib::Properties, prelude::*};
 use std::cell::RefCell;
 
 use crate::db::models::Record;
-use crate::db::operations::{delete_record, read_record};
+use crate::db::operations::delete_record;
 use crate::views::record::RecordWindow;
 
 mod imp {
