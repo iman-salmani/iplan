@@ -19,6 +19,8 @@ mod imp {
         #[property(get, set)]
         pub state: Cell<bool>,
         #[template_child]
+        pub window_title: TemplateChild<gtk::Label>,
+        #[template_child]
         pub toast_overlay: TemplateChild<adw::ToastOverlay>,
         #[template_child]
         pub start_date_row: TemplateChild<DateRow>,
@@ -104,6 +106,7 @@ impl RecordWindow {
         imp.duration_row.set_time(duration as i32);
         if state {
             imp.delete_group.set_visible(true);
+            imp.window_title.set_label(&gettext("Edit Record"));
         }
         obj
     }

@@ -14,7 +14,7 @@
         <property name="show-start-title-buttons">false</property>
         <property name="show-end-title-buttons">false</property>
         <property name="title-widget">
-          <object class="GtkLabel">
+          <object class="GtkLabel" id="window_title">
             <property name="label" translatable="yes">New Record</property>
             <style>
               <class name="heading" />
@@ -62,8 +62,7 @@
                       </object>
                     </child>
                   </object>
-                </child>
-                <!-- End Starts Group -->
+                </child><!-- End Starts Group -->
                 <child><!-- Ends Group -->
                   <object class="AdwPreferencesGroup">
                     <property name="title" translatable="yes">Ends</property>
