@@ -5,7 +5,7 @@
 <!ELEMENT template (property*,style?, signal*,child*)>
 <!ATTLIST template class NMTOKEN #REQUIRED>
 <!ATTLIST template parent NMTOKEN #REQUIRED>
-<!ELEMENT property (#PCDATA|object)*>
+<!ELEMENT property (#PCDATA|object|menu)*>
 <!ATTLIST property name NMTOKEN #REQUIRED>
 <!ATTLIST property bind-source NMTOKEN #IMPLIED>
 <!ATTLIST property bind-property NMTOKEN #IMPLIED>

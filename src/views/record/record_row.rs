@@ -6,7 +6,7 @@ use gtk::{glib, glib::Properties, prelude::*};
 use std::cell::RefCell;
 
 use crate::db::models::Record;
-use crate::db::operations::read_record;
+use crate::db::operations::{delete_record, read_record};
 use crate::views::record::RecordWindow;
 
 mod imp {
@@ -58,7 +58,7 @@ mod imp {
 glib::wrapper! {
     pub struct RecordRow(ObjectSubclass<imp::RecordRow>)
         @extends gtk::Widget, gtk::ListBoxRow, adw::PreferencesRow, adw::ActionRow,
-        @implements gtk::Buildable;
+        @implements gtk::Accessible, gtk::Actionable, gtk::Buildable, gtk::ConstraintTarget;
 }
 
 #[gtk::template_callbacks]
@@ -128,5 +128,13 @@ impl RecordRow {
                 gtk::Inhibit(false)
             }),
         );
+    }
+
+    #[template_callback]
+    fn handle_delete_button_clicked(&self, _: gtk::Button) {
+        delete_record(self.record().id()).unwrap();
+        self.activate_action("record.delete", None).unwrap();
+        let parent = self.parent().and_downcast::<gtk::ListBox>().unwrap();
+        parent.remove(self);
     }
 }

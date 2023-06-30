@@ -4,11 +4,16 @@
   <requires lib="gtk" version="4.0" />
   <requires lib="Adw" version="1.0" />
   <template class="RecordRow" parent="AdwActionRow">
-    <property name="activatable-widget">icon</property>
+    <property name="activatable">true</property>
     <signal name="activated" handler="handle_activated" />
     <child type="suffix">
-      <object class="GtkImage" id="icon">
-        <property name="icon-name">preferences-system-time-symbolic</property>
+      <object class="GTkButton">
+        <property name="icon-name">user-trash-symbolic</property>
+        <property name="valign">center</property>
+        <signal name="clicked" handler="handle_delete_button_clicked" swapped="true" />
+        <style>
+          <class name="flat" />
+        </style>
       </object>
     </child>
   </template>

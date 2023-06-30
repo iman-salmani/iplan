@@ -4,7 +4,7 @@ use gtk::{glib, prelude::*, subclass::prelude::*};
 use std::cell::{Cell, RefCell};
 
 use crate::db::models::Record;
-use crate::db::operations::{create_record, delete_record, update_record};
+use crate::db::operations::{create_record, update_record};
 use crate::views::snippets::{DateRow, TimeRow};
 
 mod imp {
@@ -34,8 +34,6 @@ mod imp {
         pub end_datetime: RefCell<i64>,
         #[template_child]
         pub duration_row: TemplateChild<TimeRow>,
-        #[template_child]
-        pub delete_group: TemplateChild<adw::PreferencesGroup>,
     }
 
     #[glib::object_subclass]
@@ -105,7 +103,6 @@ impl RecordWindow {
             .set_time_from_digits(start.hour(), start.minute(), start.seconds());
         imp.duration_row.set_time(duration as i32);
         if state {
-            imp.delete_group.set_visible(true);
             imp.window_title.set_label(&gettext("Edit Record"));
         }
         obj
@@ -266,11 +263,5 @@ impl RecordWindow {
     fn handle_duration_time_changed(&self, time: i32, _: TimeRow) {
         let record = self.record();
         record.set_duration(time as i64);
-    }
-
-    #[template_callback]
-    fn handle_delete_activated(&self, _: adw::ActionRow) {
-        delete_record(self.record().id()).expect("Failed to delete record");
-        self.close();
     }
 }
