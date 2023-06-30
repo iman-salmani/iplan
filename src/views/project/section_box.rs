@@ -68,8 +68,7 @@ mod imp {
                 }
                 let toast = adw::Toast::builder()
                     .title(
-                        gettext("\"{}\" moved to the done tasks section")
-                            .replace("{}", &toast_name),
+                        gettext("\"{}\" moved to the done tasks list").replace("{}", &toast_name),
                     )
                     .button_label(gettext("Undo"))
                     .build();

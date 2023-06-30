@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: iplan\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-06-30 20:10+0330\n"
+"POT-Creation-Date: 2023-06-30 20:32+0330\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Iman Salmani <contact.imansalmani@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -100,36 +100,32 @@ msgid "New features and updates"
 msgstr "ویژگی ها و به روز رسانی های جدید"
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:67
-#, fuzzy
 msgid "New design for drag and drop"
-msgstr "طراحی جدید برای ردیف های وظیفه"
+msgstr "طراحی جدید برای کشیدن و رها کردن"
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:68
-#, fuzzy
 msgid "New Project create window"
-msgstr "پروژه جدید"
+msgstr "پنجره ایجاد پروژه جدید"
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:69
 msgid "Close windows with escape key"
-msgstr ""
+msgstr "پنجره ها را با کلید اسکیپ ببندید"
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:70
-#, fuzzy
 msgid "Scroll while dragging task"
-msgstr "خطا هنگام وارد کردن داده ها"
+msgstr "می توانید هنگام کشیدن کار، اسکرول کنید"
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:71
-#, fuzzy
 msgid "Add task inside calendar page"
-msgstr "یک هفته برای هر صفحه تقویم"
+msgstr "اضافه کردن کار در صفحه تقویم"
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:72
 msgid "Drop task on each other"
-msgstr ""
+msgstr "وظایف را بر روی یکدیگر رها کنید"
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:73
 msgid "Rename tasks list to section"
-msgstr ""
+msgstr "تغییر نام فهرست وظایف به بخش"
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:74
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:90
@@ -270,7 +266,7 @@ msgstr "اولین انتشار پایدار."
 
 #: src/ui/window.ui:120
 msgid "Main Menu"
-msgstr ""
+msgstr "فهرست اصلی"
 
 #: src/ui/window.ui:141 src/ui/snippets/date_row.ui:24
 #: src/views/calendar/tasks_list.rs:104 src/views/snippets/date_row.rs:121
@@ -278,9 +274,8 @@ msgid "Today"
 msgstr "امروز"
 
 #: src/ui/window.ui:179
-#, fuzzy
 msgid "New _Section"
-msgstr "رکورد جدید"
+msgstr "_بخش جدید"
 
 #: src/ui/window.ui:183
 msgid "_Edit Project"
@@ -288,7 +283,7 @@ msgstr "_ویرایش پروژه"
 
 #: src/ui/window.ui:189 src/ui/window.ui:217
 msgid "_Preferences"
-msgstr ""
+msgstr "_تنظیمات"
 
 #: src/ui/window.ui:193 src/ui/window.ui:221
 msgid "_Backup"
@@ -308,11 +303,11 @@ msgstr "_خروج"
 
 #: src/ui/preferences_window.ui:17
 msgid "Run in Background"
-msgstr ""
+msgstr "اجرا در پس زمینه"
 
 #: src/ui/preferences_window.ui:18
 msgid "Allow send reminders when the app is closed"
-msgstr ""
+msgstr "وقتی برنامه بسته است، اجازه ارسال یادآوری‌ها را بدهید"
 
 #: src/ui/shortcuts_window.ui:13
 msgctxt "shortcut window"
@@ -322,7 +317,7 @@ msgstr "برنامه"
 #: src/ui/shortcuts_window.ui:16
 msgctxt "shortcut window"
 msgid "Preferences"
-msgstr ""
+msgstr "تنظیمات"
 
 #: src/ui/shortcuts_window.ui:23
 msgctxt "shortcut window"
@@ -382,7 +377,6 @@ msgid "Next week"
 msgstr "هفته بعد"
 
 #: src/ui/project/project_create_window.ui:16
-#, fuzzy
 msgid "New Project"
 msgstr "پروژه جدید"
 
@@ -393,7 +387,7 @@ msgstr "لغو"
 
 #: src/ui/project/project_create_window.ui:30
 msgid "Add"
-msgstr ""
+msgstr "اضافه کن"
 
 #: src/ui/project/project_create_window.ui:62
 #: src/ui/project/project_edit_window.ui:50
@@ -423,23 +417,20 @@ msgid "Delete"
 msgstr "حذف"
 
 #: src/ui/project/project_header.ui:108
-#, fuzzy
 msgid "Time spent"
-msgstr "زمان صرف شده در روز"
+msgstr "زمان صرف شده"
 
 #: src/ui/project/project_header.ui:141
 msgid "Time spent per day"
 msgstr "زمان صرف شده در روز"
 
 #: src/ui/project/project_lists.ui:34
-#, fuzzy
 msgid "no sections found"
-msgstr "هیچ رکوردی پیدا نشد"
+msgstr "هیچ بخشی پیدا نشد"
 
 #: src/ui/project/project_lists.ui:63
-#, fuzzy
 msgid "New section"
-msgstr "رکورد جدید"
+msgstr "بخش جدید"
 
 #: src/ui/project/section_box.ui:49 src/ui/task/tasks_box.ui:47
 msgid "Add task"
@@ -450,9 +441,8 @@ msgid "Done tasks"
 msgstr "وظایف انجام شده"
 
 #: src/ui/project/section_box.ui:120
-#, fuzzy
 msgid "Delete section"
-msgstr "حذف فهرست"
+msgstr "حذف بخش"
 
 #: src/ui/record/record_window.ui:18 src/ui/task/task_page.ui:164
 msgid "New Record"
@@ -534,7 +524,7 @@ msgstr "حذف وظیفه_"
 
 #: src/ui/task/task_page.ui:25
 msgid "Due date"
-msgstr ""
+msgstr "موعد مقرر"
 
 #: src/ui/task/task_page.ui:31
 msgid "Reminders"
@@ -545,7 +535,6 @@ msgid "Records"
 msgstr "سوابق"
 
 #: src/ui/task/tasks_box.ui:78
-#, fuzzy
 msgid "Add Task"
 msgstr "افزودن وظیفه"
 
@@ -563,13 +552,12 @@ msgid "IPlan needs to run in the background to send reminders"
 msgstr "برای ارسال یادآوری، آپلن باید در پس‌زمینه اجرا شود"
 
 #: src/db/models/record.rs:70
-#, fuzzy
 msgid "day"
-msgstr "امروز"
+msgstr "روز"
 
 #: src/db/models/record.rs:72
 msgid "days"
-msgstr ""
+msgstr "روز"
 
 #: src/views/window.rs:102 src/views/window.rs:174
 msgid "Personal"
@@ -594,7 +582,7 @@ msgstr "خطا هنگام وارد کردن داده ها"
 
 #: src/views/project/project_create_window.rs:140
 msgid "Project should have a name!"
-msgstr ""
+msgstr "پروژه باید اسمی داشته باشد!"
 
 #: src/views/project/project_edit_window.rs:153
 msgid "Delete \"{}\" project?"
@@ -606,51 +594,44 @@ msgstr "پروژه و وظایف آن برای همیشه از بین خواهد
 
 #. Translators: {} Will be replaced with a shortcut label.
 #: src/views/project/project_lists.rs:67
-#, fuzzy
 msgid "Use the primary menu {} for adding a new section"
-msgstr "از منوی اصلی {} برای افزودن لیست های جدید استفاده کنید"
+msgstr "از منوی اصلی {} برای افزودن بخش جدید استفاده کنید"
 
 #: src/views/project/project_lists.rs:206
-#, fuzzy
 msgid "New Section"
-msgstr "رکورد جدید"
+msgstr "بخش جدید"
 
 #: src/views/project/section_box.rs:71
-#, fuzzy
-msgid "\"{}\" moved to the done tasks section"
+msgid "\"{}\" moved to the done tasks list"
 msgstr "\"{}\" به فهرست کارهای انجام شده منتقل شد"
 
-#: src/views/project/section_box.rs:74 src/views/task/task_row.rs:514
+#: src/views/project/section_box.rs:73 src/views/task/task_row.rs:514
 msgid "Undo"
 msgstr "برگرد"
 
-#: src/views/project/section_box.rs:253
-#, fuzzy
+#: src/views/project/section_box.rs:252
 msgid "Delete \"{}\" section?"
-msgstr "پروژه \"{}\" لیست شود؟"
+msgstr "بخش \"{}\" حذف شود؟"
 
-#: src/views/project/section_box.rs:256
-#, fuzzy
+#: src/views/project/section_box.rs:255
 msgid "The section and its tasks will be permanently lost."
-msgstr "فهرست و وظایف آن برای همیشه از بین خواهد رفت."
+msgstr "بخش و وظایف آن برای همیشه از بین خواهد رفت."
 
 #: src/views/record/record_row.rs:92
 msgid "until"
 msgstr "تا"
 
 #: src/views/record/record_window.rs:120
-#, fuzzy
 msgid "Edit Record"
-msgstr "رکورد جدید"
+msgstr "ویرایش رکورد"
 
 #: src/views/record/record_window.rs:207
 msgid "Duration can't be 0"
 msgstr "مدت زمان نمی تواند 0 باشد"
 
 #: src/views/record/record_window.rs:215
-#, fuzzy
 msgid "Record end time can't be in future"
-msgstr "زمان نمی تواند در گذشته باشد"
+msgstr "زمان پایان رکورد نمی تواند در آینده باشد"
 
 #: src/views/reminder/reminder_window.rs:111
 msgid "Time can't be in the past"
@@ -666,16 +647,15 @@ msgstr "وظیفه"
 
 #: src/views/sidebar/sidebar_projects.rs:356
 msgid "Task moved to {}"
-msgstr ""
+msgstr "کار به {} منتقل شد"
 
 #: src/views/sidebar/sidebar_projects.rs:370
-#, fuzzy
 msgid "{} doesn't have any section"
-msgstr "\"{}\" به فهرست کارهای انجام شده منتقل شد"
+msgstr "\"{}\" هیچ بخشی ندارد"
 
 #: src/views/task/task_row.rs:232
 msgid "Inbox"
-msgstr ""
+msgstr "صندوق"
 
 #: src/views/task/task_row.rs:513
 msgid "\"{}\" is going to delete"

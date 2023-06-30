@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: iplan\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-06-30 20:10+0330\n"
+"POT-Creation-Date: 2023-06-30 20:32+0330\n"
 "PO-Revision-Date: 2023-06-11 20:32+0200\n"
 "Last-Translator: Irénée Thirion <irenee.thirion@e.email>\n"
 "Language-Team: \n"
@@ -626,19 +626,19 @@ msgstr "Nouveau chronomètre"
 
 #: src/views/project/section_box.rs:71
 #, fuzzy
-msgid "\"{}\" moved to the done tasks section"
+msgid "\"{}\" moved to the done tasks list"
 msgstr "« {} » déplacé vers la liste des tâches accomplies"
 
-#: src/views/project/section_box.rs:74 src/views/task/task_row.rs:514
+#: src/views/project/section_box.rs:73 src/views/task/task_row.rs:514
 msgid "Undo"
 msgstr "Annuler"
 
-#: src/views/project/section_box.rs:253
+#: src/views/project/section_box.rs:252
 #, fuzzy
 msgid "Delete \"{}\" section?"
 msgstr "Supprimer la liste « {} » ?"
 
-#: src/views/project/section_box.rs:256
+#: src/views/project/section_box.rs:255
 #, fuzzy
 msgid "The section and its tasks will be permanently lost."
 msgstr "La liste et ses tâches seront définitivement perdues."

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ir.imansalmani.IPlan\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-06-30 20:10+0330\n"
+"POT-Creation-Date: 2023-06-30 20:32+0330\n"
 "PO-Revision-Date: 2023-06-03 10:00+0300\n"
 "Last-Translator: Sabri Ünal <libreajans@gmail.com>\n"
 "Language-Team: Türkçe <takim@gnome.org.tr>\n"
@@ -618,19 +618,19 @@ msgstr "Yeni Kayıt"
 
 #: src/views/project/section_box.rs:71
 #, fuzzy
-msgid "\"{}\" moved to the done tasks section"
+msgid "\"{}\" moved to the done tasks list"
 msgstr "\"{}\" tamamlanmış görevler listesine taşındı"
 
-#: src/views/project/section_box.rs:74 src/views/task/task_row.rs:514
+#: src/views/project/section_box.rs:73 src/views/task/task_row.rs:514
 msgid "Undo"
 msgstr "Geri Al"
 
-#: src/views/project/section_box.rs:253
+#: src/views/project/section_box.rs:252
 #, fuzzy
 msgid "Delete \"{}\" section?"
 msgstr "“{}” listesi silinsin mi?"
 
-#: src/views/project/section_box.rs:256
+#: src/views/project/section_box.rs:255
 #, fuzzy
 msgid "The section and its tasks will be permanently lost."
 msgstr "Liste ve görevleri kalıcı olarak kaybedilecek."

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: iplan\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-06-30 20:10+0330\n"
+"POT-Creation-Date: 2023-06-30 20:32+0330\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -591,18 +591,18 @@ msgid "New Section"
 msgstr ""
 
 #: src/views/project/section_box.rs:71
-msgid "\"{}\" moved to the done tasks section"
+msgid "\"{}\" moved to the done tasks list"
 msgstr ""
 
-#: src/views/project/section_box.rs:74 src/views/task/task_row.rs:514
+#: src/views/project/section_box.rs:73 src/views/task/task_row.rs:514
 msgid "Undo"
 msgstr ""
 
-#: src/views/project/section_box.rs:253
+#: src/views/project/section_box.rs:252
 msgid "Delete \"{}\" section?"
 msgstr ""
 
-#: src/views/project/section_box.rs:256
+#: src/views/project/section_box.rs:255
 msgid "The section and its tasks will be permanently lost."
 msgstr ""
 

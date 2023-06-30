@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: iplan\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-06-30 20:10+0330\n"
+"POT-Creation-Date: 2023-06-30 20:32+0330\n"
 "PO-Revision-Date: 2023-06-10 12:30-0300\n"
 "Last-Translator: Fúlvio Leo <fulviokaldas@outlook.com>\n"
 "Language: pt_BR\n"
@@ -622,19 +622,19 @@ msgstr "Novo Registro"
 
 #: src/views/project/section_box.rs:71
 #, fuzzy
-msgid "\"{}\" moved to the done tasks section"
+msgid "\"{}\" moved to the done tasks list"
 msgstr "\"{}\" movido para a lista de tarefas concluídas"
 
-#: src/views/project/section_box.rs:74 src/views/task/task_row.rs:514
+#: src/views/project/section_box.rs:73 src/views/task/task_row.rs:514
 msgid "Undo"
 msgstr "Desfazer"
 
-#: src/views/project/section_box.rs:253
+#: src/views/project/section_box.rs:252
 #, fuzzy
 msgid "Delete \"{}\" section?"
 msgstr "Deletar a lista \"{}\"?"
 
-#: src/views/project/section_box.rs:256
+#: src/views/project/section_box.rs:255
 #, fuzzy
 msgid "The section and its tasks will be permanently lost."
 msgstr "A lista e suas tarefas associadas serão perdidas permanentemente."
