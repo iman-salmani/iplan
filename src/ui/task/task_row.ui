@@ -18,7 +18,9 @@
               <class name="toolbar" />
             </style>
             <child><!-- Check Button -->
-              <object class="GtkCheckButton" id="checkbox"></object>
+              <object class="GtkCheckButton" id="checkbox">
+                <property name="valign">center</property>
+              </object>
             </child><!-- End Check Button -->
             <child><!-- Name Button -->
               <object class="GtkButton" id="name_button">
