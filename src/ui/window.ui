@@ -202,12 +202,6 @@
         <attribute name='action'>app.about</attribute>
       </item>
     </section>
-    <section>
-      <item>
-        <attribute name='label' translatable='yes'>_Quit</attribute>
-        <attribute name='action'>app.quit</attribute>
-      </item>
-    </section>
   </menu>
   <!-- End Primary Project Menu Model -->
   <!-- Primary Calendar Menu Model -->
@@ -228,12 +222,6 @@
       <item>
         <attribute name='label' translatable='yes'>_About IPlan</attribute>
         <attribute name='action'>app.about</attribute>
-      </item>
-    </section>
-    <section>
-      <item>
-        <attribute name='label' translatable='yes'>_Quit</attribute>
-        <attribute name='action'>app.quit</attribute>
       </item>
     </section>
   </menu>
