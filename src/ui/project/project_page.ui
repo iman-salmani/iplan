@@ -3,7 +3,7 @@
 <interface>
   <requires lib="gtk" version="4.0" />
   <requires lib="Adw" version="1.0" />
-  <template class="ProjectLists" parent="GtkWidget">
+  <template class="ProjectPage" parent="GtkWidget">
     <property name="vexpand">true</property>
     <child>
       <object class="GtkScrolledWindow" id="scrolled_window">

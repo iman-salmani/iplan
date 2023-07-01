@@ -136,6 +136,13 @@ impl SidebarProjects {
         }
     }
 
+    pub fn add_project(&self, project: Project) {
+        let imp = self.imp();
+        let row = ProjectRow::new(project);
+        imp.projects_box.append(&row);
+        imp.projects_box.select_row(Some(&row));
+    }
+
     fn init_widgets(&self) {
         let imp = self.imp();
 
@@ -218,11 +225,8 @@ impl SidebarProjects {
             "project-created",
             true,
             glib::closure_local!(@watch self as obj => move |_win: ProjectCreateWindow, project: Project| {
-                let imp = obj.imp();
                 obj.root().and_downcast::<IPlanWindow>().unwrap().set_property("project", &project);
-                let row = ProjectRow::new(project);
-                imp.projects_box.append(&row);
-                imp.projects_box.select_row(Some(&row));
+                obj.add_project(project);
                 obj.activate_action("project.open", None).unwrap();
             }),
         );

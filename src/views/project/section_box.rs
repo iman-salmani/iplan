@@ -265,8 +265,7 @@ impl SectionBox {
                     let placeholder = obj.root()
                         .and_downcast::<IPlanWindow>()
                         .unwrap()
-                        .imp()
-                        .project_lists
+                        .visible_project_page()
                         .imp()
                         .placeholder
                         .get();

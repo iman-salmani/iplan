@@ -151,14 +151,14 @@
                     </child><!-- End Calendar Today -->
                   </object>
                 </child><!-- End Header -->
-                <child><!-- Project Lists -->
-                  <object class="ProjectLists" id="project_lists">
+                <child><!-- projects stack -->
+                  <object class="GtkStack" id="projects_stack">
                     <property name="visible"
                       bind-source="calendar"
                       bind-property="visible"
                       bind-flags="sync-create|invert-boolean" />
                   </object>
-                </child><!-- End Project Lists -->
+                </child><!-- projects stack -->
                 <child>
                   <object class="Calendar" id="calendar">
                     <property name="visible">false</property>

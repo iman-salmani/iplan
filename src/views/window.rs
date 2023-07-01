@@ -25,7 +25,7 @@ use std::cell::RefCell;
 
 use crate::db::models::Project;
 use crate::db::operations::{create_project, create_section, read_projects};
-use crate::views::project::{ProjectEditWindow, ProjectHeader, ProjectLayout, ProjectLists};
+use crate::views::project::{ProjectEditWindow, ProjectHeader, ProjectLayout, ProjectPage};
 use crate::views::{calendar::Calendar, sidebar::SidebarProjects};
 
 mod imp {
@@ -54,7 +54,7 @@ mod imp {
         #[template_child]
         pub toast_overlay: TemplateChild<adw::ToastOverlay>,
         #[template_child]
-        pub project_lists: TemplateChild<ProjectLists>,
+        pub projects_stack: TemplateChild<gtk::Stack>,
         #[template_child]
         pub calendar: TemplateChild<Calendar>,
         #[template_child]
@@ -70,31 +70,40 @@ mod imp {
         fn class_init(klass: &mut Self::Class) {
             klass.bind_template();
             klass.bind_template_instance_callbacks();
-            klass.install_action("project.open", None, move |win, _, _| {
-                let imp = win.imp();
-                let project = win.project();
+            klass.install_action("project.open", None, move |obj, _, _| {
+                let imp = obj.imp();
+                let project = obj.project();
+                let project_id = project.id();
+                let project_page = if let Some(project_page) = obj.project_by_id(project_id) {
+                    obj.imp().projects_stack.remove(&project_page);
+                    obj.new_project_page(project_id)
+                } else {
+                    obj.new_project_page(project_id)
+                };
+                obj.set_visible_project(project_id);
+                obj.set_project_layout();
                 imp.project_header.open_project(&project);
-                imp.project_lists.open_project(project.id());
-                imp.project_lists.select_task(None);
+                project_page.open_project(project_id);
+                project_page.select_task(None);
                 imp.sidebar_projects.check_archive_hidden();
-                win.close_calendar();
+                obj.close_calendar();
             });
-            klass.install_action("project.edit", None, move |win, _, _| {
-                let window = ProjectEditWindow::new(win.application().unwrap(), win, win.project());
+            klass.install_action("project.edit", None, move |obj, _, _| {
+                let window = ProjectEditWindow::new(obj.application().unwrap(), obj, obj.project());
                 window.present();
             });
-            klass.install_action("project.update", None, move |win, _, _| {
-                let imp = win.imp();
+            klass.install_action("project.update", None, move |obj, _, _| {
+                let imp = obj.imp();
                 if imp.calendar.is_visible() {
                     return;
                 }
-                let project = win.project();
+                let project = obj.project();
                 imp.project_header.open_project(&project);
                 imp.sidebar_projects.update_project(&project);
             });
-            klass.install_action("project.delete", None, move |win, _, _| {
-                let projects_section = &win.imp().sidebar_projects;
-                projects_section.delete_project(win.project().index());
+            klass.install_action("project.delete", None, move |obj, _, _| {
+                let projects_section = &obj.imp().sidebar_projects;
+                projects_section.delete_project(obj.project().index());
                 let projects = read_projects(true).expect("Failed to read projects");
                 let home_project = if let Some(project) = projects.get(0) {
                     project.clone()
@@ -104,14 +113,13 @@ mod imp {
                     create_section(&gettext("Tasks"), project.id()).unwrap();
                     project
                 };
-                win.set_project(home_project);
-                projects_section.select_active_project();
-                win.activate_action("project.open", None)
-                    .expect("Failed to send project.open action");
+                obj.set_project(&home_project);
+                projects_section.add_project(home_project);
+                obj.imp().projects_stack.remove(&obj.visible_project_page());
+                obj.activate_action("project.open", None).unwrap();
             });
-            klass.install_action("section.new", None, move |win, _, _| {
-                let imp = win.imp();
-                imp.project_lists.new_section(win.project().id());
+            klass.install_action("section.new", None, move |obj, _, _| {
+                obj.visible_project_page().new_section(obj.project().id());
             });
         }
 
@@ -188,9 +196,7 @@ impl IPlanWindow {
         if settings.int("default-project-layout") == 1 {
             imp.project_layout_button
                 .set_icon_name("view-columns-symbolic");
-            imp.project_lists.set_layout(ProjectLayout::Horizontal);
         } else {
-            imp.project_lists.set_layout(ProjectLayout::Vertical);
         }
         obj.set_settings(settings);
         obj.activate_action("project.open", None)
@@ -208,13 +214,63 @@ impl IPlanWindow {
 
     pub fn change_project(&self, project: Project) {
         let imp = self.imp();
+        let project_id = project.id();
         self.set_project(&project);
         imp.project_header.open_project(&project);
-        imp.project_lists.open_project(project.id());
-        imp.project_lists.select_task(None);
+        let project_page = if let Some(project_page) = self.project_by_id(project_id) {
+            self.imp().projects_stack.remove(&project_page);
+            self.new_project_page(project_id)
+        } else {
+            self.new_project_page(project_id)
+        };
+        self.set_project_layout();
+        self.set_visible_project(project_id);
+        project_page.open_project(project_id);
+        project_page.select_task(None);
         imp.sidebar_projects.select_active_project();
         imp.sidebar_projects.check_archive_hidden();
         self.close_calendar();
+    }
+
+    pub fn visible_project_page(&self) -> ProjectPage {
+        self.imp()
+            .projects_stack
+            .visible_child()
+            .and_downcast::<ProjectPage>()
+            .unwrap()
+    }
+
+    fn project_by_id(&self, id: i64) -> Option<ProjectPage> {
+        if let Some(child) = self.imp().projects_stack.child_by_name(&id.to_string()) {
+            child.downcast::<ProjectPage>().ok()
+        } else {
+            None
+        }
+    }
+
+    fn new_project_page(&self, project_id: i64) -> ProjectPage {
+        let project_page = ProjectPage::new();
+        self.imp()
+            .projects_stack
+            .add_named(&project_page, Some(&project_id.to_string()));
+        project_page
+    }
+
+    fn set_visible_project(&self, id: i64) {
+        self.imp()
+            .projects_stack
+            .set_visible_child_full(&id.to_string(), gtk::StackTransitionType::Crossfade);
+    }
+
+    fn set_project_layout(&self) {
+        let settings = self.settings().unwrap();
+        if settings.int("default-project-layout") == 1 {
+            self.visible_project_page()
+                .set_layout(ProjectLayout::Horizontal);
+        } else {
+            self.visible_project_page()
+                .set_layout(ProjectLayout::Vertical);
+        }
     }
 
     fn close_calendar(&self) {
@@ -227,27 +283,26 @@ impl IPlanWindow {
 
     #[template_callback]
     fn handle_project_layout_button_clicked(&self, button: gtk::Button) {
-        let imp = self.imp();
         match button.icon_name() {
             Some(icon_name) => {
                 if icon_name == "list-symbolic" {
                     button.set_icon_name("view-columns-symbolic");
-                    imp.project_lists.set_layout(ProjectLayout::Horizontal);
                     self.settings()
                         .unwrap()
                         .set_int("default-project-layout", 1)
                         .expect("Could not set setting.");
                 } else {
                     button.set_icon_name("list-symbolic");
-                    imp.project_lists.set_layout(ProjectLayout::Vertical);
                     self.settings()
                         .unwrap()
                         .set_int("default-project-layout", 0)
                         .expect("Could not set setting.");
                 }
-                imp.project_lists.open_project(self.project().id());
+                self.set_project_layout();
+                self.visible_project_page()
+                    .open_project(self.project().id());
             }
-            None => button.set_icon_name("list-symbolic"),
+            None => unimplemented!(),
         }
     }
 

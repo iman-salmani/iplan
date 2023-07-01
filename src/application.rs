@@ -257,7 +257,7 @@ impl IPlanApplication {
                     "window-closed",
                     true,
                     glib::closure_local!(@watch main_window => move |_win: TaskWindow, task: Task| {
-                        main_window.imp().project_lists.reset_task(task);
+                        main_window.visible_project_page().reset_task(task);
                     }),
                 );
             }),

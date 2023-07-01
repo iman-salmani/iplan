@@ -1,8 +1,8 @@
 mod project_header;
 pub use project_header::ProjectHeader;
 
-mod project_lists;
-pub use project_lists::{ProjectLayout, ProjectLists};
+mod project_page;
+pub use project_page::{ProjectLayout, ProjectPage};
 
 mod section_box;
 pub use section_box::SectionBox;

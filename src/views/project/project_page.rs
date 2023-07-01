@@ -20,9 +20,9 @@ mod imp {
     use super::*;
 
     #[derive(Default, gtk::CompositeTemplate, Properties)]
-    #[template(resource = "/ir/imansalmani/iplan/ui/project/project_lists.ui")]
-    #[properties(wrapper_type=super::ProjectLists)]
-    pub struct ProjectLists {
+    #[template(resource = "/ir/imansalmani/iplan/ui/project/project_page.ui")]
+    #[properties(wrapper_type=super::ProjectPage)]
+    pub struct ProjectPage {
         pub layout: Cell<ProjectLayout>,
         #[property(get, set)]
         pub drag_scroll_controller: RefCell<Option<gtk::DropTarget>>,
@@ -41,9 +41,9 @@ mod imp {
     }
 
     #[glib::object_subclass]
-    impl ObjectSubclass for ProjectLists {
-        const NAME: &'static str = "ProjectLists";
-        type Type = super::ProjectLists;
+    impl ObjectSubclass for ProjectPage {
+        const NAME: &'static str = "ProjectPage";
+        type Type = super::ProjectPage;
         type ParentType = gtk::Widget;
 
         fn class_init(klass: &mut Self::Class) {
@@ -61,7 +61,7 @@ mod imp {
         }
     }
 
-    impl ObjectImpl for ProjectLists {
+    impl ObjectImpl for ProjectPage {
         fn constructed(&self) {
             // Translators: {} Will be replaced with a shortcut label.
             let placeholder_subtitle = gettext("Use the primary menu {} for adding a new section");
@@ -88,8 +88,8 @@ mod imp {
             self.derived_set_property(id, value, pspec)
         }
     }
-    impl BuildableImpl for ProjectLists {}
-    impl WidgetImpl for ProjectLists {
+    impl BuildableImpl for ProjectPage {}
+    impl WidgetImpl for ProjectPage {
         fn request_mode(&self) -> gtk::SizeRequestMode {
             self.parent_request_mode();
             gtk::SizeRequestMode::ConstantSize
@@ -112,18 +112,18 @@ mod imp {
 }
 
 glib::wrapper! {
-    pub struct ProjectLists(ObjectSubclass<imp::ProjectLists>)
+    pub struct ProjectPage(ObjectSubclass<imp::ProjectPage>)
         @extends glib::InitiallyUnowned, gtk::Widget,
         @implements gtk::Accessible, gtk::Buildable, gtk::ConstraintTarget;
 }
 
-impl Default for ProjectLists {
+impl Default for ProjectPage {
     fn default() -> Self {
         glib::Object::builder().build()
     }
 }
 
-impl ProjectLists {
+impl ProjectPage {
     pub fn new() -> Self {
         Self::default()
     }

@@ -12,7 +12,7 @@ src/ui/calendar/tasks_list.ui
 src/ui/project/project_create_window.ui
 src/ui/project/project_edit_window.ui
 src/ui/project/project_header.ui
-src/ui/project/project_lists.ui
+src/ui/project/project_page.ui
 src/ui/project/section_box.ui
 src/ui/record/record_row.ui
 src/ui/record/record_window.ui
@@ -25,6 +25,7 @@ src/ui/sidebar/sidebar_projects.ui
 src/ui/snippets/delete_dialog.ui
 src/ui/snippets/date_row.ui
 src/ui/snippets/time_row.ui
+src/ui/snippets/menu_item.ui
 src/ui/task/task_row.ui
 src/ui/task/subtask_row.ui
 src/ui/task/task_window.ui
@@ -43,7 +44,7 @@ src/views/calendar/tasks_list.rs
 src/views/project/project_create_window.rs
 src/views/project/project_edit_window.rs
 src/views/project/project_header.rs
-src/views/project/project_lists.rs
+src/views/project/project_page.rs
 src/views/project/section_box.rs
 src/views/record/record_row.rs
 src/views/record/record_window.rs
@@ -55,6 +56,7 @@ src/views/sidebar/sidebar_projects.rs
 src/views/sidebar/project_row.rs
 src/views/snippets/date_row.rs
 src/views/snippets/time_row.rs
+src/views/snippets/menu_item.rs
 src/views/task/tasks_box.rs
 src/views/task/task_row.rs
 src/views/task/subtask_row.rs
