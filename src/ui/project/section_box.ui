@@ -72,29 +72,10 @@
         <property name="orientation">vertical</property>
         <property name="spacing">6</property>
         <child><!-- Done Tasks Button -->
-          <object class="GtkButton" id="show_done_tasks_button">
+          <object class="MenuItem">
+            <property name="icon-name">object-select-symbolic</property>
+            <property name="label" translatable="yes">Done tasks</property>
             <signal name="clicked" handler="handle_show_done_tasks_button_clicked" swapped="true" />
-            <style>
-              <class name="flat" />
-            </style>
-            <child>
-              <object class="GtkBox">
-                <property name="spacing">6</property>
-                <child>
-                  <object class="GtkImage">
-                    <property name="icon-name">object-select-symbolic</property>
-                  </object>
-                </child>
-                <child>
-                  <object class="GtkLabel">
-                    <property name="label" translatable="yes">Done tasks</property>
-                    <attributes>
-                      <attribute name="weight" value="PANGO_WEIGHT_NORMAL" />
-                    </attributes>
-                  </object>
-                </child>
-              </object>
-            </child>
           </object>
         </child>
         <!-- End Done Tasks Button -->
@@ -102,29 +83,13 @@
           <object class="GtkSeparator" />
         </child>
         <child><!-- Delete Section -->
-          <object class="GtkButton">
+          <object class="MenuItem">
+            <property name="icon-name">user-trash-symbolic</property>
+            <property name="label" translatable="yes">Delete section</property>
             <signal name="clicked" handler="handle_delete_button_clicked" swapped="true" />
             <style>
               <class name="flat" />
             </style>
-            <child>
-              <object class="GtkBox">
-                <property name="spacing">6</property>
-                <child>
-                  <object class="GtkImage">
-                    <property name="icon-name">user-trash-symbolic</property>
-                  </object>
-                </child>
-                <child>
-                  <object class="GtkLabel">
-                    <property name="label" translatable="yes">Delete section</property>
-                    <attributes>
-                      <attribute name="weight" value="PANGO_WEIGHT_NORMAL" />
-                    </attributes>
-                  </object>
-                </child>
-              </object>
-            </child>
           </object>
         </child><!-- End Delete Section -->
       </object>

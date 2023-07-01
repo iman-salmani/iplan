@@ -216,36 +216,17 @@
         <property name="orientation">vertical</property>
         <property name="spacing">6</property>
         <child><!-- Timer -->
-          <object class="GtkButton" id="timer_button">
+          <object class="MenuItem" id="timer_button">
+            <property name="icon-name">stopwatch-symbolic</property>
+            <property name="label" translatable="yes">Start _timer</property>
             <signal name="clicked" handler="handle_timer_button_clicked" swapped="true" />
-            <style>
-              <class name="flat" />
-              <class name="menu_item" />
-            </style>
-            <child>
-              <object class="AdwButtonContent" id="timer_button_content">
-                <property name="halign">start</property>
-                <property name="use-underline">true</property>
-                <property name="label" translatable="yes">Start _timer</property>
-                <property name="icon-name">stopwatch-symbolic</property>
-              </object>
-            </child>
           </object>
         </child><!-- End Timer -->
         <child><!-- Delete Task -->
-          <object class="GtkButton">
+          <object class="MenuItem">
+            <property name="label" translatable="yes">_Delete task</property>
+            <property name="icon-name">user-trash-symbolic</property>
             <signal name="clicked" handler="handle_delete_button_clicked" swapped="true" />
-            <style>
-              <class name="flat" />
-            </style>
-            <child>
-              <object class="AdwButtonContent">
-                <property name="halign">start</property>
-                <property name="use-underline">true</property>
-                <property name="label" translatable="yes">_Delete task</property>
-                <property name="icon-name">user-trash-symbolic</property>
-              </object>
-            </child>
           </object>
         </child><!-- End Delete Task -->
       </object>

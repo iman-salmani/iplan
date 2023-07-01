@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE interface SYSTEM "../schema.dtd">
+<interface>
+  <requires lib="gtk" version="4.0" />
+  <requires lib="Adw" version="1.0" />
+  <template class="MenuItem" parent="GtkButton">
+    <style>
+      <class name="flat" />
+      <class name="body" />
+    </style>
+    <child>
+      <object class="GtkBox">
+        <property name="spacing">6</property>
+        <child>
+          <object class="GtkImage" id="icon_widget"></object>
+        </child>
+        <child>
+          <object class="GtkLabel" id="label_widget">
+            <property name="use-underline">true</property>
+          </object>
+        </child>
+      </object>
+    </child>
+  </template>
+</interface>

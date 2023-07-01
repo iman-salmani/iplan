@@ -9,3 +9,6 @@ pub use chart::Chart;
 
 mod chart_bar;
 pub use chart_bar::ChartBar;
+
+mod menu_item;
+pub use menu_item::MenuItem;

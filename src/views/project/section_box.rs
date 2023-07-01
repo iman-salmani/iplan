@@ -8,6 +8,7 @@ use crate::db::operations::{
     create_task, delete_section, read_section, read_tasks, update_section, update_task,
 };
 use crate::views::project::ProjectLayout;
+use crate::views::snippets::MenuItem;
 use crate::views::task::{TaskRow, TaskWindow, TasksBox, TasksBoxWrapper, TasksDoneWindow};
 use crate::views::IPlanWindow;
 
@@ -34,8 +35,6 @@ mod imp {
         pub tasks_box: TemplateChild<TasksBox>,
         #[template_child]
         pub options_popover: TemplateChild<gtk::Popover>,
-        #[template_child]
-        pub show_done_tasks_button: TemplateChild<gtk::Button>,
     }
 
     #[glib::object_subclass]
@@ -45,6 +44,7 @@ mod imp {
         type ParentType = gtk::Box;
 
         fn class_init(klass: &mut Self::Class) {
+            MenuItem::ensure_type();
             klass.bind_template();
             klass.bind_template_instance_callbacks();
             klass.install_action("task.check", Some("i"), move |obj, _, value| {

@@ -9,6 +9,7 @@ use crate::db::operations::{
     create_record, delete_task, read_project, read_reminders, read_task, read_tasks, update_record,
     update_task,
 };
+use crate::views::snippets::MenuItem;
 use crate::views::task::{SubtaskRow, TaskWindow, TasksDoneWindow};
 use crate::views::IPlanWindow;
 
@@ -65,9 +66,7 @@ mod imp {
         pub name_entry_buffer: TemplateChild<gtk::EntryBuffer>,
         pub timer_status: Cell<TimerStatus>,
         #[template_child]
-        pub timer_button: TemplateChild<gtk::Button>,
-        #[template_child]
-        pub timer_button_content: TemplateChild<adw::ButtonContent>,
+        pub timer_button: TemplateChild<MenuItem>,
         #[template_child]
         pub options_button: TemplateChild<gtk::MenuButton>,
         #[template_child]
@@ -99,6 +98,7 @@ mod imp {
         type ParentType = gtk::ListBoxRow;
 
         fn class_init(klass: &mut Self::Class) {
+            MenuItem::ensure_type();
             klass.bind_template();
             klass.bind_template_instance_callbacks();
         }
@@ -305,10 +305,10 @@ impl TaskRow {
         } else {
             let duration = task.duration();
             if duration == 0 {
-                imp.timer_button_content.set_label(&gettext("Start _timer"));
+                imp.timer_button.set_label(gettext("Start _timer"));
             } else {
-                imp.timer_button_content
-                    .set_label(&Record::duration_display(duration));
+                imp.timer_button
+                    .set_label(Record::duration_display(duration));
                 self.move_timer_button(true);
             }
         }
@@ -318,8 +318,8 @@ impl TaskRow {
         let imp = self.imp();
         if imp.timer_status.get() != TimerStatus::On {
             let duration = self.task().duration();
-            imp.timer_button_content
-                .set_label(&Record::duration_display(duration));
+            imp.timer_button
+                .set_label(Record::duration_display(duration));
             if duration == 0 {
                 self.move_timer_button(false);
             } else {
@@ -422,17 +422,15 @@ impl TaskRow {
 
     fn move_timer_button(&self, indicate: bool) {
         let imp = self.imp();
-        let button: &gtk::Button = imp.timer_button.as_ref();
+        let button: &MenuItem = imp.timer_button.as_ref();
         let options_box: &gtk::Box = imp.options_box.as_ref();
         if indicate {
             let options_button: &gtk::MenuButton = imp.options_button.as_ref();
             let header: &gtk::Box = imp.header.as_ref();
             button.unparent();
             options_button.popdown();
-            button.remove_css_class("flat");
             button.insert_before(header, Some(options_button));
         } else {
-            button.add_css_class("flat");
             button.unparent();
             options_box.prepend(button);
         }
@@ -440,9 +438,10 @@ impl TaskRow {
 
     fn start_timer(&self, record: Record) {
         let imp = self.imp();
-        let button: &gtk::Button = imp.timer_button.as_ref();
+        let button: &MenuItem = imp.timer_button.as_ref();
         imp.timer_status.set(TimerStatus::On);
         button.add_css_class("destructive-action");
+        button.remove_css_class("flat");
         self.move_timer_button(true);
 
         let (tx, rx) = glib::MainContext::channel(glib::PRIORITY_DEFAULT);
@@ -459,19 +458,17 @@ impl TaskRow {
                 let imp = obj.imp();
                 match imp.timer_status.get() {
                     TimerStatus::On => {
-                        let button_content = button.child()
-                            .and_downcast::<adw::ButtonContent>()
-                            .unwrap();
-                        button_content.set_label(
-                            &Record::duration_display(duration as i64)
+                        button.set_label(
+                            Record::duration_display(duration as i64)
                         );
                         glib::Continue(true)
                     },
                     TimerStatus::Off => {
                         button.remove_css_class("destructive-action");
+                        button.add_css_class("flat");
                         record.set_duration(glib::DateTime::now_local().unwrap().to_unix() - record.start());
                         update_record(&record).expect("Failed to update record");
-                        imp.timer_button_content.set_label(&obj.task().duration_display());
+                        imp.timer_button.set_label(obj.task().duration_display());
                         if obj.parent().is_some() {
                             obj.activate_action("project.update", None).unwrap();
                         }
@@ -479,6 +476,7 @@ impl TaskRow {
                     },
                     TimerStatus::Cancel => {
                         button.remove_css_class("destructive-action");
+                        button.add_css_class("flat");
                         glib::Continue(false)
                     }
                 }
