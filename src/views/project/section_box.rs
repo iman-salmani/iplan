@@ -203,7 +203,7 @@ impl SectionBox {
         modal.present();
         row.cancel_timer();
         modal.connect_closure(
-            "task-window-close",
+            "window-closed",
             true,
             glib::closure_local!(@watch row => move |_win: TaskWindow, task: Task| {
                 if task.done() {

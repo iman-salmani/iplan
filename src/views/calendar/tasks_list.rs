@@ -63,9 +63,14 @@ mod imp {
 
         fn signals() -> &'static [glib::subclass::Signal] {
             static SIGNALS: Lazy<Vec<Signal>> = Lazy::new(|| {
-                vec![Signal::builder("task-moveout")
-                    .param_types([TaskRow::static_type()])
-                    .build()]
+                vec![
+                    Signal::builder("task-moveout")
+                        .param_types([TaskRow::static_type()])
+                        .build(),
+                    Signal::builder("outside-task-changed")
+                        .param_types([Task::static_type()])
+                        .build(),
+                ]
             });
             SIGNALS.as_ref()
         }
@@ -135,6 +140,14 @@ impl TasksList {
         self.set_duration(self.duration() + row.task().duration());
     }
 
+    pub fn remove_row(&self, row: &TaskRow) {
+        let imp = self.imp();
+        imp.tasks_box.remove_item(&row);
+        if imp.tasks_box.item_by_index(0).is_none() {
+            imp.name.add_css_class("dim-label");
+        }
+    }
+
     fn add_bindings(&self) {
         self.bind_property::<gtk::Label>("duration", &self.imp().duration_label.get(), "label")
             .transform_to(|binding, duration: i64| {
@@ -151,30 +164,29 @@ impl TasksList {
     }
 
     #[template_callback]
-    fn task_activated(&self, row: TaskRow, tasks_box: gtk::ListBox) {
+    fn task_activated(&self, row: TaskRow, _: gtk::ListBox) {
         let win = self.root().and_downcast::<gtk::Window>().unwrap();
         let modal = TaskWindow::new(&win.application().unwrap(), &win, row.task());
         modal.present();
         row.cancel_timer();
         let tasks_list_datetime = self.datetime().to_unix();
         modal.connect_closure(
-            "page-close",
+            "page-closed",
             true,
-            glib::closure_local!(@watch self as obj, @weak-allow-none row, @weak-allow-none tasks_box => move |_win: TaskWindow, task: Task| {
-                let tasks_box = tasks_box.unwrap();
+            glib::closure_local!(@watch self as obj, @weak-allow-none row => move |_win: TaskWindow, task: Task| {
                 let row = row.unwrap();
                 let task_date = task.date();
                 let task_duration = task.duration();
-                row.reset(task);
-                row.changed();
-                if task_date != tasks_list_datetime {
-                    obj.set_duration(obj.duration() - task_duration);
-                    tasks_box.remove(&row);
-                    tasks_box.invalidate_filter();
-                    if tasks_box.first_child().and_downcast::<TaskRow>().is_none() {
-                        obj.imp().name.add_css_class("dim-label");
+
+                if task.id() == row.task().id() {
+                    row.reset(task);
+                    if task_date != tasks_list_datetime {
+                        obj.set_duration(obj.duration() - task_duration);
+                        obj.remove_row(&row);
+                        obj.emit_by_name::<()>("task-moveout", &[&row]);
                     }
-                    obj.emit_by_name::<()>("task-moveout", &[&row]);
+                } else if task_date != 0 {
+                    obj.emit_by_name::<()>("outside-task-changed", &[&task]);
                 }
             }),
         );

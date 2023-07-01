@@ -165,7 +165,6 @@ impl TasksBox {
 
     pub fn add_task(&self, task: Task) {
         let row = self.create_task_row(task);
-        row.set_visible_project_label(true);
         self.imp().items_box.append(&row);
     }
 
@@ -252,6 +251,7 @@ impl TasksBox {
 
     pub fn remove_item(&self, item: &TaskRow) {
         self.imp().items_box.remove(item);
+        self.imp().items_box.invalidate_filter();
     }
 
     pub fn add_item(&self, item: &TaskRow) {

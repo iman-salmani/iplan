@@ -154,7 +154,7 @@ impl TasksDoneWindow {
         let modal = TaskWindow::new(&obj.application().unwrap(), &obj, row.task());
         modal.present();
         modal.connect_closure(
-            "task-window-close",
+            "window-closed",
             true,
             glib::closure_local!(@watch self as obj, @weak-allow-none row => move |_win: TaskWindow, task: Task| {
                 let row = row.unwrap();

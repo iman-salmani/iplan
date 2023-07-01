@@ -72,10 +72,10 @@ mod imp {
         fn signals() -> &'static [glib::subclass::Signal] {
             static SIGNALS: Lazy<Vec<Signal>> = Lazy::new(|| {
                 vec![
-                    Signal::builder("task-window-close")
+                    Signal::builder("window-closed")
                         .param_types([Task::static_type()])
                         .build(),
-                    Signal::builder("page-close")
+                    Signal::builder("page-closed")
                         .param_types([Task::static_type()])
                         .build(),
                 ]
@@ -110,26 +110,40 @@ mod imp {
     impl WindowImpl for TaskWindow {
         fn close_request(&self) -> glib::signal::Inhibit {
             let obj = self.obj();
-            let page = self
-                .task_pages_stack
-                .visible_child()
-                .and_downcast::<TaskPage>()
-                .unwrap();
-            let mut task = page.task();
-
-            obj.emit_by_name::<()>("page-close", &[&task]);
-
-            let mut parent_id = task.parent();
-            while parent_id != 0 {
-                let parent_name = parent_id.to_string();
-                task = if let Some(page) = self.task_pages_stack.child_by_name(&parent_name) {
-                    page.downcast::<TaskPage>().unwrap().task()
-                } else {
-                    read_task(parent_id).unwrap()
-                };
-                parent_id = task.parent();
+            let mut root_task = None;
+            let pages = self.task_pages_stack.pages();
+            for i in 0..pages.n_items() {
+                let stack_page = pages.item(i).and_downcast::<gtk::StackPage>().unwrap();
+                let page = stack_page.child().downcast::<TaskPage>().unwrap();
+                let task = page.task();
+                if task.parent() == 0 {
+                    root_task = Some(task);
+                }
+                obj.emit_by_name::<()>("page-closed", &[&page.task()]);
             }
-            obj.emit_by_name::<()>("task-window-close", &[&task]);
+
+            if root_task.is_none() {
+                let page = self
+                    .task_pages_stack
+                    .visible_child()
+                    .and_downcast::<TaskPage>()
+                    .unwrap();
+                let mut task = page.task();
+                let mut parent_id = task.parent();
+                while parent_id != 0 {
+                    let parent_name = parent_id.to_string();
+                    task = if let Some(page) = self.task_pages_stack.child_by_name(&parent_name) {
+                        page.downcast::<TaskPage>().unwrap().task()
+                    } else {
+                        read_task(parent_id).unwrap()
+                    };
+                    parent_id = task.parent();
+                }
+                root_task = Some(task);
+            }
+
+            obj.emit_by_name::<()>("window-closed", &[&root_task.unwrap()]);
+
             self.parent_close_request()
         }
     }

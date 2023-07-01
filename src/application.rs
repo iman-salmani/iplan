@@ -254,7 +254,7 @@ impl IPlanApplication {
                 let modal = TaskWindow::new(obj.upcast_ref::<gtk::Application>(), &main_window, task);
                 modal.present();
                 modal.connect_closure(
-                    "task-window-close",
+                    "window-closed",
                     true,
                     glib::closure_local!(@watch main_window => move |_win: TaskWindow, task: Task| {
                         main_window.imp().project_lists.reset_task(task);
