@@ -233,7 +233,9 @@ impl IPlanApplication {
             true,
             glib::closure_local!(@watch self as obj => move |_: SearchWindow, project: Project| {
                 let main_window = obj.window_by_name("IPlanWindow").unwrap().downcast::<IPlanWindow>().unwrap();
-                main_window.change_project(project);
+                if main_window.project().id() != project.id() {
+                    main_window.change_project(project);
+                }
             }),
         );
         modal.connect_closure(
@@ -241,9 +243,12 @@ impl IPlanApplication {
             true,
             glib::closure_local!(@watch self as obj => move |_: SearchWindow, task: Task| {
                 let main_window = obj.window_by_name("IPlanWindow").unwrap().downcast::<IPlanWindow>().unwrap();
+                let task_project = task.project();
 
-                if let Ok(project) = read_project(task.project()) {
-                    main_window.change_project(project)
+                if main_window.project().id() != task_project {
+                    if let Ok(project) = read_project(task_project)  {
+                        main_window.change_project(project)
+                    }
                 }
 
                 let modal = TaskWindow::new(obj.upcast_ref::<gtk::Application>(), &main_window, task);
