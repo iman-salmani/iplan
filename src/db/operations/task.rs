@@ -76,22 +76,25 @@ pub fn update_task(task: &Task) -> Result<()> {
     let old_task = read_task(task.id())?;
     let position_stmt = &mut String::new();
 
-    if task.position() != old_task.position() {
-        position_stmt.push_str(&format!("position = {},", task.position()));
-        if task.parent() != old_task.parent() {
-            if old_task.parent() == 0 {
+    let task_position = task.position();
+    let old_task_position = old_task.position();
+    if task_position != old_task_position {
+        position_stmt.push_str(&format!("position = {},", task_position));
+        let old_task_parent = old_task.parent();
+        if task.parent() != old_task_parent {
+            if old_task_parent == 0 {
                 // Decrease tasks position in previous section
                 conn.execute(
                     "UPDATE tasks SET position = position - 1
                     WHERE position > ?1 AND section = ?2",
-                    (old_task.position(), old_task.section()),
+                    (old_task_position, old_task.section()),
                 )?;
             } else {
                 // Decrease subtasks position in previous parent
                 conn.execute(
                     "UPDATE tasks SET position = position - 1
                     WHERE position > ?1 AND parent = ?2",
-                    (old_task.position(), old_task.parent()),
+                    (old_task_position, old_task_parent),
                 )?;
             }
         } else if task.section() != old_task.section() {
@@ -99,7 +102,7 @@ pub fn update_task(task: &Task) -> Result<()> {
             conn.execute(
                 "UPDATE tasks SET position = position - 1
                 WHERE position > ?1 AND section = ?2",
-                (old_task.position(), old_task.section()),
+                (old_task_position, old_task.section()),
             )?;
 
             // Increase tasks position in target section
@@ -107,21 +110,29 @@ pub fn update_task(task: &Task) -> Result<()> {
             conn.execute(
                 "UPDATE tasks SET position = position + 1
                 WHERE position >= ?1 AND section = ?2",
-                (task.position(), task.section()),
+                (task_position, task.section()),
             )?;
-        } else if task.position() > old_task.position() {
+        } else if task_position > old_task_position {
             conn.execute(
                 "UPDATE tasks SET position = position - 1
                 WHERE position > ?1 AND position <= ?2 AND section = ?3",
-                (old_task.position(), task.position(), task.section()),
+                (old_task_position, task_position, task.section()),
             )?;
-        } else if task.position() < old_task.position() {
+        } else if task_position < old_task_position {
             conn.execute(
                 "UPDATE tasks SET position = position + 1
                 WHERE position >= ?1 AND position < ?2 AND section = ?3",
-                (task.position(), old_task.position(), task.section()),
+                (task_position, old_task_position, task.section()),
             )?;
         }
+    }
+
+    let task_project = task.project();
+    if task_project != old_task.project() {
+        conn.execute(
+            "UPDATE tasks SET project = ?1 WHERE parent = ?2",
+            (task_project, task.id()),
+        )?;
     }
 
     conn.execute(
