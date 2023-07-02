@@ -48,6 +48,14 @@ mod imp {
         fn class_init(klass: &mut Self::Class) {
             klass.bind_template();
             klass.bind_template_instance_callbacks();
+            klass.install_action("task.move-up", Some("x"), move |obj, _, value| {
+                let id: i64 = value.unwrap().get().unwrap();
+                obj.move_item_one_step(id, true);
+            });
+            klass.install_action("task.move-down", Some("x"), move |obj, _, value| {
+                let id: i64 = value.unwrap().get().unwrap();
+                obj.move_item_one_step(id, false);
+            });
         }
 
         fn instance_init(obj: &glib::subclass::InitializingObject<Self>) {
@@ -302,6 +310,9 @@ impl TasksBox {
             false
         };
         let row = TaskRow::new(task, false, visible_project_label);
+        if let TasksBoxWrapper::Date(_) = self.items_wrapper().unwrap() {
+            row.set_hide_move_arrows(true);
+        }
         row
     }
 
@@ -313,6 +324,9 @@ impl TasksBox {
             false
         };
         let row = TaskRow::new_lazy(task, visible_project_label);
+        if let TasksBoxWrapper::Date(_) = self.items_wrapper().unwrap() {
+            row.set_hide_move_arrows(true);
+        }
         row
     }
 
@@ -622,6 +636,29 @@ impl TasksBox {
                 row.changed();
             }
         }
+    }
+
+    fn move_item_one_step(&self, id: i64, up: bool) {
+        let step = if up { -1 } else { 1 };
+        let item = self.item_by_id(id).unwrap();
+        let item_index = item.index();
+        let item_task: Task = item.task();
+        let item_task_position = item_task.position();
+
+        if up && item_index == 0 {
+            return;
+        } else if !up && item_task_position == 0 {
+            return;
+        }
+
+        let target_item = self.item_by_index((item_index + step) as u32).unwrap();
+        let target_item_task = target_item.task();
+        let target_item_task_position = target_item_task.position();
+
+        target_item_task.set_position(item_task_position);
+        item_task.set_position(target_item_task_position);
+        self.imp().items_box.invalidate_sort();
+        update_task(&item_task).unwrap();
     }
 
     fn start_scroll(&self) {

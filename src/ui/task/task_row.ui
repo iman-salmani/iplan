@@ -218,13 +218,35 @@
         <child><!-- Timer -->
           <object class="MenuItem" id="timer_button">
             <property name="icon-name">stopwatch-symbolic</property>
-            <property name="label" translatable="yes">Start _timer</property>
+            <property name="label" translatable="yes">Start _Timer</property>
             <signal name="clicked" handler="handle_timer_button_clicked" swapped="true" />
           </object>
         </child><!-- End Timer -->
+        <child>
+          <object class="GtkSeparator" id="timer_separator"></object>
+        </child>
+        <child><!-- Move Up -->
+          <object class="MenuItem" id="move_up_button">
+            <property name="label" translatable="yes">Move Up</property>
+            <property name="icon-name">arrow1-up-symbolic</property>
+            <property name="action-name">task.move-up</property>
+            <property name="action-target">0</property>
+          </object>
+        </child><!-- End Move Up -->
+        <child><!-- Move Down -->
+          <object class="MenuItem" id="move_down_button">
+            <property name="label" translatable="yes">Move Down</property>
+            <property name="icon-name">arrow1-down-symbolic</property>
+            <property name="action-name">task.move-down</property>
+            <property name="action-target">0</property>
+          </object>
+        </child><!-- End Move Down -->
+        <child>
+          <object class="GtkSeparator"></object>
+        </child>
         <child><!-- Delete Task -->
           <object class="MenuItem">
-            <property name="label" translatable="yes">_Delete task</property>
+            <property name="label" translatable="yes">_Delete Task</property>
             <property name="icon-name">user-trash-symbolic</property>
             <signal name="clicked" handler="handle_delete_button_clicked" swapped="true" />
           </object>

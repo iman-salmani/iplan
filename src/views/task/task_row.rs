@@ -1,5 +1,6 @@
 use gettextrs::gettext;
-use gtk::{gdk, glib, glib::Properties, prelude::*, subclass::prelude::*};
+use gtk::glib::{self, Properties};
+use gtk::{gdk, prelude::*, subclass::prelude::*};
 use std::cell::{Cell, RefCell};
 use std::thread;
 use std::time::{Duration, SystemTime};
@@ -50,6 +51,8 @@ mod imp {
         #[property(get, set)]
         pub draggable: Cell<bool>,
         pub drag_backup: Cell<Option<DragBackup>>,
+        #[property(get, set)]
+        pub hide_move_arrows: Cell<bool>,
         #[template_child]
         pub row_box: TemplateChild<gtk::Box>,
         #[template_child]
@@ -68,11 +71,17 @@ mod imp {
         #[template_child]
         pub timer_button: TemplateChild<MenuItem>,
         #[template_child]
+        pub timer_separator: TemplateChild<gtk::Separator>,
+        #[template_child]
         pub options_button: TemplateChild<gtk::MenuButton>,
         #[template_child]
         pub options_popover: TemplateChild<gtk::Popover>,
         #[template_child]
         pub options_box: TemplateChild<gtk::Box>,
+        #[template_child]
+        pub move_up_button: TemplateChild<gtk::Button>,
+        #[template_child]
+        pub move_down_button: TemplateChild<gtk::Button>,
         #[template_child]
         pub description: TemplateChild<gtk::Label>,
         #[template_child]
@@ -305,7 +314,7 @@ impl TaskRow {
         } else {
             let duration = task.duration();
             if duration == 0 {
-                imp.timer_button.set_label(gettext("Start _timer"));
+                imp.timer_button.set_label(gettext("Start _Timer"));
             } else {
                 imp.timer_button
                     .set_label(Record::duration_display(duration));
@@ -378,6 +387,25 @@ impl TaskRow {
             .sync_create()
             .invert_boolean()
             .build();
+
+        self.connect_hide_move_arrows_notify(|obj| {
+            let imp = obj.imp();
+            let visible = !obj.hide_move_arrows();
+            imp.move_up_button.set_visible(visible);
+            imp.move_down_button.set_visible(visible);
+            imp.move_down_button
+                .next_sibling()
+                .and_downcast::<gtk::Separator>()
+                .unwrap()
+                .set_visible(visible);
+        });
+
+        task.bind_property("id", &imp.move_up_button.get(), "action-target")
+            .transform_to(|_, id: i64| Some(id.to_variant()))
+            .build();
+        task.bind_property("id", &imp.move_down_button.get(), "action-target")
+            .transform_to(|_, id: i64| Some(id.to_variant()))
+            .build();
     }
 
     #[template_callback]
@@ -430,9 +458,11 @@ impl TaskRow {
             button.unparent();
             options_button.popdown();
             button.insert_before(header, Some(options_button));
+            imp.timer_separator.set_visible(false);
         } else {
             button.unparent();
             options_box.prepend(button);
+            imp.timer_separator.set_visible(true);
         }
     }
 

@@ -18,6 +18,7 @@
         <child><!-- Task Row -->
           <object class="TaskRow" id="task_row">
             <property name="compact">true</property>
+            <property name="hide_move_arrows">true</property>
           </object>
         </child><!-- End Task Row -->
         <child><!-- Date Row -->
