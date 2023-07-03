@@ -1,4 +1,4 @@
-use rusqlite::Result;
+use rusqlite::{Error, Result};
 
 use crate::db::get_connection;
 
@@ -139,21 +139,37 @@ fn to9() -> Result<()> {
         let id = subtask.get::<usize, i64>(0)?;
         let mut parent_id = subtask.get::<usize, i64>(1)?;
         let mut project = None;
+        let mut delete_subtask = false;
         while project == None {
             // FIXME: needs to have a max cycle or refactor
             let mut stmt = conn.prepare("SELECT parent, project FROM tasks WHERE id = ?")?;
             let parent = stmt.query_row([parent_id], |row| {
                 Ok((row.get::<usize, i64>(0)?, row.get::<usize, i64>(1)?))
-            })?;
+            });
+
+            // Remove task if the parent was removed before.
+            // This happens because in old versions subtasks didn't remove while removing the task
+            if let Err(err) = &parent {
+                if err == &Error::QueryReturnedNoRows {
+                    delete_subtask = true;
+                    break;
+                }
+            }
+
+            let parent = parent?;
             parent_id = parent.0;
             if parent_id == 0 {
                 project = Some(parent.1);
             }
         }
-        conn.execute(
-            &format!("UPDATE tasks SET project = ?2 WHERE id = ?1"),
-            (id, project.unwrap()),
-        )?;
+        if delete_subtask {
+            conn.execute("DELETE FROM tasks WHERE id = ?", (id,))?;
+        } else {
+            conn.execute(
+                &format!("UPDATE tasks SET project = ?2 WHERE id = ?1"),
+                (id, project.unwrap()),
+            )?;
+        }
     }
     Ok(())
 }
