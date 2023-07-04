@@ -3,21 +3,14 @@ use rusqlite::Result;
 use crate::db::get_connection;
 use crate::db::models::Task;
 
-pub fn create_task(name: &str, project_id: i64, section_id: i64, parent: i64) -> Result<Task> {
-    let position = new_position(section_id);
+pub fn create_task(task: Task) -> Result<Task> {
     let conn = get_connection();
     conn.execute(
-        "INSERT INTO tasks(name, project, section, position, parent) VALUES (?1,?2,?3,?4,?5)",
-        (name, project_id, section_id, position, parent),
+        "INSERT INTO tasks(name, project, section, position, parent, description, date) VALUES (?1,?2,?3,?4,?5,?6,?7)",
+        (task.name(), task.project(), task.section(), task.position(), task.parent(), task.description(), task.date()),
     )?;
-    Ok(Task::new(&[
-        ("id", &conn.last_insert_rowid()),
-        ("name", &name),
-        ("project", &project_id),
-        ("section", &section_id),
-        ("position", &position),
-        ("parent", &parent),
-    ]))
+    task.set_id(&conn.last_insert_rowid());
+    Ok(task)
 }
 
 pub fn read_tasks(
@@ -99,11 +92,14 @@ pub fn update_task(task: &Task) -> Result<()> {
             }
         } else if task.section() != old_task.section() {
             // Decrease tasks position in previous section
-            conn.execute(
-                "UPDATE tasks SET position = position - 1
-                WHERE position > ?1 AND section = ?2",
-                (old_task_position, old_task.section()),
-            )?;
+            // Prevent from running, for old tasks without section
+            if old_task.section() != 0 {
+                conn.execute(
+                    "UPDATE tasks SET position = position - 1
+                    WHERE position > ?1 AND section = ?2",
+                    (old_task_position, old_task.section()),
+                )?;
+            }
 
             // Increase tasks position in target section
             // Notify: Position not checked for value more than needed
@@ -205,7 +201,7 @@ pub fn find_tasks(text: &str, done: bool) -> Result<Vec<Task>> {
     Ok(tasks)
 }
 
-pub fn new_position(section_id: i64) -> i32 {
+pub fn new_task_position(section_id: i64) -> i32 {
     let conn = get_connection();
     let mut stmt = conn
         .prepare("SELECT position FROM tasks WHERE section = ? ORDER BY position DESC")
@@ -221,7 +217,7 @@ pub fn new_subtask_position(parent: i64) -> i32 {
     let conn = get_connection();
     let mut stmt = conn
         .prepare("SELECT position FROM tasks WHERE parent = ? ORDER BY position DESC")
-        .expect("Failed to find new task position");
+        .expect("Failed to find new subtask position");
     let first_row = stmt.query_row([parent], |row| row.get::<_, i32>(0));
     match first_row {
         Ok(first_row) => first_row + 1,

@@ -4,7 +4,7 @@ use std::cell::RefCell;
 
 use crate::db::models::Project;
 use crate::db::operations::{
-    new_position, read_project, read_projects, read_sections, update_project, update_task,
+    new_task_position, read_project, read_projects, read_sections, update_project, update_task,
 };
 use crate::views::{project::ProjectCreateWindow, sidebar::ProjectRow, task::TaskRow, IPlanWindow};
 mod imp {
@@ -354,7 +354,7 @@ impl SidebarProjects {
             let section_id = section.id();
             task.set_project(project_id);
             task.set_section(section_id);
-            task.set_position(new_position(section_id));
+            task.set_position(new_task_position(section_id));
             update_task(&task).unwrap();
 
             toast_title = gettext("Task moved to {}").replace("{}", &project_name);

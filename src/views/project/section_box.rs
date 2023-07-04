@@ -235,8 +235,11 @@ impl SectionBox {
     #[template_callback]
     fn handle_new_button_clicked(&self, _button: gtk::Button) {
         let section = self.section();
-        let task =
-            create_task("", section.project(), section.id(), 0).expect("Failed to create task");
+        let task = create_task(Task::new(&[
+            ("project", &section.project()),
+            ("section", &section.id()),
+        ]))
+        .unwrap();
         self.imp().tasks_box.add_fresh_task(task);
     }
 

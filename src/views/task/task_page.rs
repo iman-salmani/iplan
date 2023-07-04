@@ -5,7 +5,8 @@ use std::unimplemented;
 
 use crate::db::models::{Record, Reminder, Task};
 use crate::db::operations::{
-    create_task, read_records, read_reminder, read_reminders, read_tasks, update_task,
+    create_task, new_subtask_position, read_records, read_reminder, read_reminders, read_tasks,
+    update_task,
 };
 use crate::views::record::{RecordRow, RecordWindow};
 use crate::views::reminder::{ReminderRow, ReminderWindow};
@@ -238,8 +239,14 @@ impl TaskPage {
     #[template_callback]
     fn handle_new_subtask_button_clicked(&self, _button: gtk::Button) {
         let task = self.task();
-        let task = create_task("", task.project(), 0, task.id()).expect("Failed to create subtask");
-        self.imp().subtasks_box.add_fresh_task(task);
+        let task_id = task.id();
+        let subtask = Task::new(&[
+            ("project", &task.project()),
+            ("parent", &task_id),
+            ("position", &new_subtask_position(task_id)),
+        ]);
+        let subtask = create_task(subtask).unwrap();
+        self.imp().subtasks_box.add_fresh_task(subtask);
     }
 
     #[template_callback]

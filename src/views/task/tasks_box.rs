@@ -8,7 +8,7 @@ use std::time::Duration;
 
 use crate::db::models::Task;
 use crate::db::operations::{
-    create_task, new_position, new_subtask_position, read_task, update_task,
+    create_task, new_subtask_position, new_task_position, read_task, update_task,
 };
 use crate::views::task::TaskRow;
 
@@ -291,14 +291,19 @@ impl TasksBox {
 
     fn create_empty_task(&self) -> Task {
         match self.items_wrapper().expect("items_wrapper cant be None") {
-            TasksBoxWrapper::Section(id, project) => create_task("", project, id, 0).unwrap(),
-            TasksBoxWrapper::Task(id, project) => create_task("", project, 0, id).unwrap(),
-            TasksBoxWrapper::Date(date) => {
-                let task = create_task("", 0, 0, 0).unwrap();
-                task.set_date(date);
-                update_task(&task).unwrap();
-                task
-            }
+            TasksBoxWrapper::Section(id, project) => create_task(Task::new(&[
+                ("project", &project),
+                ("section", &id),
+                ("position", &new_task_position(id)),
+            ]))
+            .unwrap(),
+            TasksBoxWrapper::Task(id, project) => create_task(Task::new(&[
+                ("project", &project),
+                ("parent", &id),
+                ("position", &new_subtask_position(id)),
+            ]))
+            .unwrap(),
+            TasksBoxWrapper::Date(date) => create_task(Task::new(&[("date", &date)])).unwrap(),
         }
     }
 
@@ -599,7 +604,7 @@ impl TasksBox {
                 row.set_moving_out(false);
                 let task = row.task();
                 task.set_section(section_id);
-                task.set_position(new_position(section_id));
+                task.set_position(new_task_position(section_id));
                 let parent = row.parent().and_downcast::<gtk::ListBox>().unwrap();
                 for i in 0..row.index() {
                     let task = parent
@@ -706,9 +711,7 @@ impl TasksBox {
     #[template_callback]
     fn new_task_bottom(&self, _button: gtk::Button) {
         let imp = self.imp();
-        let task = self.create_empty_task();
 
-        task.set_position(0);
         let task_rows = imp.items_box.observe_children();
         for i in 0..task_rows.n_items() {
             if let Some(row) = task_rows.item(i as u32).and_downcast::<TaskRow>() {
@@ -717,6 +720,8 @@ impl TasksBox {
             }
         }
 
+        let task = self.create_empty_task();
+        task.set_position(0);
         update_task(&task).unwrap();
 
         let task_ui = self.create_task_row(task);

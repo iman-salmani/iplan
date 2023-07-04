@@ -47,7 +47,7 @@ pub fn read_records(
     Ok(records)
 }
 
-pub fn read_record(record_id: i64) -> Result<Record> {
+pub fn _read_record(record_id: i64) -> Result<Record> {
     let conn = get_connection();
     let mut stmt = conn.prepare("SELECT * FROM records WHERE id = ?")?;
     stmt.query_row([record_id], |row| Record::try_from(row))
