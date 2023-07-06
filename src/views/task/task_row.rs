@@ -533,8 +533,8 @@ impl TaskRow {
     fn handle_delete_button_clicked(&self, _button: gtk::Button) {
         let task = self.task();
         let mut toast_name = task.name();
-        if toast_name.chars().count() > 15 {
-            toast_name.truncate(15);
+        if let Some((i, _)) = toast_name.char_indices().nth(14) {
+            toast_name.truncate(i);
             toast_name.push_str("...");
         }
         let toast = adw::Toast::builder()
