@@ -211,6 +211,8 @@
   </template>
   <!-- Options Popover -->
   <object class="GtkPopover" id="options_popover">
+    <property name="halign">end</property>
+    <property name="has-arrow">false</property>
     <child>
       <object class="GtkBox" id="options_box">
         <property name="orientation">vertical</property>

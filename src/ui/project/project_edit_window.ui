@@ -62,6 +62,7 @@
                         <property name="valign">center</property>
                         <property name="popover">
                           <object class="GtkEmojiChooser">
+                            <property name="halign">end</property>
                             <signal name="emoji-picked" handler="handle_project_emoji_picked"
                               swapped="true" />
                           </object>

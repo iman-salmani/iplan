@@ -14,6 +14,8 @@
         <property name="valign">center</property>
         <property name="popover">
           <object class="GtkPopover">
+            <property name="halign">end</property>
+            <property name="has-arrow">false</property>
             <child>
               <object class="GtkBox">
                 <property name="orientation">horizontal</property>

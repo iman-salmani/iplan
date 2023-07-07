@@ -76,6 +76,8 @@
             <property name="halign">start</property>
             <property name="popover">
               <object class="GtkPopover" id="lists_popover">
+                <property name="halign">start</property>
+                <property name="has-arrow">false</property>
                 <style>
                   <class name="menu" />
                 </style>
