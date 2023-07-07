@@ -1,3 +1,4 @@
+use gettextrs::gettext;
 use gtk::{glib, glib::Properties, prelude::*, subclass::prelude::*};
 use rusqlite::{Error, Result, Row};
 use std::cell::{Cell, RefCell};
@@ -103,6 +104,30 @@ impl Task {
             None
         } else {
             Some(glib::DateTime::from_unix_local(self.date()).unwrap())
+        }
+    }
+
+    pub fn date_display(datetime: &glib::DateTime) -> String {
+        let now = glib::DateTime::now_local().unwrap();
+        let today = glib::DateTime::new(
+            &glib::TimeZone::local(),
+            now.year(),
+            now.month(),
+            now.day_of_month(),
+            0,
+            0,
+            0.0,
+        )
+        .unwrap();
+        let difference = datetime.difference(&today).as_days();
+        if difference == 0 {
+            gettext("Today")
+        } else if difference == 1 {
+            gettext("Tomorrow")
+        } else if today.year() == datetime.year() {
+            datetime.format("%B %e, %A").unwrap().to_string()
+        } else {
+            datetime.format("%B %e, %Y").unwrap().to_string()
         }
     }
 }

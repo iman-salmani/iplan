@@ -215,8 +215,7 @@ impl TaskRow {
             }
 
             if let Some(datetime) = task.date_datetime() {
-                imp.date_indicator
-                    .set_label(&datetime.format("%A").unwrap());
+                imp.date_indicator.set_label(&Task::date_display(&datetime));
                 imp.date_indicator.set_visible(true);
             } else {
                 imp.date_indicator.set_visible(false);

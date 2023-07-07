@@ -5,7 +5,7 @@ use gtk::{glib, glib::Properties, prelude::*};
 use rusqlite;
 use std::cell::RefCell;
 
-use crate::db::models::Reminder;
+use crate::db::models::{Reminder, Task};
 use crate::db::operations::read_reminder;
 use crate::views::reminder::ReminderWindow;
 
@@ -73,7 +73,12 @@ impl ReminderRow {
 
     fn set_labels(&self) {
         let reminder = self.reminder();
-        self.set_title(&reminder.datetime_datetime().format("%B %e, %H:%M").unwrap());
+        let datetime = reminder.datetime_datetime();
+        self.set_title(&format!(
+            "{} {}",
+            Task::date_display(&datetime),
+            datetime.format("%H:%M").unwrap()
+        ));
     }
 
     #[template_callback]

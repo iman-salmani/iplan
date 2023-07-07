@@ -1,10 +1,10 @@
 use adw::subclass::prelude::*;
 use adw::traits::ActionRowExt;
-use gettextrs::gettext;
 use gtk::glib::{once_cell::sync::Lazy, subclass::*, Properties};
 use gtk::{glib, prelude::*};
 use std::cell::Cell;
-const DATE_FORMAT: &str = "%B %e, %Y";
+
+use crate::db::models::Task;
 
 mod imp {
     use super::*;
@@ -116,13 +116,7 @@ impl DateRow {
     }
 
     fn refresh_row(&self, datetime: &glib::DateTime) {
-        let now = glib::DateTime::now_local().unwrap().ymd();
-        let subtitle = if now == datetime.ymd() {
-            gettext("Today")
-        } else {
-            datetime.format(DATE_FORMAT).unwrap().to_string()
-        };
-        self.set_subtitle(&subtitle);
+        self.set_subtitle(&Task::date_display(datetime));
     }
 
     fn show_clear_button(&self) {

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: iplan\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-07-02 14:19+0330\n"
+"POT-Creation-Date: 2023-07-07 16:01+0330\n"
 "PO-Revision-Date: 2023-06-22 19:06+0200\n"
 "Last-Translator: Amerey.eu <info@amerey.eu>\n"
 "Language-Team: \n"
@@ -293,7 +293,7 @@ msgid "Main Menu"
 msgstr ""
 
 #: src/ui/window.ui:141 src/ui/snippets/date_row.ui:24
-#: src/views/calendar/tasks_list.rs:109 src/views/snippets/date_row.rs:121
+#: src/db/models/task.rs:124 src/views/calendar/tasks_list.rs:109
 msgid "Today"
 msgstr "Dnes"
 
@@ -535,7 +535,7 @@ msgstr "_Smazat"
 msgid "No Date"
 msgstr "Bez data"
 
-#: src/ui/task/task_row.ui:221 src/views/task/task_row.rs:318
+#: src/ui/task/task_row.ui:221 src/views/task/task_row.rs:316
 #, fuzzy
 msgid "Start _Timer"
 msgstr "Spustit _časovač"
@@ -582,6 +582,10 @@ msgstr "Amerey.eu https://amerey.eu"
 #: src/application.rs:348 src/application.rs:384
 msgid "IPlan needs to run in the background to send reminders"
 msgstr "IPlan musí běžet na pozadí, aby mohl odesílat připomenutí"
+
+#: src/db/models/task.rs:126
+msgid "Tomorrow"
+msgstr ""
 
 #: src/db/models/record.rs:70
 #, fuzzy
@@ -639,19 +643,19 @@ msgstr "Nová sekce"
 msgid "\"{}\" moved to the done tasks list"
 msgstr "Položka „{}“ byla přesunuta do sekce dokončených úkolů"
 
-#: src/views/project/section_box.rs:73 src/views/task/task_row.rs:543
+#: src/views/project/section_box.rs:73 src/views/task/task_row.rs:541
 msgid "Undo"
 msgstr "Zpět"
 
-#: src/views/project/section_box.rs:252
+#: src/views/project/section_box.rs:255
 msgid "Delete \"{}\" section?"
 msgstr "Smazat sekci „{}“?"
 
-#: src/views/project/section_box.rs:255
+#: src/views/project/section_box.rs:258
 msgid "The section and its tasks will be permanently lost."
 msgstr "Sekce a její úkoly budou nenávratně ztraceny."
 
-#: src/views/record/record_row.rs:92
+#: src/views/record/record_row.rs:91
 msgid "until"
 msgstr "až do"
 
@@ -689,11 +693,11 @@ msgstr "Úkol přesunut do {}"
 msgid "{} doesn't have any section"
 msgstr "{} nemá žádnou sekci"
 
-#: src/views/task/task_row.rs:242
+#: src/views/task/task_row.rs:240
 msgid "Inbox"
 msgstr ""
 
-#: src/views/task/task_row.rs:542
+#: src/views/task/task_row.rs:540
 msgid "\"{}\" is going to delete"
 msgstr "„{}“ bude smazán"
 

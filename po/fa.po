@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: iplan\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-07-02 14:19+0330\n"
+"POT-Creation-Date: 2023-07-07 16:01+0330\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Iman Salmani <contact.imansalmani@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -291,7 +291,7 @@ msgid "Main Menu"
 msgstr "فهرست اصلی"
 
 #: src/ui/window.ui:141 src/ui/snippets/date_row.ui:24
-#: src/views/calendar/tasks_list.rs:109 src/views/snippets/date_row.rs:121
+#: src/db/models/task.rs:124 src/views/calendar/tasks_list.rs:109
 msgid "Today"
 msgstr "امروز"
 
@@ -532,7 +532,7 @@ msgstr "حذف"
 msgid "No Date"
 msgstr "بدون تاریخ"
 
-#: src/ui/task/task_row.ui:221 src/views/task/task_row.rs:318
+#: src/ui/task/task_row.ui:221 src/views/task/task_row.rs:316
 #, fuzzy
 msgid "Start _Timer"
 msgstr "شروع _تایمر"
@@ -578,6 +578,10 @@ msgstr "ایمان سلمانی <contact.imansalmani@gmail.com>"
 #: src/application.rs:348 src/application.rs:384
 msgid "IPlan needs to run in the background to send reminders"
 msgstr "برای ارسال یادآوری، آپلن باید در پس‌زمینه اجرا شود"
+
+#: src/db/models/task.rs:126
+msgid "Tomorrow"
+msgstr ""
 
 #: src/db/models/record.rs:70
 msgid "day"
@@ -633,19 +637,19 @@ msgstr "بخش جدید"
 msgid "\"{}\" moved to the done tasks list"
 msgstr "\"{}\" به فهرست کارهای انجام شده منتقل شد"
 
-#: src/views/project/section_box.rs:73 src/views/task/task_row.rs:543
+#: src/views/project/section_box.rs:73 src/views/task/task_row.rs:541
 msgid "Undo"
 msgstr "برگرد"
 
-#: src/views/project/section_box.rs:252
+#: src/views/project/section_box.rs:255
 msgid "Delete \"{}\" section?"
 msgstr "بخش \"{}\" حذف شود؟"
 
-#: src/views/project/section_box.rs:255
+#: src/views/project/section_box.rs:258
 msgid "The section and its tasks will be permanently lost."
 msgstr "بخش و وظایف آن برای همیشه از بین خواهد رفت."
 
-#: src/views/record/record_row.rs:92
+#: src/views/record/record_row.rs:91
 msgid "until"
 msgstr "تا"
 
@@ -681,11 +685,11 @@ msgstr "کار به {} منتقل شد"
 msgid "{} doesn't have any section"
 msgstr "\"{}\" هیچ بخشی ندارد"
 
-#: src/views/task/task_row.rs:242
+#: src/views/task/task_row.rs:240
 msgid "Inbox"
 msgstr "صندوق"
 
-#: src/views/task/task_row.rs:542
+#: src/views/task/task_row.rs:540
 msgid "\"{}\" is going to delete"
 msgstr "درحال حذف \"{}\""
 

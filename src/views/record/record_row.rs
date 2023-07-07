@@ -5,7 +5,7 @@ use gettextrs::gettext;
 use gtk::{glib, glib::Properties, prelude::*};
 use std::cell::RefCell;
 
-use crate::db::models::Record;
+use crate::db::models::{Record, Task};
 use crate::db::operations::delete_record;
 use crate::views::record::RecordWindow;
 
@@ -77,16 +77,15 @@ impl RecordRow {
 
         self.set_title(&Record::duration_display(duration));
 
-        let start_date_text = start.format("%B %e").unwrap();
+        let start_date_text = Task::date_display(&start);
         let end = start.add_seconds(duration as f64).unwrap();
-        let mut end_date_text = end.format("%B %e").unwrap().to_string();
-        end_date_text = if start_date_text == end_date_text {
+        let end_date_text = if start.ymd() == end.ymd() {
             String::new()
         } else {
-            format!("{end_date_text}, ")
+            format!("{} ", Task::date_display(&end))
         };
         self.set_subtitle(&format!(
-            "{}, {} {} {}{}",
+            "{} {} {} {}{}",
             start_date_text,
             start.format("%H:%M").unwrap(),
             gettext("until"),
