@@ -60,6 +60,18 @@
   </categories>
   <content_rating type="oars-1.1" />
   <releases>
+    <release version="1.8.0" date="2023-07-07">
+      <description>
+        <p>New features and updates</p>
+        <ul>
+          <li>Move up and down option for tasks rows</li>
+          <li>Fade effect for moving between projects</li>
+          <li>Improve date format</li>
+          <li>Popovers aligned and calendar navigation buttons width reduced, to fit in phone</li>
+          <li>Code refactoring, Bug fixes, and UI improvements</li>
+        </ul>
+      </description>
+    </release>
     <release version="1.7.0" date="2023-06-30">
       <description>
         <p>New features and updates</p>
