@@ -5,7 +5,8 @@ use std::cell::RefCell;
 
 use crate::db::models::{Section, Task};
 use crate::db::operations::{
-    create_task, delete_section, read_section, read_tasks, update_section, update_task,
+    create_task, delete_section, new_task_position, read_section, read_tasks, update_section,
+    update_task,
 };
 use crate::views::project::ProjectLayout;
 use crate::views::snippets::MenuItem;
@@ -235,9 +236,11 @@ impl SectionBox {
     #[template_callback]
     fn handle_new_button_clicked(&self, _button: gtk::Button) {
         let section = self.section();
+        let section_id = section.id();
         let task = create_task(Task::new(&[
             ("project", &section.project()),
-            ("section", &section.id()),
+            ("section", &section_id),
+            ("position", &new_task_position(section_id)),
         ]))
         .unwrap();
         self.imp().tasks_box.add_fresh_task(task);
