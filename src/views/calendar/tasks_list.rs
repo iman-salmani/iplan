@@ -106,10 +106,11 @@ impl TasksList {
 
         let now = glib::DateTime::now_local().unwrap();
         if now.ymd() == datetime.ymd() {
-            let name_format = format!("%e %b, {}", gettext("Today"));
+            let name_format = format!("%e %b, {}", gettext("Today")).replace(" ", "");
             imp.name.set_label(&datetime.format(&name_format).unwrap());
         } else {
-            imp.name.set_label(&datetime.format("%e %b, %A").unwrap());
+            imp.name
+                .set_label(&datetime.format("%e %b, %A").unwrap().replace(" ", ""));
         }
 
         let tasks = read_tasks(None, None, None, None, Some((datetime.to_unix(), end)))

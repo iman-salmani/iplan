@@ -125,9 +125,9 @@ impl Task {
         } else if difference == 1 {
             gettext("Tomorrow")
         } else if today.year() == datetime.year() {
-            datetime.format("%B %e, %A").unwrap().to_string()
+            datetime.format("%B %e, %A").unwrap().replace(" ", "")
         } else {
-            datetime.format("%B %e, %Y").unwrap().to_string()
+            datetime.format("%B %e, %Y").unwrap().replace(" ", "")
         }
     }
 }
