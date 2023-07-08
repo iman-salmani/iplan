@@ -2,20 +2,25 @@
 Thank you for considering contributing to the IPlan project!
 
 ## Translation
-First of all, Check if your language already exists. You can find po files in the po folder which are named by languages code.
-1. Clone repository
-```bash
-git clone https://github.com/iman-salmani/iplan.git
+Let's get started with where files are located and what they are for.
+
+Localization-related files are inside [po](https://github.com/iman-salmani/iplan/tree/1e0f0081acebff48db156300498e86ca437b2cef/po) directory.
+The directory should be something like this:
 ```
-2. Build project
-```bash
-meson setup _build .
-meson compile -C _build
+po
+- LINGUAS
+- iplan.pot
+- fa.po
+- fr.po
+...
 ```
-3. Generate the pot file.
-```bash
-cd _build
-meson compile iplan-pot
-```
-4. Rename the iplan.pot file (you can find it on po folder) to your language code like 'en.po' (remember to change file extension ).
-5. Also, add your language code to the end of the LINGUAS file.
+
+* **LINGUAS** contains available languages represented by their code
+* **iplan.pot** is a sample for adding a new language
+* Files with `.po` extension contains translation texts
+
+As I mentioned, translation files use po file format. if you are not familiar with that there are plenty of articles about how to edit them.
+
+If you wanna add a new language follow this:
+1. Duplicated the `iplan.pot` file and rename it to `language_code.po`
+2. Add language code to `LINGUAS` file
