@@ -11,15 +11,14 @@ Your plan for improving personal life and workflow
 
 ## Features
 
-- Grouping tasks with project and list
+- Grouping tasks in projects and sections
 - Timer for tasks
 - Global search
-- Arranging projects, lists and tasks by drag and drop
+- Arranging projects, sections, and tasks by drag and drop
 
 ## Installation
 
-The recommended way of installing IPlan is through Flatpak. If you don't have
-Flatpak installed, you can get it from [the Flatpak website](https://flatpak.org/setup).
+The recommended way of installing IPlan is through Flatpak. If you don't have Flatpak, you can get it from [the Flatpak website](https://flatpak.org/setup).
 
 ```bash
 flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
