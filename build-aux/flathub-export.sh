@@ -3,7 +3,7 @@ set -e
 
 DIST="./export/flathub/iplan"
 FLATHUB="$(dirname $DIST)"
-rm -rf $DIST
+rm -rf $FLATHUB
 mkdir -p $DIST
 rsync -a --exclude-from='../.gitignore' --exclude='ir.imansalmani.IPlan.Devel.json' --exclude='ir.imansalmani.IPlan.json' --exclude='build-aux' ../ $DIST
 cp ir.imansalmani.IPlan.json $DIST/
