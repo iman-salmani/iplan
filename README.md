@@ -29,7 +29,7 @@ flatpak install flathub ir.imansalmani.IPlan
 
 ## Contributing
 
-Please, see the [contribution guide](https://github.com/iman-salmani/iplan/blob/a0d66bc99494b798357b64b04c811899e4238025/CONTRIBUTING.md) if you wish to translate.
+Please, see the [contribution guide](CONTRIBUTING.md) if you wish to translate.
 
 ## Build
 
