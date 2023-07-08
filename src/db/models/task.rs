@@ -1,6 +1,6 @@
 use gettextrs::gettext;
 use gtk::{glib, glib::Properties, prelude::*, subclass::prelude::*};
-use rusqlite::{Error, Result, Row};
+use rusqlite;
 use std::cell::{Cell, RefCell};
 
 use crate::db::models::Record;
@@ -130,12 +130,16 @@ impl Task {
             datetime.format("%B %e, %Y").unwrap().replace(" ", "")
         }
     }
+
+    pub fn static_variant_type_string() -> String {
+        "(xsbxxibxsx)".to_string()
+    }
 }
 
-impl TryFrom<&Row<'_>> for Task {
-    type Error = Error;
+impl TryFrom<&rusqlite::Row<'_>> for Task {
+    type Error = rusqlite::Error;
 
-    fn try_from(row: &Row) -> Result<Self, Self::Error> {
+    fn try_from(row: &rusqlite::Row) -> Result<Self, Self::Error> {
         Ok(Task::new(&[
             ("id", &row.get::<usize, i64>(0)?),
             ("name", &row.get::<usize, String>(1)?),
@@ -151,8 +155,56 @@ impl TryFrom<&Row<'_>> for Task {
     }
 }
 
+impl TryFrom<&glib::Variant> for Task {
+    type Error = ();
+
+    fn try_from(value: &glib::Variant) -> Result<Self, Self::Error> {
+        let (id, name, done, project, section, position, suspended, parent, description, date): (
+            i64,
+            String,
+            bool,
+            i64,
+            i64,
+            i32,
+            bool,
+            i64,
+            String,
+            i64,
+        ) = value.get().ok_or(())?;
+        Ok(Task::new(&[
+            ("id", &id),
+            ("name", &name),
+            ("done", &done),
+            ("project", &project),
+            ("section", &section),
+            ("position", &position),
+            ("suspended", &suspended),
+            ("parent", &parent),
+            ("description", &description),
+            ("date", &date),
+        ]))
+    }
+}
+
 impl Default for Task {
     fn default() -> Self {
         Task::new(&[])
+    }
+}
+
+impl ToVariant for Task {
+    fn to_variant(&self) -> glib::Variant {
+        glib::Variant::from((
+            self.id(),
+            self.name(),
+            self.done(),
+            self.project(),
+            self.section(),
+            self.position(),
+            self.suspended(),
+            self.parent(),
+            self.description(),
+            self.date(),
+        ))
     }
 }
