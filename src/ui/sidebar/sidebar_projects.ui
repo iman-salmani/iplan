@@ -10,12 +10,15 @@
           <class name="toolbar" />
         </style>
         <child>
+          <object class="GtkImage">
+            <property name="margin-start">9</property>
+            <property name="margin-end">3</property>
+            <property name="icon-name">folder-symbolic</property>
+          </object>
+        </child>
+        <child>
           <object class="GtkLabel">
             <property name="label" translatable="yes">Projects</property>
-            <property name="margin-start">9</property>
-            <style>
-              <class name="heading" />
-            </style>
           </object>
         </child>
         <child>

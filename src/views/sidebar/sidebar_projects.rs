@@ -209,6 +209,7 @@ impl SidebarProjects {
     fn handle_projects_box_row_activated(&self, row: gtk::ListBoxRow) {
         let window = self.root().unwrap().downcast::<IPlanWindow>().unwrap();
         let row = row.downcast::<ProjectRow>().unwrap();
+        window.close_sidebar();
         if window.project().id() != row.project().id() {
             window.set_property("project", row.project().to_value());
             self.activate_action("project.open", None)

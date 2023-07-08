@@ -15,42 +15,49 @@
         <property name="flap"><!-- Sidebar -->
           <object class="GtkBox" id="sidebar">
             <property name="orientation">vertical</property>
-            <property name="width-request">200</property>
+            <property name="width-request">256</property>
             <property name="hexpand">False</property>
             <style>
               <class name="background" />
             </style>
-            <child>
+            <child><!-- Sidebar Header -->
               <object class="AdwHeaderBar">
                 <property name="show-end-title-buttons">false</property>
+                <property name="show-start-title-buttons"
+                  bind-source="flap"
+                  bind-property="folded"
+                  bind-flags="sync-create|invert-boolean" />
                 <property name="title-widget">
-                  <object class="GtkLabel">
-                    <property name="label" translatable="yes">IPlan</property>
-                    <style>
-                      <class name="heading" />
-                    </style>
+                  <object class="AdwWindowTitle">
+                    <property name="title" translatable="yes">IPlan</property>
                   </object>
                 </property>
+                <child type="start">
+                  <object class="GtkButton">
+                    <property name="icon-name">system-search-symbolic</property>
+                    <property name="action-name">app.search</property>
+                  </object>
+                </child>
+                <child type="end"><!-- Primary Menu Button -->
+                  <object class="GtkMenuButton">
+                    <property name="icon-name">open-menu-symbolic</property>
+                    <property name="menu-model">primary_menu_model</property>
+                    <property name="primary">true</property>
+                    <property name="tooltip-text" translatable="yes">Main Menu</property>
+                  </object>
+                </child><!-- End Primary Menu Button -->
               </object>
-            </child>
-            <child>
-              <object class="GtkButton" id="calendar_button">
+            </child><!-- End Sidebar Header -->
+            <child><!-- Calendar Button -->
+              <object class="MenuItem" id="calendar_button">
                 <property name="margin-start">6</property>
                 <property name="margin-end">6</property>
                 <property name="margin-top">6</property>
+                <property name="icon-name">x-office-calendar-symbolic</property>
+                <property name="label" translatable="yes">Calendar</property>
                 <signal name="clicked" handler="handle_calendar_button_clicked" swapped="true" />
-                <style>
-                  <class name="flat" />
-                </style>
-                <child>
-                  <object class="AdwButtonContent">
-                    <property name="halign">start</property>
-                    <property name="icon-name">x-office-calendar-symbolic</property>
-                    <property name="label" translatable="yes">Calendar</property>
-                  </object>
-                </child>
               </object>
-            </child>
+            </child><!-- End Calendar Button -->
             <child>
               <object class="SidebarProjects" id="sidebar_projects" />
             </child>
@@ -66,10 +73,13 @@
                 <property name="orientation">vertical</property>
                 <child><!-- Header -->
                   <object class="AdwHeaderBar">
-                    <property name="show-start-title-buttons">false</property>
                     <property name="title-widget">
                       <object class="GtkLabel"></object>
                     </property>
+                    <property name="show-start-title-buttons"
+                      bind-source="flap"
+                      bind-property="folded"
+                      bind-flags="sync-create" />
                     <child type="start"><!-- Toggle Pane Button -->
                       <object class="GtkToggleButton" id="toggle_pane_button">
                         <property name="icon-name">sidebar-show-symbolic</property>
@@ -113,19 +123,17 @@
                       </object>
                     </child><!-- End Calendar header -->
                     <child type="end"><!-- Primary Menu Button -->
-                      <object class="GtkMenuButton" id="primary_menu_button">
+                      <object class="GtkMenuButton">
                         <property name="icon-name">open-menu-symbolic</property>
-                        <property name="menu-model">primary_project_menu_model</property>
+                        <property name="menu-model">project_menu_model</property>
                         <property name="primary">true</property>
                         <property name="tooltip-text" translatable="yes">Main Menu</property>
+                        <property name="visible"
+                          bind-source="calendar_header"
+                          bind-property="visible"
+                          bind-flags="sync-create|invert-boolean" />
                       </object>
                     </child><!-- End Primary Menu Button -->
-                    <child type="end">
-                      <object class="GtkButton">
-                        <property name="icon-name">system-search-symbolic</property>
-                        <property name="action-name">app.search</property>
-                      </object>
-                    </child>
                     <child type="end">
                       <object class="GtkButton" id="project_layout_button">
                         <property name="icon-name">list-symbolic</property>
@@ -172,8 +180,8 @@
     </property>
     <!-- End Flap -->
   </template>
-  <!-- Primary Project Menu Model -->
-  <menu id='primary_project_menu_model'>
+  <!-- Project Menu Model -->
+  <menu id='project_menu_model'>
     <section>
       <item>
         <attribute name='label' translatable='yes'>New _Section</attribute>
@@ -184,6 +192,10 @@
         <attribute name='action'>project.edit</attribute>
       </item>
     </section>
+  </menu>
+  <!-- End Project Menu Model -->
+  <!-- Primary Menu Model -->
+  <menu id='primary_menu_model'>
     <section>
       <item>
         <attribute name='label' translatable='yes'>_Preferences</attribute>
@@ -203,27 +215,5 @@
       </item>
     </section>
   </menu>
-  <!-- End Primary Project Menu Model -->
-  <!-- Primary Calendar Menu Model -->
-  <menu id='primary_calendar_menu_model'>
-    <section>
-      <item>
-        <attribute name='label' translatable='yes'>_Preferences</attribute>
-        <attribute name='action'>app.preferences</attribute>
-      </item>
-      <item>
-        <attribute name="label" translatable="yes">_Backup</attribute>
-        <attribute name='action'>app.backup</attribute>
-      </item>
-      <item>
-        <attribute name='label' translatable='yes'>_Keyboard Shortcuts</attribute>
-        <attribute name='action'>app.shortcuts</attribute>
-      </item>
-      <item>
-        <attribute name='label' translatable='yes'>_About IPlan</attribute>
-        <attribute name='action'>app.about</attribute>
-      </item>
-    </section>
-  </menu>
-  <!-- End Primary Calendar Menu Model -->
+  <!-- End Primary Menu Model -->
 </interface>

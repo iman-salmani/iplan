@@ -236,6 +236,7 @@ impl IPlanApplication {
                 if main_window.project().id() != project.id() {
                     main_window.change_project(project);
                 }
+                main_window.close_sidebar();
             }),
         );
         modal.connect_closure(
@@ -250,6 +251,7 @@ impl IPlanApplication {
                         main_window.change_project(project)
                     }
                 }
+                main_window.close_sidebar();
 
                 let modal = TaskWindow::new(obj.upcast_ref::<gtk::Application>(), &main_window, task.clone());
                 modal.present();

@@ -26,6 +26,7 @@ use std::cell::RefCell;
 use crate::db::models::Project;
 use crate::db::operations::{create_project, create_section, read_projects};
 use crate::views::project::{ProjectEditWindow, ProjectHeader, ProjectLayout, ProjectPage};
+use crate::views::snippets::MenuItem;
 use crate::views::{calendar::Calendar, sidebar::SidebarProjects};
 
 mod imp {
@@ -40,13 +41,9 @@ mod imp {
         #[property(get, set)]
         pub project: RefCell<Project>,
         #[template_child]
+        pub flap: TemplateChild<adw::Flap>,
+        #[template_child]
         pub project_layout_button: TemplateChild<gtk::Button>,
-        #[template_child]
-        pub primary_menu_button: TemplateChild<gtk::MenuButton>,
-        #[template_child]
-        pub primary_project_menu_model: TemplateChild<gio::MenuModel>,
-        #[template_child]
-        pub primary_calendar_menu_model: TemplateChild<gio::MenuModel>,
         #[template_child]
         pub sidebar_projects: TemplateChild<SidebarProjects>,
         #[template_child]
@@ -68,6 +65,7 @@ mod imp {
         type ParentType = adw::ApplicationWindow;
 
         fn class_init(klass: &mut Self::Class) {
+            MenuItem::ensure_type();
             klass.bind_template();
             klass.bind_template_instance_callbacks();
             klass.install_action("project.open", None, move |obj, _, _| {
@@ -240,6 +238,13 @@ impl IPlanWindow {
             .unwrap()
     }
 
+    pub fn close_sidebar(&self) {
+        let imp = self.imp();
+        if imp.flap.is_folded() {
+            imp.flap.set_reveal_flap(false);
+        }
+    }
+
     fn project_by_id(&self, id: i64) -> Option<ProjectPage> {
         if let Some(child) = self.imp().projects_stack.child_by_name(&id.to_string()) {
             child.downcast::<ProjectPage>().ok()
@@ -277,8 +282,6 @@ impl IPlanWindow {
         let imp = self.imp();
         imp.calendar.set_visible(false);
         imp.calendar_button.add_css_class("flat");
-        imp.primary_menu_button
-            .set_menu_model(Some(&imp.primary_project_menu_model.get()));
     }
 
     #[template_callback]
@@ -307,8 +310,9 @@ impl IPlanWindow {
     }
 
     #[template_callback]
-    fn handle_calendar_button_clicked(&self, button: gtk::Button) {
+    fn handle_calendar_button_clicked(&self, button: MenuItem) {
         let imp = self.imp();
+        self.close_sidebar();
 
         if imp.calendar.is_visible() {
             return;
@@ -324,9 +328,6 @@ impl IPlanWindow {
         }
         let projects_box: &gtk::ListBox = imp.sidebar_projects.imp().projects_box.as_ref();
         projects_box.unselect_row(&projects_box.selected_row().unwrap());
-
-        imp.primary_menu_button
-            .set_menu_model(Some(&imp.primary_calendar_menu_model.get()));
     }
 
     #[template_callback]
