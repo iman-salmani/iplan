@@ -156,7 +156,7 @@ impl ProjectPage {
         }
     }
 
-    pub fn reset_task(&self, task: Task) {
+    pub fn reset_or_remove_task(&self, task: Task) {
         if let Some(section_box) = self.section_by_id(task.section()) {
             let tasks_box = section_box.imp().tasks_box.get();
             if let Some(row) = tasks_box.item_by_id(task.id()) {
@@ -170,6 +170,16 @@ impl ProjectPage {
                 }
             }
         }
+    }
+
+    pub fn task_row(&self, task: &Task) -> Option<TaskRow> {
+        if let Some(section_box) = self.section_by_id(task.section()) {
+            let tasks_box = section_box.imp().tasks_box.get();
+            if let Some(row) = tasks_box.item_by_id(task.id()) {
+                return Some(row);
+            }
+        }
+        None
     }
 
     pub fn select_task(&self, task_id: Option<i64>) {

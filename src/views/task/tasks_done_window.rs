@@ -37,17 +37,26 @@ mod imp {
         fn class_init(klass: &mut Self::Class) {
             klass.bind_template();
             klass.bind_template_instance_callbacks();
-            klass.install_action("task.check", Some("i"), move |obj, _, value| {
-                let imp = obj.imp();
-                let index = value.unwrap().get().unwrap();
-                let upper_row = imp.tasks_box.row_at_index(index - 1);
-                let row = imp.tasks_box.row_at_index(index).unwrap();
-                if let Some(upper_row) = upper_row {
-                    upper_row.grab_focus();
-                }
-                imp.tasks_box.remove(&row);
-                obj.emit_by_name::<()>("task-undo", &[&row.property::<Task>("task")]);
-            });
+            klass.install_action(
+                "task.check",
+                Some(&Task::static_variant_type_string()),
+                move |obj, _, value| {
+                    let imp = obj.imp();
+                    let task = Task::try_from(value.unwrap()).unwrap();
+                    let row = obj.row_by_id(task.id()).unwrap();
+                    let upper_row = imp.tasks_box.row_at_index(row.index() - 1);
+                    if let Some(upper_row) = upper_row {
+                        upper_row.grab_focus();
+                    }
+                    imp.tasks_box.remove(&row);
+                    obj.emit_by_name::<()>("task-undo", &[&task]);
+                },
+            );
+            klass.install_action(
+                "task.changed",
+                Some(&Task::static_variant_type_string()),
+                |_, _, _| {},
+            );
         }
 
         fn instance_init(obj: &glib::subclass::InitializingObject<Self>) {
@@ -147,6 +156,19 @@ impl TasksDoneWindow {
         }
     }
 
+    fn row_by_id(&self, id: i64) -> Option<TaskRow> {
+        let imp = self.imp();
+        let rows = imp.tasks_box.observe_children();
+        for i in 0..rows.n_items() {
+            if let Some(row) = rows.item(i).and_downcast::<TaskRow>() {
+                if row.task().id() == id {
+                    return Some(row);
+                }
+            }
+        }
+        None
+    }
+
     #[template_callback]
     fn handle_tasks_box_row_activated(&self, row: gtk::ListBoxRow, _tasks_box: gtk::ListBox) {
         let obj = self.root().and_downcast::<gtk::Window>().unwrap();
@@ -169,5 +191,18 @@ impl TasksDoneWindow {
                 main_window.activate_action("project.update", None).expect("Failed to send project.update signal");
             }
         ));
+        modal.connect_closure(
+            "task-changed",
+            true,
+            glib::closure_local!(@watch row => move |_win: TaskWindow, changed_task: Task| {
+                let task = row.task();
+                let task_id = task.id();
+                if task_id == changed_task.id() {
+                    row.reset(changed_task);
+                } else if task_id == changed_task.parent() {
+                    row.reset_subtasks();
+                }
+            }),
+        );
     }
 }

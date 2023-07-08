@@ -1,6 +1,7 @@
 use gtk::{glib, prelude::*, subclass::prelude::*};
 use std::cell::RefCell;
 
+use crate::db::models::Task;
 use crate::views::calendar::{CalendarPage, DayIndicator};
 
 mod imp {
@@ -27,6 +28,11 @@ mod imp {
         fn class_init(klass: &mut Self::Class) {
             klass.bind_template();
             klass.bind_template_instance_callbacks();
+            klass.install_action(
+                "task.changed",
+                Some(&Task::static_variant_type_string()),
+                |_, _, _| {},
+            );
         }
 
         fn instance_init(obj: &glib::subclass::InitializingObject<Self>) {

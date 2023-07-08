@@ -36,7 +36,11 @@ mod imp {
         fn class_init(klass: &mut Self::Class) {
             klass.bind_template();
             klass.bind_template_instance_callbacks();
-            klass.install_action("task.check", Some("i"), move |_, _, _| {});
+            klass.install_action(
+                "task.check",
+                Some(&Task::static_variant_type_string()),
+                move |_, _, _| {},
+            );
         }
 
         fn instance_init(obj: &glib::subclass::InitializingObject<Self>) {

@@ -251,13 +251,27 @@ impl IPlanApplication {
                     }
                 }
 
-                let modal = TaskWindow::new(obj.upcast_ref::<gtk::Application>(), &main_window, task);
+                let modal = TaskWindow::new(obj.upcast_ref::<gtk::Application>(), &main_window, task.clone());
                 modal.present();
                 modal.connect_closure(
                     "window-closed",
                     true,
                     glib::closure_local!(@watch main_window => move |_win: TaskWindow, task: Task| {
-                        main_window.visible_project_page().reset_task(task);
+                        main_window.visible_project_page().reset_or_remove_task(task);
+                    }
+                ));
+                modal.connect_closure(
+                    "task-changed",
+                    true,
+                    glib::closure_local!(@watch main_window => move |_win: TaskWindow, changed_task: Task| {
+                        if let Some(row) = main_window.visible_project_page().task_row(&task) {
+                            let task_id = task.id();
+                            if changed_task.id() == task_id {
+                                row.reset(changed_task);
+                            } else if changed_task.parent() == task_id {
+                                row.reset_subtasks();
+                            }
+                        }
                     }),
                 );
             }),

@@ -65,8 +65,6 @@ mod imp {
         pub name_label: TemplateChild<gtk::Label>,
         #[template_child]
         pub name_entry: TemplateChild<gtk::Entry>,
-        #[template_child]
-        pub name_entry_buffer: TemplateChild<gtk::EntryBuffer>,
         pub timer_status: Cell<TimerStatus>,
         #[template_child]
         pub timer_button: TemplateChild<MenuItem>,
@@ -196,7 +194,6 @@ impl TaskRow {
 
     pub fn reset(&self, task: Task) {
         let imp = self.imp();
-        imp.name_entry_buffer.set_text(task.name());
 
         if self.compact() {
             self.remove_css_class("card");
@@ -260,7 +257,9 @@ impl TaskRow {
             }
         }
 
+        let task_name = task.name();
         self.set_task(task);
+        imp.name_entry.set_text(&task_name);
         self.reset_timer();
         if !self.compact() {
             self.reset_subtasks();
@@ -374,7 +373,7 @@ impl TaskRow {
                 if active {
                     imp.timer_status.set(TimerStatus::Off);
                 }
-                obj.activate_action("task.check", Some(&obj.index().to_variant()))
+                obj.activate_action("task.check", Some(&task.to_variant()))
                     .unwrap();
                 Some(active)
             })
@@ -425,6 +424,8 @@ impl TaskRow {
 
         task.set_name(text);
         update_task(&task).unwrap();
+        self.activate_action("task.changed", Some(&task.to_variant()))
+            .unwrap();
     }
 
     #[template_callback]
@@ -440,11 +441,8 @@ impl TaskRow {
     fn cancel_edit_name(&self) {
         let imp = self.imp();
         let name = self.backup_task_name();
-        let task = self.task();
-        imp.name_entry.buffer().set_text(&name);
+        imp.name_entry.set_text(&name);
         imp.name_button.set_visible(true);
-        task.set_name(name);
-        update_task(&task).unwrap();
     }
 
     fn move_timer_button(&self, indicate: bool) {

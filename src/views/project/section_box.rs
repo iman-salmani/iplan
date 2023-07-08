@@ -48,40 +48,52 @@ mod imp {
             MenuItem::ensure_type();
             klass.bind_template();
             klass.bind_template_instance_callbacks();
-            klass.install_action("task.check", Some("i"), move |obj, _, value| {
-                let imp = obj.imp();
-                let value: i32 = value.unwrap().get().unwrap();
-                let index = value as u32;
-                let row = imp.tasks_box.item_by_index(index).unwrap();
-                let task = row.task();
-                if index != 0 {
-                    let upper_row = imp.tasks_box.item_by_index(index - 1);
-                    if let Some(upper_row) = upper_row {
-                        upper_row.grab_focus();
+            klass.install_action(
+                "task.check",
+                Some(&Task::static_variant_type_string()),
+                move |obj, _, value| {
+                    let imp = obj.imp();
+                    let task = Task::try_from(value.unwrap()).unwrap();
+                    let row = imp.tasks_box.item_by_id(task.id()).unwrap();
+                    let task = row.task();
+                    let index = row.index() as u32;
+                    if index != 0 {
+                        let upper_row = imp.tasks_box.item_by_index(index - 1);
+                        if let Some(upper_row) = upper_row {
+                            upper_row.grab_focus();
+                        }
                     }
-                }
-                imp.tasks_box.remove_item(&row);
+                    imp.tasks_box.remove_item(&row);
 
-                let mut toast_name = task.name();
-                if let Some((i, _)) = toast_name.char_indices().nth(14) {
-                    toast_name.truncate(i);
-                    toast_name.push_str("...");
-                }
-                let toast = adw::Toast::builder()
-                    .title(
-                        gettext("\"{}\" moved to the done tasks list").replace("{}", &toast_name),
-                    )
-                    .button_label(gettext("Undo"))
-                    .build();
-                toast.connect_button_clicked(glib::clone!(@weak obj, @weak task, @strong row =>
-                    move |_toast| {
-                        task.set_done(false);
-                        update_task(&task).expect("Failed to update task");
-                        obj.imp().tasks_box.add_item(&row);
-                }));
-                let window = obj.root().and_downcast::<IPlanWindow>().unwrap();
-                window.imp().toast_overlay.add_toast(toast);
-            });
+                    let mut toast_name = task.name();
+                    if let Some((i, _)) = toast_name.char_indices().nth(14) {
+                        toast_name.truncate(i);
+                        toast_name.push_str("...");
+                    }
+                    let toast = adw::Toast::builder()
+                        .title(
+                            gettext("\"{}\" moved to the done tasks list")
+                                .replace("{}", &toast_name),
+                        )
+                        .button_label(gettext("Undo"))
+                        .build();
+                    toast.connect_button_clicked(
+                        glib::clone!(@weak obj, @weak task, @strong row =>
+                            move |_toast| {
+                                task.set_done(false);
+                                update_task(&task).expect("Failed to update task");
+                                obj.imp().tasks_box.add_item(&row);
+                        }),
+                    );
+                    let window = obj.root().and_downcast::<IPlanWindow>().unwrap();
+                    window.imp().toast_overlay.add_toast(toast);
+                },
+            );
+            klass.install_action(
+                "task.changed",
+                Some(&Task::static_variant_type_string()),
+                |_, _, _| {},
+            );
         }
 
         fn instance_init(obj: &glib::subclass::InitializingObject<Self>) {
@@ -216,6 +228,19 @@ impl SectionBox {
                 }
             }
         ));
+        modal.connect_closure(
+            "task-changed",
+            true,
+            glib::closure_local!(@watch row => move |_win: TaskWindow, changed_task: Task| {
+                let task = row.task();
+                let task_id = task.id();
+                if task_id == changed_task.id() {
+                    row.reset(changed_task);
+                } else if task_id == changed_task.parent() {
+                    row.reset_subtasks();
+                }
+            }),
+        );
     }
 
     #[template_callback]

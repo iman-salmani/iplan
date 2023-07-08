@@ -724,6 +724,11 @@ impl TasksBox {
         task.set_position(0);
         update_task(&task).unwrap();
 
+        if let TasksBoxWrapper::Task(_, _) = self.items_wrapper().unwrap() {
+            self.activate_action("task.changed", Some(&task.to_variant()))
+                .unwrap();
+        }
+
         let task_ui = self.create_task_row(task);
         imp.items_box.append(&task_ui);
         let task_imp = task_ui.imp();

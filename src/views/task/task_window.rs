@@ -61,6 +61,22 @@ mod imp {
                     .unwrap()
                     .add_reminder(reminder_id);
             });
+            klass.install_action(
+                "task.check",
+                Some(&Task::static_variant_type_string()),
+                move |obj, _, value| {
+                    let task = Task::try_from(value.unwrap()).unwrap();
+                    obj.emit_by_name::<()>("task-changed", &[&task]);
+                },
+            );
+            klass.install_action(
+                "task.changed",
+                Some(&Task::static_variant_type_string()),
+                move |obj, _, value| {
+                    let task = Task::try_from(value.unwrap()).unwrap();
+                    obj.emit_by_name::<()>("task-changed", &[&task]);
+                },
+            );
         }
 
         fn instance_init(obj: &glib::subclass::InitializingObject<Self>) {
@@ -76,6 +92,9 @@ mod imp {
                         .param_types([Task::static_type()])
                         .build(),
                     Signal::builder("page-closed")
+                        .param_types([Task::static_type()])
+                        .build(),
+                    Signal::builder("task-changed")
                         .param_types([Task::static_type()])
                         .build(),
                 ]

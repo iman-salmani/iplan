@@ -52,7 +52,6 @@ mod imp {
         fn class_init(klass: &mut Self::Class) {
             klass.bind_template();
             klass.bind_template_instance_callbacks();
-            klass.install_action("task.check", Some("i"), move |_, _, _| {});
             klass.install_action("task.duration-update", None, move |obj, _, _value| {
                 obj.imp().task_row.refresh_timer();
             });
@@ -105,7 +104,7 @@ impl TaskPage {
 
         let reminders = read_reminders(Some(task_id)).expect("Failed to read reminders");
         for reminder in reminders {
-            let row = ReminderRow::new(reminder);
+            let row = obj.new_reminder_row(reminder);
             imp.reminders_expander_row.add_row(&row);
         }
 
@@ -148,8 +147,29 @@ impl TaskPage {
     pub fn add_reminder(&self, reminder_id: i64) {
         let imp = self.imp();
         let reminder = read_reminder(reminder_id).expect("Failed to read record");
-        let row = ReminderRow::new(reminder);
+        let row = self.new_reminder_row(reminder);
         imp.reminders_expander_row.add_row(&row);
+        self.activate_action("task.changed", Some(&self.task().to_variant()))
+            .unwrap();
+    }
+
+    fn new_reminder_row(&self, reminder: Reminder) -> ReminderRow {
+        let row = ReminderRow::new(reminder);
+        row.connect_closure(
+            "changed",
+            true,
+            glib::closure_local!(@watch self as obj => move |_: ReminderRow, _: Reminder| {
+                obj.activate_action("task.changed", Some(&obj.task().to_variant())).unwrap();
+            }),
+        );
+        row.connect_closure(
+            "removed",
+            true,
+            glib::closure_local!(@watch self as obj => move |_: ReminderRow, _: i64| {
+                obj.activate_action("task.changed", Some(&obj.task().to_variant())).unwrap();
+            }),
+        );
+        row
     }
 
     fn description_display(&self, text: &str) -> String {
@@ -164,6 +184,8 @@ impl TaskPage {
         let task = self.task();
         task.set_date(datetime.to_unix());
         update_task(&task).expect("Failed to change update task");
+        self.activate_action("task.changed", Some(&task.to_variant()))
+            .unwrap();
     }
 
     #[template_callback]
@@ -186,8 +208,10 @@ impl TaskPage {
         if task.description() != text {
             imp.description_expander_row
                 .set_subtitle(&self.description_display(&text));
-            task.set_property("description", text);
-            update_task(&task).expect("Failed to update task");
+            task.set_description(text);
+            update_task(&task).unwrap();
+            self.activate_action("task.changed", Some(&task.to_variant()))
+                .unwrap();
         }
     }
 
@@ -246,6 +270,8 @@ impl TaskPage {
             ("position", &new_subtask_position(task_id)),
         ]);
         let subtask = create_task(subtask).unwrap();
+        self.activate_action("task.changed", Some(&subtask.to_variant()))
+            .unwrap();
         self.imp().subtasks_box.add_fresh_task(subtask);
     }
 

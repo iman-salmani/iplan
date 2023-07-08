@@ -26,7 +26,7 @@
               <object class="GtkButton" id="name_button">
                 <property name="margin-start">0</property>
                 <property name="tooltip-text"
-                  bind-source="name_entry_buffer"
+                  bind-source="name_entry"
                   bind-property="text"
                   bind-flags="sync-create" />
                 <signal name="clicked" handler="handle_name_button_clicked" swapped="true" />
@@ -37,7 +37,7 @@
                   <object class="GtkLabel" id="name_label">
                     <property name="ellipsize">end</property>
                     <property name="label"
-                      bind-source="name_entry_buffer"
+                      bind-source="name_entry"
                       bind-property="text"
                       bind-flags="sync-create" />
                     <attributes>
@@ -57,9 +57,6 @@
                   bind-property="visible"
                   bind-flags="invert-boolean">false</property>
                 <property name="secondary-icon-name">window-close-symbolic</property>
-                <property name="buffer">
-                  <object class="GtkEntryBuffer" id="name_entry_buffer" />
-                </property>
                 <signal name="changed" handler="handle_name_entry_changed" swapped="true" />
                 <signal name="activate" handler="handle_name_entry_activate" swapped="true" />
                 <signal name="icon-press" handler="handle_name_entry_icon_press" swapped="true" />
