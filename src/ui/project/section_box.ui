@@ -6,6 +6,7 @@
   <template class="SectionBox" parent="GtkBox">
     <property name="orientation">vertical</property>
     <property name="width-request">256</property>
+    <property name="vexpand">false</property>
     <child><!-- Header -->
       <object class="GtkBox" id="header">
         <property name="margin-start">12</property>
