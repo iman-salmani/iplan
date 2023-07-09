@@ -110,8 +110,9 @@ impl TasksList {
 
         let now = glib::DateTime::now_local().unwrap();
         if now.ymd() == datetime.ymd() {
-            let name_format = format!("%e %b, {}", gettext("Today")).replace(" ", "");
-            imp.name.set_label(&datetime.format(&name_format).unwrap());
+            let name_format = format!("%e %b, {}", gettext("Today"));
+            imp.name
+                .set_label(&datetime.format(&name_format).unwrap().replace(" ", ""));
         } else {
             imp.name
                 .set_label(&datetime.format("%e %b, %A").unwrap().replace(" ", ""));

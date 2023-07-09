@@ -12,8 +12,6 @@
           <object class="GtkBox" id="tasks_lists">
             <property name="orientation">vertical</property>
             <property name="margin-top">15</property>
-            <property name="margin-start">15</property>
-            <property name="margin-end">15</property>
           </object>
         </child><!-- End Task List -->
       </object>
