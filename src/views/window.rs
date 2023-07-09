@@ -119,6 +119,10 @@ mod imp {
             klass.install_action("section.new", None, move |obj, _, _| {
                 obj.visible_project_page().new_section(obj.project().id());
             });
+            klass.install_action("task.duration-changed", None, move |obj, _, _| {
+                let imp = obj.imp();
+                imp.project_header.set_stat_updated(false);
+            });
         }
 
         fn instance_init(obj: &glib::subclass::InitializingObject<Self>) {

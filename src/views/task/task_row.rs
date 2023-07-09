@@ -497,7 +497,7 @@ impl TaskRow {
                         update_record(&record).expect("Failed to update record");
                         imp.timer_button.set_label(obj.task().duration_display());
                         if obj.parent().is_some() {
-                            obj.activate_action("project.update", None).unwrap();
+                            obj.activate_action("task.duration-changed", None).unwrap();
                         }
                         glib::Continue(false)
                     },
