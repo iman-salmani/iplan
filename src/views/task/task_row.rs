@@ -299,7 +299,7 @@ impl TaskRow {
 
     pub fn cancel_timer(&self) {
         self.imp().timer_status.set(TimerStatus::Cancel);
-        self.move_timer_button(false);
+        self.refresh_timer(); // FIXME: restore previous label
     }
 
     pub fn reset_timer(&self) {
@@ -310,28 +310,25 @@ impl TaskRow {
             record.set_duration(glib::DateTime::now_local().unwrap().to_unix() - record.start());
             self.start_timer(record);
         } else {
-            let duration = task.duration();
-            if duration == 0 {
-                imp.timer_button.set_label(gettext("Start _Timer"));
-            } else {
-                imp.timer_button
-                    .set_label(Record::duration_display(duration));
-                self.move_timer_button(true);
-            }
+            self.refresh_timer();
         }
     }
 
     pub fn refresh_timer(&self) {
         let imp = self.imp();
-        if imp.timer_status.get() != TimerStatus::On {
-            let duration = self.task().duration();
+
+        if imp.timer_status.get() == TimerStatus::On {
+            return;
+        }
+
+        let duration = self.task().duration();
+        if duration == 0 {
+            imp.timer_button.set_label(gettext("Start _Timer"));
+            self.move_timer_button(false);
+        } else {
             imp.timer_button
                 .set_label(Record::duration_display(duration));
-            if duration == 0 {
-                self.move_timer_button(false);
-            } else {
-                self.move_timer_button(true);
-            }
+            self.move_timer_button(true);
         }
     }
 
@@ -495,9 +492,10 @@ impl TaskRow {
                         button.add_css_class("flat");
                         record.set_duration(glib::DateTime::now_local().unwrap().to_unix() - record.start());
                         update_record(&record).expect("Failed to update record");
-                        imp.timer_button.set_label(obj.task().duration_display());
+                        let task = obj.task();
+                        imp.timer_button.set_label(task.duration_display());
                         if obj.parent().is_some() {
-                            obj.activate_action("task.duration-changed", None).unwrap();
+                            obj.activate_action("task.duration-changed", Some(&task.id().to_variant())).unwrap();
                         }
                         glib::Continue(false)
                     },

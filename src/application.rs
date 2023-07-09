@@ -265,7 +265,8 @@ impl IPlanApplication {
                 modal.connect_closure(
                     "task-changed",
                     true,
-                    glib::closure_local!(@watch main_window => move |_win: TaskWindow, changed_task: Task| {
+                    glib::closure_local!(@watch main_window, @weak-allow-none task => move |_win: TaskWindow, changed_task: Task| {
+                        let task = task.unwrap();
                         if let Some(row) = main_window.visible_project_page().task_row(&task) {
                             let task_id = task.id();
                             if changed_task.id() == task_id {
@@ -273,6 +274,18 @@ impl IPlanApplication {
                             } else if changed_task.parent() == task_id {
                                 row.reset_subtasks();
                             }
+                        }
+                    }),
+                );
+                modal.connect_closure(
+                    "task-duration-changed",
+                    true,
+                    glib::closure_local!(@watch main_window, @weak-allow-none task => move |_win: TaskWindow, task_id: i64| {
+                        let task = task.unwrap();
+                        main_window.activate_action("task.duration-changed", Some(&task_id.to_variant())).unwrap();
+                        if let Some(row) = main_window.visible_project_page().task_row(&task) {
+                            // FIXME: this also runs when duration of parent changed 
+                            row.refresh_timer();
                         }
                     }),
                 );

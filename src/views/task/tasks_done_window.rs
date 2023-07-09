@@ -204,5 +204,14 @@ impl TasksDoneWindow {
                 }
             }),
         );
+        modal.connect_closure(
+            "task-duration-changed",
+            true,
+            glib::closure_local!(@watch self as obj, @weak-allow-none row => move |_win: TaskWindow, task_id: i64| {
+                let row = row.unwrap();
+                row.refresh_timer();
+                obj.transient_for().unwrap().activate_action("task.duration-changed", Some(&task_id.to_variant())).unwrap();
+            }),
+        );
     }
 }

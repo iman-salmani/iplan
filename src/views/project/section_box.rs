@@ -241,6 +241,14 @@ impl SectionBox {
                 }
             }),
         );
+        modal.connect_closure(
+            "task-duration-changed",
+            true,
+            glib::closure_local!(@watch row => move |_win: TaskWindow, task_id: i64| {
+                row.activate_action("task.duration-changed", Some(&task_id.to_variant())).unwrap();
+                row.refresh_timer();
+            }),
+        );
     }
 
     #[template_callback]

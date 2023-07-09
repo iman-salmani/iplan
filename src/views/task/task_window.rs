@@ -38,11 +38,7 @@ mod imp {
                 let value = value.unwrap().get().unwrap();
                 let task = read_task(value).expect("Failed to read task");
                 let task_id = task.id().to_string();
-                let visible_task_page = imp
-                    .task_pages_stack
-                    .visible_child()
-                    .and_downcast::<TaskPage>()
-                    .unwrap();
+                let visible_task_page = obj.visible_page();
                 let parent_task = visible_task_page.task();
                 obj.set_property("parent-task", parent_task.id());
                 imp.task_pages_stack
@@ -54,12 +50,7 @@ mod imp {
             });
             klass.install_action("reminder.created", Some("x"), move |obj, _, value| {
                 let reminder_id = value.unwrap().get::<i64>().unwrap();
-                let imp = obj.imp();
-                imp.task_pages_stack
-                    .visible_child()
-                    .and_downcast::<TaskPage>()
-                    .unwrap()
-                    .add_reminder(reminder_id);
+                obj.visible_page().add_reminder(reminder_id);
             });
             klass.install_action(
                 "task.check",
@@ -96,6 +87,9 @@ mod imp {
                         .build(),
                     Signal::builder("task-changed")
                         .param_types([Task::static_type()])
+                        .build(),
+                    Signal::builder("task-duration-changed")
+                        .param_types([i64::static_type()])
                         .build(),
                 ]
             });
@@ -142,11 +136,7 @@ mod imp {
             }
 
             if root_task.is_none() {
-                let page = self
-                    .task_pages_stack
-                    .visible_child()
-                    .and_downcast::<TaskPage>()
-                    .unwrap();
+                let page = self.obj().visible_page();
                 let mut task = page.task();
                 let mut parent_id = task.parent();
                 while parent_id != 0 {
@@ -245,9 +235,9 @@ impl TaskWindow {
             self.close();
         } else {
             imp.back_button.emit_clicked();
-            toast.connect_button_clicked(glib::clone!(@weak imp, @weak task =>
+            toast.connect_button_clicked(glib::clone!(@weak self as obj, @weak task =>
                 move |_toast| {
-                    let task_page = imp.task_pages_stack.visible_child().and_downcast::<TaskPage>().unwrap();
+                    let task_page = obj.visible_page();
                     let subtasks_rows = task_page.imp().subtasks_box.observe_children();
                     for i in 0..subtasks_rows.n_items() {
                         let row = subtasks_rows.item(i).and_downcast::<TaskRow>().unwrap();
@@ -262,29 +252,32 @@ impl TaskWindow {
         }
     }
 
+    fn visible_page(&self) -> TaskPage {
+        self.imp()
+            .task_pages_stack
+            .visible_child()
+            .and_downcast::<TaskPage>()
+            .unwrap()
+    }
+
     #[template_callback]
     fn handle_back_button_clicked(&self, _button: gtk::Button) {
         let imp = self.imp();
-        let from_page = imp
-            .task_pages_stack
-            .visible_child()
-            .and_downcast::<TaskPage>()
-            .unwrap();
+        let from_page = self.visible_page();
         let from_task = from_page.task();
         let parent_name = self.parent_task().to_string();
-        if imp.task_pages_stack.child_by_name(&parent_name).is_none() {
+        let target_page = if let Some(page) = imp.task_pages_stack.child_by_name(&parent_name) {
+            page.downcast().unwrap()
+        } else {
             let parent_task = read_task(from_task.parent()).expect("Failed to read task");
-            imp.task_pages_stack
-                .add_named(&TaskPage::new(parent_task), Some(&parent_name));
-        }
+            let page = TaskPage::new(parent_task);
+            imp.task_pages_stack.add_named(&page, Some(&parent_name));
+            page
+        };
+
         imp.task_pages_stack
             .set_visible_child_full(&parent_name, gtk::StackTransitionType::SlideRight);
         imp.task_pages_stack.remove(&from_page);
-        let target_page = imp
-            .task_pages_stack
-            .visible_child()
-            .and_downcast::<TaskPage>()
-            .unwrap();
         if let Some(task_row) = target_page.imp().subtasks_box.item_by_id(from_task.id()) {
             task_row.reset(from_task);
             task_row.changed();

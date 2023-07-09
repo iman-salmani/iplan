@@ -96,8 +96,13 @@ impl RecordRow {
 
     fn refresh(&self) {
         self.set_labels();
+        // FIXME: replace some with unwrap?
         if self.parent().is_some() {
-            self.activate_action("task.duration-update", None).unwrap();
+            self.activate_action(
+                "task.duration-changed",
+                Some(&self.record().task().to_variant()),
+            )
+            .unwrap();
         }
     }
 
@@ -119,8 +124,10 @@ impl RecordRow {
 
     #[template_callback]
     fn handle_delete_button_clicked(&self, _: gtk::Button) {
-        delete_record(self.record().id()).unwrap();
-        self.activate_action("task.duration-update", None).unwrap();
+        let record = self.record();
+        delete_record(record.id()).unwrap();
+        self.activate_action("task.duration-changed", Some(&record.task().to_variant()))
+            .unwrap();
         let parent = self.parent().and_downcast::<gtk::ListBox>().unwrap();
         parent.remove(self);
     }

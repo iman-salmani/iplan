@@ -52,15 +52,21 @@ mod imp {
         fn class_init(klass: &mut Self::Class) {
             klass.bind_template();
             klass.bind_template_instance_callbacks();
-            klass.install_action("task.duration-update", None, move |obj, _, _value| {
-                obj.imp().task_row.refresh_timer();
-            });
-            klass.install_action("project.update", None, move |obj, _, _value| {
-                let task = obj.task();
+            klass.install_action("task.duration-changed", Some("x"), move |obj, _, value| {
                 let imp = obj.imp();
-                let mut records = read_records(task.id(), false, None, None).unwrap();
+                let record_task_id: i64 = value.unwrap().get().unwrap();
                 imp.task_row.refresh_timer();
-                if imp.records_box.observe_children().n_items() - 1 != records.len() as u32 {
+                let task = obj.task();
+                obj.root()
+                    .unwrap()
+                    .emit_by_name::<()>("task-duration-changed", &[&record_task_id]);
+
+                if record_task_id != task.id() {
+                    return;
+                }
+
+                let mut records = read_records(task.id(), false, None, None).unwrap();
+                if imp.records_box.observe_children().n_items() - 1 < records.len() as u32 {
                     records.sort_by_key(|record| record.id());
                     let row = RecordRow::new(records.last().unwrap().to_owned());
                     imp.records_box.append(&row);
@@ -253,10 +259,13 @@ impl TaskPage {
             glib::closure_local!(@watch self as obj => move |_win: RecordWindow, record: Record| {
                 let imp = obj.imp();
                 imp.task_row.refresh_timer();
+                let task_id = record.task();
                 let row = RecordRow::new(record);
                 imp.records_box.append(&row);
-                }
-            ),
+                obj.root()
+                    .unwrap()
+                    .emit_by_name::<()>("task-duration-changed", &[&task_id]);
+            }),
         );
     }
 
