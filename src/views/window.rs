@@ -68,24 +68,22 @@ mod imp {
             MenuItem::ensure_type();
             klass.bind_template();
             klass.bind_template_instance_callbacks();
-            klass.install_action("project.open", None, move |obj, _, _| {
-                let imp = obj.imp();
-                let project = obj.project();
-                let project_id = project.id();
-                let project_page = if let Some(project_page) = obj.project_by_id(project_id) {
-                    obj.imp().projects_stack.remove(&project_page);
-                    obj.new_project_page(project_id)
-                } else {
-                    obj.new_project_page(project_id)
-                };
-                obj.set_visible_project(project_id);
-                obj.set_project_layout();
-                imp.project_header.open_project(&project);
-                project_page.open_project(project_id);
-                project_page.select_task(None);
-                imp.sidebar_projects.check_archive_hidden();
-                obj.close_calendar();
-            });
+            klass.install_action(
+                "project.open",
+                Some(&Project::static_variant_type_string()),
+                move |obj, _, value| {
+                    let project = Project::try_from(value.unwrap()).unwrap();
+                    let project_id = project.id();
+
+                    obj.close_sidebar();
+
+                    if obj.project().id() == project_id {
+                        return;
+                    }
+
+                    obj.change_project(project); // FIXME: Inside check_project called select_active_project. this unnecessary if the action is sent via sidebar projects
+                },
+            );
             klass.install_action("project.edit", None, move |obj, _, _| {
                 let window = ProjectEditWindow::new(obj.application().unwrap(), obj, obj.project());
                 window.present();
@@ -102,19 +100,9 @@ mod imp {
             klass.install_action("project.delete", None, move |obj, _, _| {
                 let projects_section = &obj.imp().sidebar_projects;
                 projects_section.delete_project(obj.project().index());
-                let projects = read_projects(true).expect("Failed to read projects");
-                let home_project = if let Some(project) = projects.get(0) {
-                    project.clone()
-                } else {
-                    let project = create_project(&gettext("Personal"), "", "")
-                        .expect("Failed to create project");
-                    create_section(&gettext("Tasks"), project.id()).unwrap();
-                    project
-                };
-                obj.set_project(&home_project);
-                projects_section.add_project(home_project);
+                let home_project = obj.home_project();
                 obj.imp().projects_stack.remove(&obj.visible_project_page());
-                obj.activate_action("project.open", None).unwrap();
+                obj.change_project(home_project);
             });
             klass.install_action("section.new", None, move |obj, _, _| {
                 obj.visible_project_page().new_section(obj.project().id());
@@ -176,34 +164,22 @@ glib::wrapper! {
 #[gtk::template_callbacks]
 impl IPlanWindow {
     pub fn new<P: glib::IsA<gtk::Application>>(application: &P) -> Self {
-        let projects = read_projects(true).expect("Failed to read projects");
-        let home_project = if let Some(project) = projects.get(0) {
-            project.clone()
-        } else {
-            let project: Project =
-                create_project(&gettext("Personal"), "", "").expect("Failed to create project");
-            create_section(&gettext("Tasks"), project.id()).unwrap();
-            project
-        };
         let settings = gio::Settings::new("ir.imansalmani.IPlan.State");
         let obj = glib::Object::builder::<IPlanWindow>()
             .property("application", application)
-            .property("project", home_project)
             .property("default-width", settings.int("width"))
             .property("default-height", settings.int("height"))
             .property("maximized", settings.boolean("is-maximized"))
             .property("fullscreened", settings.boolean("is-fullscreen"))
             .build();
         let imp = obj.imp();
+        let home_project = obj.home_project();
         if settings.int("default-project-layout") == 1 {
             imp.project_layout_button
                 .set_icon_name("view-columns-symbolic");
-        } else {
         }
         obj.set_settings(settings);
-        obj.activate_action("project.open", None)
-            .expect("Failed to open project");
-        imp.sidebar_projects.select_active_project();
+        obj.change_project(home_project);
 
         if let Some(display) = gdk::Display::default() {
             let provider = gtk::CssProvider::new();
@@ -218,7 +194,6 @@ impl IPlanWindow {
         let imp = self.imp();
         let project_id = project.id();
         self.set_project(&project);
-        imp.project_header.open_project(&project);
         let project_page = if let Some(project_page) = self.project_by_id(project_id) {
             self.imp().projects_stack.remove(&project_page);
             self.new_project_page(project_id)
@@ -227,10 +202,11 @@ impl IPlanWindow {
         };
         self.set_project_layout();
         self.set_visible_project(project_id);
+        imp.project_header.open_project(&project);
         project_page.open_project(project_id);
         project_page.select_task(None);
-        imp.sidebar_projects.select_active_project();
         imp.sidebar_projects.check_archive_hidden();
+        imp.sidebar_projects.select_active_project();
         self.close_calendar();
     }
 
@@ -246,6 +222,34 @@ impl IPlanWindow {
         let imp = self.imp();
         if imp.flap.is_folded() {
             imp.flap.set_reveal_flap(false);
+        }
+    }
+
+    pub fn reset(&self) {
+        let imp = self.imp();
+
+        let pages = imp.projects_stack.observe_children();
+        for _ in 0..pages.n_items() {
+            let page = &pages.item(0).and_downcast::<gtk::Widget>().unwrap();
+            imp.projects_stack.remove(page);
+        }
+        imp.calendar.refresh();
+        self.set_project(Project::default());
+
+        let home_project = self.home_project();
+        imp.sidebar_projects.reset();
+        self.change_project(home_project);
+    }
+
+    fn home_project(&self) -> Project {
+        let projects = read_projects(true).unwrap();
+        if let Some(project) = projects.first() {
+            project.clone()
+        } else {
+            let project: Project = create_project(&gettext("Personal"), "", "").unwrap();
+            create_section(&gettext("Tasks"), project.id()).unwrap();
+            self.imp().sidebar_projects.add_project(project.to_owned());
+            project
         }
     }
 

@@ -116,12 +116,7 @@ impl BackupWindow {
                     } else {
                         check_database().expect("Database check has failed(after importing data)");
                         let iplan_window = obj.transient_for().and_downcast::<IPlanWindow>().unwrap();
-                        let calendar = iplan_window.imp().calendar.get();
-                        if calendar.is_visible() {
-                            calendar.refresh();
-                        } else {
-                            iplan_window.activate_action("project.open", None).expect("Failed to send project.open action");
-                        }
+                        iplan_window.reset();
                     }
                 }
             }),

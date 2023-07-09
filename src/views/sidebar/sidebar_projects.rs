@@ -143,14 +143,29 @@ impl SidebarProjects {
         imp.projects_box.select_row(Some(&row));
     }
 
-    fn init_widgets(&self) {
+    pub fn reset(&self) {
         let imp = self.imp();
+        let rows = imp.projects_box.observe_children();
+        for _ in 0..rows.n_items() {
+            let row = rows.item(0).and_downcast::<gtk::Widget>().unwrap();
+            imp.projects_box.remove(&row);
+        }
 
-        // Fetch
+        self.fetch();
+    }
+
+    fn fetch(&self) {
+        let imp = self.imp();
         let projects = read_projects(true).expect("Failed to read projects");
         for project in projects {
             imp.projects_box.append(&ProjectRow::new(project));
         }
+    }
+
+    fn init_widgets(&self) {
+        let imp = self.imp();
+
+        self.fetch();
 
         // Projcets box filter
         imp.projects_box.set_filter_func(glib::clone!(
@@ -207,14 +222,9 @@ impl SidebarProjects {
 
     #[template_callback]
     fn handle_projects_box_row_activated(&self, row: gtk::ListBoxRow) {
-        let window = self.root().unwrap().downcast::<IPlanWindow>().unwrap();
         let row = row.downcast::<ProjectRow>().unwrap();
-        window.close_sidebar();
-        if window.project().id() != row.project().id() {
-            window.set_property("project", row.project().to_value());
-            self.activate_action("project.open", None)
-                .expect("Failed to open project");
-        }
+        self.activate_action("project.open", Some(&row.project().to_variant()))
+            .unwrap();
     }
 
     #[template_callback]
@@ -226,9 +236,8 @@ impl SidebarProjects {
             "project-created",
             true,
             glib::closure_local!(@watch self as obj => move |_win: ProjectCreateWindow, project: Project| {
-                obj.root().and_downcast::<IPlanWindow>().unwrap().set_property("project", &project);
+                obj.activate_action("project.open", Some(&project.to_variant())).unwrap();
                 obj.add_project(project);
-                obj.activate_action("project.open", None).unwrap();
             }),
         );
     }

@@ -77,6 +77,10 @@ impl Project {
         }
         total
     }
+
+    pub fn static_variant_type_string() -> String {
+        "(xsbiss)".to_string()
+    }
 }
 
 impl TryFrom<&Row<'_>> for Project {
@@ -94,8 +98,37 @@ impl TryFrom<&Row<'_>> for Project {
     }
 }
 
+impl TryFrom<&glib::Variant> for Project {
+    type Error = ();
+
+    fn try_from(value: &glib::Variant) -> Result<Self, Self::Error> {
+        let (id, name, archive, index, icon, description): (
+            i64,
+            String,
+            bool,
+            i32,
+            String,
+            String,
+        ) = value.get().ok_or(())?;
+        Ok(Project::new(id, name, archive, index, icon, description))
+    }
+}
+
 impl Default for Project {
     fn default() -> Self {
         Project::new(0, String::new(), false, 0, String::new(), String::new())
+    }
+}
+
+impl ToVariant for Project {
+    fn to_variant(&self) -> glib::Variant {
+        glib::Variant::from((
+            self.id(),
+            self.name(),
+            self.archive(),
+            self.index(),
+            self.icon(),
+            self.description(),
+        ))
     }
 }

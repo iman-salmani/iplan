@@ -206,15 +206,19 @@ impl TaskWindow {
             let transient_for_name = transient_for.widget_name();
             if transient_for_name == "IPlanWindow" {
                 let transient_for = transient_for.downcast::<IPlanWindow>().unwrap();
-                toast.connect_button_clicked(glib::clone!(@weak transient_for =>
-                    move |_toast| {
+                transient_for
+                    .visible_project_page()
+                    .reset_or_remove_task(task.to_owned());
+                toast.connect_button_clicked(
+                    glib::clone!(@weak transient_for, @weak task => move |_toast| {
                         let calendar = transient_for.imp().calendar.get();
                         if calendar.is_visible() {
                             calendar.refresh();
                         } else {
-                            transient_for.activate_action("project.open", None).expect("Failed to send project.open action");
+                            transient_for.visible_project_page().reset_or_remove_task(task);
                         }
-                }));
+                    }),
+                );
                 transient_for.imp().toast_overlay.add_toast(toast);
             } else if transient_for_name == "TasksDoneWindow" {
                 let transient_for = transient_for.downcast::<TasksDoneWindow>().unwrap();
