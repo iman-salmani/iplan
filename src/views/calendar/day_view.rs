@@ -12,9 +12,9 @@ mod imp {
     use super::*;
 
     #[derive(gtk::CompositeTemplate, Properties)]
-    #[template(resource = "/ir/imansalmani/iplan/ui/calendar/tasks_list.ui")]
-    #[properties(wrapper_type=super::TasksList)]
-    pub struct TasksList {
+    #[template(resource = "/ir/imansalmani/iplan/ui/calendar/day_view.ui")]
+    #[properties(wrapper_type=super::DayView)]
+    pub struct DayView {
         #[property(get, set)]
         pub datetime: RefCell<glib::DateTime>,
         #[property(get, set)]
@@ -28,9 +28,9 @@ mod imp {
     }
 
     #[glib::object_subclass]
-    impl ObjectSubclass for TasksList {
-        const NAME: &'static str = "TasksList";
-        type Type = super::TasksList;
+    impl ObjectSubclass for DayView {
+        const NAME: &'static str = "DayView";
+        type Type = super::DayView;
         type ParentType = gtk::Box;
 
         fn class_init(klass: &mut Self::Class) {
@@ -58,7 +58,7 @@ mod imp {
         }
     }
 
-    impl ObjectImpl for TasksList {
+    impl ObjectImpl for DayView {
         fn constructed(&self) {
             self.parent_constructed();
             let obj = self.obj();
@@ -91,20 +91,20 @@ mod imp {
             self.derived_set_property(id, value, pspec)
         }
     }
-    impl WidgetImpl for TasksList {}
-    impl BoxImpl for TasksList {}
+    impl WidgetImpl for DayView {}
+    impl BoxImpl for DayView {}
 }
 
 glib::wrapper! {
-    pub struct TasksList(ObjectSubclass<imp::TasksList>)
+    pub struct DayView(ObjectSubclass<imp::DayView>)
         @extends gtk::Widget, gtk::Box,
         @implements gtk::Buildable;
 }
 
 #[gtk::template_callbacks]
-impl TasksList {
+impl DayView {
     pub fn new(datetime: glib::DateTime) -> Self {
-        let obj: TasksList = glib::Object::new::<Self>();
+        let obj: DayView = glib::Object::new::<Self>();
         let imp = obj.imp();
         let end = datetime.add_days(1).unwrap().to_unix();
 

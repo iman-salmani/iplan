@@ -329,11 +329,7 @@ impl IPlanWindow {
         button.remove_css_class("flat");
         imp.project.take();
         imp.calendar.set_visible(true);
-        if imp.calendar.imp().stack.visible_child_name().is_none() {
-            imp.calendar.open_today();
-        } else {
-            imp.calendar.refresh();
-        }
+        imp.calendar.refresh();
         let projects_box: &gtk::ListBox = imp.sidebar_projects.imp().projects_box.as_ref();
         projects_box.unselect_row(&projects_box.selected_row().unwrap());
     }
@@ -341,6 +337,6 @@ impl IPlanWindow {
     #[template_callback]
     fn handle_calendar_today_clicked(&self, _: gtk::Button) {
         let imp = self.imp();
-        imp.calendar.open_today();
+        imp.calendar.go_today();
     }
 }

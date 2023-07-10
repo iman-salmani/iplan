@@ -6,9 +6,8 @@ src/ui/preferences_window.ui
 src/ui/shortcuts_window.ui
 src/ui/backup_window.ui
 src/ui/calendar/calendar.ui
-src/ui/calendar/calendar_page.ui
 src/ui/calendar/day_indicator.ui
-src/ui/calendar/tasks_list.ui
+src/ui/calendar/day_view.ui
 src/ui/project/project_create_window.ui
 src/ui/project/project_edit_window.ui
 src/ui/project/project_header.ui
@@ -39,9 +38,8 @@ src/views/window.rs
 src/views/preferences_window.rs
 src/views/backup_window.rs
 src/views/calendar/calendar.rs
-src/views/calendar/calendar_page.rs
 src/views/calendar/day_indicator.rs
-src/views/calendar/tasks_list.rs
+src/views/calendar/day_view.rs
 src/views/project/project_create_window.rs
 src/views/project/project_edit_window.rs
 src/views/project/project_header.rs

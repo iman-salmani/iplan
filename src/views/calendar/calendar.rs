@@ -1,8 +1,11 @@
-use gtk::{glib, prelude::*, subclass::prelude::*};
-use std::cell::RefCell;
+use gtk::{gdk, glib, prelude::*, subclass::prelude::*};
+use std::cell::{Cell, RefCell};
+use std::thread;
+use std::time::Duration;
 
 use crate::db::models::Task;
-use crate::views::calendar::{CalendarPage, DayIndicator};
+use crate::views::calendar::{DayIndicator, DayView};
+use crate::views::task::{TaskRow, TasksBox};
 
 mod imp {
     use super::*;
@@ -13,10 +16,14 @@ mod imp {
     pub struct Calendar {
         #[property(get, set)]
         pub datetime: RefCell<glib::DateTime>,
+        #[property(get, set)]
+        pub scroll: Cell<i8>,
         #[template_child]
-        pub day_switcher: TemplateChild<gtk::Box>,
+        pub navigation_bar: TemplateChild<gtk::Box>,
         #[template_child]
-        pub stack: TemplateChild<gtk::Stack>,
+        pub scrolled_view: TemplateChild<gtk::ScrolledWindow>,
+        #[template_child]
+        pub days_box: TemplateChild<gtk::Box>,
     }
 
     #[glib::object_subclass]
@@ -42,8 +49,10 @@ mod imp {
         fn new() -> Self {
             Self {
                 datetime: RefCell::new(glib::DateTime::now_local().unwrap()),
-                day_switcher: TemplateChild::default(),
-                stack: TemplateChild::default(),
+                scroll: Cell::new(0),
+                navigation_bar: TemplateChild::default(),
+                scrolled_view: TemplateChild::default(),
+                days_box: TemplateChild::default(),
             }
         }
     }
@@ -53,6 +62,7 @@ mod imp {
             self.parent_constructed();
             let obj = self.obj();
             obj.init_widgets();
+            obj.add_controllers();
         }
         fn properties() -> &'static [glib::ParamSpec] {
             Self::derived_properties()
@@ -82,44 +92,65 @@ impl Calendar {
         glib::Object::new::<Self>()
     }
 
-    pub fn open_today(&self) {
+    pub fn go_today(&self) {
         let imp = self.imp();
         let today = self.today_datetime();
-        let possible_today_indicator_date = imp
-            .day_switcher
-            .observe_children()
-            .item(2)
-            .and_downcast::<DayIndicator>()
-            .unwrap()
-            .datetime();
 
-        if possible_today_indicator_date != today {
-            self.clear_day_switcher();
-            for day in -2..5 {
-                let datetime = today.add_days(day).unwrap();
-                imp.day_switcher.append(&self.new_day_indicator(datetime));
+        loop {
+            if let Some(indicator) = imp.navigation_bar.first_child() {
+                imp.navigation_bar.remove(&indicator);
+            } else {
+                break;
             }
         }
 
-        let datetime = today.add_days(-2).unwrap();
-        if self.datetime() != datetime {
-            self.set_page(datetime);
-            self.refresh_indicators_selection();
-        } else if possible_today_indicator_date != today {
-            self.refresh_indicators_selection();
+        for day in -2..5 {
+            let datetime = today.add_days(day).unwrap();
+            imp.navigation_bar.append(&self.new_day_indicator(datetime));
         }
+        self.foucs_on_date(today);
     }
 
     pub fn refresh(&self) {
         let imp = self.imp();
-        let datetime = self.datetime();
-        let name = datetime.format("%F").unwrap();
-        let new_page = CalendarPage::new(datetime);
-        let pages = imp.stack.observe_children();
+        let datetime = imp
+            .navigation_bar
+            .first_child()
+            .and_downcast::<DayIndicator>()
+            .unwrap()
+            .datetime();
+
+        let pages = imp.days_box.observe_children();
         for _ in 0..pages.n_items() {
-            imp.stack.remove(&imp.stack.first_child().unwrap());
+            imp.days_box.remove(&imp.days_box.first_child().unwrap());
         }
-        imp.stack.add_named(&new_page, Some(&name));
+
+        for i in -7..14 {
+            let day_view = self.new_day_view(datetime.add_days(i).unwrap());
+            imp.days_box.append(&day_view);
+        }
+
+        let day_view = self.day_view_by_date(datetime).unwrap();
+        let (tx, rx) = glib::MainContext::channel(glib::PRIORITY_DEFAULT);
+        glib::idle_add(move || {
+            if let Ok(_) = tx.send(()) {
+                glib::Continue(true)
+            } else {
+                glib::Continue(false)
+            }
+        });
+        rx.attach(
+            None,
+            glib::clone!(@weak self as obj, @weak day_view => @default-return glib::Continue(false), move |_| {
+                let y =  day_view.allocation().y();
+                if y == 0 {
+                    glib::Continue(true)
+                } else {
+                    obj.imp().scrolled_view.vadjustment().set_value(y as f64);
+                    glib::Continue(false)
+                }
+            }),
+        );
     }
 
     fn init_widgets(&self) {
@@ -127,109 +158,258 @@ impl Calendar {
         let today = self.today_datetime();
         for day in -2..5 {
             let datetime = today.add_days(day).unwrap();
-            imp.day_switcher.append(&self.new_day_indicator(datetime));
+            imp.navigation_bar.append(&self.new_day_indicator(datetime));
         }
+        imp.scrolled_view.vscrollbar().set_sensitive(false);
+    }
+
+    fn add_controllers(&self) {
+        let imp = self.imp();
+
+        let dnd_controller = gtk::DropTarget::new(TaskRow::static_type(), gdk::DragAction::MOVE);
+        dnd_controller.set_preload(true);
+        dnd_controller.connect_motion(|controller, _, y| {
+            let obj = controller.widget().downcast::<Self>().unwrap();
+            let height = obj.height();
+            if height - (y as i32) < 50 {
+                if obj.scroll() != 1 {
+                    obj.set_scroll(1);
+                    obj.start_scroll();
+                }
+            } else if y < 50.0 {
+                if obj.scroll() != -1 {
+                    obj.set_scroll(-1);
+                    obj.start_scroll();
+                }
+            } else {
+                obj.set_scroll(0)
+            }
+            gdk::DragAction::empty()
+        });
+        dnd_controller.connect_leave(|controller| {
+            let obj = controller.widget().downcast::<Self>().unwrap();
+            obj.set_scroll(0);
+        });
+        self.add_controller(dnd_controller);
+
+        let vadjustment = imp.scrolled_view.vadjustment();
+        vadjustment.connect_value_changed(glib::clone!(@weak self as obj => move |adjustment| {
+            let imp = obj.imp();
+            let pos = adjustment.value();
+
+            if let Some(top_edge_day_view) = obj.day_view_by_y(pos) {
+                let first_day_indicator = imp
+                    .navigation_bar
+                    .first_child()
+                    .and_downcast::<DayIndicator>()
+                    .unwrap();
+                let top_edge_day_view_date = top_edge_day_view.datetime();
+                let difference = top_edge_day_view_date
+                    .difference(&first_day_indicator.datetime())
+                    .as_days();
+
+                if difference > 0 {
+                    for _ in 0..difference {
+                        let first_day_indicator = imp
+                            .navigation_bar
+                            .first_child()
+                            .and_downcast::<DayIndicator>()
+                            .unwrap();
+                        let last_day_indicator = imp
+                            .navigation_bar
+                            .last_child()
+                            .and_downcast::<DayIndicator>()
+                            .unwrap();
+                        imp.navigation_bar.remove(&first_day_indicator);
+    
+                        
+                        let date = last_day_indicator.datetime().add_days(1).unwrap();
+                        let day_indicator = obj.new_day_indicator(date);
+                        imp.navigation_bar.append(&day_indicator);
+                    }
+                } else if difference < 0 {
+                    for _ in 0..difference.abs() {
+                        let first_day_indicator = imp
+                            .navigation_bar
+                            .first_child()
+                            .and_downcast::<DayIndicator>()
+                            .unwrap();
+                        let last_day_indicator = imp
+                            .navigation_bar
+                            .last_child()
+                            .and_downcast::<DayIndicator>()
+                            .unwrap();
+                        imp.navigation_bar.remove(&last_day_indicator);
+    
+                        let date = first_day_indicator.datetime().add_days(-1).unwrap();
+                        let day_indicator = obj.new_day_indicator(date);
+                        imp.navigation_bar.prepend(&day_indicator);
+                    }
+                }
+
+                let first_day_view = imp.days_box.first_child().and_downcast::<DayView>().unwrap();
+                let first_day_view_date = first_day_view.datetime();
+                if top_edge_day_view_date.difference(&first_day_view_date).as_days() < 7 {
+                    let date = first_day_view_date.add_days(-1).unwrap();
+                    let day_view = obj.new_day_view(date);
+                    imp.days_box.prepend(&day_view);
+                    let (tx, rx) = glib::MainContext::channel(glib::PRIORITY_DEFAULT);
+                    glib::idle_add(move || {
+                        if let Ok(_) = tx.send(()) {
+                            glib::Continue(true)
+                        } else {
+                            glib::Continue(false)
+                        }
+                    });
+                    rx.attach(None, glib::clone!(@weak adjustment => @default-return glib::Continue(false), move |_| {
+                        let height = day_view.height();
+                        if height == 0 {
+                            glib::Continue(true)
+                        } else {
+                            adjustment.set_value(adjustment.value() + height as f64);
+                            glib::Continue(false)
+                        }
+                    }));
+                    return;
+                }
+
+                let last_day_view = imp.days_box.last_child().and_downcast::<DayView>().unwrap();
+                let last_day_view_date = last_day_view.datetime();
+                if last_day_view_date.difference(&top_edge_day_view_date).as_days() < 14 {
+                    let date = last_day_view_date.add_days(1).unwrap();
+                    let day_view = obj.new_day_view(date.clone());
+                    imp.days_box.append(&day_view);
+                }
+            }
+        }));
+    }
+
+    fn new_day_view(&self, date: glib::DateTime) -> DayView {
+        let day_tasks = DayView::new(date);
+        day_tasks.connect_closure(
+            "task-moveout",
+            false,
+            glib::closure_local!(@watch self as obj => move |_: DayView, row: TaskRow| {
+                obj.move_task_row(row);
+            }),
+        );
+        day_tasks.connect_closure(
+            "outside-task-changed",
+            false,
+            glib::closure_local!(@watch self as obj => move |_: DayView, task: Task| {
+                let row = if let Some(row) = obj.take_task_row(task.id()) {
+                    row.reset(task);
+                    row
+                } else {
+                    TaskRow::new(task, false, true)
+                };
+                obj.move_task_row(row);
+            }),
+        );
+        day_tasks
+    }
+
+    fn take_task_row(&self, task_id: i64) -> Option<TaskRow> {
+        let imp = self.imp();
+        let days_views = imp.days_box.observe_children();
+        for i in 0..days_views.n_items() {
+            let day_view = days_views.item(i).and_downcast::<DayView>().unwrap();
+            let tasks_box: &TasksBox = day_view.imp().tasks_box.as_ref();
+            if let Some(row) = tasks_box.item_by_id(task_id) {
+                day_view.remove_row(&row);
+                return Some(row);
+            }
+        }
+
+        None
+    }
+
+    fn move_task_row(&self, task_row: TaskRow) {
+        let task = task_row.task();
+        if let Some(day_view) = self.day_view_by_date(task.date_datetime().unwrap()) {
+            day_view.add_row(task_row);
+        }
+    }
+
+    fn day_view_by_date(&self, date: glib::DateTime) -> Option<DayView> {
+        let imp = self.imp();
+        let days_views = imp.days_box.observe_children();
+        for i in 0..days_views.n_items() {
+            let day_view = days_views.item(i).and_downcast::<DayView>().unwrap();
+            if day_view.datetime() == date {
+                return Some(day_view);
+            }
+        }
+        None
+    }
+
+    fn day_view_by_y(&self, y: f64) -> Option<DayView> {
+        let imp = self.imp();
+
+        if let Some(child) = imp.days_box.pick(128.0, y, gtk::PickFlags::DEFAULT) {
+            if child.widget_name() == "Viewport" {
+                return None;
+            }
+
+            let mut widget = child;
+            loop {
+                let parent = widget.parent();
+                if let Ok(day_tasks) = widget.downcast::<DayView>() {
+                    return Some(day_tasks);
+                }
+                if let Some(new_widget) = parent {
+                    widget = new_widget;
+                } else {
+                    break;
+                }
+            }
+        }
+
+        None
     }
 
     fn new_day_indicator(&self, datetime: glib::DateTime) -> DayIndicator {
+        let today = self.today_datetime() == datetime;
         let day_indicator = DayIndicator::new(datetime);
-        day_indicator.connect_clicked(glib::clone!(@weak self as obj => move |_indicator| {
-            // let datetime = indicator.datetime();
-            // obj.set_page(datetime);
-            // obj.refresh_indicators_selection();
+        day_indicator.connect_clicked(glib::clone!(@weak self as obj => move |indicator| {
+            obj.foucs_on_date(indicator.datetime());
         }));
+        if today {
+            day_indicator.add_css_class("accent");
+        }
         day_indicator
     }
 
-    fn set_page(&self, datetime: glib::DateTime) {
-        let imp = self.imp();
-        let previous_datetime = self.datetime();
-
-        if previous_datetime == datetime {
-            return;
-        }
-
-        let name = datetime.format("%F").unwrap();
-        let transition: gtk::StackTransitionType = if previous_datetime < datetime {
-            gtk::StackTransitionType::SlideUp
-        } else {
-            gtk::StackTransitionType::SlideDown
-        };
-
-        self.set_datetime(&datetime);
-        if imp.stack.child_by_name(&name).is_none() {
-            let page = CalendarPage::new(datetime);
-            imp.stack.add_named(&page, Some(&name));
-        }
-        imp.stack.set_visible_child_full(&name, transition);
-    }
-
-    fn refresh_indicators_selection(&self) {
-        let imp = self.imp();
-        // let name = imp.stack.visible_child_name().unwrap();
-        let indicators = imp.day_switcher.observe_children();
-        let today = self.today_datetime();
-        for i in 0..indicators.n_items() {
-            let indicator = indicators.item(i).and_downcast::<DayIndicator>().unwrap();
-            // if indicator.datetime().format("%F").unwrap() == name {
-            //     indicator.remove_css_class("flat");
-            // } else {
-            //     indicator.add_css_class("flat");
-            // }
-            if today == indicator.datetime() {
-                indicator.add_css_class("accent");
-            }
-        }
-    }
-
-    fn switcher_next(&self) {
-        let imp = self.imp();
-        let last_indicator = imp
-            .day_switcher
-            .last_child()
-            .and_downcast::<DayIndicator>()
-            .unwrap();
-
-        self.clear_day_switcher();
-
-        for i in 1..8 {
-            let datetime = last_indicator.datetime().add_days(i).unwrap();
-            if i == 1 {
-                self.set_page(datetime.clone());
-            }
-            let new_indicator = self.new_day_indicator(datetime);
-            imp.day_switcher.append(&new_indicator);
-        }
-    }
-
-    fn switcher_previous(&self) {
-        let imp = self.imp();
-        let first_indicator = imp
-            .day_switcher
-            .first_child()
-            .and_downcast::<DayIndicator>()
-            .unwrap();
-
-        self.clear_day_switcher();
-
-        for i in 1..8 {
-            let datetime = first_indicator.datetime().add_days(-i).unwrap();
-            if i == 7 {
-                self.set_page(datetime.clone());
-            }
-            let new_indicator = self.new_day_indicator(datetime);
-            imp.day_switcher.prepend(&new_indicator);
-        }
-    }
-
-    fn clear_day_switcher(&self) {
-        let imp = self.imp();
-        loop {
-            if let Some(indicator) = imp.day_switcher.first_child() {
-                imp.day_switcher.remove(&indicator);
-            } else {
+    fn start_scroll(&self) {
+        let (tx, rx) = glib::MainContext::channel(glib::PRIORITY_DEFAULT);
+        thread::spawn(move || loop {
+            if tx.send(()).is_err() {
                 break;
             }
+            thread::sleep(Duration::from_secs_f32(0.1));
+        });
+        rx.attach(
+            None,
+            glib::clone!(@weak self as obj => @default-return glib::Continue(false), move |_| {
+                let scroll = obj.scroll();
+                if scroll == 0 {
+                    glib::Continue(false)
+                } else if scroll.is_positive() {
+                    obj.imp().scrolled_view.emit_scroll_child(gtk::ScrollType::StepDown, false);
+                    glib::Continue(true)
+                } else {
+                    obj.imp().scrolled_view.emit_scroll_child(gtk::ScrollType::StepUp, false);
+                    glib::Continue(true)
+                }
+            }),
+        );
+    }
+
+    fn foucs_on_date(&self, date: glib::DateTime) {
+        let imp = self.imp();
+        self.set_focus_child(Some(&imp.scrolled_view.get()));
+        if let Some(day_tasks) = self.day_view_by_date(date) {
+            day_tasks.grab_focus();
         }
     }
 
@@ -245,17 +425,5 @@ impl Calendar {
             0.0,
         )
         .unwrap()
-    }
-
-    #[template_callback]
-    fn handle_next_day_clicked(&self, _: gtk::Button) {
-        self.switcher_next();
-        self.refresh_indicators_selection();
-    }
-
-    #[template_callback]
-    fn handle_previous_day_clicked(&self, _: gtk::Button) {
-        self.switcher_previous();
-        self.refresh_indicators_selection();
     }
 }

@@ -5,48 +5,26 @@
   <requires lib="Adw" version="1.0" />
   <template class="Calendar" parent="GtkBox">
     <property name="orientation">vertical</property>
-    <child><!-- Calendar Header -->
-      <object class="GtkBox">
+    <child><!-- Calendar navigation bar -->
+      <object class="GtkBox" id="navigation_bar">
         <style>
           <class name="calendar_header" />
           <class name="card" />
           <class name="linked" />
         </style>
-        <child>
-          <object class="GtkButton">
-            <property name="tooltip-text" translatable="yes">Previous week</property>
-            <property name="icon-name">go-previous-symbolic</property>
-            <property name="width-request">24</property>
-            <signal name="clicked" handler="handle_previous_day_clicked" swapped="true" />
-            <style>
-              <class name="flat" />
-            </style>
-          </object>
-        </child>
-        <child><!-- Stack Switcher -->
-          <object class="GtkBox" id="day_switcher">
-            <style>
-              <class name="linked" />
-            </style>
-          </object>
-        </child><!-- End Stack Switcher -->
-        <child>
-          <object class="GtkButton">
-            <property name="tooltip-text" translatable="yes">Next week</property>
-            <property name="icon-name">go-next-symbolic</property>
-            <property name="width-request">24</property>
-            <signal name="clicked" handler="handle_next_day_clicked" swapped="true" />
-            <style>
-              <class name="flat" />
-            </style>
-          </object>
-        </child>
       </object>
-    </child><!-- End Calendar Header -->
-    <child><!-- Stack -->
-      <object class="GtkStack" id="stack">
-        <property name="vexpand">True</property>
+    </child><!-- End Calendar navigation bar -->
+    <child><!-- Scrolled Window -->
+      <object class="GtkScrolledWindow" id="scrolled_view">
+        <property name="vexpand">true</property>
+        <child><!-- Days Box -->
+          <object class="GtkBox" id="days_box">
+            <property name="orientation">vertical</property>
+            <property name="spacing">24</property>
+            <property name="margin-top">15</property>
+          </object>
+        </child><!-- End Days Box -->
       </object>
-    </child><!-- End Stack -->
+    </child><!-- End Scrolled Window -->
   </template>
 </interface>

@@ -3,9 +3,9 @@
 <interface>
   <requires lib="gtk" version="4.0" />
   <requires lib="Adw" version="1.0" />
-  <template class="TasksList" parent="GtkBox">
+  <template class="DayView" parent="GtkBox">
     <property name="orientation">vertical</property>
-    <property name="margin-bottom">24</property>
+    <property name="focusable">true</property>
     <child>
       <object class="GtkBox"><!-- header -->
         <property name="margin-bottom">12</property>
