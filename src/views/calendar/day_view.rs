@@ -1,6 +1,6 @@
 use adw::prelude::*;
 use gettextrs::gettext;
-use glib::{once_cell::sync::Lazy, subclass::Signal, Properties};
+use glib::Properties;
 use gtk::{glib, subclass::prelude::*};
 use std::cell::{Cell, RefCell};
 
@@ -63,20 +63,6 @@ mod imp {
             self.parent_constructed();
             let obj = self.obj();
             obj.add_bindings();
-        }
-
-        fn signals() -> &'static [glib::subclass::Signal] {
-            static SIGNALS: Lazy<Vec<Signal>> = Lazy::new(|| {
-                vec![
-                    Signal::builder("task-moveout")
-                        .param_types([TaskRow::static_type()])
-                        .build(),
-                    Signal::builder("outside-task-changed")
-                        .param_types([Task::static_type()])
-                        .build(),
-                ]
-            });
-            SIGNALS.as_ref()
         }
 
         fn properties() -> &'static [glib::ParamSpec] {
@@ -175,25 +161,18 @@ impl DayView {
         let modal = TaskWindow::new(&win.application().unwrap(), &win, row.task());
         modal.present();
         row.cancel_timer();
-        let tasks_list_datetime = self.datetime().to_unix();
         modal.connect_closure(
-            "page-closed",
+            "window-closed",
             true,
-            glib::closure_local!(@watch self as obj, @weak-allow-none row => move |_win: TaskWindow, task: Task| {
-                let row = row.unwrap();
-                let task_date = task.date();
-                let task_duration = task.duration();
-
-                if task.id() == row.task().id() {
-                    row.reset(task);
-                    if task_date != tasks_list_datetime {
-                        obj.set_duration(obj.duration() - task_duration);
-                        obj.remove_row(&row);
-                        obj.emit_by_name::<()>("task-moveout", &[&row]);
-                    }
-                } else if task_date != 0 {
-                    obj.emit_by_name::<()>("outside-task-changed", &[&task]);
-                }
+            glib::closure_local!(@watch row => move |_win: TaskWindow, _: Task| {
+                row.reset_timer();
+            }),
+        );
+        modal.connect_closure(
+            "task-changed",
+            true,
+            glib::closure_local!(@watch row => move |_win: TaskWindow, changed_task: Task| {
+                row.activate_action("task.changed", Some(&changed_task.to_variant())).unwrap();
             }),
         );
     }

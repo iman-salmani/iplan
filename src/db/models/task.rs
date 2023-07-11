@@ -2,6 +2,7 @@ use gettextrs::gettext;
 use gtk::{glib, glib::Properties, prelude::*, subclass::prelude::*};
 use rusqlite;
 use std::cell::{Cell, RefCell};
+use std::fmt::Display;
 
 use crate::db::models::Record;
 use crate::db::operations::{read_records, read_tasks};
@@ -134,6 +135,41 @@ impl Task {
     pub fn static_variant_type_string() -> String {
         "(xsbxxibxsx)".to_string()
     }
+
+    pub fn different_properties(&self, other: &Self) -> Vec<&str> {
+        let mut properties = vec![];
+        if self.id() != other.id() {
+            properties.push("id");
+        }
+        if self.name() != other.name() {
+            properties.push("name");
+        }
+        if self.done() != other.done() {
+            properties.push("done");
+        }
+        if self.project() != other.project() {
+            properties.push("project");
+        }
+        if self.section() != other.section() {
+            properties.push("section");
+        }
+        if self.position() != other.position() {
+            properties.push("position");
+        }
+        if self.suspended() != other.suspended() {
+            properties.push("suspended");
+        }
+        if self.parent() != other.parent() {
+            properties.push("parent");
+        }
+        if self.description() != other.description() {
+            properties.push("description");
+        }
+        if self.date() != other.date() {
+            properties.push("date");
+        }
+        properties
+    }
 }
 
 impl TryFrom<&rusqlite::Row<'_>> for Task {
@@ -189,6 +225,25 @@ impl TryFrom<&glib::Variant> for Task {
 impl Default for Task {
     fn default() -> Self {
         Task::new(&[])
+    }
+}
+
+impl Display for Task {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(
+            f,
+            "Task {{ id: {} name: {} done: {} project: {} section: {} position: {} suspended: {} parent: {} description: {} date: {} }}",
+            self.id(),
+            self.name(),
+            self.done(),
+            self.project(),
+            self.section(),
+            self.position(),
+            self.suspended(),
+            self.parent(),
+            self.description(),
+            self.date()
+        )
     }
 }
 

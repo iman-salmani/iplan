@@ -5,7 +5,7 @@ use std::time::Duration;
 
 use crate::db::models::Task;
 use crate::views::calendar::{DayIndicator, DayView};
-use crate::views::task::{TaskRow, TasksBox};
+use crate::views::task::TaskRow;
 
 mod imp {
     use super::*;
@@ -38,7 +38,60 @@ mod imp {
             klass.install_action(
                 "task.changed",
                 Some(&Task::static_variant_type_string()),
-                |_, _, _| {},
+                |obj, _, value| {
+                    let task = Task::try_from(value.unwrap()).unwrap();
+
+                    let reset_parent_subtasks = |parent_id: i64| {
+                        if parent_id == 0 {
+                            return;
+                        }
+
+                        if let Some(parent_row) = obj.task_row(parent_id) {
+                            parent_row.reset_subtasks();
+                        }
+                    };
+
+                    let target_day_view = |task_date: i64| {
+                        if task_date != 0 {
+                            obj.day_view_by_date(glib::DateTime::from_unix_local(task_date).unwrap())
+                        } else {
+                            None
+                        }
+                    };
+
+                    if let Some(row) = obj.task_row(task.id()) {
+                        let old_task = row.task();
+                        let difference = task.different_properties(&old_task);
+                        
+                        reset_parent_subtasks(task.parent());
+
+                        if difference.is_empty() {
+                            return;
+                        }
+                        
+                        if difference.contains(&"date"){
+                            let rows_box = row.parent().and_downcast::<gtk::ListBox>().unwrap();
+                            rows_box.remove(&row);
+
+                            if let Some(day_view) = target_day_view(task.date()) {
+                                row.reset(task);
+                                day_view.add_row(row);
+                            }
+
+                        } else {
+                            row.reset(task);
+                        }
+
+                        return;
+                    }
+
+                    reset_parent_subtasks(task.parent());
+
+                    if let Some(day_view) = target_day_view(task.date()) {
+                        let row = TaskRow::new(task, false, true);
+                        day_view.add_row(row);
+                    }
+                },
             );
         }
 
@@ -126,7 +179,7 @@ impl Calendar {
         }
 
         for i in -7..14 {
-            let day_view = self.new_day_view(datetime.add_days(i).unwrap());
+            let day_view = DayView::new(datetime.add_days(i).unwrap());
             imp.days_box.append(&day_view);
         }
 
@@ -251,7 +304,7 @@ impl Calendar {
                 let first_day_view_date = first_day_view.datetime();
                 if top_edge_day_view_date.difference(&first_day_view_date).as_days() < 7 {
                     let date = first_day_view_date.add_days(-1).unwrap();
-                    let day_view = obj.new_day_view(date);
+                    let day_view = DayView::new(date);
                     imp.days_box.prepend(&day_view);
                     let (tx, rx) = glib::MainContext::channel(glib::PRIORITY_DEFAULT);
                     glib::idle_add(move || {
@@ -277,58 +330,23 @@ impl Calendar {
                 let last_day_view_date = last_day_view.datetime();
                 if last_day_view_date.difference(&top_edge_day_view_date).as_days() < 14 {
                     let date = last_day_view_date.add_days(1).unwrap();
-                    let day_view = obj.new_day_view(date.clone());
+                    let day_view = DayView::new(date);
                     imp.days_box.append(&day_view);
                 }
             }
         }));
     }
 
-    fn new_day_view(&self, date: glib::DateTime) -> DayView {
-        let day_tasks = DayView::new(date);
-        day_tasks.connect_closure(
-            "task-moveout",
-            false,
-            glib::closure_local!(@watch self as obj => move |_: DayView, row: TaskRow| {
-                obj.move_task_row(row);
-            }),
-        );
-        day_tasks.connect_closure(
-            "outside-task-changed",
-            false,
-            glib::closure_local!(@watch self as obj => move |_: DayView, task: Task| {
-                let row = if let Some(row) = obj.take_task_row(task.id()) {
-                    row.reset(task);
-                    row
-                } else {
-                    TaskRow::new(task, false, true)
-                };
-                obj.move_task_row(row);
-            }),
-        );
-        day_tasks
-    }
-
-    fn take_task_row(&self, task_id: i64) -> Option<TaskRow> {
+    fn task_row(&self, task_id: i64) -> Option<TaskRow> {
         let imp = self.imp();
         let days_views = imp.days_box.observe_children();
         for i in 0..days_views.n_items() {
             let day_view = days_views.item(i).and_downcast::<DayView>().unwrap();
-            let tasks_box: &TasksBox = day_view.imp().tasks_box.as_ref();
-            if let Some(row) = tasks_box.item_by_id(task_id) {
-                day_view.remove_row(&row);
+            if let Some(row) = day_view.imp().tasks_box.item_by_id(task_id) {
                 return Some(row);
             }
         }
-
         None
-    }
-
-    fn move_task_row(&self, task_row: TaskRow) {
-        let task = task_row.task();
-        if let Some(day_view) = self.day_view_by_date(task.date_datetime().unwrap()) {
-            day_view.add_row(task_row);
-        }
     }
 
     fn day_view_by_date(&self, date: glib::DateTime) -> Option<DayView> {
