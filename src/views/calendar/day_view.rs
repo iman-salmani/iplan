@@ -175,5 +175,13 @@ impl DayView {
                 row.activate_action("task.changed", Some(&changed_task.to_variant())).unwrap();
             }),
         );
+        modal.connect_closure(
+            "task-duration-changed",
+            true,
+            glib::closure_local!(@watch row => move |_win: TaskWindow, task_id: i64| {
+                row.refresh_timer();
+                row.activate_action("task.duration-changed", Some(&task_id.to_variant())).unwrap();
+            }),
+        );
     }
 }

@@ -8,6 +8,8 @@ use crate::views::calendar::{DayIndicator, DayView};
 use crate::views::task::TaskRow;
 
 mod imp {
+    use crate::db::operations::read_task;
+
     use super::*;
 
     #[derive(gtk::CompositeTemplate, glib::Properties)]
@@ -92,6 +94,27 @@ mod imp {
                         day_view.add_row(row);
                     }
                 },
+            );
+            klass.install_action(
+                "task.duration-changed",
+                Some("x"),
+                |obj, _, value|{
+                    let mut task_id = value.unwrap().get().unwrap();
+                    let mut first_row = true;
+                    while task_id != 0 {
+                        let task = if let Some(row) = obj.task_row(task_id) {
+                            if first_row {
+                                first_row = false;  
+                            } else {
+                                row.refresh_timer();
+                            }
+                            row.task()
+                        } else {
+                            read_task(task_id).unwrap()
+                        };
+                        task_id = task.parent();
+                    }
+                }
             );
         }
 
