@@ -5,6 +5,48 @@
   <requires lib="Adw" version="1.0" />
   <template class="Calendar" parent="GtkBox">
     <property name="orientation">vertical</property>
+    <child><!-- Header -->
+      <object class="AdwHeaderBar" id="page_header">
+        <property name="title-widget">
+          <object class="GtkLabel"></object>
+        </property>
+        <child type="start"><!-- Toggle Pane Button -->
+          <object class="GtkToggleButton" id="toggle_sidebar_button">
+            <property name="icon-name">sidebar-show-symbolic</property>
+            <property name="active">True</property>
+          </object>
+        </child><!-- End Toggle Pane Button -->
+        <child type="start"><!-- Calendar header -->
+          <object class="GtkBox">
+            <property name="margin-start">6</property>
+            <property name="spacing">3</property>
+            <property name="hexpand">true</property>
+            <child>
+              <object class="GtkImage">
+                <property name="icon-name">x-office-calendar-symbolic</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkLabel">
+                <property name="label" translatable="yes">Calendar</property>
+                <style>
+                  <class name="heading" />
+                </style>
+              </object>
+            </child>
+          </object>
+        </child><!-- End Calendar header -->
+        <child type="end"><!-- Calendar Today -->
+          <object class="GtkButton">
+            <property name="label" translatable="yes">Today</property>
+            <signal name="clicked" handler="handle_calendar_today_clicked" swapped="true" />
+            <style>
+              <class name="flat" />
+            </style>
+          </object>
+        </child><!-- End Calendar Today -->
+      </object>
+    </child><!-- End Header -->
     <child><!-- Calendar navigation bar -->
       <object class="GtkBox" id="navigation_bar">
         <style>

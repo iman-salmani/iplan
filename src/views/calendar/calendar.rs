@@ -21,6 +21,10 @@ mod imp {
         #[property(get, set)]
         pub scroll: Cell<i8>,
         #[template_child]
+        pub page_header: TemplateChild<adw::HeaderBar>,
+        #[template_child]
+        pub toggle_sidebar_button: TemplateChild<gtk::ToggleButton>,
+        #[template_child]
         pub navigation_bar: TemplateChild<gtk::Box>,
         #[template_child]
         pub scrolled_view: TemplateChild<gtk::ScrolledWindow>,
@@ -126,6 +130,8 @@ mod imp {
             Self {
                 datetime: RefCell::new(glib::DateTime::now_local().unwrap()),
                 scroll: Cell::new(0),
+                page_header: TemplateChild::default(),
+                toggle_sidebar_button: TemplateChild::default(),
                 navigation_bar: TemplateChild::default(),
                 scrolled_view: TemplateChild::default(),
                 days_box: TemplateChild::default(),
@@ -466,5 +472,10 @@ impl Calendar {
             0.0,
         )
         .unwrap()
+    }
+
+    #[template_callback]
+    fn handle_calendar_today_clicked(&self, _: gtk::Button) {
+        self.go_today();
     }
 }

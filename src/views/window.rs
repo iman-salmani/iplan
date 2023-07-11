@@ -21,11 +21,11 @@
 use adw::subclass::prelude::*;
 use gettextrs::gettext;
 use gtk::{gdk, gio, glib, glib::Properties, prelude::*};
-use std::cell::RefCell;
+use std::cell::{Cell, RefCell};
 
 use crate::db::models::Project;
 use crate::db::operations::{create_project, create_section, read_projects};
-use crate::views::project::{ProjectEditWindow, ProjectHeader, ProjectLayout, ProjectPage};
+use crate::views::project::{ProjectEditWindow, ProjectLayout, ProjectPage};
 use crate::views::snippets::MenuItem;
 use crate::views::{calendar::Calendar, sidebar::SidebarProjects};
 
@@ -40,14 +40,12 @@ mod imp {
         pub settings: RefCell<Option<gio::Settings>>,
         #[property(get, set)]
         pub project: RefCell<Project>,
+        #[property(get, set, name = "project-layout")]
+        pub project_layout: Cell<i32>,
         #[template_child]
         pub flap: TemplateChild<adw::Flap>,
         #[template_child]
-        pub project_layout_button: TemplateChild<gtk::Button>,
-        #[template_child]
         pub sidebar_projects: TemplateChild<SidebarProjects>,
-        #[template_child]
-        pub project_header: TemplateChild<ProjectHeader>,
         #[template_child]
         pub toast_overlay: TemplateChild<adw::ToastOverlay>,
         #[template_child]
@@ -94,7 +92,10 @@ mod imp {
                     return;
                 }
                 let project = obj.project();
-                imp.project_header.open_project(&project);
+                obj.visible_project_page()
+                    .imp()
+                    .project_header
+                    .open_project(&project);
                 imp.sidebar_projects.update_project(&project);
             });
             klass.install_action("project.delete", None, move |obj, _, _| {
@@ -108,8 +109,10 @@ mod imp {
                 obj.visible_project_page().new_section(obj.project().id());
             });
             klass.install_action("task.duration-changed", Some("x"), move |obj, _, _| {
-                let imp = obj.imp();
-                imp.project_header.set_stat_updated(false);
+                obj.visible_project_page()
+                    .imp()
+                    .project_header
+                    .set_stat_updated(false);
             });
         }
 
@@ -172,12 +175,10 @@ impl IPlanWindow {
             .property("maximized", settings.boolean("is-maximized"))
             .property("fullscreened", settings.boolean("is-fullscreen"))
             .build();
-        let imp = obj.imp();
         let home_project = obj.home_project();
-        if settings.int("default-project-layout") == 1 {
-            imp.project_layout_button
-                .set_icon_name("view-columns-symbolic");
-        }
+        settings
+            .bind("default-project-layout", &obj, "project-layout")
+            .build();
         obj.set_settings(settings);
         obj.change_project(home_project);
 
@@ -186,6 +187,33 @@ impl IPlanWindow {
             provider.load_from_resource("/ir/imansalmani/iplan/ui/style.css");
             gtk::style_context_add_provider_for_display(&display, &provider, 400);
         }
+
+        let imp = obj.imp();
+        let calendar_imp = imp.calendar.imp();
+        calendar_imp
+            .toggle_sidebar_button
+            .bind_property("active", &imp.flap.get(), "reveal-flap")
+            .sync_create()
+            .bidirectional()
+            .build();
+
+        imp.flap
+            .bind_property(
+                "folded",
+                &calendar_imp.page_header.get(),
+                "show-start-title-buttons",
+            )
+            .sync_create()
+            .build();
+
+        imp.flap
+            .bind_property(
+                "folded",
+                &calendar_imp.toggle_sidebar_button.get(),
+                "visible",
+            )
+            .sync_create()
+            .build();
 
         obj
     }
@@ -200,10 +228,9 @@ impl IPlanWindow {
         } else {
             self.new_project_page(project_id)
         };
-        self.set_project_layout();
         self.set_visible_project(project_id);
-        imp.project_header.open_project(&project);
-        project_page.open_project(project_id);
+        self.apply_project_layout();
+        project_page.open_project(&project);
         project_page.select_task(None);
         imp.sidebar_projects.check_archive_hidden();
         imp.sidebar_projects.select_active_project();
@@ -262,10 +289,62 @@ impl IPlanWindow {
     }
 
     fn new_project_page(&self, project_id: i64) -> ProjectPage {
+        let imp = self.imp();
         let project_page = ProjectPage::new();
-        self.imp()
-            .projects_stack
+        let project_page_imp = project_page.imp();
+
+        project_page_imp.layout_button.connect_clicked(
+            glib::clone!(@weak self as obj => move |button| {
+                let layout = if button.icon_name().unwrap() == "list-symbolic" { 1 } else { 0 };
+                obj.set_project_layout(layout);
+                obj.apply_project_layout();
+                obj.visible_project_page().open_project(&obj.project());
+            }),
+        );
+
+        project_page_imp
+            .toggle_sidebar_button
+            .bind_property("active", &imp.flap.get(), "reveal-flap")
+            .sync_create()
+            .bidirectional()
+            .build();
+
+        self.bind_property(
+            "project-layout",
+            &project_page_imp.layout_button.get(),
+            "icon-name",
+        )
+        .transform_to(|_, layout: i32| {
+            if layout == 1 {
+                Some("view-columns-symbolic")
+            } else {
+                Some("list-symbolic")
+            }
+        })
+        .sync_create()
+        .build();
+
+        imp.flap
+            .bind_property(
+                "folded",
+                &project_page_imp.page_header.get(),
+                "show-start-title-buttons",
+            )
+            .sync_create()
+            .build();
+
+        imp.flap
+            .bind_property(
+                "folded",
+                &project_page_imp.toggle_sidebar_button.get(),
+                "visible",
+            )
+            .sync_create()
+            .build();
+
+        imp.projects_stack
             .add_named(&project_page, Some(&project_id.to_string()));
+
         project_page
     }
 
@@ -275,9 +354,8 @@ impl IPlanWindow {
             .set_visible_child_full(&id.to_string(), gtk::StackTransitionType::Crossfade);
     }
 
-    fn set_project_layout(&self) {
-        let settings = self.settings().unwrap();
-        if settings.int("default-project-layout") == 1 {
+    fn apply_project_layout(&self) {
+        if self.project_layout() == 1 {
             self.visible_project_page()
                 .set_layout(ProjectLayout::Horizontal);
         } else {
@@ -290,31 +368,6 @@ impl IPlanWindow {
         let imp = self.imp();
         imp.calendar.set_visible(false);
         imp.calendar_button.add_css_class("flat");
-    }
-
-    #[template_callback]
-    fn handle_project_layout_button_clicked(&self, button: gtk::Button) {
-        match button.icon_name() {
-            Some(icon_name) => {
-                if icon_name == "list-symbolic" {
-                    button.set_icon_name("view-columns-symbolic");
-                    self.settings()
-                        .unwrap()
-                        .set_int("default-project-layout", 1)
-                        .expect("Could not set setting.");
-                } else {
-                    button.set_icon_name("list-symbolic");
-                    self.settings()
-                        .unwrap()
-                        .set_int("default-project-layout", 0)
-                        .expect("Could not set setting.");
-                }
-                self.set_project_layout();
-                self.visible_project_page()
-                    .open_project(self.project().id());
-            }
-            None => unimplemented!(),
-        }
     }
 
     #[template_callback]
@@ -332,11 +385,5 @@ impl IPlanWindow {
         imp.calendar.refresh();
         let projects_box: &gtk::ListBox = imp.sidebar_projects.imp().projects_box.as_ref();
         projects_box.unselect_row(&projects_box.selected_row().unwrap());
-    }
-
-    #[template_callback]
-    fn handle_calendar_today_clicked(&self, _: gtk::Button) {
-        let imp = self.imp();
-        imp.calendar.go_today();
     }
 }

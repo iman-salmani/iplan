@@ -5,9 +5,9 @@ use std::cell::{Cell, RefCell};
 use std::thread;
 use std::time::Duration;
 
-use crate::db::models::Task;
+use crate::db::models::{Project, Task};
 use crate::db::operations::{create_section, read_section, read_sections, read_task};
-use crate::views::{project::SectionBox, task::TaskRow, IPlanWindow};
+use crate::views::{project::ProjectHeader, project::SectionBox, task::TaskRow, IPlanWindow};
 
 #[derive(Default, Clone, Copy, PartialEq)]
 pub enum ProjectLayout {
@@ -29,6 +29,14 @@ mod imp {
         #[property(get, set)]
         pub scroll: Cell<i8>,
         #[template_child]
+        pub page_header: TemplateChild<adw::HeaderBar>,
+        #[template_child]
+        pub toggle_sidebar_button: TemplateChild<gtk::ToggleButton>,
+        #[template_child]
+        pub project_header: TemplateChild<ProjectHeader>,
+        #[template_child]
+        pub layout_button: TemplateChild<gtk::Button>,
+        #[template_child]
         pub scrolled_window: TemplateChild<gtk::ScrolledWindow>,
         #[template_child]
         pub sections_box: TemplateChild<gtk::Box>,
@@ -44,7 +52,7 @@ mod imp {
     impl ObjectSubclass for ProjectPage {
         const NAME: &'static str = "ProjectPage";
         type Type = super::ProjectPage;
-        type ParentType = gtk::Widget;
+        type ParentType = gtk::Box;
 
         fn class_init(klass: &mut Self::Class) {
             klass.bind_template();
@@ -88,33 +96,14 @@ mod imp {
             self.derived_set_property(id, value, pspec)
         }
     }
-    impl BuildableImpl for ProjectPage {}
-    impl WidgetImpl for ProjectPage {
-        fn request_mode(&self) -> gtk::SizeRequestMode {
-            self.parent_request_mode();
-            gtk::SizeRequestMode::ConstantSize
-        }
-
-        fn measure(&self, orientation: gtk::Orientation, for_size: i32) -> (i32, i32, i32, i32) {
-            self.obj()
-                .first_child()
-                .unwrap()
-                .measure(orientation, for_size)
-        }
-
-        fn size_allocate(&self, width: i32, height: i32, baseline: i32) {
-            self.obj()
-                .first_child()
-                .unwrap()
-                .size_allocate(&gtk::Allocation::new(0, 0, width, height), baseline);
-        }
-    }
+    impl WidgetImpl for ProjectPage {}
+    impl BoxImpl for ProjectPage {}
 }
 
 glib::wrapper! {
     pub struct ProjectPage(ObjectSubclass<imp::ProjectPage>)
-        @extends glib::InitiallyUnowned, gtk::Widget,
-        @implements gtk::Accessible, gtk::Buildable, gtk::ConstraintTarget;
+        @extends glib::InitiallyUnowned, gtk::Widget, gtk::Box,
+        @implements gtk::Accessible, gtk::Buildable, gtk::ConstraintTarget, gtk::Orientable;
 }
 
 impl Default for ProjectPage {
@@ -128,8 +117,11 @@ impl ProjectPage {
         Self::default()
     }
 
-    pub fn open_project(&self, project_id: i64) {
+    pub fn open_project(&self, project: &Project) {
         let imp = self.imp();
+        let project_id = project.id();
+
+        imp.project_header.open_project(project);
 
         let section_boxes = imp.sections_box.observe_children();
         for _ in 0..section_boxes.n_items() {
