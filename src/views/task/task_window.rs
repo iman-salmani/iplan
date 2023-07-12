@@ -206,17 +206,10 @@ impl TaskWindow {
             let transient_for_name = transient_for.widget_name();
             if transient_for_name == "IPlanWindow" {
                 let transient_for = transient_for.downcast::<IPlanWindow>().unwrap();
-                transient_for
-                    .visible_project_page()
-                    .reset_or_remove_task(task.to_owned());
+                transient_for.reset_task(task.clone());
                 toast.connect_button_clicked(
                     glib::clone!(@weak transient_for, @weak task => move |_toast| {
-                        let calendar = transient_for.imp().calendar.get();
-                        if calendar.is_visible() {
-                            calendar.refresh();
-                        } else {
-                            transient_for.visible_project_page().reset_or_remove_task(task);
-                        }
+                        transient_for.reset_task(task);
                     }),
                 );
                 transient_for.imp().toast_overlay.add_toast(toast);

@@ -305,6 +305,7 @@ impl SectionBox {
                         .and_downcast::<IPlanWindow>()
                         .unwrap()
                         .visible_project_page()
+                        .unwrap()
                         .imp()
                         .placeholder
                         .get();

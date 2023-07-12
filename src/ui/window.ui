@@ -64,24 +64,19 @@
         </property>
         <property name="content"><!-- Toast Overlay -->
           <object class="AdwToastOverlay" id="toast_overlay">
-            <child>
-              <object class="GtkBox">
-                <property name="orientation">vertical</property>
-                <child><!-- projects stack -->
-                  <object class="GtkStack" id="projects_stack">
-                    <property name="visible"
-                      bind-source="calendar"
-                      bind-property="visible"
-                      bind-flags="sync-create|invert-boolean" />
-                  </object>
-                </child><!-- projects stack -->
+            <child><!-- Stack Pages -->
+              <object class="GtkStack" id="stack_pages">
                 <child>
-                  <object class="Calendar" id="calendar">
-                    <property name="visible">false</property>
+                  <object class="GtkStackPage">
+                    <property name="name">calendar</property>
+                    <property name="title">Calendar</property>
+                    <property name="child">
+                      <object class="Calendar" id="calendar"></object>
+                    </property>
                   </object>
                 </child>
               </object>
-            </child>
+            </child><!-- Stack Pages -->
           </object>
         </property><!-- End Toast Overlay -->
       </object>

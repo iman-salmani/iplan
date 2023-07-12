@@ -23,7 +23,7 @@ use gettextrs::gettext;
 use gtk::{gdk, gio, glib, glib::Properties, prelude::*};
 use std::cell::{Cell, RefCell};
 
-use crate::db::models::Project;
+use crate::db::models::{Project, Task};
 use crate::db::operations::{create_project, create_section, read_projects};
 use crate::views::project::{ProjectEditWindow, ProjectLayout, ProjectPage};
 use crate::views::snippets::MenuItem;
@@ -49,7 +49,7 @@ mod imp {
         #[template_child]
         pub toast_overlay: TemplateChild<adw::ToastOverlay>,
         #[template_child]
-        pub projects_stack: TemplateChild<gtk::Stack>,
+        pub stack_pages: TemplateChild<gtk::Stack>,
         #[template_child]
         pub calendar: TemplateChild<Calendar>,
         #[template_child]
@@ -92,24 +92,28 @@ mod imp {
                     return;
                 }
                 let project = obj.project();
-                obj.visible_project_page()
-                    .imp()
-                    .project_header
-                    .open_project(&project);
+                if let Some(page) = obj.visible_project_page() {
+                    page.imp().project_header.open_project(&project);
+                }
                 imp.sidebar_projects.update_project(&project);
             });
             klass.install_action("project.delete", None, move |obj, _, _| {
                 let projects_section = &obj.imp().sidebar_projects;
                 projects_section.delete_project(obj.project().index());
                 let home_project = obj.home_project();
-                obj.imp().projects_stack.remove(&obj.visible_project_page());
+                obj.imp()
+                    .stack_pages
+                    .remove(&obj.visible_project_page().unwrap());
                 obj.change_project(home_project);
             });
             klass.install_action("section.new", None, move |obj, _, _| {
-                obj.visible_project_page().new_section(obj.project().id());
+                obj.visible_project_page()
+                    .unwrap()
+                    .new_section(obj.project().id());
             });
             klass.install_action("task.duration-changed", Some("x"), move |obj, _, _| {
                 obj.visible_project_page()
+                    .unwrap()
                     .imp()
                     .project_header
                     .set_stat_updated(false);
@@ -223,7 +227,7 @@ impl IPlanWindow {
         let project_id = project.id();
         self.set_project(&project);
         let project_page = if let Some(project_page) = self.project_by_id(project_id) {
-            self.imp().projects_stack.remove(&project_page);
+            self.imp().stack_pages.remove(&project_page);
             self.new_project_page(project_id)
         } else {
             self.new_project_page(project_id)
@@ -234,15 +238,14 @@ impl IPlanWindow {
         project_page.select_task(None);
         imp.sidebar_projects.check_archive_hidden();
         imp.sidebar_projects.select_active_project();
-        self.close_calendar();
+        imp.calendar_button.add_css_class("flat");
     }
 
-    pub fn visible_project_page(&self) -> ProjectPage {
+    pub fn visible_project_page(&self) -> Option<ProjectPage> {
         self.imp()
-            .projects_stack
+            .stack_pages
             .visible_child()
             .and_downcast::<ProjectPage>()
-            .unwrap()
     }
 
     pub fn close_sidebar(&self) {
@@ -252,13 +255,22 @@ impl IPlanWindow {
         }
     }
 
+    pub fn reset_task(&self, task: Task) {
+        let imp = self.imp();
+        if let Some(page) = self.visible_project_page() {
+            page.reset_or_remove_task(task);
+        } else {
+            imp.calendar.refresh();
+        }
+    }
+
     pub fn reset(&self) {
         let imp = self.imp();
 
-        let pages = imp.projects_stack.observe_children();
+        let pages = imp.stack_pages.observe_children();
         for _ in 0..pages.n_items() {
             let page = &pages.item(0).and_downcast::<gtk::Widget>().unwrap();
-            imp.projects_stack.remove(page);
+            imp.stack_pages.remove(page);
         }
         imp.calendar.refresh();
         self.set_project(Project::default());
@@ -281,7 +293,7 @@ impl IPlanWindow {
     }
 
     fn project_by_id(&self, id: i64) -> Option<ProjectPage> {
-        if let Some(child) = self.imp().projects_stack.child_by_name(&id.to_string()) {
+        if let Some(child) = self.imp().stack_pages.child_by_name(&id.to_string()) {
             child.downcast::<ProjectPage>().ok()
         } else {
             None
@@ -298,7 +310,7 @@ impl IPlanWindow {
                 let layout = if button.icon_name().unwrap() == "list-symbolic" { 1 } else { 0 };
                 obj.set_project_layout(layout);
                 obj.apply_project_layout();
-                obj.visible_project_page().open_project(&obj.project());
+                obj.visible_project_page().unwrap().open_project(&obj.project());
             }),
         );
 
@@ -342,7 +354,7 @@ impl IPlanWindow {
             .sync_create()
             .build();
 
-        imp.projects_stack
+        imp.stack_pages
             .add_named(&project_page, Some(&project_id.to_string()));
 
         project_page
@@ -350,24 +362,20 @@ impl IPlanWindow {
 
     fn set_visible_project(&self, id: i64) {
         self.imp()
-            .projects_stack
+            .stack_pages
             .set_visible_child_full(&id.to_string(), gtk::StackTransitionType::Crossfade);
     }
 
     fn apply_project_layout(&self) {
         if self.project_layout() == 1 {
             self.visible_project_page()
+                .unwrap()
                 .set_layout(ProjectLayout::Horizontal);
         } else {
             self.visible_project_page()
+                .unwrap()
                 .set_layout(ProjectLayout::Vertical);
         }
-    }
-
-    fn close_calendar(&self) {
-        let imp = self.imp();
-        imp.calendar.set_visible(false);
-        imp.calendar_button.add_css_class("flat");
     }
 
     #[template_callback]
@@ -375,15 +383,19 @@ impl IPlanWindow {
         let imp = self.imp();
         self.close_sidebar();
 
-        if imp.calendar.is_visible() {
+        if self.visible_project_page().is_none() {
             return;
         }
 
         button.remove_css_class("flat");
         imp.project.take();
-        imp.calendar.set_visible(true);
+        self.imp()
+            .stack_pages
+            .set_visible_child_full("calendar", gtk::StackTransitionType::Crossfade);
         imp.calendar.refresh();
         let projects_box: &gtk::ListBox = imp.sidebar_projects.imp().projects_box.as_ref();
-        projects_box.unselect_row(&projects_box.selected_row().unwrap());
+        if let Some(row) = projects_box.selected_row() {
+            projects_box.unselect_row(&row);
+        }
     }
 }
