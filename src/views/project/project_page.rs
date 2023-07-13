@@ -7,7 +7,8 @@ use std::time::Duration;
 
 use crate::db::models::{Project, Task};
 use crate::db::operations::{create_section, read_section, read_sections, read_task};
-use crate::views::{project::ProjectHeader, project::SectionBox, task::TaskRow, IPlanWindow};
+use crate::views::project::{ProjectHeader, SectionBox};
+use crate::views::{task::TaskRow, ActionScope, IPlanWindow};
 
 #[derive(Default, Clone, Copy, PartialEq)]
 pub enum ProjectLayout {
@@ -62,6 +63,24 @@ mod imp {
                 let adjustment = imp.scrolled_window.hadjustment();
                 adjustment.set_value(adjustment.value() + (adjustment.step_increment() * value));
             });
+            klass.install_action(
+                "task.duration-changed",
+                Some(Task::static_variant_type().as_str()),
+                move |obj, _, value| {
+                    let task: Task = value.unwrap().get().unwrap();
+                    obj.parent()
+                        .unwrap()
+                        .activate_action(
+                            "task.duration-changed",
+                            Some(&glib::Variant::from((
+                                task.to_variant(),
+                                ActionScope::Project(task.project()).to_variant(),
+                            ))),
+                        )
+                        .unwrap();
+                    obj.imp().project_header.set_stat_updated(false);
+                },
+            );
         }
 
         fn instance_init(obj: &glib::subclass::InitializingObject<Self>) {
@@ -148,11 +167,24 @@ impl ProjectPage {
         }
     }
 
-    pub fn reset_or_remove_task(&self, task: Task) {
+    pub fn reset_task(&self, mut task: Task) {
+        let task_parent = task.parent();
+        let is_subtask = task_parent != 0;
+        if is_subtask {
+            if let Ok(parent) = read_task(task_parent) {
+                // FIXME: find better way instead of read_task
+                task = parent;
+            } else {
+                return;
+            }
+        }
+
         if let Some(section_box) = self.section_by_id(task.section()) {
             let tasks_box = section_box.imp().tasks_box.get();
             if let Some(row) = tasks_box.item_by_id(task.id()) {
-                if task.done() {
+                if is_subtask {
+                    row.reset_subtasks();
+                } else if task.done() {
                     tasks_box.remove_item(&row);
                 } else {
                     row.reset(task);
@@ -160,7 +192,20 @@ impl ProjectPage {
                     row.activate_action("project.update", None)
                         .expect("Failed to send project.update signal");
                 }
+            } else if !task.done() {
+                let row = TaskRow::new(task, false, false);
+                tasks_box.add_item(&row);
             }
+        }
+    }
+
+    pub fn refresh_task_timer(&self, mut task: Task) {
+        while task.parent() != 0 {
+            task = read_task(task.parent()).unwrap();
+        }
+
+        if let Some(row) = self.task_row(&task) {
+            row.refresh_timer();
         }
     }
 

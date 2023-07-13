@@ -52,26 +52,29 @@ mod imp {
         fn class_init(klass: &mut Self::Class) {
             klass.bind_template();
             klass.bind_template_instance_callbacks();
-            klass.install_action("task.duration-changed", Some("x"), move |obj, _, value| {
-                let imp = obj.imp();
-                let record_task_id: i64 = value.unwrap().get().unwrap();
-                imp.task_row.refresh_timer();
-                let task = obj.task();
-                obj.root()
-                    .unwrap()
-                    .emit_by_name::<()>("task-duration-changed", &[&record_task_id]);
+            klass.install_action(
+                "task.duration-changed",
+                Some(Task::static_variant_type().as_str()),
+                move |obj, _, value| {
+                    let imp = obj.imp();
+                    let task: Task = value.unwrap().get().unwrap();
+                    imp.task_row.refresh_timer();
+                    obj.root()
+                        .unwrap()
+                        .emit_by_name::<()>("task-duration-changed", &[&task]);
 
-                if record_task_id != task.id() {
-                    return;
-                }
+                    if task.id() != task.id() {
+                        return;
+                    }
 
-                let mut records = read_records(task.id(), false, None, None).unwrap();
-                if imp.records_box.observe_children().n_items() - 1 < records.len() as u32 {
-                    records.sort_by_key(|record| record.id());
-                    let row = RecordRow::new(records.last().unwrap().to_owned());
-                    imp.records_box.append(&row);
-                }
-            });
+                    let mut records = read_records(Some(task.id()), false, None, None).unwrap();
+                    if imp.records_box.observe_children().n_items() - 1 < records.len() as u32 {
+                        records.sort_by_key(|record| record.id());
+                        let row = obj.new_record_row(records.last().unwrap().to_owned());
+                        imp.records_box.append(&row);
+                    }
+                },
+            );
         }
 
         fn instance_init(obj: &glib::subclass::InitializingObject<Self>) {
@@ -120,7 +123,7 @@ impl TaskPage {
         imp.description_buffer.set_text(&task_description);
 
         imp.subtasks_box.set_scrollable(false);
-        let tasks = read_tasks(None, None, None, Some(task_id), None).unwrap();
+        let tasks = read_tasks(None, None, None, Some(task_id), None, false).unwrap();
         imp.subtasks_box
             .set_items_wrapper(TasksBoxWrapper::Task(task_id, task_project));
         imp.subtasks_box.add_tasks(tasks);
@@ -137,9 +140,10 @@ impl TaskPage {
                 }
             });
 
-        let records = read_records(task_id, false, None, None).expect("Failed to read records");
+        let records =
+            read_records(Some(task_id), false, None, None).expect("Failed to read records");
         for record in records {
-            let row = RecordRow::new(record);
+            let row = obj.new_record_row(record);
             imp.records_box.append(&row);
         }
 
@@ -183,6 +187,18 @@ impl TaskPage {
             return String::from(first_line);
         }
         String::from("")
+    }
+
+    fn new_record_row(&self, record: Record) -> RecordRow {
+        let row = RecordRow::new(record);
+        row.connect_closure("changed", true, glib::closure_local!(@watch self as obj => move |_: RecordRow| {
+            obj.activate_action("task.duration-changed", Some(&obj.task().to_variant())).unwrap();
+        }));
+        row.connect_closure("deleted", true, glib::closure_local!(@watch self as obj => move |row: RecordRow| {
+            obj.activate_action("task.duration-changed", Some(&obj.task().to_variant())).unwrap();
+            obj.imp().records_box.remove(&row);
+        }));
+        row
     }
 
     #[template_callback]
@@ -259,12 +275,11 @@ impl TaskPage {
             glib::closure_local!(@watch self as obj => move |_win: RecordWindow, record: Record| {
                 let imp = obj.imp();
                 imp.task_row.refresh_timer();
-                let task_id = record.task();
-                let row = RecordRow::new(record);
+                let row = obj.new_record_row(record);
                 imp.records_box.append(&row);
                 obj.root()
                     .unwrap()
-                    .emit_by_name::<()>("task-duration-changed", &[&task_id]);
+                    .emit_by_name::<()>("task-duration-changed", &[&obj.task()]);
             }),
         );
     }

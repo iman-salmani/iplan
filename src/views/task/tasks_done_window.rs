@@ -7,7 +7,7 @@ use std::cell::RefCell;
 use crate::db::models::{Section, Task};
 use crate::db::operations::{read_task, read_tasks};
 use crate::views::task::{TaskRow, TaskWindow};
-use crate::views::IPlanWindow;
+use crate::views::{ActionScope, IPlanWindow};
 
 mod imp {
     use super::*;
@@ -38,11 +38,18 @@ mod imp {
             klass.bind_template();
             klass.bind_template_instance_callbacks();
             klass.install_action(
-                "task.check",
-                Some(&Task::static_variant_type_string()),
+                "task.changed",
+                Some(&Task::static_variant_type().as_str()),
                 move |obj, _, value| {
                     let imp = obj.imp();
-                    let task = Task::try_from(value.unwrap()).unwrap();
+                    let task: Task = value.unwrap().get().unwrap();
+
+                    obj.activate_task_action("task.changed", &task);
+
+                    if task.done() {
+                        return;
+                    }
+
                     let row = obj.row_by_id(task.id()).unwrap();
                     let upper_row = imp.tasks_box.row_at_index(row.index() - 1);
                     if let Some(upper_row) = upper_row {
@@ -51,11 +58,6 @@ mod imp {
                     imp.tasks_box.remove(&row);
                     obj.emit_by_name::<()>("task-undo", &[&task]);
                 },
-            );
-            klass.install_action(
-                "task.changed",
-                Some(&Task::static_variant_type_string()),
-                |_, _, _| {},
             );
         }
 
@@ -112,6 +114,7 @@ impl TasksDoneWindow {
             Some(true),
             Some(0),
             None,
+            false,
         )
         .unwrap();
         for task in tasks {
@@ -156,7 +159,7 @@ impl TasksDoneWindow {
         }
     }
 
-    fn row_by_id(&self, id: i64) -> Option<TaskRow> {
+    pub fn row_by_id(&self, id: i64) -> Option<TaskRow> {
         let imp = self.imp();
         let rows = imp.tasks_box.observe_children();
         for i in 0..rows.n_items() {
@@ -167,6 +170,42 @@ impl TasksDoneWindow {
             }
         }
         None
+    }
+
+    pub fn activate_task_action(&self, name: &str, task: &Task) {
+        let porject_id = self.section().project();
+        self.transient_for()
+            .unwrap()
+            .activate_action(
+                name,
+                Some(&glib::Variant::from((
+                    task.to_variant(),
+                    ActionScope::Project(porject_id).to_variant(),
+                ))),
+            )
+            .unwrap();
+    }
+
+    pub fn add_delete_toast(&self, task: &Task, toast: adw::Toast) {
+        toast.connect_button_clicked(
+            glib::clone!(@weak self as obj, @weak task => move |_toast| {
+                if let Some(row) = obj.row_by_id(task.id()) {
+                    row.task().set_suspended(false);
+                    row.changed();
+                }
+
+                let main_win = obj.transient_for().and_downcast::<IPlanWindow>().unwrap();
+                main_win
+                    .activate_action(
+                        "task.changed",
+                        Some(&glib::Variant::from((
+                            task.to_variant(),
+                            ActionScope::DeleteToast.to_variant(),
+                        ))),
+                    )
+                    .unwrap();
+            }),
+        );
     }
 
     #[template_callback]
@@ -194,7 +233,8 @@ impl TasksDoneWindow {
         modal.connect_closure(
             "task-changed",
             true,
-            glib::closure_local!(@watch row => move |_win: TaskWindow, changed_task: Task| {
+            glib::closure_local!(@watch self as obj, @weak-allow-none row => move |_win: TaskWindow, changed_task: Task| {
+                let row = row.unwrap();
                 let task = row.task();
                 let task_id = task.id();
                 if task_id == changed_task.id() {
@@ -202,15 +242,16 @@ impl TasksDoneWindow {
                 } else if task_id == changed_task.parent() {
                     row.reset_subtasks();
                 }
+                obj.activate_task_action("task.changed", &task);
             }),
         );
         modal.connect_closure(
             "task-duration-changed",
             true,
-            glib::closure_local!(@watch self as obj, @weak-allow-none row => move |_win: TaskWindow, task_id: i64| {
+            glib::closure_local!(@watch self as obj, @weak-allow-none row => move |_win: TaskWindow, task: Task| {
                 let row = row.unwrap();
                 row.refresh_timer();
-                obj.transient_for().unwrap().activate_action("task.duration-changed", Some(&task_id.to_variant())).unwrap();
+                obj.activate_task_action("task.duration-changed", &task);
             }),
         );
     }

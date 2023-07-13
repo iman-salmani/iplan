@@ -70,9 +70,7 @@ impl Project {
 
     pub fn duration(&self) -> i64 {
         let mut total = 0;
-        for task in
-            read_tasks(Some(self.id()), None, None, Some(0), None).expect("Failed to read tasks")
-        {
+        for task in read_tasks(Some(self.id()), None, None, Some(0), None, false).unwrap() {
             total += task.duration();
         }
         total

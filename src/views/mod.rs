@@ -1,5 +1,5 @@
 mod window;
-pub use window::IPlanWindow;
+pub use window::{ActionScope, IPlanWindow};
 
 mod preferences_window;
 pub use preferences_window::PreferencesWindow;

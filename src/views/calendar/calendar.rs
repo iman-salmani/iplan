@@ -4,12 +4,12 @@ use std::thread;
 use std::time::Duration;
 
 use crate::db::models::Task;
+use crate::db::operations::{read_tasks, read_task, read_records};
 use crate::views::calendar::{DayIndicator, DayView};
 use crate::views::task::TaskRow;
+use crate::views::ActionScope;
 
 mod imp {
-    use crate::db::operations::read_task;
-
     use super::*;
 
     #[derive(gtk::CompositeTemplate, glib::Properties)]
@@ -43,81 +43,39 @@ mod imp {
             klass.bind_template_instance_callbacks();
             klass.install_action(
                 "task.changed",
-                Some(&Task::static_variant_type_string()),
+                Some(Task::static_variant_type().as_str()),
                 |obj, _, value| {
-                    let task = Task::try_from(value.unwrap()).unwrap();
-
-                    let reset_parent_subtasks = |parent_id: i64| {
-                        if parent_id == 0 {
-                            return;
-                        }
-
-                        if let Some(parent_row) = obj.task_row(parent_id) {
-                            parent_row.reset_subtasks();
-                        }
-                    };
-
-                    let target_day_view = |task_date: i64| {
-                        if task_date != 0 {
-                            obj.day_view_by_date(glib::DateTime::from_unix_local(task_date).unwrap())
-                        } else {
-                            None
-                        }
-                    };
-
-                    if let Some(row) = obj.task_row(task.id()) {
-                        let old_task = row.task();
-                        let difference = task.different_properties(&old_task);
-                        
-                        reset_parent_subtasks(task.parent());
-
-                        if difference.is_empty() {
-                            return;
-                        }
-                        
-                        if difference.contains(&"date"){
-                            let rows_box = row.parent().and_downcast::<gtk::ListBox>().unwrap();
-                            rows_box.remove(&row);
-
-                            if let Some(day_view) = target_day_view(task.date()) {
-                                row.reset(task);
-                                day_view.add_row(row);
-                            }
-
-                        } else {
-                            row.reset(task);
-                        }
-
-                        return;
-                    }
-
-                    reset_parent_subtasks(task.parent());
-
-                    if let Some(day_view) = target_day_view(task.date()) {
-                        let row = TaskRow::new(task, false, true);
-                        day_view.add_row(row);
-                    }
+                    let task: Task = value.unwrap().get().unwrap();
+                    obj.parent()
+                        .unwrap()
+                        .activate_action(
+                            "task.changed",
+                            Some(&glib::Variant::from((
+                                value.unwrap(),
+                                ActionScope::Calendar.to_variant(),
+                            ))),
+                        )
+                        .unwrap();
+                    obj.reset_task(task);
                 },
             );
             klass.install_action(
                 "task.duration-changed",
-                Some("x"),
+                Some(Task::static_variant_type().as_str()),
                 |obj, _, value|{
-                    let mut task_id = value.unwrap().get().unwrap();
-                    let mut first_row = true;
-                    while task_id != 0 {
-                        let task = if let Some(row) = obj.task_row(task_id) {
-                            if first_row {
-                                first_row = false;  
-                            } else {
-                                row.refresh_timer();
-                            }
-                            row.task()
-                        } else {
-                            read_task(task_id).unwrap()
-                        };
-                        task_id = task.parent();
-                    }
+                    let task: Task = value.unwrap().get().unwrap();
+                    obj.parent()
+                        .unwrap()
+                        .activate_action(
+                            "task.duration-changed",
+                            Some(&glib::Variant::from((
+                                value.unwrap(),
+                                ActionScope::Calendar.to_variant(),
+                            ))),
+                        )
+                        .unwrap();
+                    obj.refresh_days_views_duration(task.id());
+                    obj.refresh_parents_timers(task.parent());
                 }
             );
         }
@@ -235,6 +193,120 @@ impl Calendar {
         );
     }
 
+    pub fn reset_task(&self, task: Task) {
+        let reset_parent_subtasks = |parent_id: i64| {
+            if parent_id == 0 {
+                return;
+            }
+
+            if let Some((_, parent_row)) = self.task_row(parent_id) {
+                parent_row.reset_subtasks();
+            }
+        };
+
+        let target_day_view = |task_date: i64| {
+            if task_date != 0 {
+                self.day_view_by_date(glib::DateTime::from_unix_local(task_date).unwrap())
+            } else {
+                None
+            }
+        };
+
+        let task_id = task.id();
+        if task.suspended() {
+            self.set_subtasks_suspended(task_id, true);
+        }
+
+        if let Some((day_view, row)) = self.task_row(task_id) {
+            let old_task = row.task();
+            let difference = task.different_properties(&old_task);
+            
+            reset_parent_subtasks(task.parent());
+
+            if difference.is_empty() {
+                return;
+            }
+            
+            if difference.contains(&"date") {
+                let task_date = task.date();
+                day_view.remove_row(&row);
+
+                if let Some(day_view) = target_day_view(task_date) {
+                    row.reset(task);
+                    day_view.add_row(&row);
+                }
+            } else if !difference.contains(&"name") {
+                row.reset(task);
+            }
+            
+            row.changed();
+        } else {
+            reset_parent_subtasks(task.parent());
+            let task_date = task.date();
+
+            if task_date == 0 {
+                return;
+            }
+
+            if let Some(day_view) = target_day_view(task.date()) {
+                let row = TaskRow::new(task, false, true);
+                day_view.add_row(&row);
+            }
+        }
+
+    }
+
+    pub fn set_subtasks_suspended(&self, task_id: i64, suspended: bool) {
+        let subtasks = read_tasks(None, None, None, Some(task_id), None, true).unwrap();
+        for subtask in subtasks {
+            let subtask_id = subtask.id();
+            self.set_subtasks_suspended(subtask_id, suspended);
+
+            if subtask.date() == 0 {
+                continue;
+            }
+
+            if let Some((_, row)) = self.task_row(subtask_id) {
+                row.task().set_suspended(suspended);
+                row.changed();
+            }
+        }
+    }
+
+    pub fn refresh_task_timer(&self, task_id: i64) {
+        if let Some((_, row)) = self.task_row(task_id) {
+            row.refresh_timer();
+        }
+    }
+
+    pub fn refresh_parents_timers(&self, mut parent_id: i64) {
+        while parent_id != 0 {
+            parent_id = if let Some((_, row)) = self.task_row(parent_id) {
+                row.refresh_timer();
+                row.task().parent()
+            } else {
+                read_task(parent_id).unwrap().parent()
+            };
+        }
+    }
+
+    pub fn refresh_days_views_duration(&self, task_id: i64) {
+        let records = read_records(Some(task_id), false, None, None).unwrap();    // FIXME: find an efficient way. like record.changed
+        for record in records {
+            let start = glib::DateTime::from_unix_local(record.start()).unwrap();
+            let start_date = glib::DateTime::new(
+                &glib::TimeZone::local(),
+                start.year(),
+                start.month(),
+                start.day_of_month(),
+                0, 0, 0.0
+            ).unwrap();
+            if let Some(day_view) = self.day_view_by_date(start_date) {
+                day_view.refresh_duration();
+            }
+        }
+    }
+
     fn init_widgets(&self) {
         let imp = self.imp();
         let today = self.today_datetime();
@@ -243,6 +315,7 @@ impl Calendar {
             imp.navigation_bar.append(&self.new_day_indicator(datetime));
         }
         imp.scrolled_view.vscrollbar().set_sensitive(false);
+        self.refresh();
     }
 
     fn add_controllers(&self) {
@@ -366,13 +439,13 @@ impl Calendar {
         }));
     }
 
-    fn task_row(&self, task_id: i64) -> Option<TaskRow> {
+    fn task_row(&self, task_id: i64) -> Option<(DayView, TaskRow)> {
         let imp = self.imp();
         let days_views = imp.days_box.observe_children();
         for i in 0..days_views.n_items() {
             let day_view = days_views.item(i).and_downcast::<DayView>().unwrap();
-            if let Some(row) = day_view.imp().tasks_box.item_by_id(task_id) {
-                return Some(row);
+            if let Some(row) = day_view.task_row(task_id) {
+                return Some((day_view, row));
             }
         }
         None

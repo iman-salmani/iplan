@@ -19,6 +19,7 @@ pub fn read_tasks(
     done_tasks: Option<bool>,
     parent_id: Option<i64>,
     time_range: Option<(i64, i64)>,
+    suspended: bool,
 ) -> Result<Vec<Task>> {
     let filters = &mut vec![];
     if let Some(project_id) = project_id {
@@ -36,7 +37,9 @@ pub fn read_tasks(
     if let Some((start, end)) = time_range {
         filters.push(format!("date >= {start} AND date < {end}"));
     }
-    filters.push("suspended = 0".to_string());
+    if !suspended {
+        filters.push(format!("suspended = false"));
+    }
     let filters_str = &mut String::new();
     for filter in filters {
         let prefix = if filters_str.is_empty() {
@@ -131,6 +134,11 @@ pub fn update_task(task: &Task) -> Result<()> {
         )?;
     }
 
+    let task_suspended = task.suspended();
+    if task_suspended != old_task.suspended() {
+        set_subtasks_suspended(&conn, task.id(), task_suspended)?;
+    }
+
     conn.execute(
         &format!(
             "UPDATE tasks SET
@@ -152,6 +160,24 @@ pub fn update_task(task: &Task) -> Result<()> {
     Ok(())
 }
 
+fn set_subtasks_suspended(
+    conn: &rusqlite::Connection,
+    task_id: i64,
+    suspended: bool,
+) -> Result<()> {
+    conn.execute(
+        "UPDATE tasks SET suspended = ?1 WHERE parent = ?2",
+        (suspended, task_id),
+    )?;
+    let mut stmt = conn.prepare("SELECT id FROM tasks WHERE parent = ?1")?;
+    let mut rows = stmt.query((task_id,))?;
+    while let Some(row) = rows.next()? {
+        let id: i64 = row.get(0)?;
+        set_subtasks_suspended(conn, id, suspended)?;
+    }
+    Ok(())
+}
+
 pub fn delete_task(task: &Task) -> Result<()> {
     let conn = get_connection();
     // Notify: Not return error when id not exists
@@ -160,7 +186,7 @@ pub fn delete_task(task: &Task) -> Result<()> {
     conn.execute("DELETE FROM records WHERE task = ?", (task_id,))?;
     conn.execute("DELETE FROM reminders WHERE task = ?", (task_id,))?;
 
-    let subtasks = read_tasks(None, None, None, Some(task_id), None).unwrap();
+    let subtasks = read_tasks(None, None, None, Some(task_id), None, false).unwrap();
     for subtask in subtasks {
         delete_task(&subtask).unwrap();
     }

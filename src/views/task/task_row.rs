@@ -12,7 +12,7 @@ use crate::db::operations::{
 };
 use crate::views::snippets::MenuItem;
 use crate::views::task::{SubtaskRow, TaskWindow, TasksDoneWindow};
-use crate::views::IPlanWindow;
+use crate::views::{ActionScope, IPlanWindow};
 
 #[derive(Default, PartialEq, Clone, Copy)]
 pub enum TimerStatus {
@@ -257,9 +257,7 @@ impl TaskRow {
             }
         }
 
-        let task_name = task.name();
         self.set_task(task);
-        imp.name_entry.set_text(&task_name);
         self.reset_timer();
         if !self.compact() {
             self.reset_subtasks();
@@ -278,7 +276,7 @@ impl TaskRow {
             }
         }
 
-        let subtasks = read_tasks(None, None, None, Some(task.id()), None).unwrap();
+        let subtasks = read_tasks(None, None, None, Some(task.id()), None, false).unwrap();
         if subtasks.is_empty() {
             imp.subtasks.set_visible(false);
         } else {
@@ -370,7 +368,7 @@ impl TaskRow {
                 if active {
                     imp.timer_status.set(TimerStatus::Off);
                 }
-                obj.activate_action("task.check", Some(&task.to_variant()))
+                obj.activate_action("task.changed", Some(&task.to_variant()))
                     .unwrap();
                 Some(active)
             })
@@ -381,6 +379,23 @@ impl TaskRow {
         task.bind_property("done", &imp.timer_button.get(), "sensitive")
             .sync_create()
             .invert_boolean()
+            .build();
+
+        task.bind_property("name", &imp.name_entry.get(), "text")
+            .transform_from(|binding, text: &str| {
+                let name_entry = binding.target().and_downcast::<gtk::Entry>().unwrap();
+                let task = binding.source().and_downcast::<Task>().unwrap();
+                let task = task.duplicate();
+
+                task.set_name(text);
+                update_task(&task).unwrap();
+                name_entry
+                    .activate_action("task.changed", Some(&task.to_variant()))
+                    .unwrap();
+
+                Some(text)
+            })
+            .bidirectional()
             .build();
 
         self.connect_hide_move_arrows_notify(|obj| {
@@ -408,21 +423,6 @@ impl TaskRow {
         button.set_visible(false); // Entry visible param binded to this
         self.imp().name_entry.grab_focus_without_selecting();
         self.set_backup_task_name(self.task().name());
-    }
-
-    #[template_callback]
-    fn handle_name_entry_changed(&self, entry: gtk::Entry) {
-        let task = self.task();
-        let text = entry.text();
-
-        if task.id() == 0 || task.name() == text {
-            return;
-        }
-
-        task.set_name(text);
-        update_task(&task).unwrap();
-        self.activate_action("task.changed", Some(&task.to_variant()))
-            .unwrap();
     }
 
     #[template_callback]
@@ -495,7 +495,7 @@ impl TaskRow {
                         let task = obj.task();
                         imp.timer_button.set_label(task.duration_display());
                         if obj.parent().is_some() {
-                            obj.activate_action("task.duration-changed", Some(&task.id().to_variant())).unwrap();
+                            obj.activate_action("task.duration-changed", Some(&task.to_variant())).unwrap();
                         }
                         glib::Continue(false)
                     },
@@ -537,15 +537,14 @@ impl TaskRow {
             .button_label(gettext("Undo"))
             .build();
 
-        toast.connect_button_clicked(glib::clone!(@weak self as obj =>
-            move |_toast| {
-                let task = obj.task();
-                task.set_property("suspended", false);
-                update_task(&task).expect("Failed to update task");
-                if obj.parent().is_some() {
-                    obj.changed();
-                    obj.grab_focus();
-                }
+        toast.connect_button_clicked(glib::clone!(@weak self as obj => move |_toast| {
+            let task = obj.task();
+            task.set_suspended(false);
+            update_task(&task).expect("Failed to update task");
+            if obj.parent().is_some() {
+                obj.changed();
+                obj.grab_focus();
+            }
         }));
         toast.connect_dismissed(glib::clone!(@strong self as obj =>
             move |_toast| {
@@ -555,13 +554,21 @@ impl TaskRow {
                 }
             }
         ));
+
         task.set_suspended(true);
-        self.set_task(&task);
         update_task(&task).expect("Failed to update task");
+        self.activate_action("task.changed", Some(&task.to_variant()))
+            .unwrap();
         self.changed();
+
         let window = self.root().unwrap();
         match window.widget_name().as_str() {
             "IPlanWindow" => {
+                toast.set_action_name(Some("task.changed"));
+                toast.set_action_target_value(Some(&glib::Variant::from((
+                    task.to_variant(),
+                    ActionScope::DeleteToast.to_variant(),
+                ))));
                 window
                     .downcast::<IPlanWindow>()
                     .unwrap()
@@ -573,15 +580,13 @@ impl TaskRow {
                 window
                     .downcast::<TasksDoneWindow>()
                     .unwrap()
-                    .imp()
-                    .toast_overlay
-                    .add_toast(toast);
+                    .add_delete_toast(&task, toast);
             }
             "TaskWindow" => {
                 window
                     .downcast::<TaskWindow>()
                     .unwrap()
-                    .add_toast(task, toast);
+                    .add_delete_toast(&task, toast);
             }
             _ => unimplemented!(),
         }

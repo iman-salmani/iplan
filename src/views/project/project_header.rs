@@ -134,7 +134,7 @@ impl ProjectHeader {
             let dates = &mut vec![];
             dates.push(now.to_unix());
             let tasks: Vec<crate::db::models::Task> =
-                read_tasks(Some(project_id), None, None, None, None).expect("Failed to read tasks");
+                read_tasks(Some(project_id), None, None, None, None, false).unwrap();
 
             let mut last_7_days = 0;
             let mut labels = vec![];
@@ -154,9 +154,13 @@ impl ProjectHeader {
                 let date_unix = date.to_unix();
                 let mut duration = 0;
                 for task in &tasks {
-                    let records =
-                        read_records(task.id(), false, Some(date_unix), Some(dates[(i) as usize]))
-                            .expect("Failed to read records");
+                    let records = read_records(
+                        Some(task.id()),
+                        false,
+                        Some(date_unix),
+                        Some(dates[(i) as usize]),
+                    )
+                    .expect("Failed to read records");
                     for record in records {
                         duration += record.duration();
                     }

@@ -34,7 +34,7 @@ use crate::db::operations::{
 };
 use crate::views::search::SearchWindow;
 use crate::views::task::TaskWindow;
-use crate::views::{BackupWindow, IPlanWindow, PreferencesWindow};
+use crate::views::{ActionScope, BackupWindow, IPlanWindow, PreferencesWindow};
 
 mod imp {
     use super::*;
@@ -128,6 +128,15 @@ impl IPlanApplication {
             .property("application-id", application_id)
             .property("flags", flags)
             .build()
+    }
+
+    pub fn window_by_name(&self, name: &str) -> Option<gtk::Window> {
+        for window in self.windows() {
+            if window.widget_name() == name {
+                return Some(window);
+            }
+        }
+        None
     }
 
     pub fn send_reminder(&self, reminder: Reminder) {
@@ -259,34 +268,36 @@ impl IPlanApplication {
                     "window-closed",
                     true,
                     glib::closure_local!(@watch main_window => move |_win: TaskWindow, task: Task| {
-                        main_window.visible_project_page().unwrap().reset_or_remove_task(task);
+                        main_window.activate_action(
+                            "task.changed",
+                            Some(&glib::Variant::from((
+                                task.to_variant(),
+                                ActionScope::None.to_variant(),
+                            )))
+                        ).unwrap();
                     }
                 ));
                 modal.connect_closure(
                     "task-changed",
                     true,
-                    glib::closure_local!(@watch main_window, @weak-allow-none task => move |_win: TaskWindow, changed_task: Task| {
-                        let task = task.unwrap();
-                        if let Some(row) = main_window.visible_project_page().unwrap().task_row(&task) {
-                            let task_id = task.id();
-                            if changed_task.id() == task_id {
-                                row.reset(changed_task);
-                            } else if changed_task.parent() == task_id {
-                                row.reset_subtasks();
-                            }
-                        }
+                    glib::closure_local!(@watch main_window => move |_win: TaskWindow, changed_task: Task| {
+                        main_window.activate_action(
+                            "task.changed",
+                            Some(&glib::Variant::from((
+                                changed_task.to_variant(),
+                                ActionScope::None.to_variant(),
+                            )))
+                        ).unwrap();
                     }),
                 );
                 modal.connect_closure(
                     "task-duration-changed",
                     true,
-                    glib::closure_local!(@watch main_window, @weak-allow-none task => move |_win: TaskWindow, task_id: i64| {
-                        let task = task.unwrap();
-                        main_window.activate_action("task.duration-changed", Some(&task_id.to_variant())).unwrap();
-                        if let Some(row) = main_window.visible_project_page().unwrap().task_row(&task) {
-                            // FIXME: this also runs when duration of parent changed 
-                            row.refresh_timer();
-                        }
+                    glib::closure_local!(@watch main_window => move |_win: TaskWindow, task: Task| {
+                        main_window.activate_action("task.duration-changed", Some(&glib::Variant::from((
+                            task.to_variant(),
+                            ActionScope::None.to_variant(),
+                        )))).unwrap();
                     }),
                 );
             }),
@@ -359,15 +370,6 @@ impl IPlanApplication {
                 }
             }
         }
-    }
-
-    fn window_by_name(&self, name: &str) -> Option<gtk::Window> {
-        for window in self.windows() {
-            if window.widget_name() == name {
-                return Some(window);
-            }
-        }
-        None
     }
 
     #[cfg(any(target_os = "linux", target_os = "freebsd"))]

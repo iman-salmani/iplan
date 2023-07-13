@@ -1,4 +1,5 @@
 use gettextrs::gettext;
+use gtk::glib::FromVariant;
 use gtk::{glib, glib::Properties, prelude::*, subclass::prelude::*};
 use rusqlite;
 use std::cell::{Cell, RefCell};
@@ -69,12 +70,12 @@ impl Task {
 
     pub fn duration(&self) -> i64 {
         let mut total = 0;
-        for record in read_records(self.id(), false, None, None).expect("Failed to read records") {
+        for record in
+            read_records(Some(self.id()), false, None, None).expect("Failed to read records")
+        {
             total += record.duration();
         }
-        for subtask in
-            read_tasks(None, None, None, Some(self.id()), None).expect("Failed to read subtasks")
-        {
+        for subtask in read_tasks(None, None, None, Some(self.id()), None, false).unwrap() {
             total += subtask.duration();
         }
         total
@@ -86,7 +87,7 @@ impl Task {
 
     pub fn incomplete_record(&self) -> Option<Record> {
         let incomplete_records =
-            read_records(self.id(), true, None, None).expect("Failed to read records");
+            read_records(Some(self.id()), true, None, None).expect("Failed to read records");
         match incomplete_records.len() {
             0 => None,
             1 => {
@@ -132,11 +133,7 @@ impl Task {
         }
     }
 
-    pub fn static_variant_type_string() -> String {
-        "(xsbxxibxsx)".to_string()
-    }
-
-    pub fn different_properties(&self, other: &Self) -> Vec<&str> {
+    pub fn different_properties<'a>(&self, other: &Self) -> Vec<&'a str> {
         let mut properties = vec![];
         if self.id() != other.id() {
             properties.push("id");
@@ -170,6 +167,21 @@ impl Task {
         }
         properties
     }
+
+    pub fn duplicate(&self) -> Task {
+        Task::new(&[
+            ("id", &self.id()),
+            ("name", &self.name()),
+            ("done", &self.done()),
+            ("project", &self.project()),
+            ("section", &self.section()),
+            ("position", &self.position()),
+            ("suspended", &self.suspended()),
+            ("parent", &self.parent()),
+            ("description", &self.description()),
+            ("date", &self.date()),
+        ])
+    }
 }
 
 impl TryFrom<&rusqlite::Row<'_>> for Task {
@@ -187,37 +199,6 @@ impl TryFrom<&rusqlite::Row<'_>> for Task {
             ("parent", &row.get::<usize, i64>(7)?),
             ("description", &row.get::<usize, String>(8)?),
             ("date", &row.get::<usize, i64>(9)?),
-        ]))
-    }
-}
-
-impl TryFrom<&glib::Variant> for Task {
-    type Error = ();
-
-    fn try_from(value: &glib::Variant) -> Result<Self, Self::Error> {
-        let (id, name, done, project, section, position, suspended, parent, description, date): (
-            i64,
-            String,
-            bool,
-            i64,
-            i64,
-            i32,
-            bool,
-            i64,
-            String,
-            i64,
-        ) = value.get().ok_or(())?;
-        Ok(Task::new(&[
-            ("id", &id),
-            ("name", &name),
-            ("done", &done),
-            ("project", &project),
-            ("section", &section),
-            ("position", &position),
-            ("suspended", &suspended),
-            ("parent", &parent),
-            ("description", &description),
-            ("date", &date),
         ]))
     }
 }
@@ -261,5 +242,40 @@ impl ToVariant for Task {
             self.description(),
             self.date(),
         ))
+    }
+}
+
+impl StaticVariantType for Task {
+    fn static_variant_type() -> std::borrow::Cow<'static, glib::VariantTy> {
+        std::borrow::Cow::from(glib::VariantTy::new("(xsbxxibxsx)").unwrap())
+    }
+}
+
+impl FromVariant for Task {
+    fn from_variant(variant: &glib::Variant) -> Option<Self> {
+        let (id, name, done, project, section, position, suspended, parent, description, date): (
+            i64,
+            String,
+            bool,
+            i64,
+            i64,
+            i32,
+            bool,
+            i64,
+            String,
+            i64,
+        ) = variant.get()?;
+        Some(Task::new(&[
+            ("id", &id),
+            ("name", &name),
+            ("done", &done),
+            ("project", &project),
+            ("section", &section),
+            ("position", &position),
+            ("suspended", &suspended),
+            ("parent", &parent),
+            ("description", &description),
+            ("date", &date),
+        ]))
     }
 }

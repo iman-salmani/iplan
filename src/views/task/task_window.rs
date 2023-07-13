@@ -3,10 +3,11 @@ use gtk::{glib, prelude::*, subclass::prelude::*};
 use std::cell::Cell;
 use std::unimplemented;
 
+use crate::application::IPlanApplication;
 use crate::db::models::Task;
 use crate::db::operations::read_task;
-use crate::views::task::{TaskPage, TaskRow, TasksDoneWindow};
-use crate::views::IPlanWindow;
+use crate::views::task::{TaskPage, TasksDoneWindow};
+use crate::views::{ActionScope, IPlanWindow};
 mod imp {
     use super::*;
 
@@ -53,18 +54,10 @@ mod imp {
                 obj.visible_page().add_reminder(reminder_id);
             });
             klass.install_action(
-                "task.check",
-                Some(&Task::static_variant_type_string()),
-                move |obj, _, value| {
-                    let task = Task::try_from(value.unwrap()).unwrap();
-                    obj.emit_by_name::<()>("task-changed", &[&task]);
-                },
-            );
-            klass.install_action(
                 "task.changed",
-                Some(&Task::static_variant_type_string()),
+                Some(&Task::static_variant_type().as_str()),
                 move |obj, _, value| {
-                    let task = Task::try_from(value.unwrap()).unwrap();
+                    let task: Task = value.unwrap().get().unwrap();
                     obj.emit_by_name::<()>("task-changed", &[&task]);
                 },
             );
@@ -89,7 +82,7 @@ mod imp {
                         .param_types([Task::static_type()])
                         .build(),
                     Signal::builder("task-duration-changed")
-                        .param_types([i64::static_type()])
+                        .param_types([Task::static_type()])
                         .build(),
                 ]
             });
@@ -194,57 +187,40 @@ impl TaskWindow {
         self.property("parent-task")
     }
 
-    pub fn add_toast(&self, task: Task, toast: adw::Toast) {
+    pub fn add_delete_toast(&self, task: &Task, toast: adw::Toast) {
         let imp = self.imp();
         let task_parent = task.parent();
-        if imp.parent_task.get() != task_parent {
+        let page_task_parent = imp.parent_task.get();
+        if page_task_parent != task_parent {
+            if page_task_parent == 0 {
+                toast.connect_button_clicked(
+                    glib::clone!(@weak self as obj, @strong task => move |_toast| {
+                        obj.direct_subtask_undo_delete(&task);
+                    }),
+                );
+            }
             imp.toast_overlay.add_toast(toast);
             return;
         }
+
         if task_parent == 0 {
             let transient_for = self.transient_for().unwrap();
             let transient_for_name = transient_for.widget_name();
             if transient_for_name == "IPlanWindow" {
                 let transient_for = transient_for.downcast::<IPlanWindow>().unwrap();
-                transient_for.reset_task(task.clone());
-                toast.connect_button_clicked(
-                    glib::clone!(@weak transient_for, @weak task => move |_toast| {
-                        transient_for.reset_task(task);
-                    }),
-                );
                 transient_for.imp().toast_overlay.add_toast(toast);
             } else if transient_for_name == "TasksDoneWindow" {
                 let transient_for = transient_for.downcast::<TasksDoneWindow>().unwrap();
-                toast.connect_button_clicked(glib::clone!(@weak task, @weak transient_for =>
-                    move |_toast| {
-                        let tasks_rows = transient_for.imp().tasks_box.observe_children();
-                        for i in 0..tasks_rows.n_items() {
-                            let row = tasks_rows.item(i).and_downcast::<TaskRow>().unwrap();
-                            if row.task().id() == task.id() {
-                                row.task().set_suspended(false);
-                                row.changed();
-                                break;
-                            }
-                        }
-                }));
-                transient_for.imp().toast_overlay.add_toast(toast);
+                transient_for.add_delete_toast(&task, toast);
             }
             self.close();
         } else {
             imp.back_button.emit_clicked();
-            toast.connect_button_clicked(glib::clone!(@weak self as obj, @weak task =>
-                move |_toast| {
-                    let task_page = obj.visible_page();
-                    let subtasks_rows = task_page.imp().subtasks_box.observe_children();
-                    for i in 0..subtasks_rows.n_items() {
-                        let row = subtasks_rows.item(i).and_downcast::<TaskRow>().unwrap();
-                        if row.task().id() == task.id() {
-                            row.task().set_suspended(false);
-                            row.changed();
-                            break;
-                        }
-                    }
-            }));
+            toast.connect_button_clicked(
+                glib::clone!(@weak self as obj, @weak task => move |_toast| {
+                    obj.direct_subtask_undo_delete(&task);
+                }),
+            );
             self.imp().toast_overlay.add_toast(toast);
         }
     }
@@ -255,6 +231,36 @@ impl TaskWindow {
             .visible_child()
             .and_downcast::<TaskPage>()
             .unwrap()
+    }
+
+    fn direct_subtask_undo_delete(&self, task: &Task) {
+        let task_page: TaskPage = self.visible_page();
+        if let Some(row) = task_page.imp().subtasks_box.item_by_id(task.id()) {
+            row.task().set_suspended(false);
+            row.changed();
+        }
+        let app = self
+            .application()
+            .and_downcast::<IPlanApplication>()
+            .unwrap();
+        let main_win: gtk::Window = app.window_by_name("IPlanWindow").unwrap();
+        main_win
+            .activate_action(
+                "task.changed",
+                Some(&glib::Variant::from((
+                    task.to_variant(),
+                    ActionScope::DeleteToast.to_variant(),
+                ))),
+            )
+            .unwrap();
+
+        let transient_for = self.transient_for().unwrap();
+        if transient_for.widget_name() == "TasksDoneWindow" {
+            let transient_for = transient_for.downcast::<TasksDoneWindow>().unwrap();
+            if let Some(row) = transient_for.row_by_id(task.parent()) {
+                row.reset_subtasks();
+            }
+        }
     }
 
     #[template_callback]

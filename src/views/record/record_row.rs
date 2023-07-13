@@ -1,6 +1,8 @@
 use adw;
 use adw::subclass::prelude::*;
 use adw::traits::{ActionRowExt, PreferencesRowExt};
+use glib::{once_cell::sync::Lazy, subclass::Signal};
+
 use gettextrs::gettext;
 use gtk::{glib, glib::Properties, prelude::*};
 use std::cell::RefCell;
@@ -37,6 +39,16 @@ mod imp {
     }
 
     impl ObjectImpl for RecordRow {
+        fn signals() -> &'static [glib::subclass::Signal] {
+            static SIGNALS: Lazy<Vec<Signal>> = Lazy::new(|| {
+                vec![
+                    Signal::builder("changed").build(),
+                    Signal::builder("deleted").build(),
+                ]
+            });
+            SIGNALS.as_ref()
+        }
+
         fn properties() -> &'static [glib::ParamSpec] {
             Self::derived_properties()
         }
@@ -94,18 +106,6 @@ impl RecordRow {
         ));
     }
 
-    fn refresh(&self) {
-        self.set_labels();
-        // FIXME: replace some with unwrap?
-        if self.parent().is_some() {
-            self.activate_action(
-                "task.duration-changed",
-                Some(&self.record().task().to_variant()),
-            )
-            .unwrap();
-        }
-    }
-
     #[template_callback]
     fn handle_activated(&self) {
         let win = self.root().and_downcast::<gtk::Window>().unwrap();
@@ -116,8 +116,9 @@ impl RecordRow {
             true,
             glib::closure_local!(@watch self as obj => move |_win: RecordWindow, record: Record| {
                 obj.set_record(record);
-                obj.refresh();
+                obj.set_labels();
                 obj.changed();
+                obj.emit_by_name::<()>("changed", &[]);
             }),
         );
     }
@@ -126,9 +127,6 @@ impl RecordRow {
     fn handle_delete_button_clicked(&self, _: gtk::Button) {
         let record = self.record();
         delete_record(record.id()).unwrap();
-        self.activate_action("task.duration-changed", Some(&record.task().to_variant()))
-            .unwrap();
-        let parent = self.parent().and_downcast::<gtk::ListBox>().unwrap();
-        parent.remove(self);
+        self.emit_by_name::<()>("deleted", &[]);
     }
 }

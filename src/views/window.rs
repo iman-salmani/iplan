@@ -20,6 +20,7 @@
 
 use adw::subclass::prelude::*;
 use gettextrs::gettext;
+use gtk::glib::FromVariant;
 use gtk::{gdk, gio, glib, glib::Properties, prelude::*};
 use std::cell::{Cell, RefCell};
 
@@ -28,6 +29,46 @@ use crate::db::operations::{create_project, create_section, read_projects};
 use crate::views::project::{ProjectEditWindow, ProjectLayout, ProjectPage};
 use crate::views::snippets::MenuItem;
 use crate::views::{calendar::Calendar, sidebar::SidebarProjects};
+
+#[derive(PartialEq)]
+pub enum ActionScope {
+    DeleteToast,
+    Project(i64),
+    Calendar,
+    None,
+}
+
+impl StaticVariantType for ActionScope {
+    fn static_variant_type() -> std::borrow::Cow<'static, glib::VariantTy> {
+        std::borrow::Cow::from(glib::VariantTy::new("ax").unwrap())
+    }
+}
+
+impl ToVariant for ActionScope {
+    fn to_variant(&self) -> glib::Variant {
+        let data: [i64; 2] = match self {
+            ActionScope::None => [0, 0],
+            ActionScope::Calendar => [1, 0],
+            ActionScope::Project(id) => [2, id.clone()],
+            ActionScope::DeleteToast => [3, 0],
+        };
+        glib::Variant::array_from_fixed_array(&data)
+    }
+}
+
+impl FromVariant for ActionScope {
+    fn from_variant(variant: &glib::Variant) -> Option<Self> {
+        let data = variant.fixed_array::<i64>().ok()?;
+        let id = data.get(0)?;
+        match id {
+            0 => Some(ActionScope::None),
+            1 => Some(ActionScope::Calendar),
+            2 => Some(ActionScope::Project(data.get(1)?.clone())),
+            3 => Some(ActionScope::DeleteToast),
+            _ => None,
+        }
+    }
+}
 
 mod imp {
     use super::*;
@@ -111,13 +152,80 @@ mod imp {
                     .unwrap()
                     .new_section(obj.project().id());
             });
-            klass.install_action("task.duration-changed", Some("x"), move |obj, _, _| {
-                obj.visible_project_page()
-                    .unwrap()
-                    .imp()
-                    .project_header
-                    .set_stat_updated(false);
-            });
+            klass.install_action(
+                "task.changed",
+                Some(&format!(
+                    "({}{})",
+                    Task::static_variant_type().as_str(),
+                    ActionScope::static_variant_type().as_str()
+                )),
+                |obj, _, value| {
+                    let (task, scope): (Task, ActionScope) = value.unwrap().get().unwrap();
+                    let imp = obj.imp();
+
+                    let update_project_page = || {
+                        let page_name = task.project().to_string();
+                        if let Some(page) = imp.stack_pages.child_by_name(&page_name) {
+                            let page = page.downcast::<ProjectPage>().unwrap();
+                            page.reset_task(task.clone());
+                        }
+                    };
+
+                    match scope {
+                        ActionScope::DeleteToast => {
+                            task.set_suspended(false);
+                            update_project_page();
+                            imp.calendar.set_subtasks_suspended(task.id(), false);
+                            imp.calendar.reset_task(task);
+                        }
+                        ActionScope::Project(_) => imp.calendar.reset_task(task),
+                        ActionScope::Calendar => update_project_page(),
+                        ActionScope::None => {
+                            update_project_page();
+                            imp.calendar.reset_task(task);
+                        }
+                    }
+                },
+            );
+            klass.install_action(
+                "task.duration-changed",
+                Some(&format!(
+                    "({}{})",
+                    Task::static_variant_type().as_str(),
+                    ActionScope::static_variant_type().as_str()
+                )),
+                move |obj: &super::IPlanWindow, _, value| {
+                    let (task, scope): (Task, ActionScope) = value.unwrap().get().unwrap();
+                    let imp = obj.imp();
+
+                    let update_project_page = || {
+                        let page_name = task.project().to_string();
+                        if let Some(page) = imp.stack_pages.child_by_name(&page_name) {
+                            let page = page.downcast::<ProjectPage>().unwrap();
+                            page.refresh_task_timer(task.clone());
+                            page.imp().project_header.set_stat_updated(false);
+                        }
+                    };
+
+                    match scope {
+                        ActionScope::Project(_) => {
+                            let task_id = task.id();
+                            imp.calendar.refresh_task_timer(task_id);
+                            imp.calendar.refresh_days_views_duration(task_id);
+                            imp.calendar.refresh_parents_timers(task.parent());
+                        }
+                        ActionScope::Calendar => update_project_page(),
+                        ActionScope::None => {
+                            update_project_page();
+                            let task_id = task.id();
+                            imp.calendar.refresh_task_timer(task_id);
+                            imp.calendar.refresh_days_views_duration(task_id);
+                            imp.calendar.refresh_parents_timers(task.parent());
+                        }
+                        _ => unimplemented!(),
+                    }
+                },
+            );
         }
 
         fn instance_init(obj: &glib::subclass::InitializingObject<Self>) {
@@ -226,15 +334,11 @@ impl IPlanWindow {
         let imp = self.imp();
         let project_id = project.id();
         self.set_project(&project);
-        let project_page = if let Some(project_page) = self.project_by_id(project_id) {
-            self.imp().stack_pages.remove(&project_page);
-            self.new_project_page(project_id)
-        } else {
-            self.new_project_page(project_id)
-        };
+        let project_page = self
+            .project_by_id(project_id)
+            .unwrap_or_else(|| self.new_project_page(&project));
         self.set_visible_project(project_id);
         self.apply_project_layout();
-        project_page.open_project(&project);
         project_page.select_task(None);
         imp.sidebar_projects.check_archive_hidden();
         imp.sidebar_projects.select_active_project();
@@ -252,15 +356,6 @@ impl IPlanWindow {
         let imp = self.imp();
         if imp.flap.is_folded() {
             imp.flap.set_reveal_flap(false);
-        }
-    }
-
-    pub fn reset_task(&self, task: Task) {
-        let imp = self.imp();
-        if let Some(page) = self.visible_project_page() {
-            page.reset_or_remove_task(task);
-        } else {
-            imp.calendar.refresh();
         }
     }
 
@@ -300,7 +395,7 @@ impl IPlanWindow {
         }
     }
 
-    fn new_project_page(&self, project_id: i64) -> ProjectPage {
+    fn new_project_page(&self, project: &Project) -> ProjectPage {
         let imp = self.imp();
         let project_page = ProjectPage::new();
         let project_page_imp = project_page.imp();
@@ -310,7 +405,6 @@ impl IPlanWindow {
                 let layout = if button.icon_name().unwrap() == "list-symbolic" { 1 } else { 0 };
                 obj.set_project_layout(layout);
                 obj.apply_project_layout();
-                obj.visible_project_page().unwrap().open_project(&obj.project());
             }),
         );
 
@@ -355,8 +449,9 @@ impl IPlanWindow {
             .build();
 
         imp.stack_pages
-            .add_named(&project_page, Some(&project_id.to_string()));
+            .add_named(&project_page, Some(&project.id().to_string()));
 
+        project_page.open_project(project);
         project_page
     }
 
@@ -392,7 +487,6 @@ impl IPlanWindow {
         self.imp()
             .stack_pages
             .set_visible_child_full("calendar", gtk::StackTransitionType::Crossfade);
-        imp.calendar.refresh();
         let projects_box: &gtk::ListBox = imp.sidebar_projects.imp().projects_box.as_ref();
         if let Some(row) = projects_box.selected_row() {
             projects_box.unselect_row(&row);

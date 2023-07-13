@@ -6,12 +6,11 @@ use std::cell::RefCell;
 use crate::db::models::{Section, Task};
 use crate::db::operations::{
     create_task, delete_section, new_task_position, read_section, read_tasks, update_section,
-    update_task,
 };
 use crate::views::project::ProjectLayout;
 use crate::views::snippets::MenuItem;
 use crate::views::task::{TaskRow, TaskWindow, TasksBox, TasksBoxWrapper, TasksDoneWindow};
-use crate::views::IPlanWindow;
+use crate::views::{ActionScope, IPlanWindow};
 
 mod imp {
     use super::*;
@@ -49,13 +48,19 @@ mod imp {
             klass.bind_template();
             klass.bind_template_instance_callbacks();
             klass.install_action(
-                "task.check",
-                Some(&Task::static_variant_type_string()),
+                "task.changed",
+                Some(Task::static_variant_type().as_str()),
                 move |obj, _, value| {
                     let imp = obj.imp();
-                    let task = Task::try_from(value.unwrap()).unwrap();
+                    let task: Task = value.unwrap().get().unwrap();
+
+                    obj.activate_task_action("task.changed", &task);
+
+                    if !task.done() {
+                        return;
+                    }
+
                     let row = imp.tasks_box.item_by_id(task.id()).unwrap();
-                    let task = row.task();
                     let index = row.index() as u32;
                     if index != 0 {
                         let upper_row = imp.tasks_box.item_by_index(index - 1);
@@ -78,21 +83,14 @@ mod imp {
                         .button_label(gettext("Undo"))
                         .build();
                     toast.connect_button_clicked(
-                        glib::clone!(@weak obj, @weak task, @strong row =>
-                            move |_toast| {
-                                task.set_done(false);
-                                update_task(&task).expect("Failed to update task");
-                                obj.imp().tasks_box.add_item(&row);
+                        glib::clone!(@weak obj, @strong row => move |_toast| {
+                            obj.imp().tasks_box.add_item(&row);
+                            row.imp().checkbox.set_active(false);
                         }),
                     );
                     let window = obj.root().and_downcast::<IPlanWindow>().unwrap();
                     window.imp().toast_overlay.add_toast(toast);
                 },
-            );
-            klass.install_action(
-                "task.changed",
-                Some(&Task::static_variant_type_string()),
-                |_, _, _| {},
             );
         }
 
@@ -145,8 +143,9 @@ impl SectionBox {
             Some(false),
             Some(0),
             None,
+            false,
         )
-        .expect("Failed to read tasks");
+        .unwrap();
 
         if layout == ProjectLayout::Horizontal {
             imp.tasks_box.send_hscroll();
@@ -209,6 +208,20 @@ impl SectionBox {
         self.add_controller(section_drop_target);
     }
 
+    fn activate_task_action(&self, name: &str, task: &Task) {
+        let project_id = self.section().project();
+        self.parent()
+            .unwrap()
+            .activate_action(
+                name,
+                Some(&glib::Variant::from((
+                    task.to_variant(),
+                    ActionScope::Project(project_id).to_variant(),
+                ))),
+            )
+            .unwrap();
+    }
+
     #[template_callback]
     fn task_activated(&self, row: TaskRow, tasks_box: gtk::ListBox) {
         let win = self.root().and_downcast::<gtk::Window>().unwrap();
@@ -231,9 +244,11 @@ impl SectionBox {
         modal.connect_closure(
             "task-changed",
             true,
-            glib::closure_local!(@watch row => move |_win: TaskWindow, changed_task: Task| {
+            glib::closure_local!(@watch self as obj, @weak-allow-none row => move |_win: TaskWindow, changed_task: Task| {
+                let row = row.unwrap();
                 let task = row.task();
                 let task_id = task.id();
+                obj.activate_task_action("task.changed", &changed_task);
                 if task_id == changed_task.id() {
                     row.reset(changed_task);
                 } else if task_id == changed_task.parent() {
@@ -244,8 +259,9 @@ impl SectionBox {
         modal.connect_closure(
             "task-duration-changed",
             true,
-            glib::closure_local!(@watch row => move |_win: TaskWindow, task_id: i64| {
-                row.activate_action("task.duration-changed", Some(&task_id.to_variant())).unwrap();
+            glib::closure_local!(@watch self as obj, @weak-allow-none row => move |_win: TaskWindow, task: Task| {
+                let row = row.unwrap();
+                obj.activate_action("task.duration-changed", Some(&task.to_variant())).unwrap();
                 row.refresh_timer();
             }),
         );

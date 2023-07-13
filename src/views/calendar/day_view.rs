@@ -5,7 +5,7 @@ use gtk::{glib, subclass::prelude::*};
 use std::cell::{Cell, RefCell};
 
 use crate::db::models::{Record, Task};
-use crate::db::operations::read_tasks;
+use crate::db::operations::{read_records, read_tasks};
 use crate::views::task::{TaskRow, TaskWindow, TasksBox, TasksBoxWrapper};
 
 mod imp {
@@ -36,11 +36,6 @@ mod imp {
         fn class_init(klass: &mut Self::Class) {
             klass.bind_template();
             klass.bind_template_instance_callbacks();
-            klass.install_action(
-                "task.check",
-                Some(&Task::static_variant_type_string()),
-                move |_, _, _| {},
-            );
         }
 
         fn instance_init(obj: &glib::subclass::InitializingObject<Self>) {
@@ -104,9 +99,15 @@ impl DayView {
                 .set_label(&datetime.format("%e %b, %A").unwrap().replace(" ", ""));
         }
 
-        let tasks = read_tasks(None, None, None, None, Some((datetime.to_unix(), end)))
-            .expect("Failed to read tasks");
-        let mut duration = 0;
+        let tasks = read_tasks(
+            None,
+            None,
+            None,
+            None,
+            Some((datetime.to_unix(), end)),
+            false,
+        )
+        .unwrap();
         imp.tasks_box.set_scrollable(false);
         imp.tasks_box
             .set_items_wrapper(TasksBoxWrapper::Date(datetime.to_unix()));
@@ -114,22 +115,29 @@ impl DayView {
             imp.name.add_css_class("dim-label");
         } else {
             for task in tasks {
-                duration += task.duration();
                 imp.tasks_box.add_task(task);
             }
         }
-        obj.set_duration(duration);
 
         obj.set_datetime(datetime);
+        obj.refresh_duration();
         obj
     }
 
-    pub fn add_row(&self, row: TaskRow) {
+    pub fn add_row(&self, row: &TaskRow) {
         let imp = self.imp();
         imp.tasks_box.set_visible(true);
-        imp.tasks_box.add_item(&row);
+        imp.tasks_box.add_item(row);
         imp.name.remove_css_class("dim-label");
         self.set_duration(self.duration() + row.task().duration());
+    }
+
+    pub fn task_row(&self, task_id: i64) -> Option<TaskRow> {
+        let imp = self.imp();
+        if let Some(row) = imp.tasks_box.item_by_id(task_id) {
+            return Some(row);
+        }
+        None
     }
 
     pub fn remove_row(&self, row: &TaskRow) {
@@ -138,6 +146,17 @@ impl DayView {
         if imp.tasks_box.item_by_index(0).is_none() {
             imp.name.add_css_class("dim-label");
         }
+    }
+
+    pub fn refresh_duration(&self) {
+        let start: glib::DateTime = self.datetime();
+        let end = start.add_days(1).unwrap().to_unix();
+        let records = read_records(None, false, Some(start.to_unix()), Some(end)).unwrap();
+        let mut duration = 0;
+        for record in records {
+            duration += record.duration();
+        }
+        self.set_duration(duration);
     }
 
     fn add_bindings(&self) {
@@ -178,9 +197,9 @@ impl DayView {
         modal.connect_closure(
             "task-duration-changed",
             true,
-            glib::closure_local!(@watch row => move |_win: TaskWindow, task_id: i64| {
+            glib::closure_local!(@watch row => move |_win: TaskWindow, task: Task| {
                 row.refresh_timer();
-                row.activate_action("task.duration-changed", Some(&task_id.to_variant())).unwrap();
+                row.activate_action("task.duration-changed", Some(&task.to_variant())).unwrap();
             }),
         );
     }

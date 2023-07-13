@@ -57,7 +57,6 @@
                   bind-property="visible"
                   bind-flags="invert-boolean">false</property>
                 <property name="secondary-icon-name">window-close-symbolic</property>
-                <signal name="changed" handler="handle_name_entry_changed" swapped="true" />
                 <signal name="activate" handler="handle_name_entry_activate" swapped="true" />
                 <signal name="icon-press" handler="handle_name_entry_icon_press" swapped="true" />
               </object>
