@@ -1,6 +1,7 @@
 use gettextrs::gettext;
 use gtk::glib::{self, Properties};
 use gtk::{gdk, prelude::*, subclass::prelude::*};
+use linkify::{LinkFinder, LinkKind};
 use std::cell::{Cell, RefCell};
 use std::thread;
 use std::time::{Duration, SystemTime};
@@ -205,12 +206,26 @@ impl TaskRow {
             imp.footer.set_visible(false);
         } else {
             let task_description = task.description();
-            let task_description = task_description.trim();
+            let task_description = task_description.trim().to_string();
+
             if task_description.is_empty() {
                 imp.body.set_visible(false);
             } else {
-                imp.description.set_label(task_description);
-                imp.description.set_tooltip_text(Some(task_description));
+                let link_finder = LinkFinder::new();
+                let mut markup_description = String::new();
+                link_finder.spans(&task_description).for_each(|span| {
+                    if let Some(kind) = span.kind() {
+                        if kind == &LinkKind::Url {
+                            let link_text = span.as_str();
+                            markup_description
+                                .push_str(&format!("<a href='{}'>{}</a>", link_text, link_text));
+                            return;
+                        }
+                    }
+                    markup_description.push_str(span.as_str())
+                });
+                imp.description.set_markup(&markup_description);
+                imp.description.set_tooltip_text(Some(&task_description));
                 imp.body.set_visible(true);
             }
 
