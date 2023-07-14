@@ -189,8 +189,6 @@ impl ProjectPage {
                 } else {
                     row.reset(task);
                     row.changed();
-                    row.activate_action("project.update", None)
-                        .expect("Failed to send project.update signal");
                 }
             } else if !task.done() {
                 let row = TaskRow::new(task, false, false);

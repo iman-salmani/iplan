@@ -1,5 +1,6 @@
 use adw::{prelude::*, subclass::prelude::*};
 use gettextrs::gettext;
+use glib::{once_cell::sync::Lazy, subclass::Signal};
 use gtk::glib;
 use gtk::glib::Properties;
 use std::cell::RefCell;
@@ -46,6 +47,15 @@ mod imp {
     }
 
     impl ObjectImpl for ProjectEditWindow {
+        fn signals() -> &'static [glib::subclass::Signal] {
+            static SIGNALS: Lazy<Vec<Signal>> = Lazy::new(|| {
+                vec![Signal::builder("changed")
+                    .param_types([Project::static_type()])
+                    .build()]
+            });
+            SIGNALS.as_ref()
+        }
+
         fn properties() -> &'static [glib::ParamSpec] {
             Self::derived_properties()
         }
@@ -104,15 +114,9 @@ impl ProjectEditWindow {
 
         project.connect_notify_local(
             None,
-            glib::clone!(@weak self as obj => move|project, param| {
+            glib::clone!(@weak self as obj => move|project, _| {
                 update_project(&project).expect("Failed to update task");
-                if param.name() == "description" {
-                    return;
-                }
-                obj.transient_for()
-                    .unwrap()
-                    .activate_action("project.update", None)
-                    .expect("Failed to send project.update action");
+                obj.emit_by_name::<()>("changed", &[&project]);
             }),
         );
 

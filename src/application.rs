@@ -244,6 +244,7 @@ impl IPlanApplication {
                 let main_window = obj.window_by_name("IPlanWindow").unwrap().downcast::<IPlanWindow>().unwrap();
                 if main_window.project().id() != project.id() {
                     main_window.change_project(project);
+                    main_window.imp().sidebar_projects.check_archive_hidden();
                 }
                 main_window.close_sidebar();
             }),
@@ -257,7 +258,8 @@ impl IPlanApplication {
 
                 if main_window.project().id() != task_project {
                     if let Ok(project) = read_project(task_project)  {
-                        main_window.change_project(project)
+                        main_window.change_project(project);
+                        main_window.imp().sidebar_projects.check_archive_hidden();
                     }
                 }
                 main_window.close_sidebar();

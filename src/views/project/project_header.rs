@@ -106,7 +106,6 @@ impl ProjectHeader {
             imp.description.set_label(&project.description());
             imp.description.set_visible(true);
         }
-        self.set_stat_updated(false);
     }
 
     #[template_callback]

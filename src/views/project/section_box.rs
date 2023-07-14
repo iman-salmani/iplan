@@ -237,10 +237,9 @@ impl SectionBox {
                 } else {
                     row.reset(task);
                     row.changed();
-                    row.activate_action("project.update", None).expect("Failed to send project.update signal");
                 }
-            }
-        ));
+            }),
+        );
         modal.connect_closure(
             "task-changed",
             true,

@@ -124,19 +124,19 @@ mod imp {
                 },
             );
             klass.install_action("project.edit", None, move |obj, _, _| {
-                let window = ProjectEditWindow::new(obj.application().unwrap(), obj, obj.project());
-                window.present();
-            });
-            klass.install_action("project.update", None, move |obj, _, _| {
-                let imp = obj.imp();
-                if imp.calendar.is_visible() {
-                    return;
-                }
-                let project = obj.project();
-                if let Some(page) = obj.visible_project_page() {
-                    page.imp().project_header.open_project(&project);
-                }
-                imp.sidebar_projects.update_project(&project);
+                let modal = ProjectEditWindow::new(obj.application().unwrap(), obj, obj.project());
+                modal.connect_closure(
+                    "changed",
+                    true,
+                    glib::closure_local!(@watch obj => move |_: ProjectEditWindow, project: Project| {
+                        if let Some(page) = obj.visible_project_page() {
+                            page.imp().project_header.open_project(&project);
+                        }
+                        obj.imp().sidebar_projects.update_project(&project);
+                        obj.set_project(project);
+                    })
+                );
+                modal.present();
             });
             klass.install_action("project.delete", None, move |obj, _, _| {
                 let projects_section = &obj.imp().sidebar_projects;

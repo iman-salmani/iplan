@@ -226,8 +226,6 @@ impl TasksDoneWindow {
                     row.reset(task);
                     row.changed();
                 }
-                let main_window = obj.transient_for().unwrap();
-                main_window.activate_action("project.update", None).expect("Failed to send project.update signal");
             }
         ));
         modal.connect_closure(
