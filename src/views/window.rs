@@ -458,7 +458,7 @@ impl IPlanWindow {
     fn set_visible_project(&self, id: i64) {
         self.imp()
             .stack_pages
-            .set_visible_child_full(&id.to_string(), gtk::StackTransitionType::Crossfade);
+            .set_visible_child_name(&id.to_string());
     }
 
     fn apply_project_layout(&self) {
@@ -484,9 +484,7 @@ impl IPlanWindow {
 
         button.remove_css_class("flat");
         imp.project.take();
-        self.imp()
-            .stack_pages
-            .set_visible_child_full("calendar", gtk::StackTransitionType::Crossfade);
+        self.imp().stack_pages.set_visible_child_name("calendar");
         let projects_box: &gtk::ListBox = imp.sidebar_projects.imp().projects_box.as_ref();
         if let Some(row) = projects_box.selected_row() {
             projects_box.unselect_row(&row);
