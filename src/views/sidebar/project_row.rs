@@ -1,4 +1,4 @@
-use gtk::{gdk, glib, glib::once_cell::sync::Lazy, prelude::*, subclass::prelude::*};
+use gtk::{gdk, glib, glib::Properties, prelude::*, subclass::prelude::*};
 use std::cell::RefCell;
 
 use crate::db::models::Project;
@@ -8,9 +8,11 @@ use crate::views::sidebar::SidebarProjects;
 mod imp {
     use super::*;
 
-    #[derive(Default, gtk::CompositeTemplate)]
+    #[derive(Default, gtk::CompositeTemplate, Properties)]
     #[template(resource = "/ir/imansalmani/iplan/ui/sidebar/project_row.ui")]
+    #[properties(wrapper_type=super::ProjectRow)]
     pub struct ProjectRow {
+        #[property(get, set)]
         pub project: RefCell<Project>,
         #[template_child]
         pub icon_label: TemplateChild<gtk::Label>,
@@ -40,26 +42,15 @@ mod imp {
         }
 
         fn properties() -> &'static [glib::ParamSpec] {
-            static PROPERTIES: Lazy<Vec<glib::ParamSpec>> =
-                Lazy::new(|| vec![glib::ParamSpecObject::builder::<Project>("project").build()]);
-            PROPERTIES.as_ref()
+            Self::derived_properties()
         }
 
-        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
-            match pspec.name() {
-                "project" => {
-                    let value = value.get::<Project>().expect("value must be a Project");
-                    self.project.replace(value);
-                }
-                _ => unimplemented!(),
-            }
+        fn property(&self, id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+            self.derived_property(id, pspec)
         }
 
-        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
-            match pspec.name() {
-                "project" => self.project.borrow().to_value(),
-                _ => unimplemented!(),
-            }
+        fn set_property(&self, id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
+            self.derived_set_property(id, value, pspec)
         }
     }
     impl WidgetImpl for ProjectRow {}
@@ -75,24 +66,19 @@ glib::wrapper! {
 #[gtk::template_callbacks]
 impl ProjectRow {
     pub fn new(project: Project) -> Self {
-        let obj = glib::Object::builder::<ProjectRow>()
-            .property("project", project)
-            .build();
+        let obj = glib::Object::builder::<ProjectRow>().build();
 
         let imp = obj.imp();
 
-        imp.icon_label.set_text(&obj.project().icon());
-        imp.name_label.set_text(&obj.project().name());
+        imp.icon_label.set_text(&project.icon());
+        imp.name_label.set_text(&project.name());
 
-        if obj.project().archive() {
+        if project.archive() {
             imp.name_label.add_css_class("dim-label")
         };
 
+        obj.set_project(project);
         obj
-    }
-
-    pub fn project(&self) -> Project {
-        self.property("project")
     }
 
     #[template_callback]
@@ -123,8 +109,7 @@ impl ProjectRow {
             let row_project = row.project();
             for project in &projects {
                 if project.id() == row_project.id() {
-                    row_project.set_property("index", project.index());
-                    row.set_property("project", row_project);
+                    row_project.set_index(project.index());
                     break;
                 }
             }

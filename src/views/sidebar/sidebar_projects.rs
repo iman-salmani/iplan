@@ -66,24 +66,19 @@ impl SidebarProjects {
 
     pub fn select_active_project(&self) {
         // Finding with id because index realtime changes when dragging a project
+        let projects_box = &self.imp().projects_box;
         let project_id = self
             .root()
             .unwrap()
             .downcast::<IPlanWindow>()
             .unwrap()
-            .project()
-            .id();
-        let projects_box = &self.imp().projects_box;
-        if project_id == 0 {
-            projects_box.select_row(None::<&gtk::ListBoxRow>);
+            .visible_project_id();
+
+        if let Some(project_id) = project_id {
+            let row = self.project_row_by_id(project_id).unwrap();
+            projects_box.select_row(Some(&row));
         } else {
-            for project_row in projects_box.observe_children().into_iter() {
-                let project_row: ProjectRow = project_row.unwrap().downcast().unwrap();
-                if project_id == project_row.project().id() {
-                    projects_box.select_row(Some(&project_row));
-                    break;
-                }
-            }
+            projects_box.select_row(None::<&gtk::ListBoxRow>);
         }
     }
 
@@ -102,19 +97,20 @@ impl SidebarProjects {
         } else {
             row_imp.name_label.remove_css_class("dim-label");
         }
-        row.set_property("project", project);
+        row.set_project(project);
         row.changed();
     }
 
-    pub fn delete_project(&self, index: i32) {
+    pub fn delete_project(&self, project_id: i64) {
         let imp = self.imp();
-        let target_row = imp.projects_box.row_at_index(index).unwrap();
+        let target_row = self.project_row_by_id(project_id).unwrap();
         let last_index = imp
             .projects_box
             .last_child()
             .and_downcast::<gtk::ListBoxRow>()
             .unwrap()
             .index();
+        let index = target_row.index();
 
         for i in index + 1..last_index + 1 {
             let row = imp
@@ -123,7 +119,7 @@ impl SidebarProjects {
                 .and_downcast::<ProjectRow>()
                 .unwrap();
             let project = row.project();
-            project.set_property("index", project.index() - 1);
+            project.set_index(project.index() - 1);
         }
         imp.projects_box.remove(&target_row);
     }
@@ -152,6 +148,18 @@ impl SidebarProjects {
         }
 
         self.fetch();
+    }
+
+    fn project_row_by_id(&self, project_id: i64) -> Option<ProjectRow> {
+        let imp = self.imp();
+        let rows = imp.projects_box.observe_children();
+        for i in 0..rows.n_items() {
+            let row = rows.item(i).and_downcast::<ProjectRow>().unwrap();
+            if row.project().id() == project_id {
+                return Some(row);
+            }
+        }
+        None
     }
 
     fn fetch(&self) {
@@ -236,8 +244,9 @@ impl SidebarProjects {
             "project-created",
             true,
             glib::closure_local!(@watch self as obj => move |_win: ProjectCreateWindow, project: Project| {
-                obj.activate_action("project.open", Some(&project.to_variant())).unwrap();
+                let project_variant = project.to_variant();
                 obj.add_project(project);
+                obj.activate_action("project.open", Some(&project_variant)).unwrap();
             }),
         );
     }

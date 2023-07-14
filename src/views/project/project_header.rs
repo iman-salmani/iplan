@@ -4,7 +4,7 @@ use std::thread;
 
 use crate::db::models::{Project, Record};
 use crate::db::operations::{read_records, read_tasks};
-use crate::views::{snippets::Chart, IPlanWindow};
+use crate::views::snippets::Chart;
 
 mod imp {
     use super::*;
@@ -13,6 +13,8 @@ mod imp {
     #[template(resource = "/ir/imansalmani/iplan/ui/project/project_header.ui")]
     #[properties(type_wrapper=super::ProjectHeader)]
     pub struct ProjectHeader {
+        #[property(get, set)]
+        pub project_id: Cell<i64>,
         #[property(get, set)]
         pub stat_updated: Cell<bool>,
         #[template_child]
@@ -106,6 +108,7 @@ impl ProjectHeader {
             imp.description.set_label(&project.description());
             imp.description.set_visible(true);
         }
+        self.set_project_id(project.id());
     }
 
     #[template_callback]
@@ -118,12 +121,7 @@ impl ProjectHeader {
 
         let imp = self.imp();
         let (tx, rx) = glib::MainContext::channel(glib::PRIORITY_DEFAULT);
-        let project_id = self
-            .root()
-            .and_downcast::<IPlanWindow>()
-            .unwrap()
-            .project()
-            .id();
+        let project_id = self.project_id();
 
         imp.chart.clear();
         imp.chart_header.set_visible(false);

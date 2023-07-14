@@ -242,7 +242,7 @@ impl IPlanApplication {
             true,
             glib::closure_local!(@watch self as obj => move |_: SearchWindow, project: Project| {
                 let main_window = obj.window_by_name("IPlanWindow").unwrap().downcast::<IPlanWindow>().unwrap();
-                if main_window.project().id() != project.id() {
+                if main_window.is_visible_project(project.id()) {
                     main_window.change_project(project);
                     main_window.imp().sidebar_projects.check_archive_hidden();
                 }
@@ -256,7 +256,7 @@ impl IPlanApplication {
                 let main_window = obj.window_by_name("IPlanWindow").unwrap().downcast::<IPlanWindow>().unwrap();
                 let task_project = task.project();
 
-                if main_window.project().id() != task_project {
+                if main_window.is_visible_project(task_project) {
                     if let Ok(project) = read_project(task_project)  {
                         main_window.change_project(project);
                         main_window.imp().sidebar_projects.check_archive_hidden();

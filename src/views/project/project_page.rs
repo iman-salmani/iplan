@@ -26,6 +26,8 @@ mod imp {
     pub struct ProjectPage {
         pub layout: Cell<ProjectLayout>,
         #[property(get, set)]
+        pub project: RefCell<Project>,
+        #[property(get, set)]
         pub drag_scroll_controller: RefCell<Option<gtk::DropTarget>>,
         #[property(get, set)]
         pub scroll: Cell<i8>,
@@ -165,6 +167,7 @@ impl ProjectPage {
                 imp.sections_box.append(&section_box);
             }
         }
+        self.set_project(project);
     }
 
     pub fn reset_task(&self, mut task: Task) {

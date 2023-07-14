@@ -79,8 +79,6 @@ mod imp {
     pub struct IPlanWindow {
         #[property(get, set)]
         pub settings: RefCell<Option<gio::Settings>>,
-        #[property(get, set)]
-        pub project: RefCell<Project>,
         #[property(get, set, name = "project-layout")]
         pub project_layout: Cell<i32>,
         #[template_child]
@@ -112,11 +110,10 @@ mod imp {
                 Some(&Project::static_variant_type_string()),
                 move |obj, _, value| {
                     let project = Project::try_from(value.unwrap()).unwrap();
-                    let project_id = project.id();
 
                     obj.close_sidebar();
 
-                    if obj.project().id() == project_id {
+                    if obj.is_visible_project(project.id()) {
                         return;
                     }
 
@@ -124,7 +121,8 @@ mod imp {
                 },
             );
             klass.install_action("project.edit", None, move |obj, _, _| {
-                let modal = ProjectEditWindow::new(obj.application().unwrap(), obj, obj.project());
+                // FIXME: send project via action
+                let modal = ProjectEditWindow::new(obj.application().unwrap(), obj, obj.visible_project().unwrap());
                 modal.connect_closure(
                     "changed",
                     true,
@@ -133,14 +131,14 @@ mod imp {
                             page.imp().project_header.open_project(&project);
                         }
                         obj.imp().sidebar_projects.update_project(&project);
-                        obj.set_project(project);
                     })
                 );
                 modal.present();
             });
             klass.install_action("project.delete", None, move |obj, _, _| {
+                // FIXME: send project via action
                 let projects_section = &obj.imp().sidebar_projects;
-                projects_section.delete_project(obj.project().index());
+                projects_section.delete_project(obj.visible_project_id().unwrap());
                 let home_project = obj.home_project();
                 obj.imp()
                     .stack_pages
@@ -148,9 +146,10 @@ mod imp {
                 obj.change_project(home_project);
             });
             klass.install_action("section.new", None, move |obj, _, _| {
+                // FIXME: send project via action
                 obj.visible_project_page()
                     .unwrap()
-                    .new_section(obj.project().id());
+                    .new_section(obj.visible_project_id().unwrap());
             });
             klass.install_action(
                 "task.changed",
@@ -333,7 +332,6 @@ impl IPlanWindow {
     pub fn change_project(&self, project: Project) {
         let imp = self.imp();
         let project_id = project.id();
-        self.set_project(&project);
         let project_page = self
             .project_by_id(project_id)
             .unwrap_or_else(|| self.new_project_page(&project));
@@ -352,6 +350,20 @@ impl IPlanWindow {
             .and_downcast::<ProjectPage>()
     }
 
+    pub fn visible_project(&self) -> Option<Project> {
+        let page = self.visible_project_page()?;
+        Some(page.project())
+    }
+
+    pub fn is_visible_project(&self, project_id: i64) -> bool {
+        self.imp().stack_pages.visible_child_name().unwrap() == project_id.to_string()
+    }
+
+    pub fn visible_project_id(&self) -> Option<i64> {
+        let page = self.imp().stack_pages.visible_child_name().unwrap();
+        page.parse::<i64>().ok()
+    }
+
     pub fn close_sidebar(&self) {
         let imp = self.imp();
         if imp.flap.is_folded() {
@@ -368,7 +380,6 @@ impl IPlanWindow {
             imp.stack_pages.remove(page);
         }
         imp.calendar.refresh();
-        self.set_project(Project::default());
 
         let home_project = self.home_project();
         imp.sidebar_projects.reset();
@@ -492,7 +503,6 @@ impl IPlanWindow {
         }
 
         button.remove_css_class("flat");
-        imp.project.take();
         self.imp().stack_pages.set_visible_child_name("calendar");
         let projects_box: &gtk::ListBox = imp.sidebar_projects.imp().projects_box.as_ref();
         if let Some(row) = projects_box.selected_row() {

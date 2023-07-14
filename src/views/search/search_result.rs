@@ -68,7 +68,7 @@ impl SearchResult {
                 imp.name.set_label(&project.name());
                 imp.emoji.set_visible(true);
                 imp.emoji.set_label(&project.icon());
-                imp.type_label.set_label(&gettext("Project"));
+                imp.type_label.set_label(&gettext("project"));
                 obj.set_data(SearchResultData::Project(project));
             }
             SearchResultData::Task(task) => {
@@ -79,7 +79,7 @@ impl SearchResult {
                     "circle-outline-thick-symbolic"
                 };
                 imp.icon.set_icon_name(Some(icon_name));
-                imp.type_label.set_label(&gettext("Task"));
+                imp.type_label.set_label(&gettext("task"));
                 obj.set_data(SearchResultData::Task(task));
             }
             SearchResultData::None => unimplemented!(),
