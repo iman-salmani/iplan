@@ -375,6 +375,15 @@ impl IPlanWindow {
         self.change_project(home_project);
     }
 
+    pub fn add_delete_toast(&self, task: &Task, toast: adw::Toast) {
+        toast.set_action_name(Some("task.changed"));
+        toast.set_action_target_value(Some(&glib::Variant::from((
+            task.to_variant(),
+            ActionScope::DeleteToast.to_variant(),
+        ))));
+        self.imp().toast_overlay.add_toast(toast);
+    }
+
     fn home_project(&self) -> Project {
         let projects = read_projects(true).unwrap();
         if let Some(project) = projects.first() {

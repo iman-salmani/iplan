@@ -12,7 +12,7 @@ use crate::db::operations::{
 };
 use crate::views::snippets::MenuItem;
 use crate::views::task::{SubtaskRow, TaskWindow, TasksDoneWindow};
-use crate::views::{ActionScope, IPlanWindow};
+use crate::views::IPlanWindow;
 
 #[derive(Default, PartialEq, Clone, Copy)]
 pub enum TimerStatus {
@@ -565,17 +565,10 @@ impl TaskRow {
         let window = self.root().unwrap();
         match window.widget_name().as_str() {
             "IPlanWindow" => {
-                toast.set_action_name(Some("task.changed"));
-                toast.set_action_target_value(Some(&glib::Variant::from((
-                    task.to_variant(),
-                    ActionScope::DeleteToast.to_variant(),
-                ))));
                 window
                     .downcast::<IPlanWindow>()
                     .unwrap()
-                    .imp()
-                    .toast_overlay
-                    .add_toast(toast);
+                    .add_delete_toast(&task, toast);
             }
             "TasksDoneWindow" => {
                 window

@@ -191,38 +191,42 @@ impl TaskWindow {
         let imp = self.imp();
         let task_parent = task.parent();
         let page_task_parent = imp.parent_task.get();
-        if page_task_parent != task_parent {
-            if page_task_parent == 0 {
-                toast.connect_button_clicked(
-                    glib::clone!(@weak self as obj, @strong task => move |_toast| {
-                        obj.direct_subtask_undo_delete(&task);
-                    }),
-                );
-            }
-            imp.toast_overlay.add_toast(toast);
-            return;
-        }
 
         if task_parent == 0 {
             let transient_for = self.transient_for().unwrap();
             let transient_for_name = transient_for.widget_name();
             if transient_for_name == "IPlanWindow" {
                 let transient_for = transient_for.downcast::<IPlanWindow>().unwrap();
-                transient_for.imp().toast_overlay.add_toast(toast);
+                transient_for.add_delete_toast(&task, toast);
             } else if transient_for_name == "TasksDoneWindow" {
                 let transient_for = transient_for.downcast::<TasksDoneWindow>().unwrap();
                 transient_for.add_delete_toast(&task, toast);
             }
             self.close();
-        } else {
+            return;
+        }
+
+        if page_task_parent == task_parent {
             imp.back_button.emit_clicked();
             toast.connect_button_clicked(
-                glib::clone!(@weak self as obj, @weak task => move |_toast| {
-                    obj.direct_subtask_undo_delete(&task);
+                glib::clone!(@weak self as obj, @strong task => move |_toast| {
+                    let task_page: TaskPage = obj.visible_page();
+                    if let Some(row) = task_page.imp().subtasks_box.item_by_id(task.id()) {
+                        row.task().set_suspended(false);
+                        row.changed();
+                    }
+                    obj.subtask_undo_delete(&task);
                 }),
             );
-            self.imp().toast_overlay.add_toast(toast);
+        } else {
+            toast.connect_button_clicked(
+                glib::clone!(@weak self as obj, @strong task => move |_toast| {
+                    obj.subtask_undo_delete(&task);
+                }),
+            );
         }
+
+        imp.toast_overlay.add_toast(toast);
     }
 
     fn visible_page(&self) -> TaskPage {
@@ -233,12 +237,7 @@ impl TaskWindow {
             .unwrap()
     }
 
-    fn direct_subtask_undo_delete(&self, task: &Task) {
-        let task_page: TaskPage = self.visible_page();
-        if let Some(row) = task_page.imp().subtasks_box.item_by_id(task.id()) {
-            row.task().set_suspended(false);
-            row.changed();
-        }
+    fn subtask_undo_delete(&self, task: &Task) {
         let app = self
             .application()
             .and_downcast::<IPlanApplication>()
