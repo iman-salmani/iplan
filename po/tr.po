@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: ir.imansalmani.IPlan\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-07-14 23:50+0330\n"
-"PO-Revision-Date: 2023-06-03 10:00+0300\n"
+"PO-Revision-Date: 2023-07-15 01:53+0300\n"
 "Last-Translator: Sabri Ünal <libreajans@gmail.com>\n"
 "Language-Team: Türkçe <takim@gnome.org.tr>\n"
 "Language: tr\n"
@@ -59,7 +59,7 @@ msgstr "Alt görevler"
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:15
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:143
 msgid "Calendar for Exploring tasks by date"
-msgstr ""
+msgstr "Görevleri tarihe göre keşfetme takvimi"
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:16
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:195
@@ -82,7 +82,7 @@ msgstr "Görev penceresi"
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:30 src/ui/window.ui:53
 #: src/ui/calendar/calendar.ui:31
 msgid "Calendar"
-msgstr ""
+msgstr "Takvim"
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:34
 msgid "The IPlan main window (dark mode)"
@@ -102,9 +102,8 @@ msgstr "Iman Salmani"
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:109
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:124
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:140
-#, fuzzy
 msgid "New features and updates"
-msgstr "Özellikler:"
+msgstr "Yeni özellikler ve güncellemeler"
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:67
 msgid "Search button and Primary menu moved to sidebar"
@@ -189,9 +188,8 @@ msgid "New design for drag and drop"
 msgstr ""
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:112
-#, fuzzy
 msgid "New Project create window"
-msgstr "Yeni proje"
+msgstr "Yeni Proje oluştur penceresi"
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:113
 msgid "Close windows with escape key"
@@ -244,15 +242,16 @@ msgid ""
 msgstr ""
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:133
-#, fuzzy
 msgid ""
 "Czech and French and Brazilian Portuguese Translations Added or updated "
 "thanks to Amerey.eu, Irénée Thirion, and Fúlvio Leo"
-msgstr "Brezilya Portekizcesi çevirisi eklendi, teşekkürler Fúlvio Leo"
+msgstr ""
+"Çekçe, Fransızca ve Brezilya Portekizcesi Çeviriler Amerey.eu, Irénée "
+"Thirion ve Fúlvio Leo sayesinde eklendi veya güncellendi"
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:142
 msgid "Backing up system"
-msgstr ""
+msgstr "Yedekleme sistemi"
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:144
 msgid ""
@@ -273,13 +272,12 @@ msgid "Now users able to edit record duration by changing start time"
 msgstr ""
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:148
-#, fuzzy
 msgid "Bug fixes, and UI improvements"
-msgstr "Alt görevler, Hata düzeltmeler ve arayüz iyileştirmeleri"
+msgstr "Hata düzeltmeler ve arayüz iyileştirmeleri"
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:154
 msgid "Bug fix"
-msgstr ""
+msgstr "Hata düzeltmesi"
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:159
 msgid "Code refactoring, and UI improvements"
@@ -341,15 +339,15 @@ msgstr "İlk stabil sürüm."
 
 #: src/ui/window.ui:42 src/ui/project/project_page.ui:28
 msgid "Main Menu"
-msgstr ""
+msgstr "Ana Menü"
 
 #: src/ui/window.ui:90
 msgid "_Preferences"
-msgstr ""
+msgstr "_ Tercihler"
 
 #: src/ui/window.ui:94
 msgid "_Backup"
-msgstr ""
+msgstr "_Yedekle"
 
 #: src/ui/window.ui:98
 msgid "_Keyboard Shortcuts"
@@ -361,11 +359,11 @@ msgstr "IPlan _Hakkında"
 
 #: src/ui/preferences_window.ui:17
 msgid "Run in Background"
-msgstr ""
+msgstr "Arka Planda Çalış"
 
 #: src/ui/preferences_window.ui:18
 msgid "Allow send reminders when the app is closed"
-msgstr ""
+msgstr "Uygulama kapatıldığında anımsatıcı göndermeye izin ver"
 
 #: src/ui/shortcuts_window.ui:13
 msgctxt "shortcut window"
@@ -375,7 +373,7 @@ msgstr "Uygulama"
 #: src/ui/shortcuts_window.ui:16
 msgctxt "shortcut window"
 msgid "Preferences"
-msgstr ""
+msgstr "Tercihler"
 
 #: src/ui/shortcuts_window.ui:23
 msgctxt "shortcut window"
@@ -404,37 +402,39 @@ msgstr "Ara"
 
 #: src/ui/backup_window.ui:19
 msgid "Backup"
-msgstr ""
+msgstr "Yedekle"
 
+# Başlık düzeni tercih edildi
 #: src/ui/backup_window.ui:35 src/views/backup_window.rs:62
 msgid "Export"
-msgstr ""
+msgstr "Dışa Aktar"
 
+# Başlık düzeni tercih edildi
 #: src/ui/backup_window.ui:47
 msgid "Data folder path"
-msgstr ""
+msgstr "Veri Klasörü Yolu"
 
 #: src/ui/backup_window.ui:48
 msgid "Add this path to your backup application"
-msgstr ""
+msgstr "Bu yolu yedekleme uygulamanıza ekleyin"
 
+# Başlık düzeni tercih edildi
 #: src/ui/backup_window.ui:68 src/views/backup_window.rs:98
 msgid "Import"
-msgstr ""
+msgstr "İçe Aktar"
 
 #: src/ui/backup_window.ui:69
 msgid "While importing, previous data will be cached"
-msgstr ""
+msgstr "İçe aktarılırken önceki veriler önbelleğe alınır"
 
 #: src/ui/calendar/calendar.ui:41 src/ui/snippets/date_row.ui:26
 #: src/db/models/task.rs:126 src/views/calendar/day_view.rs:94
 msgid "Today"
-msgstr ""
+msgstr "Bugün"
 
 #: src/ui/project/project_create_window.ui:16
-#, fuzzy
 msgid "New Project"
-msgstr "Yeni proje"
+msgstr "Yeni Proje"
 
 #: src/ui/project/project_create_window.ui:24 src/ui/record/record_window.ui:26
 #: src/ui/reminder/reminder_window.ui:25
@@ -443,7 +443,7 @@ msgstr "İptal"
 
 #: src/ui/project/project_create_window.ui:30
 msgid "Add"
-msgstr ""
+msgstr "Ekle"
 
 #: src/ui/project/project_create_window.ui:62
 #: src/ui/project/project_edit_window.ui:50
@@ -473,9 +473,8 @@ msgid "Delete"
 msgstr "Sil"
 
 #: src/ui/project/project_header.ui:108
-#, fuzzy
 msgid "Time spent"
-msgstr "Günlük harcanan zaman"
+msgstr "Harcanan zaman"
 
 #: src/ui/project/project_header.ui:141
 msgid "Time spent per day"
@@ -483,36 +482,35 @@ msgstr "Günlük harcanan zaman"
 
 # Başlık düzeni tercih edildi.
 #: src/ui/project/project_page.ui:65
-#, fuzzy
 msgid "no sections found"
-msgstr "Kayıt Bulunamadı"
+msgstr "Bölüm Bulunamadı"
 
+# Başlık düzeni tercih edildi
 #: src/ui/project/project_page.ui:94
-#, fuzzy
 msgid "New section"
-msgstr "Yeni Kayıt"
+msgstr "Yeni Bölüm"
 
 #: src/ui/project/project_page.ui:108
-#, fuzzy
 msgid "New _Section"
-msgstr "Yeni Kayıt"
+msgstr "Yeni _Bölüm"
 
 #: src/ui/project/project_page.ui:112
 msgid "_Edit Project"
 msgstr "Projeyi _Düzenle"
 
+# Başlık düzeni tercih edildi
 #: src/ui/project/section_box.ui:50 src/ui/task/tasks_box.ui:47
 msgid "Add task"
-msgstr ""
+msgstr "Görev Ekle"
 
 #: src/ui/project/section_box.ui:80
 msgid "Done tasks"
 msgstr "Tamamlanmış Görevler"
 
+# Başlık düzeni tercih edildi
 #: src/ui/project/section_box.ui:91
-#, fuzzy
 msgid "Delete section"
-msgstr "Listeyi sil"
+msgstr "Bölümü Sil"
 
 #: src/ui/record/record_window.ui:18 src/ui/task/task_page.ui:166
 msgid "New Record"
@@ -546,7 +544,7 @@ msgstr "Süre"
 
 #: src/ui/reminder/reminder_window.ui:17
 msgid "Reminder"
-msgstr ""
+msgstr "Anımsatıcı"
 
 #: src/ui/reminder/reminder_window.ui:67
 msgid "delete"
@@ -582,44 +580,40 @@ msgid "_Delete"
 msgstr "_Sil"
 
 #: src/ui/snippets/date_row.ui:40
-#, fuzzy
 msgid "No Date"
-msgstr "Tarih"
+msgstr "Tarih Yok"
 
 #: src/ui/task/task_row.ui:220 src/views/task/task_row.rs:343
-#, fuzzy
 msgid "Start _Timer"
-msgstr "başlangıç saati"
+msgstr "Zamanlayıcıyı _Başlat"
 
 #: src/ui/task/task_row.ui:229
 msgid "Move Up"
-msgstr ""
+msgstr "Yukarı Taşı"
 
 #: src/ui/task/task_row.ui:237
 msgid "Move Down"
-msgstr ""
+msgstr "Aşağı Taşı"
 
 #: src/ui/task/task_row.ui:248
-#, fuzzy
 msgid "_Delete Task"
-msgstr "_Sil"
+msgstr "Görevi _Sil"
 
 #: src/ui/task/task_page.ui:26
 msgid "Due date"
-msgstr ""
+msgstr "Tamamlanma tarihi"
 
 #: src/ui/task/task_page.ui:32
 msgid "Reminders"
-msgstr ""
+msgstr "Anımsatıcılar"
 
 #: src/ui/task/task_page.ui:94
 msgid "Records"
 msgstr "Kayıtlar"
 
 #: src/ui/task/tasks_box.ui:78
-#, fuzzy
 msgid "Add Task"
-msgstr "Görev"
+msgstr "Görev Ekle"
 
 # Başlık düzeni tercih edildi.
 #: src/ui/task/tasks_done_window.ui:52
@@ -633,19 +627,19 @@ msgstr "Sabri Ünal <libreajans@gmail.com>"
 
 #: src/application.rs:379 src/application.rs:415
 msgid "IPlan needs to run in the background to send reminders"
-msgstr ""
+msgstr "Iplan anımsatıcıları göndermek için arka planda çalışmak istiyor"
 
 #: src/db/models/task.rs:128
 msgid "Tomorrow"
-msgstr ""
+msgstr "Yarın"
 
 #: src/db/models/record.rs:70
 msgid "day"
-msgstr ""
+msgstr "gün"
 
 #: src/db/models/record.rs:72
 msgid "days"
-msgstr ""
+msgstr "gün"
 
 #: src/views/window.rs:403
 msgid "Personal"
@@ -657,19 +651,19 @@ msgstr "Görevler"
 
 #: src/views/backup_window.rs:91
 msgid "Path copied!"
-msgstr ""
+msgstr "Yol kopyalandı!"
 
 #: src/views/backup_window.rs:111
 msgid "Error while caching previous data"
-msgstr ""
+msgstr "Önceki veri önbelleğe alınırken hata"
 
 #: src/views/backup_window.rs:114
 msgid "Error while importing data"
-msgstr ""
+msgstr "Veriler içe aktarırken hata"
 
 #: src/views/project/project_create_window.rs:140
 msgid "Project should have a name!"
-msgstr ""
+msgstr "Projenin bir adı olmalı!"
 
 #: src/views/project/project_edit_window.rs:157
 msgid "Delete \"{}\" project?"
@@ -681,79 +675,68 @@ msgstr "Proje ve görevleri kalıcı olarak kaybedilecek."
 
 #. Translators: {} Will be replaced with a shortcut label.
 #: src/views/project/project_page.rs:96
-#, fuzzy
 msgid "Use the primary menu {} for adding a new section"
-msgstr "Yeni listeler eklemek için {} ana menüyü kullan"
+msgstr "Yeni bölüm eklemek için {} ana menüyü kullan"
 
 #: src/views/project/project_page.rs:254
-#, fuzzy
 msgid "New Section"
-msgstr "Yeni Kayıt"
+msgstr "Yeni Bölüm"
 
 #: src/views/project/section_box.rs:80
-#, fuzzy
 msgid "\"{}\" moved to the done tasks list"
-msgstr "\"{}\" tamamlanmış görevler listesine taşındı"
+msgstr "“{}” tamamlanmış görevler listesine taşındı"
 
 #: src/views/project/section_box.rs:83 src/views/task/task_row.rs:553
 msgid "Undo"
 msgstr "Geri Al"
 
 #: src/views/project/section_box.rs:306
-#, fuzzy
 msgid "Delete \"{}\" section?"
-msgstr "“{}” listesi silinsin mi?"
+msgstr "“{}” bölümü silinsin mi?"
 
 #: src/views/project/section_box.rs:309
-#, fuzzy
 msgid "The section and its tasks will be permanently lost."
-msgstr "Liste ve görevleri kalıcı olarak kaybedilecek."
+msgstr "Bölüm ve görevleri kalıcı olarak kaybedilecek."
 
 #: src/views/record/record_row.rs:103
 msgid "until"
 msgstr "şu zamana kadar"
 
 #: src/views/record/record_window.rs:120
-#, fuzzy
 msgid "Edit Record"
-msgstr "Yeni Kayıt"
+msgstr "Kaydı Düzenle"
 
 #: src/views/record/record_window.rs:207
 msgid "Duration can't be 0"
 msgstr "Süre 0 olamaz"
 
 #: src/views/record/record_window.rs:215
-#, fuzzy
 msgid "Record end time can't be in future"
-msgstr "Günlük harcanan zaman"
+msgstr "Kayıt bitiş zamanı gelecekte olamaz"
 
 #: src/views/reminder/reminder_window.rs:111
-#, fuzzy
 msgid "Time can't be in the past"
-msgstr "Günlük harcanan zaman"
+msgstr "Zaman geçmişte olamaz"
 
 #: src/views/search/search_result.rs:71
-#, fuzzy
 msgid "project"
-msgstr "Proje"
+msgstr "proje"
 
 #: src/views/search/search_result.rs:82
-#, fuzzy
 msgid "task"
-msgstr "Alt görevler"
+msgstr "görev"
 
 #: src/views/sidebar/sidebar_projects.rs:374
 msgid "Task moved to {}"
-msgstr ""
+msgstr "Görev şuraya taşındı: {}"
 
 #: src/views/sidebar/sidebar_projects.rs:388
-#, fuzzy
 msgid "{} doesn't have any section"
-msgstr "\"{}\" tamamlanmış görevler listesine taşındı"
+msgstr "“{}” bölüm içermiyor"
 
 #: src/views/task/task_row.rs:255
 msgid "Inbox"
-msgstr ""
+msgstr "Gelen Kutusu"
 
 #: src/views/task/task_row.rs:552
 msgid "\"{}\" is going to delete"
@@ -763,49 +746,3 @@ msgstr "“{}” silinecek"
 msgid "Done Tasks"
 msgstr "Tamamlanmış Görevler"
 
-#~ msgid "Task"
-#~ msgstr "Görev"
-
-#~ msgid "_Quit"
-#~ msgstr "_Çık"
-
-# Başlık düzeni tercih edildi.
-#~ msgid "no records found"
-#~ msgstr "Kayıt Bulunamadı"
-
-#~ msgid "Use add button up there or start a timer"
-#~ msgstr "Yukarıdaki ekle düğmesini kullanın ya da bir zamanlayıcı başlatın"
-
-#~ msgid "_New List"
-#~ msgstr "_Yeni Liste"
-
-# Başlık düzeni tercih edildi.
-#~ msgid "no lists found"
-#~ msgstr "Liste Bulunamadı"
-
-#~ msgid "New list"
-#~ msgstr "Yeni liste"
-
-#~ msgid "New List"
-#~ msgstr "Yeni Liste"
-
-# Başlık düzeni tercih edildi.
-#~ msgid "no tasks found"
-#~ msgstr "Görev Bulunamadı"
-
-#~ msgid "Use add button up there"
-#~ msgstr "Yukarıdaki ekle düğmesini kullanın"
-
-# Başlık düzeni tercih edildi.
-#~ msgid "no subtasks found"
-#~ msgstr "Alt Görev Bulunamadı"
-
-#, fuzzy
-#~ msgid "Timer"
-#~ msgstr "Saat"
-
-#~ msgid "start date"
-#~ msgstr "başlangıç tarihi"
-
-#~ msgid "duration"
-#~ msgstr "süre"
