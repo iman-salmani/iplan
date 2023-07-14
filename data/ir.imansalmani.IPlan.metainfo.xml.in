@@ -60,6 +60,20 @@
   </categories>
   <content_rating type="oars-1.1" />
   <releases>
+    <release version="1.9.0" date="2023-07-14">
+      <description>
+        <p>New features and updates</p>
+        <ul>
+          <li>Search button and Primary menu moved to sidebar</li>
+          <li>Navigation in calendar by scroll</li>
+          <li>Calendar Navigation buttons removed</li>
+          <li>Now task changes applies to other parts of UI too. instead of resetting them</li>
+          <li>Clickable URL Links in description</li>
+          <li>ctrl + w shortcut for closing window</li>
+          <li>Code refactoring, Bug fixes, and UI improvements</li>
+        </ul>
+      </description>
+    </release>
     <release version="1.8.1" date="2023-07-07">
       <description>
         <p>Fix bug: Dont set position for new task in SectionBox::handle_new_button_clicked</p>

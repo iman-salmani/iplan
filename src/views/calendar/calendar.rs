@@ -4,7 +4,7 @@ use std::thread;
 use std::time::Duration;
 
 use crate::db::models::Task;
-use crate::db::operations::{read_tasks, read_task, read_records};
+use crate::db::operations::{read_records, read_task, read_tasks};
 use crate::views::calendar::{DayIndicator, DayView};
 use crate::views::task::TaskRow;
 use crate::views::ActionScope;
@@ -62,7 +62,7 @@ mod imp {
             klass.install_action(
                 "task.duration-changed",
                 Some(Task::static_variant_type().as_str()),
-                |obj, _, value|{
+                |obj, _, value| {
                     let task: Task = value.unwrap().get().unwrap();
                     obj.parent()
                         .unwrap()
@@ -76,7 +76,7 @@ mod imp {
                         .unwrap();
                     obj.refresh_days_views_duration(task.id());
                     obj.refresh_parents_timers(task.parent());
-                }
+                },
             );
         }
 
@@ -220,13 +220,13 @@ impl Calendar {
         if let Some((day_view, row)) = self.task_row(task_id) {
             let old_task = row.task();
             let difference = task.different_properties(&old_task);
-            
+
             reset_parent_subtasks(task.parent());
 
             if difference.is_empty() {
                 return;
             }
-            
+
             if difference.contains(&"date") {
                 let task_date = task.date();
                 day_view.remove_row(&row);
@@ -256,7 +256,6 @@ impl Calendar {
                 day_view.add_row(&row);
             }
         }
-
     }
 
     pub fn set_subtasks_suspended(&self, task_id: i64, suspended: bool) {
@@ -294,7 +293,7 @@ impl Calendar {
     }
 
     pub fn refresh_days_views_duration(&self, task_id: i64) {
-        let records = read_records(Some(task_id), false, None, None).unwrap();    // FIXME: find an efficient way. like record.changed
+        let records = read_records(Some(task_id), false, None, None).unwrap(); // FIXME: find an efficient way. like record.changed
         for record in records {
             let start = glib::DateTime::from_unix_local(record.start()).unwrap();
             let start_date = glib::DateTime::new(
@@ -302,8 +301,11 @@ impl Calendar {
                 start.year(),
                 start.month(),
                 start.day_of_month(),
-                0, 0, 0.0
-            ).unwrap();
+                0,
+                0,
+                0.0,
+            )
+            .unwrap();
             if let Some(day_view) = self.day_view_by_date(start_date) {
                 day_view.refresh_duration();
             }

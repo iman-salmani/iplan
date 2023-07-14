@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: iplan\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-07-07 21:11+0330\n"
+"POT-Creation-Date: 2023-07-14 23:50+0330\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -33,37 +33,37 @@ msgid ""
 msgstr ""
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:10
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:172
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:191
 msgid "Features:"
 msgstr ""
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:12
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:174
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:193
 msgid "Grouping tasks with project and list"
 msgstr ""
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:13
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:175
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:194
 msgid "Timer for tasks"
 msgstr ""
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:14 src/ui/task/task_page.ui:74
-#: src/ui/task/task_page.ui:90
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:14 src/ui/task/task_page.ui:73
+#: src/ui/task/task_page.ui:89
 msgid "Subtasks"
 msgstr ""
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:15
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:124
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:143
 msgid "Calendar for Exploring tasks by date"
 msgstr ""
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:16
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:176
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:195
 msgid "Global search"
 msgstr ""
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:17
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:177
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:196
 msgid "Arranging projects, lists, and tasks by drag and drop"
 msgstr ""
 
@@ -75,8 +75,8 @@ msgstr ""
 msgid "Task window"
 msgstr ""
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:30 src/ui/window.ui:49
-#: src/ui/window.ui:107
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:30 src/ui/window.ui:53
+#: src/ui/calendar/calendar.ui:31
 msgid "Calendar"
 msgstr ""
 
@@ -93,238 +93,258 @@ msgid "Iman Salmani"
 msgstr ""
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:65
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:77
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:90
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:105
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:121
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:84
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:96
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:109
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:124
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:140
 msgid "New features and updates"
 msgstr ""
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:67
-msgid "Move up and down option for tasks rows"
+msgid "Search button and Primary menu moved to sidebar"
 msgstr ""
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:68
-msgid "Fade effect for moving between projects"
+msgid "Navigation in calendar by scroll"
 msgstr ""
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:69
-msgid "Improve date format"
+msgid "Calendar Navigation buttons removed"
 msgstr ""
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:70
+msgid ""
+"Now task changes applies to other parts of UI too. instead of resetting them"
+msgstr ""
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:71
+msgid "Clickable URL Links in description"
+msgstr ""
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:72
+msgid "ctrl + w shortcut for closing window"
+msgstr ""
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:73
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:90
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:103
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:118
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:134
+msgid "Code refactoring, Bug fixes, and UI improvements"
+msgstr ""
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:79
+msgid ""
+"Fix bug: Dont set position for new task in SectionBox::"
+"handle_new_button_clicked"
+msgstr ""
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:86
+msgid "Move up and down option for tasks rows"
+msgstr ""
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:87
+msgid "Fade effect for moving between projects"
+msgstr ""
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:88
+msgid "Improve date format"
+msgstr ""
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:89
 msgid ""
 "Popovers aligned and calendar navigation buttons width reduced, to fit in "
 "phone"
 msgstr ""
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:71
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:84
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:99
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:115
-msgid "Code refactoring, Bug fixes, and UI improvements"
-msgstr ""
-
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:79
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:98
 msgid "Chart of Time spent in last 7 days"
 msgstr ""
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:80
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:99
 msgid "Record delete button moved to record row"
 msgstr ""
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:81
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:100
 msgid "Improve usability for the phone form factor"
 msgstr ""
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:82
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:101
 msgid "Option to disable run in background"
 msgstr ""
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:83
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:102
 msgid "Improve duration format"
 msgstr ""
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:92
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:111
 msgid "New design for drag and drop"
 msgstr ""
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:93
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:112
 msgid "New Project create window"
 msgstr ""
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:94
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:113
 msgid "Close windows with escape key"
 msgstr ""
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:95
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:114
 msgid "Scroll while dragging task"
 msgstr ""
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:96
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:115
 msgid "Add task inside calendar page"
 msgstr ""
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:97
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:116
 msgid "Drop task on each other"
 msgstr ""
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:98
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:117
 msgid "Rename tasks list to section"
 msgstr ""
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:107
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:126
 msgid "The task row shows the description, subtasks, due date, and reminder"
 msgstr ""
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:108
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:127
 msgid "New design for task rows"
 msgstr ""
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:109
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:128
 msgid "Add task button below tasks list"
 msgstr ""
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:110
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:129
 msgid "One week per calendar page"
 msgstr ""
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:111
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:130
 msgid "Today and No Date buttons on top of the date picker"
 msgstr ""
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:112
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:131
 msgid "Click on a searched task will open the task window"
 msgstr ""
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:113
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:132
 msgid ""
 "Auto start (if the user lets the app run in the background) and checking for "
 "reminders in the startup"
 msgstr ""
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:114
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:133
 msgid ""
 "Czech and French and Brazilian Portuguese Translations Added or updated "
 "thanks to Amerey.eu, Irénée Thirion, and Fúlvio Leo"
 msgstr ""
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:123
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:142
 msgid "Backing up system"
 msgstr ""
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:125
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:144
 msgid ""
 "Tasks can have date and reminders (Application will remain in background for "
 "handling reminders)"
 msgstr ""
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:126
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:145
 msgid "When a task doesn't have record, Timer button will move to options"
 msgstr ""
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:127
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:146
 msgid "Record edit window"
 msgstr ""
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:128
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:147
 msgid "Now users able to edit record duration by changing start time"
 msgstr ""
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:129
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:148
 msgid "Bug fixes, and UI improvements"
 msgstr ""
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:135
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:154
 msgid "Bug fix"
 msgstr ""
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:140
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:159
 msgid "Code refactoring, and UI improvements"
 msgstr ""
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:142
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:161
 msgid "New widgets for selecting Date and Time"
 msgstr ""
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:143
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:162
 msgid "Changing duration of the new record by setting end time"
 msgstr ""
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:144
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:163
 msgid "Add Brazilian Portuguese Translation thanks to Fúlvio Leo"
 msgstr ""
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:150
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:169
 msgid "Subtasks, Bug fixes, and UI improvements"
 msgstr ""
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:152
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:171
 msgid "Task Window which contains task info, subtasks, and records"
 msgstr ""
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:153
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:172
 msgid "Translation to Persian and Turkish languages thanks to Sabri Ünal"
 msgstr ""
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:154
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:173
 msgid "New toast message for moving back task from the tasks done list"
 msgstr ""
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:155
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:174
 msgid "Users are now able to pick emojis for their projects in the edit window"
 msgstr ""
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:156
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:175
 msgid "Projects and Tasks now can have descriptions"
 msgstr ""
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:162
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:181
 msgid "Performance improvement and records window"
 msgstr ""
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:164
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:183
 msgid "Lazy loading for project tasks and stat"
 msgstr ""
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:165
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:184
 msgid "Records window for creating, editing, and deleting records"
 msgstr ""
 
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:171
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:190
 msgid "First stable release."
 msgstr ""
 
-#: src/ui/window.ui:120
+#: src/ui/window.ui:42 src/ui/project/project_page.ui:28
 msgid "Main Menu"
 msgstr ""
 
-#: src/ui/window.ui:141 src/ui/snippets/date_row.ui:26
-#: src/db/models/task.rs:124 src/views/calendar/tasks_list.rs:109
-msgid "Today"
-msgstr ""
-
-#: src/ui/window.ui:179
-msgid "New _Section"
-msgstr ""
-
-#: src/ui/window.ui:183
-msgid "_Edit Project"
-msgstr ""
-
-#: src/ui/window.ui:189 src/ui/window.ui:211
+#: src/ui/window.ui:90
 msgid "_Preferences"
 msgstr ""
 
-#: src/ui/window.ui:193 src/ui/window.ui:215
+#: src/ui/window.ui:94
 msgid "_Backup"
 msgstr ""
 
-#: src/ui/window.ui:197 src/ui/window.ui:219
+#: src/ui/window.ui:98
 msgid "_Keyboard Shortcuts"
 msgstr ""
 
-#: src/ui/window.ui:201 src/ui/window.ui:223
+#: src/ui/window.ui:102
 msgid "_About IPlan"
 msgstr ""
 
@@ -395,12 +415,9 @@ msgstr ""
 msgid "While importing, previous data will be cached"
 msgstr ""
 
-#: src/ui/calendar/calendar.ui:17
-msgid "Previous week"
-msgstr ""
-
-#: src/ui/calendar/calendar.ui:35
-msgid "Next week"
+#: src/ui/calendar/calendar.ui:41 src/ui/snippets/date_row.ui:26
+#: src/db/models/task.rs:126 src/views/calendar/day_view.rs:94
+msgid "Today"
 msgstr ""
 
 #: src/ui/project/project_create_window.ui:16
@@ -451,27 +468,35 @@ msgstr ""
 msgid "Time spent per day"
 msgstr ""
 
-#: src/ui/project/project_page.ui:34
+#: src/ui/project/project_page.ui:65
 msgid "no sections found"
 msgstr ""
 
-#: src/ui/project/project_page.ui:63
+#: src/ui/project/project_page.ui:94
 msgid "New section"
 msgstr ""
 
-#: src/ui/project/section_box.ui:49 src/ui/task/tasks_box.ui:47
+#: src/ui/project/project_page.ui:108
+msgid "New _Section"
+msgstr ""
+
+#: src/ui/project/project_page.ui:112
+msgid "_Edit Project"
+msgstr ""
+
+#: src/ui/project/section_box.ui:50 src/ui/task/tasks_box.ui:47
 msgid "Add task"
 msgstr ""
 
-#: src/ui/project/section_box.ui:79
+#: src/ui/project/section_box.ui:80
 msgid "Done tasks"
 msgstr ""
 
-#: src/ui/project/section_box.ui:90
+#: src/ui/project/section_box.ui:91
 msgid "Delete section"
 msgstr ""
 
-#: src/ui/record/record_window.ui:18 src/ui/task/task_page.ui:167
+#: src/ui/record/record_window.ui:18 src/ui/task/task_page.ui:166
 msgid "New Record"
 msgstr ""
 
@@ -517,15 +542,15 @@ msgstr ""
 msgid "no results found"
 msgstr ""
 
-#: src/ui/sidebar/sidebar_projects.ui:14
+#: src/ui/sidebar/sidebar_projects.ui:21
 msgid "Projects"
 msgstr ""
 
-#: src/ui/sidebar/sidebar_projects.ui:33
+#: src/ui/sidebar/sidebar_projects.ui:36
 msgid "Show archive projects"
 msgstr ""
 
-#: src/ui/sidebar/sidebar_projects.ui:40
+#: src/ui/sidebar/sidebar_projects.ui:43
 msgid "New project"
 msgstr ""
 
@@ -541,19 +566,19 @@ msgstr ""
 msgid "No Date"
 msgstr ""
 
-#: src/ui/task/task_row.ui:223 src/views/task/task_row.rs:316
+#: src/ui/task/task_row.ui:220 src/views/task/task_row.rs:343
 msgid "Start _Timer"
 msgstr ""
 
-#: src/ui/task/task_row.ui:232
+#: src/ui/task/task_row.ui:229
 msgid "Move Up"
 msgstr ""
 
-#: src/ui/task/task_row.ui:240
+#: src/ui/task/task_row.ui:237
 msgid "Move Down"
 msgstr ""
 
-#: src/ui/task/task_row.ui:251
+#: src/ui/task/task_row.ui:248
 msgid "_Delete Task"
 msgstr ""
 
@@ -565,7 +590,7 @@ msgstr ""
 msgid "Reminders"
 msgstr ""
 
-#: src/ui/task/task_page.ui:95
+#: src/ui/task/task_page.ui:94
 msgid "Records"
 msgstr ""
 
@@ -573,20 +598,20 @@ msgstr ""
 msgid "Add Task"
 msgstr ""
 
-#: src/ui/task/tasks_done_window.ui:50
+#: src/ui/task/tasks_done_window.ui:52
 msgid "no done tasks found"
 msgstr ""
 
 #. Translators: Replace "translator-credits" with your names, one name per line
-#: src/application.rs:314
+#: src/application.rs:348
 msgid "translator-credits"
 msgstr ""
 
-#: src/application.rs:348 src/application.rs:384
+#: src/application.rs:379 src/application.rs:415
 msgid "IPlan needs to run in the background to send reminders"
 msgstr ""
 
-#: src/db/models/task.rs:126
+#: src/db/models/task.rs:128
 msgid "Tomorrow"
 msgstr ""
 
@@ -598,12 +623,11 @@ msgstr ""
 msgid "days"
 msgstr ""
 
-#: src/views/window.rs:111 src/views/window.rs:182
+#: src/views/window.rs:403
 msgid "Personal"
 msgstr ""
 
-#: src/views/window.rs:113 src/views/window.rs:183
-#: src/views/project/project_create_window.rs:148
+#: src/views/window.rs:404 src/views/project/project_create_window.rs:148
 msgid "Tasks"
 msgstr ""
 
@@ -623,40 +647,40 @@ msgstr ""
 msgid "Project should have a name!"
 msgstr ""
 
-#: src/views/project/project_edit_window.rs:153
+#: src/views/project/project_edit_window.rs:157
 msgid "Delete \"{}\" project?"
 msgstr ""
 
-#: src/views/project/project_edit_window.rs:156
+#: src/views/project/project_edit_window.rs:160
 msgid "The project and its tasks will be permanently lost."
 msgstr ""
 
 #. Translators: {} Will be replaced with a shortcut label.
-#: src/views/project/project_page.rs:67
+#: src/views/project/project_page.rs:96
 msgid "Use the primary menu {} for adding a new section"
 msgstr ""
 
-#: src/views/project/project_page.rs:206
+#: src/views/project/project_page.rs:254
 msgid "New Section"
 msgstr ""
 
-#: src/views/project/section_box.rs:71
+#: src/views/project/section_box.rs:80
 msgid "\"{}\" moved to the done tasks list"
 msgstr ""
 
-#: src/views/project/section_box.rs:73 src/views/task/task_row.rs:541
+#: src/views/project/section_box.rs:83 src/views/task/task_row.rs:553
 msgid "Undo"
 msgstr ""
 
-#: src/views/project/section_box.rs:255
+#: src/views/project/section_box.rs:306
 msgid "Delete \"{}\" section?"
 msgstr ""
 
-#: src/views/project/section_box.rs:258
+#: src/views/project/section_box.rs:309
 msgid "The section and its tasks will be permanently lost."
 msgstr ""
 
-#: src/views/record/record_row.rs:91
+#: src/views/record/record_row.rs:103
 msgid "until"
 msgstr ""
 
@@ -677,29 +701,29 @@ msgid "Time can't be in the past"
 msgstr ""
 
 #: src/views/search/search_result.rs:71
-msgid "Project"
+msgid "project"
 msgstr ""
 
 #: src/views/search/search_result.rs:82
-msgid "Task"
-msgstr ""
-
-#: src/views/sidebar/sidebar_projects.rs:360
-msgid "Task moved to {}"
+msgid "task"
 msgstr ""
 
 #: src/views/sidebar/sidebar_projects.rs:374
+msgid "Task moved to {}"
+msgstr ""
+
+#: src/views/sidebar/sidebar_projects.rs:388
 msgid "{} doesn't have any section"
 msgstr ""
 
-#: src/views/task/task_row.rs:240
+#: src/views/task/task_row.rs:255
 msgid "Inbox"
 msgstr ""
 
-#: src/views/task/task_row.rs:540
+#: src/views/task/task_row.rs:552
 msgid "\"{}\" is going to delete"
 msgstr ""
 
-#: src/views/task/tasks_done_window.rs:99
+#: src/views/task/tasks_done_window.rs:110
 msgid "Done Tasks"
 msgstr ""
