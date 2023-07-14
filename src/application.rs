@@ -66,6 +66,7 @@ mod imp {
             obj.set_accels_for_action("app.shortcuts", &["<primary>question"]);
             obj.set_accels_for_action("app.search", &["<primary>f"]);
             obj.set_accels_for_action("app.modal-close", &["Escape"]);
+            obj.set_accels_for_action("app.window-close", &["<primary>w"]);
         }
         fn properties() -> &'static [glib::ParamSpec] {
             Self::derived_properties()
@@ -213,6 +214,9 @@ impl IPlanApplication {
         let modal_close_action = gio::ActionEntry::builder("modal-close")
             .activate(move |app: &Self, _, _| app.close_modal())
             .build();
+        let window_close_action = gio::ActionEntry::builder("window-close")
+            .activate(move |app: &Self, _, _| app.close_window())
+            .build();
         self.add_action_entries([
             quit_action,
             about_action,
@@ -221,6 +225,7 @@ impl IPlanApplication {
             search_action,
             backup_action,
             modal_close_action,
+            window_close_action,
         ]);
     }
 
@@ -358,6 +363,12 @@ impl IPlanApplication {
                     }
                 }
             }
+        }
+    }
+
+    fn close_window(&self) {
+        if let Some(window) = self.active_window() {
+            window.close();
         }
     }
 
