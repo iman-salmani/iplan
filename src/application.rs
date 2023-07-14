@@ -267,19 +267,6 @@ impl IPlanApplication {
                 let modal = TaskWindow::new(obj.upcast_ref::<gtk::Application>(), &main_window, task.clone());
                 modal.present();
                 modal.connect_closure(
-                    "window-closed",
-                    true,
-                    glib::closure_local!(@watch main_window => move |_win: TaskWindow, task: Task| {
-                        main_window.activate_action(
-                            "task.changed",
-                            Some(&glib::Variant::from((
-                                task.to_variant(),
-                                ActionScope::None.to_variant(),
-                            )))
-                        ).unwrap();
-                    }
-                ));
-                modal.connect_closure(
                     "task-changed",
                     true,
                     glib::closure_local!(@watch main_window => move |_win: TaskWindow, changed_task: Task| {

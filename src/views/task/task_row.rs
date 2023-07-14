@@ -175,6 +175,7 @@ impl TaskRow {
         obj.set_compact(compact);
         obj.set_visible_project_label(visible_project_label);
         obj.reset(task);
+        obj.reset_timer();
         obj.set_draggable(true);
         obj
     }
@@ -188,6 +189,7 @@ impl TaskRow {
         obj.connect_lazy_notify(|obj| {
             let task = obj.task();
             obj.reset(task);
+            obj.reset_timer();
         });
         obj
     }
@@ -259,7 +261,6 @@ impl TaskRow {
         }
 
         self.set_task(task);
-        self.reset_timer();
         if !self.compact() {
             self.reset_subtasks();
         }

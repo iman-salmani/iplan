@@ -214,20 +214,18 @@ impl TasksDoneWindow {
         let row = row.downcast::<TaskRow>().unwrap();
         let modal = TaskWindow::new(&obj.application().unwrap(), &obj, row.task());
         modal.present();
-        modal.connect_closure(
-            "window-closed",
-            true,
-            glib::closure_local!(@watch self as obj, @weak-allow-none row => move |_win: TaskWindow, task: Task| {
-                let row = row.unwrap();
-                if !task.done() {
+        modal.connect_close_request(
+            glib::clone!(@weak self as obj, @weak row => @default-return gtk::Inhibit(false), move |_| {
+                let task = row.task();
+                if task.done() {
                     obj.imp().tasks_box.remove(&row);
                     obj.emit_by_name::<()>("task-undo", &[&task]);
-                } else {
-                    row.reset(task);
+                } else if task.suspended() {
                     row.changed();
                 }
-            }
-        ));
+                gtk::Inhibit(false)
+            }),
+        );
         modal.connect_closure(
             "task-changed",
             true,

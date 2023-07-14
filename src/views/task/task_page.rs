@@ -104,6 +104,7 @@ impl TaskPage {
         let task_project = task.project();
         let task_date = task.date();
         imp.task_row.reset(task);
+        imp.task_row.reset_timer();
 
         imp.date_row.set_clear_option(true);
         let date = task_date;

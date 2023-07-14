@@ -180,11 +180,10 @@ impl DayView {
         let modal = TaskWindow::new(&win.application().unwrap(), &win, row.task());
         modal.present();
         row.cancel_timer();
-        modal.connect_closure(
-            "window-closed",
-            true,
-            glib::closure_local!(@watch row => move |_win: TaskWindow, _: Task| {
+        modal.connect_close_request(
+            glib::clone!(@weak row => @default-return gtk::Inhibit(false), move |_| {
                 row.reset_timer();
+                gtk::Inhibit(false)
             }),
         );
         modal.connect_closure(
