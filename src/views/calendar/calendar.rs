@@ -235,11 +235,14 @@ impl Calendar {
                     row.reset(task);
                     day_view.add_row(&row);
                 }
-            } else if !difference.contains(&"name") {
-                row.reset(task);
+                return;
             }
-            
-            row.changed();
+
+            row.reset(task);
+
+            if difference.contains(&"suspended") {
+                row.changed();
+            }
         } else {
             reset_parent_subtasks(task.parent());
             let task_date = task.date();

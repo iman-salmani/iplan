@@ -260,7 +260,9 @@ impl TaskRow {
             }
         }
 
+        let task_name = task.name();
         self.set_task(task);
+        imp.name_entry.buffer().set_text(&task_name);
         if !self.compact() {
             self.reset_subtasks();
         }
@@ -383,23 +385,6 @@ impl TaskRow {
             .invert_boolean()
             .build();
 
-        task.bind_property("name", &imp.name_entry.get(), "text")
-            .transform_from(|binding, text: &str| {
-                let name_entry = binding.target().and_downcast::<gtk::Entry>().unwrap();
-                let task = binding.source().and_downcast::<Task>().unwrap();
-                let task = task.duplicate();
-
-                task.set_name(text);
-                update_task(&task).unwrap();
-                name_entry
-                    .activate_action("task.changed", Some(&task.to_variant()))
-                    .unwrap();
-
-                Some(text)
-            })
-            .bidirectional()
-            .build();
-
         self.connect_hide_move_arrows_notify(|obj| {
             let imp = obj.imp();
             let visible = !obj.hide_move_arrows();
@@ -428,6 +413,20 @@ impl TaskRow {
     }
 
     #[template_callback]
+    fn handle_name_entry_changed(&self, entry: gtk::Entry) {
+        let task = self.task();
+        let text = entry.text();
+
+        if text == task.name() {
+            return;
+        }
+
+        task.set_name(text);
+        self.activate_action("task.changed", Some(&task.to_variant()))
+            .unwrap();
+    }
+
+    #[template_callback]
     fn handle_name_entry_activate(&self, _entry: gtk::Entry) {
         self.imp().name_button.set_visible(true);
     }
@@ -440,7 +439,7 @@ impl TaskRow {
     fn cancel_edit_name(&self) {
         let imp = self.imp();
         let name = self.backup_task_name();
-        imp.name_entry.set_text(&name);
+        imp.name_entry.buffer().set_text(&name);
         imp.name_button.set_visible(true);
     }
 
