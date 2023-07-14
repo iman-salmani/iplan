@@ -83,12 +83,7 @@ impl SidebarProjects {
     }
 
     pub fn update_project(&self, project: &Project) {
-        let row = self
-            .imp()
-            .projects_box
-            .row_at_index(project.index())
-            .and_downcast::<ProjectRow>()
-            .unwrap();
+        let row = self.project_row_by_id(project.id()).unwrap();
         let row_imp = row.imp();
         row_imp.icon_label.set_label(&project.icon());
         row_imp.name_label.set_label(&project.name());
