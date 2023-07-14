@@ -208,6 +208,7 @@ impl TaskRow {
                 imp.body.set_visible(false);
             } else {
                 imp.description.set_label(task_description);
+                imp.description.set_tooltip_text(Some(task_description));
                 imp.body.set_visible(true);
             }
 
