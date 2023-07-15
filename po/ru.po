@@ -545,7 +545,7 @@ msgstr "Нет Даты"
 
 #: src/ui/task/task_row.ui:223 src/views/task/task_row.rs:316
 msgid "Start _Timer"
-msgstr "Запустить _ Таймер"
+msgstr "Запустить _Таймер"
 
 #: src/ui/task/task_row.ui:232
 msgid "Move Up"
