@@ -343,7 +343,7 @@ msgstr "Ana Menü"
 
 #: src/ui/window.ui:90
 msgid "_Preferences"
-msgstr "_ Tercihler"
+msgstr "_Tercihler"
 
 #: src/ui/window.ui:94
 msgid "_Backup"
