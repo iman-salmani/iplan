@@ -647,8 +647,8 @@ msgid "\"{}\" moved to the done tasks list"
 msgstr "Задача \"{}\" перемещена в список выполненных задач"
 
 #: src/views/project/section_box.rs:73 src/views/task/task_row.rs:541
-msgid "Отменить"
-msgstr ""
+msgid "Undo"
+msgstr "Отменить"
 
 #: src/views/project/section_box.rs:255
 msgid "Delete \"{}\" section?"
