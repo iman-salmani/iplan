@@ -1,0 +1,707 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the iplan package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: iplan\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-07-07 21:11+0330\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: data/ir.imansalmani.IPlan.desktop.in:3
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:6 src/ui/window.ui:28
+msgid "IPlan"
+msgstr ""
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:7
+msgid "Your plan for improving personal life and workflow"
+msgstr "Ваш план по улучшению личной жизни и рабочего процесса"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:9
+msgid ""
+"IPlan goal is to be a user friendly tool for those who want to organize "
+"their personal life or jobs."
+msgstr ""
+"Цель IPlan - стать удобным инструментом для тех, кто хочет организовать"
+"свою личную жизнь или работу."
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:10
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:172
+msgid "Features:"
+msgstr "Функции"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:12
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:174
+msgid "Grouping tasks with project and list"
+msgstr "Группировка задач по проекту и списку"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:13
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:175
+msgid "Timer for tasks"
+msgstr "Таймер для выполненяемых задач"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:14 src/ui/task/task_page.ui:74
+#: src/ui/task/task_page.ui:90
+msgid "Subtasks"
+msgstr "Подзадачи"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:15
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:124
+msgid "Calendar for Exploring tasks by date"
+msgstr "Календарь для просмотра задач по дате"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:16
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:176
+msgid "Global search"
+msgstr "Глобальный поиск"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:17
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:177
+msgid "Arranging projects, lists, and tasks by drag and drop"
+msgstr "Упорядочивание проектов, списков и задач с помощью перетаскивания"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:22
+msgid "The IPlan main window"
+msgstr "Главное окно IPlan"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:26
+msgid "Task window"
+msgstr "Окно задач"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:30 src/ui/window.ui:49
+#: src/ui/window.ui:107
+msgid "Calendar"
+msgstr "Календарь"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:34
+msgid "The IPlan main window (dark mode)"
+msgstr "Главное окно IPlan (Темный режим)"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:38
+msgid "The IPlan main window (small size)"
+msgstr "Главное окно IPlan (малый размер окна)"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:45
+msgid "Iman Salmani"
+msgstr "Iman Salmani"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:65
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:77
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:90
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:105
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:121
+msgid "New features and updates"
+msgstr "Новые функции и обновления"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:67
+msgid "Move up and down option for tasks rows"
+msgstr "Возможность перемещения вверх и вниз по строкам задач"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:68
+msgid "Fade effect for moving between projects"
+msgstr "Эффект затухания для перехода между проектами"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:69
+msgid "Improve date format"
+msgstr "Улучшить формат даты"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:70
+msgid ""
+"Popovers aligned and calendar navigation buttons width reduced, to fit in "
+"phone"
+msgstr ""
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:71
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:84
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:99
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:115
+msgid "Code refactoring, Bug fixes, and UI improvements"
+msgstr ""
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:79
+msgid "Chart of Time spent in last 7 days"
+msgstr "График времени, затраченного за последние 7 дней"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:80
+msgid "Record delete button moved to record row"
+msgstr ""
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:81
+msgid "Improve usability for the phone form factor"
+msgstr ""
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:82
+msgid "Option to disable run in background"
+msgstr "Опция отключения запуска в фоновом режиме"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:83
+msgid "Improve duration format"
+msgstr ""
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:92
+msgid "New design for drag and drop"
+msgstr ""
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:93
+msgid "New Project create window"
+msgstr ""
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:94
+msgid "Close windows with escape key"
+msgstr ""
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:95
+msgid "Scroll while dragging task"
+msgstr ""
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:96
+msgid "Add task inside calendar page"
+msgstr ""
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:97
+msgid "Drop task on each other"
+msgstr ""
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:98
+msgid "Rename tasks list to section"
+msgstr ""
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:107
+msgid "The task row shows the description, subtasks, due date, and reminder"
+msgstr ""
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:108
+msgid "New design for task rows"
+msgstr ""
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:109
+msgid "Add task button below tasks list"
+msgstr ""
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:110
+msgid "One week per calendar page"
+msgstr ""
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:111
+msgid "Today and No Date buttons on top of the date picker"
+msgstr ""
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:112
+msgid "Click on a searched task will open the task window"
+msgstr ""
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:113
+msgid ""
+"Auto start (if the user lets the app run in the background) and checking for "
+"reminders in the startup"
+msgstr ""
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:114
+msgid ""
+"Czech and French and Brazilian Portuguese Translations Added or updated "
+"thanks to Amerey.eu, Irénée Thirion, and Fúlvio Leo"
+msgstr ""
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:123
+msgid "Backing up system"
+msgstr ""
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:125
+msgid ""
+"Tasks can have date and reminders (Application will remain in background for "
+"handling reminders)"
+msgstr ""
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:126
+msgid "When a task doesn't have record, Timer button will move to options"
+msgstr ""
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:127
+msgid "Record edit window"
+msgstr ""
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:128
+msgid "Now users able to edit record duration by changing start time"
+msgstr ""
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:129
+msgid "Bug fixes, and UI improvements"
+msgstr ""
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:135
+msgid "Bug fix"
+msgstr ""
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:140
+msgid "Code refactoring, and UI improvements"
+msgstr ""
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:142
+msgid "New widgets for selecting Date and Time"
+msgstr ""
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:143
+msgid "Changing duration of the new record by setting end time"
+msgstr ""
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:144
+msgid "Add Brazilian Portuguese Translation thanks to Fúlvio Leo"
+msgstr ""
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:150
+msgid "Subtasks, Bug fixes, and UI improvements"
+msgstr ""
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:152
+msgid "Task Window which contains task info, subtasks, and records"
+msgstr ""
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:153
+msgid "Translation to Persian and Turkish languages thanks to Sabri Ünal"
+msgstr ""
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:154
+msgid "New toast message for moving back task from the tasks done list"
+msgstr ""
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:155
+msgid "Users are now able to pick emojis for their projects in the edit window"
+msgstr ""
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:156
+msgid "Projects and Tasks now can have descriptions"
+msgstr ""
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:162
+msgid "Performance improvement and records window"
+msgstr ""
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:164
+msgid "Lazy loading for project tasks and stat"
+msgstr ""
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:165
+msgid "Records window for creating, editing, and deleting records"
+msgstr ""
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:171
+msgid "First stable release."
+msgstr ""
+
+#: src/ui/window.ui:120
+msgid "Main Menu"
+msgstr "Главное меню"
+
+#: src/ui/window.ui:141 src/ui/snippets/date_row.ui:26
+#: src/db/models/task.rs:124 src/views/calendar/tasks_list.rs:109
+msgid "Today"
+msgstr "Сегодня"
+
+#: src/ui/window.ui:179
+msgid "New _Section"
+msgstr "Новый _Раздел"
+
+#: src/ui/window.ui:183
+msgid "_Edit Project"
+msgstr "_Редактировать Проект"
+
+#: src/ui/window.ui:189 src/ui/window.ui:211
+msgid "_Preferences"
+msgstr ""
+
+#: src/ui/window.ui:193 src/ui/window.ui:215
+msgid "_Backup"
+msgstr "_Резервная копия"
+
+#: src/ui/window.ui:197 src/ui/window.ui:219
+msgid "_Keyboard Shortcuts"
+msgstr "_Комбинации клавиш"
+
+#: src/ui/window.ui:201 src/ui/window.ui:223
+msgid "_About IPlan"
+msgstr "_О приложении"
+
+#: src/ui/preferences_window.ui:17
+msgid "Run in Background"
+msgstr ""
+
+#: src/ui/preferences_window.ui:18
+msgid "Allow send reminders when the app is closed"
+msgstr ""
+
+#: src/ui/shortcuts_window.ui:13
+msgctxt "shortcut window"
+msgid "Application"
+msgstr ""
+
+#: src/ui/shortcuts_window.ui:16
+msgctxt "shortcut window"
+msgid "Preferences"
+msgstr ""
+
+#: src/ui/shortcuts_window.ui:23
+msgctxt "shortcut window"
+msgid "Keyboard Shortcuts"
+msgstr "Комбинации клавиш"
+
+#: src/ui/shortcuts_window.ui:30
+msgctxt "shortcut window"
+msgid "Primary Menu"
+msgstr "Главное меню"
+
+#: src/ui/shortcuts_window.ui:36
+msgctxt "shortcut window"
+msgid "Quit"
+msgstr "Выйти"
+
+#: src/ui/shortcuts_window.ui:45
+msgctxt "shortcut window"
+msgid "Tasks"
+msgstr "Задачи"
+
+#: src/ui/shortcuts_window.ui:48
+msgctxt "shortcut window"
+msgid "Search"
+msgstr "Поиск"
+
+#: src/ui/backup_window.ui:19
+msgid "Backup"
+msgstr "Резервная копия"
+
+#: src/ui/backup_window.ui:35 src/views/backup_window.rs:62
+msgid "Export"
+msgstr "Экспорт"
+
+#: src/ui/backup_window.ui:47
+msgid "Data folder path"
+msgstr ""
+
+#: src/ui/backup_window.ui:48
+msgid "Add this path to your backup application"
+msgstr ""
+
+#: src/ui/backup_window.ui:68 src/views/backup_window.rs:98
+msgid "Import"
+msgstr "Импорт"
+
+#: src/ui/backup_window.ui:69
+msgid "While importing, previous data will be cached"
+msgstr ""
+
+#: src/ui/calendar/calendar.ui:17
+msgid "Previous week"
+msgstr "Предыдущая неделя"
+
+#: src/ui/calendar/calendar.ui:35
+msgid "Next week"
+msgstr "Следующая неделя"
+
+#: src/ui/project/project_create_window.ui:16
+msgid "New Project"
+msgstr "Новый проект"
+
+#: src/ui/project/project_create_window.ui:24 src/ui/record/record_window.ui:26
+#: src/ui/reminder/reminder_window.ui:25
+msgid "Cancel"
+msgstr "Отменить"
+
+#: src/ui/project/project_create_window.ui:30
+msgid "Add"
+msgstr "Добавить"
+
+#: src/ui/project/project_create_window.ui:62
+#: src/ui/project/project_edit_window.ui:50
+msgid "Name"
+msgstr "Имя"
+
+#: src/ui/project/project_create_window.ui:69
+#: src/ui/project/project_edit_window.ui:57
+msgid "Icon"
+msgstr "Иконка"
+
+#: src/ui/project/project_create_window.ui:88
+#: src/ui/project/project_edit_window.ui:76 src/ui/task/task_page.ui:45
+msgid "Description"
+msgstr "Описание"
+
+#: src/ui/project/project_edit_window.ui:16
+msgid "Edit Project"
+msgstr "Редактировать Проект"
+
+#: src/ui/project/project_edit_window.ui:104
+msgid "Archive"
+msgstr "Архивировать"
+
+#: src/ui/project/project_edit_window.ui:115
+msgid "Delete"
+msgstr "Удалить"
+
+#: src/ui/project/project_header.ui:108
+msgid "Time spent"
+msgstr ""
+
+#: src/ui/project/project_header.ui:141
+msgid "Time spent per day"
+msgstr ""
+
+#: src/ui/project/project_page.ui:34
+msgid "no sections found"
+msgstr ""
+
+#: src/ui/project/project_page.ui:63
+msgid "New section"
+msgstr "Новый раздел"
+
+#: src/ui/project/section_box.ui:49 src/ui/task/tasks_box.ui:47
+msgid "Add task"
+msgstr "Добавить задачу"
+
+#: src/ui/project/section_box.ui:79
+msgid "Done tasks"
+msgstr "Завершенные задачи"
+
+#: src/ui/project/section_box.ui:90
+msgid "Delete section"
+msgstr "Удалить раздел"
+
+#: src/ui/record/record_window.ui:18 src/ui/task/task_page.ui:167
+msgid "New Record"
+msgstr "Новая запись"
+
+#: src/ui/record/record_window.ui:32 src/ui/reminder/reminder_window.ui:31
+msgid "Done"
+msgstr "Завершено"
+
+#: src/ui/record/record_window.ui:49
+msgid "Starts"
+msgstr "Начало"
+
+#: src/ui/record/record_window.ui:52 src/ui/record/record_window.ui:71
+#: src/ui/reminder/reminder_window.ui:50
+msgid "Date"
+msgstr "Дата"
+
+#: src/ui/record/record_window.ui:59 src/ui/record/record_window.ui:78
+#: src/ui/reminder/reminder_window.ui:56
+msgid "Time"
+msgstr "Время"
+
+#: src/ui/record/record_window.ui:68
+msgid "Ends"
+msgstr "Конец"
+
+#: src/ui/record/record_window.ui:87
+msgid "Duration"
+msgstr "Продолжительность"
+
+#: src/ui/reminder/reminder_window.ui:17
+msgid "Reminder"
+msgstr "Напоминание"
+
+#: src/ui/reminder/reminder_window.ui:67
+msgid "delete"
+msgstr "удалить"
+
+#: src/ui/search/search_window.ui:18
+msgid "Search"
+msgstr "Поиск"
+
+#: src/ui/search/search_window.ui:55
+msgid "no results found"
+msgstr "результатов не найдено"
+
+#: src/ui/sidebar/sidebar_projects.ui:14
+msgid "Projects"
+msgstr "Проекты"
+
+#: src/ui/sidebar/sidebar_projects.ui:33
+msgid "Show archive projects"
+msgstr "Показать архивированные проекты"
+
+#: src/ui/sidebar/sidebar_projects.ui:40
+msgid "New project"
+msgstr "Новый проект"
+
+#: src/ui/snippets/delete_dialog.ui:13
+msgid "_Cancel"
+msgstr "_Отменить"
+
+#: src/ui/snippets/delete_dialog.ui:14
+msgid "_Delete"
+msgstr "_Удалить"
+
+#: src/ui/snippets/date_row.ui:40
+msgid "No Date"
+msgstr "Нет Даты"
+
+#: src/ui/task/task_row.ui:223 src/views/task/task_row.rs:316
+msgid "Start _Timer"
+msgstr "Запустить _ Таймер"
+
+#: src/ui/task/task_row.ui:232
+msgid "Move Up"
+msgstr "Переместить вверх"
+
+#: src/ui/task/task_row.ui:240
+msgid "Move Down"
+msgstr "Переместить вниз"
+
+#: src/ui/task/task_row.ui:251
+msgid "_Delete Task"
+msgstr "_Удалить Задачу"
+
+#: src/ui/task/task_page.ui:26
+msgid "Due date"
+msgstr "Срок выполнения"
+
+#: src/ui/task/task_page.ui:32
+msgid "Reminders"
+msgstr "Напоминания"
+
+#: src/ui/task/task_page.ui:95
+msgid "Records"
+msgstr "Записи"
+
+#: src/ui/task/tasks_box.ui:78
+msgid "Add Task"
+msgstr "Добавить задачу"
+
+#: src/ui/task/tasks_done_window.ui:50
+msgid "no done tasks found"
+msgstr "Нет выполненных задач"
+
+#. Translators: Replace "translator-credits" with your names, one name per line
+#: src/application.rs:314
+msgid "translator-credits"
+msgstr ""
+
+#: src/application.rs:348 src/application.rs:384
+msgid "IPlan needs to run in the background to send reminders"
+msgstr "IPlan нужен запуск в фоновом режиме для отправки напоминаний"
+
+#: src/db/models/task.rs:126
+msgid "Tomorrow"
+msgstr "Завтра"
+
+#: src/db/models/record.rs:70
+msgid "day"
+msgstr "день"
+
+#: src/db/models/record.rs:72
+msgid "days"
+msgstr "дни"
+
+#: src/views/window.rs:111 src/views/window.rs:182
+msgid "Personal"
+msgstr "Личный"
+
+#: src/views/window.rs:113 src/views/window.rs:183
+#: src/views/project/project_create_window.rs:148
+msgid "Tasks"
+msgstr "Задачи"
+
+#: src/views/backup_window.rs:91
+msgid "Path copied!"
+msgstr "Путь скопирован!"
+
+#: src/views/backup_window.rs:111
+msgid "Error while caching previous data"
+msgstr "Ошибка при кэшировании предыдущих данных"
+
+#: src/views/backup_window.rs:114
+msgid "Error while importing data"
+msgstr "Ошибка при импорте данных"
+
+#: src/views/project/project_create_window.rs:140
+msgid "Project should have a name!"
+msgstr "Проект должен иметь имя!"
+
+#: src/views/project/project_edit_window.rs:153
+msgid "Delete \"{}\" project?"
+msgstr "Удалить \"{}\" проект?"
+
+#: src/views/project/project_edit_window.rs:156
+msgid "The project and its tasks will be permanently lost."
+msgstr "Проект и его задачи будут безвозвратно утеряны."
+
+#. Translators: {} Will be replaced with a shortcut label.
+#: src/views/project/project_page.rs:67
+msgid "Use the primary menu {} for adding a new section"
+msgstr "Используйте главное меню {} для добавления нового раздела"
+
+#: src/views/project/project_page.rs:206
+msgid "New Section"
+msgstr "Новый раздел"
+
+#: src/views/project/section_box.rs:71
+msgid "\"{}\" moved to the done tasks list"
+msgstr "Задача \"{}\" перемещена в список выполненных задач"
+
+#: src/views/project/section_box.rs:73 src/views/task/task_row.rs:541
+msgid "Отменить"
+msgstr ""
+
+#: src/views/project/section_box.rs:255
+msgid "Delete \"{}\" section?"
+msgstr "Удалить \"{}\" секцию?"
+
+#: src/views/project/section_box.rs:258
+msgid "The section and its tasks will be permanently lost."
+msgstr "Раздел и его задачи будут безвозвратно утеряны."
+
+#: src/views/record/record_row.rs:91
+msgid "until"
+msgstr "вместо"
+
+#: src/views/record/record_window.rs:120
+msgid "Edit Record"
+msgstr "Редактировать запись"
+
+#: src/views/record/record_window.rs:207
+msgid "Duration can't be 0"
+msgstr ""
+
+#: src/views/record/record_window.rs:215
+msgid "Record end time can't be in future"
+msgstr ""
+
+#: src/views/reminder/reminder_window.rs:111
+msgid "Time can't be in the past"
+msgstr "Время не может быть в прошлом"
+
+#: src/views/search/search_result.rs:71
+msgid "Project"
+msgstr "Проект"
+
+#: src/views/search/search_result.rs:82
+msgid "Task"
+msgstr "Задача"
+
+#: src/views/sidebar/sidebar_projects.rs:360
+msgid "Task moved to {}"
+msgstr "Задача перемещена в {}"
+
+#: src/views/sidebar/sidebar_projects.rs:374
+msgid "{} doesn't have any section"
+msgstr ""
+
+#: src/views/task/task_row.rs:240
+msgid "Inbox"
+msgstr "Входящие"
+
+#: src/views/task/task_row.rs:540
+msgid "\"{}\" is going to delete"
+msgstr "Задача \"{}\" была удалена"
+
+#: src/views/task/tasks_done_window.rs:99
+msgid "Done Tasks"
+msgstr "Завершенные задачи"
