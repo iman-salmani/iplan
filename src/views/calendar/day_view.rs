@@ -179,13 +179,6 @@ impl DayView {
         let win = self.root().and_downcast::<gtk::Window>().unwrap();
         let modal = TaskWindow::new(&win.application().unwrap(), &win, row.task());
         modal.present();
-        row.cancel_timer();
-        modal.connect_close_request(
-            glib::clone!(@weak row => @default-return gtk::Inhibit(false), move |_| {
-                row.reset_timer();
-                gtk::Inhibit(false)
-            }),
-        );
         modal.connect_closure(
             "task-changed",
             true,

@@ -240,7 +240,7 @@ impl IPlanApplication {
             active_window = self.active_window().unwrap();
         }
 
-        let modal = SearchWindow::new(self.upcast_ref::<gtk::Application>(), &active_window);
+        let modal = SearchWindow::new(self, &active_window);
         modal.present();
         modal.connect_closure(
             "project-activated",

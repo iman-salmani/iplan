@@ -715,10 +715,10 @@ impl TasksBox {
     #[template_callback]
     fn new_task(&self, _button: gtk::Button) {
         let task = self.create_empty_task();
-        let task_ui = self.create_task_row(task);
+        let task_row = self.create_task_row(task);
         let imp = self.imp();
-        imp.items_box.prepend(&task_ui);
-        let task_imp = task_ui.imp();
+        imp.items_box.prepend(&task_row);
+        let task_imp = task_row.imp();
         task_imp.name_button.set_visible(false);
         task_imp.name_entry.grab_focus();
     }
@@ -744,9 +744,9 @@ impl TasksBox {
                 .unwrap();
         }
 
-        let task_ui = self.create_task_row(task);
-        imp.items_box.append(&task_ui);
-        let task_imp = task_ui.imp();
+        let task_row = self.create_task_row(task);
+        imp.items_box.append(&task_row);
+        let task_imp = task_row.imp();
         task_imp.name_button.set_visible(false);
         task_imp.name_entry.grab_focus();
         let vadjustment = imp.scrolled_window.vadjustment();

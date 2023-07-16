@@ -477,8 +477,13 @@ impl TaskRow {
         }
     }
 
-    fn start_timer(&self, record: Record) {
+    pub fn start_timer(&self, record: Record) {
         let imp = self.imp();
+
+        if imp.timer_status.get() == TimerStatus::On {
+            return;
+        }
+
         let button: &MenuItem = imp.timer_button.as_ref();
         imp.timer_status.set(TimerStatus::On);
         button.add_css_class("destructive-action");
@@ -512,6 +517,7 @@ impl TaskRow {
                         let task = obj.task();
                         imp.timer_button.set_label(task.duration_display());
                         if obj.parent().is_some() {
+                            obj.activate_action("timer.stop", Some(&task.to_variant())).unwrap();
                             obj.activate_action("task.duration-changed", Some(&task.to_variant())).unwrap();
                         }
                         glib::Continue(false)
@@ -530,12 +536,20 @@ impl TaskRow {
     #[template_callback]
     fn handle_timer_button_clicked(&self, _button: &gtk::Button) {
         let task = self.task();
-        let record = task.incomplete_record().unwrap_or_else(|| {
-            create_record(glib::DateTime::now_local().unwrap().to_unix(), task.id(), 0)
-                .expect("Failed to create record")
-        });
         if self.imp().timer_status.get() != TimerStatus::On {
+            let record = task.incomplete_record().unwrap_or_else(|| {
+                create_record(glib::DateTime::now_local().unwrap().to_unix(), task.id(), 0).unwrap()
+            });
+            let record_variant = record.to_variant();
             self.start_timer(record);
+            self.activate_action(
+                "timer.start",
+                Some(&glib::Variant::from((
+                    self.task().to_variant(),
+                    record_variant,
+                ))),
+            )
+            .unwrap();
         } else {
             self.imp().timer_status.set(TimerStatus::Off);
         }

@@ -24,13 +24,13 @@ use gtk::glib::FromVariant;
 use gtk::{gdk, gio, glib, glib::Properties, prelude::*};
 use std::cell::{Cell, RefCell};
 
-use crate::db::models::{Project, Task};
+use crate::db::models::{Project, Record, Task};
 use crate::db::operations::{create_project, create_section, read_projects};
 use crate::views::project::{ProjectEditWindow, ProjectLayout, ProjectPage};
 use crate::views::snippets::MenuItem;
 use crate::views::{calendar::Calendar, sidebar::SidebarProjects};
 
-#[derive(PartialEq)]
+#[derive(PartialEq, Debug)]
 pub enum ActionScope {
     DeleteToast,
     Project(i64),
@@ -222,6 +222,46 @@ mod imp {
                             imp.calendar.refresh_parents_timers(task.parent());
                         }
                         _ => unimplemented!(),
+                    }
+                },
+            );
+            klass.install_action(
+                "timer.start",
+                Some(&format!(
+                    "({}{})",
+                    Task::static_variant_type().as_str(),
+                    Record::static_variant_type().as_str()
+                )),
+                |obj, _, value| {
+                    let (task, record): (Task, Record) = value.unwrap().get().unwrap();
+
+                    if let Some(project_page) = obj.project_by_id(task.project()) {
+                        if let Some(task_row) = project_page.task_row(&task) {
+                            task_row.start_timer(record.to_owned());
+                        }
+                    }
+
+                    let imp = obj.imp();
+                    if let Some((_, task_row)) = imp.calendar.task_row(task.id()) {
+                        task_row.start_timer(record)
+                    }
+                },
+            );
+            klass.install_action(
+                "timer.stop",
+                Some(&Task::static_variant_type().as_str()),
+                |obj, _, value| {
+                    let task: Task = value.unwrap().get().unwrap();
+
+                    if let Some(project_page) = obj.project_by_id(task.project()) {
+                        if let Some(task_row) = project_page.task_row(&task) {
+                            task_row.cancel_timer();
+                        }
+                    }
+
+                    let imp = obj.imp();
+                    if let Some((_, task_row)) = imp.calendar.task_row(task.id()) {
+                        task_row.cancel_timer()
                     }
                 },
             );

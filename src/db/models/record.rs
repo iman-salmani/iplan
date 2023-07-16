@@ -1,5 +1,10 @@
 use gettextrs::gettext;
-use gtk::{glib, glib::Properties, prelude::*, subclass::prelude::*};
+use gtk::{
+    glib,
+    glib::{FromVariant, Properties},
+    prelude::*,
+    subclass::prelude::*,
+};
 use rusqlite::{Error, Result, Row};
 use std::cell::Cell;
 
@@ -93,5 +98,24 @@ impl TryFrom<&Row<'_>> for Record {
 impl Default for Record {
     fn default() -> Self {
         Record::new(0, 0, 0, 1)
+    }
+}
+
+impl StaticVariantType for Record {
+    fn static_variant_type() -> std::borrow::Cow<'static, glib::VariantTy> {
+        std::borrow::Cow::from(glib::VariantTy::new("(xxxx)").unwrap())
+    }
+}
+
+impl ToVariant for Record {
+    fn to_variant(&self) -> glib::Variant {
+        glib::Variant::from((self.id(), self.start(), self.duration(), self.task()))
+    }
+}
+
+impl FromVariant for Record {
+    fn from_variant(variant: &glib::Variant) -> Option<Self> {
+        let (id, start, duration, task): (i64, i64, i64, i64) = variant.get()?;
+        Some(Record::new(id, start, duration, task))
     }
 }

@@ -4,7 +4,7 @@ use std::cell::Cell;
 use std::unimplemented;
 
 use crate::application::IPlanApplication;
-use crate::db::models::Task;
+use crate::db::models::{Record, Task};
 use crate::db::operations::read_task;
 use crate::views::task::{TaskPage, TasksDoneWindow};
 use crate::views::{ActionScope, IPlanWindow};
@@ -59,6 +59,40 @@ mod imp {
                 move |obj, _, value| {
                     let task: Task = value.unwrap().get().unwrap();
                     obj.emit_by_name::<()>("task-changed", &[&task]);
+                },
+            );
+            klass.install_action(
+                "timer.start",
+                Some(&format!(
+                    "({}{})",
+                    Task::static_variant_type().as_str(),
+                    Record::static_variant_type().as_str()
+                )),
+                move |obj, _, value| {
+                    let app = obj
+                        .application()
+                        .and_downcast::<IPlanApplication>()
+                        .unwrap();
+                    let main_win = app
+                        .window_by_name("IPlanWindow")
+                        .and_downcast::<IPlanWindow>()
+                        .unwrap();
+                    main_win.activate_action("timer.start", value).unwrap();
+                },
+            );
+            klass.install_action(
+                "timer.stop",
+                Some(&Task::static_variant_type().as_str()),
+                move |obj, _, value| {
+                    let app = obj
+                        .application()
+                        .and_downcast::<IPlanApplication>()
+                        .unwrap();
+                    let main_win = app
+                        .window_by_name("IPlanWindow")
+                        .and_downcast::<IPlanWindow>()
+                        .unwrap();
+                    main_win.activate_action("timer.stop", value).unwrap();
                 },
             );
         }

@@ -231,10 +231,8 @@ impl SectionBox {
         let win = self.root().and_downcast::<gtk::Window>().unwrap();
         let modal = TaskWindow::new(&win.application().unwrap(), &win, row.task());
         modal.present();
-        row.cancel_timer();
         modal.connect_close_request(
             glib::clone!(@weak row => @default-return gtk::Inhibit(false), move |_| {
-                row.reset_timer();
                 let task = row.task();
                 if task.done() {
                     tasks_box.remove(&row);

@@ -80,7 +80,11 @@ glib::wrapper! {
 
 #[gtk::template_callbacks]
 impl SearchWindow {
-    pub fn new(application: &gtk::Application, app_window: &gtk::Window) -> Self {
+    pub fn new<A, W>(application: &A, app_window: &W) -> Self
+    where
+        A: glib::IsA<gtk::Application>,
+        W: glib::IsA<gtk::Window>,
+    {
         let win: Self = glib::Object::builder()
             .property("application", application)
             .build();

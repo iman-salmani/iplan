@@ -312,6 +312,18 @@ impl Calendar {
         }
     }
 
+    pub fn task_row(&self, task_id: i64) -> Option<(DayView, TaskRow)> {
+        let imp = self.imp();
+        let days_views = imp.days_box.observe_children();
+        for i in 0..days_views.n_items() {
+            let day_view = days_views.item(i).and_downcast::<DayView>().unwrap();
+            if let Some(row) = day_view.task_row(task_id) {
+                return Some((day_view, row));
+            }
+        }
+        None
+    }
+
     fn init_widgets(&self) {
         let imp = self.imp();
         let today = self.today_datetime();
@@ -442,18 +454,6 @@ impl Calendar {
                 }
             }
         }));
-    }
-
-    fn task_row(&self, task_id: i64) -> Option<(DayView, TaskRow)> {
-        let imp = self.imp();
-        let days_views = imp.days_box.observe_children();
-        for i in 0..days_views.n_items() {
-            let day_view = days_views.item(i).and_downcast::<DayView>().unwrap();
-            if let Some(row) = day_view.task_row(task_id) {
-                return Some((day_view, row));
-            }
-        }
-        None
     }
 
     fn day_view_by_date(&self, date: glib::DateTime) -> Option<DayView> {
