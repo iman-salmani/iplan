@@ -437,6 +437,7 @@ impl TaskRow {
         }
 
         task.set_name(text);
+        update_task(&task).unwrap();
         self.activate_action("task.changed", Some(&task.to_variant()))
             .unwrap();
     }
