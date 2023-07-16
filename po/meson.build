@@ -1,1 +1,1 @@
-i18n.gettext('iplan', preset: 'glib')
+i18n.gettext('iplan', preset: 'glib', args: ['--check=ellipsis-unicode', '--check=space-ellipsis', '--check=quote-unicode', '--check=bullet-unicode'])

@@ -3,10 +3,10 @@
   <id>ir.imansalmani.IPlan</id>
   <metadata_license>CC0-1.0</metadata_license>
   <project_license>GPL-3.0-or-later</project_license>
-  <name>IPlan</name>
+  <name translatable="no">IPlan</name>
   <summary>Your plan for improving personal life and workflow</summary>
   <description>
-    <p>IPlan goal is to be a user friendly tool for those who want to organize their personal life or jobs.</p>
+    <p>IPlan goal is to be a user-friendly tool for those who want to organize their ether personal life, jobs, or both.</p>
     <p>Features:</p>
     <ul>
       <li>Grouping tasks with project and list</li>
@@ -61,7 +61,7 @@
   <content_rating type="oars-1.1" />
   <releases>
     <release version="1.9.0" date="2023-07-14">
-      <description>
+      <description translatable="no">
         <p>New features and updates</p>
         <ul>
           <li>Search button and Primary menu moved to sidebar</li>
@@ -75,12 +75,12 @@
       </description>
     </release>
     <release version="1.8.1" date="2023-07-07">
-      <description>
+      <description translatable="no">
         <p>Fix bug: Dont set position for new task in SectionBox::handle_new_button_clicked</p>
       </description>
     </release>
     <release version="1.8.0" date="2023-07-07">
-      <description>
+      <description translatable="no">
         <p>New features and updates</p>
         <ul>
           <li>Move up and down option for tasks rows</li>
@@ -92,7 +92,7 @@
       </description>
     </release>
     <release version="1.7.0" date="2023-06-30">
-      <description>
+      <description translatable="no">
         <p>New features and updates</p>
         <ul>
           <li>Chart of Time spent in last 7 days</li>
@@ -105,7 +105,7 @@
       </description>
     </release>
     <release version="1.6.0" date="2023-06-23">
-      <description>
+      <description translatable="no">
         <p>New features and updates</p>
         <ul>
           <li>New design for drag and drop</li>
@@ -120,7 +120,7 @@
       </description>
     </release>
     <release version="1.5.0" date="2023-06-16">
-      <description>
+      <description translatable="no">
         <p>New features and updates</p>
         <ul>
           <li>The task row shows the description, subtasks, due date, and reminder</li>
@@ -136,7 +136,7 @@
       </description>
     </release>
     <release version="1.4.0" date="2023-06-09">
-      <description>
+      <description translatable="no">
         <p>New features and updates</p>
         <ul>
           <li>Backing up system</li>
@@ -150,12 +150,12 @@
       </description>
     </release>
     <release version="1.3.1" date="2023-06-03">
-      <description>
+      <description translatable="no">
         <p>Bug fix</p>
       </description>
     </release>
     <release version="1.3.0" date="2023-06-02">
-      <description>
+      <description translatable="no">
         <p>Code refactoring, and UI improvements</p>
         <ul>
           <li>New widgets for selecting Date and Time</li>
@@ -165,7 +165,7 @@
       </description>
     </release>
     <release version="1.2.0" date="2023-05-26">
-      <description>
+      <description translatable="no">
         <p>Subtasks, Bug fixes, and UI improvements</p>
         <ul>
           <li>Task Window which contains task info, subtasks, and records</li>
@@ -177,7 +177,7 @@
       </description>
     </release>
     <release version="1.1.1" date="2023-05-19">
-      <description>
+      <description translatable="no">
         <p>Performance improvement and records window</p>
         <ul>
           <li>Lazy loading for project tasks and stat</li>
@@ -186,7 +186,7 @@
       </description>
     </release>
     <release version="1.0" date="2023-05-10">
-      <description>
+      <description translatable="no">
         <p>First stable release.</p>
         <p>Features:</p>
         <ul>

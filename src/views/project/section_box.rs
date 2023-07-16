@@ -77,8 +77,7 @@ mod imp {
                     }
                     let toast = adw::Toast::builder()
                         .title(
-                            gettext("\"{}\" moved to the done tasks list")
-                                .replace("{}", &toast_name),
+                            gettext("“{}” moved to the done tasks list").replace("{}", &toast_name),
                         )
                         .button_label(gettext("Undo"))
                         .build();
@@ -303,7 +302,7 @@ impl SectionBox {
                 .object::<adw::MessageDialog>("dialog")
                 .unwrap();
         dialog.set_transient_for(self.root().and_downcast::<gtk::Window>().as_ref());
-        let dialog_heading = gettext("Delete \"{}\" section?");
+        let dialog_heading = gettext("Delete “{}” section?");
         dialog.set_heading(Some(&dialog_heading.replace("{}", &self.section().name())));
         dialog.set_body(&gettext(
             "The section and its tasks will be permanently lost.",

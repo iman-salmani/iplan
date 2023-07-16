@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: iplan\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-07-14 23:50+0330\n"
+"POT-Creation-Date: 2023-07-16 16:42+0330\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,33 +17,30 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: data/ir.imansalmani.IPlan.desktop.in:3
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:6 src/ui/window.ui:28
+#: data/ir.imansalmani.IPlan.desktop.in:3 src/ui/window.ui:28
 msgid "IPlan"
 msgstr ""
 
+#: data/ir.imansalmani.IPlan.desktop.in:4
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:7
 msgid "Your plan for improving personal life and workflow"
 msgstr ""
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:9
 msgid ""
-"IPlan goal is to be a user friendly tool for those who want to organize "
-"their personal life or jobs."
+"IPlan goal is to be a user-friendly tool for those who want to organize "
+"their ether personal life, jobs, or both."
 msgstr ""
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:10
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:191
 msgid "Features:"
 msgstr ""
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:12
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:193
 msgid "Grouping tasks with project and list"
 msgstr ""
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:13
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:194
 msgid "Timer for tasks"
 msgstr ""
 
@@ -53,17 +50,14 @@ msgid "Subtasks"
 msgstr ""
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:15
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:143
 msgid "Calendar for Exploring tasks by date"
 msgstr ""
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:16
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:195
 msgid "Global search"
 msgstr ""
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:17
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:196
 msgid "Arranging projects, lists, and tasks by drag and drop"
 msgstr ""
 
@@ -90,242 +84,6 @@ msgstr ""
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:45
 msgid "Iman Salmani"
-msgstr ""
-
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:65
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:84
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:96
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:109
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:124
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:140
-msgid "New features and updates"
-msgstr ""
-
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:67
-msgid "Search button and Primary menu moved to sidebar"
-msgstr ""
-
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:68
-msgid "Navigation in calendar by scroll"
-msgstr ""
-
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:69
-msgid "Calendar Navigation buttons removed"
-msgstr ""
-
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:70
-msgid ""
-"Now task changes applies to other parts of UI too. instead of resetting them"
-msgstr ""
-
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:71
-msgid "Clickable URL Links in description"
-msgstr ""
-
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:72
-msgid "ctrl + w shortcut for closing window"
-msgstr ""
-
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:73
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:90
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:103
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:118
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:134
-msgid "Code refactoring, Bug fixes, and UI improvements"
-msgstr ""
-
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:79
-msgid ""
-"Fix bug: Dont set position for new task in SectionBox::"
-"handle_new_button_clicked"
-msgstr ""
-
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:86
-msgid "Move up and down option for tasks rows"
-msgstr ""
-
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:87
-msgid "Fade effect for moving between projects"
-msgstr ""
-
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:88
-msgid "Improve date format"
-msgstr ""
-
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:89
-msgid ""
-"Popovers aligned and calendar navigation buttons width reduced, to fit in "
-"phone"
-msgstr ""
-
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:98
-msgid "Chart of Time spent in last 7 days"
-msgstr ""
-
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:99
-msgid "Record delete button moved to record row"
-msgstr ""
-
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:100
-msgid "Improve usability for the phone form factor"
-msgstr ""
-
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:101
-msgid "Option to disable run in background"
-msgstr ""
-
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:102
-msgid "Improve duration format"
-msgstr ""
-
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:111
-msgid "New design for drag and drop"
-msgstr ""
-
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:112
-msgid "New Project create window"
-msgstr ""
-
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:113
-msgid "Close windows with escape key"
-msgstr ""
-
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:114
-msgid "Scroll while dragging task"
-msgstr ""
-
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:115
-msgid "Add task inside calendar page"
-msgstr ""
-
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:116
-msgid "Drop task on each other"
-msgstr ""
-
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:117
-msgid "Rename tasks list to section"
-msgstr ""
-
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:126
-msgid "The task row shows the description, subtasks, due date, and reminder"
-msgstr ""
-
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:127
-msgid "New design for task rows"
-msgstr ""
-
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:128
-msgid "Add task button below tasks list"
-msgstr ""
-
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:129
-msgid "One week per calendar page"
-msgstr ""
-
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:130
-msgid "Today and No Date buttons on top of the date picker"
-msgstr ""
-
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:131
-msgid "Click on a searched task will open the task window"
-msgstr ""
-
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:132
-msgid ""
-"Auto start (if the user lets the app run in the background) and checking for "
-"reminders in the startup"
-msgstr ""
-
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:133
-msgid ""
-"Czech and French and Brazilian Portuguese Translations Added or updated "
-"thanks to Amerey.eu, Irénée Thirion, and Fúlvio Leo"
-msgstr ""
-
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:142
-msgid "Backing up system"
-msgstr ""
-
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:144
-msgid ""
-"Tasks can have date and reminders (Application will remain in background for "
-"handling reminders)"
-msgstr ""
-
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:145
-msgid "When a task doesn't have record, Timer button will move to options"
-msgstr ""
-
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:146
-msgid "Record edit window"
-msgstr ""
-
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:147
-msgid "Now users able to edit record duration by changing start time"
-msgstr ""
-
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:148
-msgid "Bug fixes, and UI improvements"
-msgstr ""
-
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:154
-msgid "Bug fix"
-msgstr ""
-
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:159
-msgid "Code refactoring, and UI improvements"
-msgstr ""
-
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:161
-msgid "New widgets for selecting Date and Time"
-msgstr ""
-
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:162
-msgid "Changing duration of the new record by setting end time"
-msgstr ""
-
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:163
-msgid "Add Brazilian Portuguese Translation thanks to Fúlvio Leo"
-msgstr ""
-
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:169
-msgid "Subtasks, Bug fixes, and UI improvements"
-msgstr ""
-
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:171
-msgid "Task Window which contains task info, subtasks, and records"
-msgstr ""
-
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:172
-msgid "Translation to Persian and Turkish languages thanks to Sabri Ünal"
-msgstr ""
-
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:173
-msgid "New toast message for moving back task from the tasks done list"
-msgstr ""
-
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:174
-msgid "Users are now able to pick emojis for their projects in the edit window"
-msgstr ""
-
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:175
-msgid "Projects and Tasks now can have descriptions"
-msgstr ""
-
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:181
-msgid "Performance improvement and records window"
-msgstr ""
-
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:183
-msgid "Lazy loading for project tasks and stat"
-msgstr ""
-
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:184
-msgid "Records window for creating, editing, and deleting records"
-msgstr ""
-
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:190
-msgid "First stable release."
 msgstr ""
 
 #: src/ui/window.ui:42 src/ui/project/project_page.ui:28
@@ -648,7 +406,7 @@ msgid "Project should have a name!"
 msgstr ""
 
 #: src/views/project/project_edit_window.rs:157
-msgid "Delete \"{}\" project?"
+msgid "Delete “{}” project?"
 msgstr ""
 
 #: src/views/project/project_edit_window.rs:160
@@ -665,18 +423,18 @@ msgid "New Section"
 msgstr ""
 
 #: src/views/project/section_box.rs:80
-msgid "\"{}\" moved to the done tasks list"
+msgid "“{}” moved to the done tasks list"
 msgstr ""
 
-#: src/views/project/section_box.rs:83 src/views/task/task_row.rs:553
+#: src/views/project/section_box.rs:82 src/views/task/task_row.rs:553
 msgid "Undo"
 msgstr ""
 
-#: src/views/project/section_box.rs:306
-msgid "Delete \"{}\" section?"
+#: src/views/project/section_box.rs:305
+msgid "Delete “{}” section?"
 msgstr ""
 
-#: src/views/project/section_box.rs:309
+#: src/views/project/section_box.rs:308
 msgid "The section and its tasks will be permanently lost."
 msgstr ""
 
@@ -721,7 +479,7 @@ msgid "Inbox"
 msgstr ""
 
 #: src/views/task/task_row.rs:552
-msgid "\"{}\" is going to delete"
+msgid "“{}” is going to delete"
 msgstr ""
 
 #: src/views/task/tasks_done_window.rs:110

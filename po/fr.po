@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: iplan\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-07-14 23:50+0330\n"
+"POT-Creation-Date: 2023-07-16 16:42+0330\n"
 "PO-Revision-Date: 2023-06-11 20:32+0200\n"
 "Last-Translator: Irénée Thirion <irenee.thirion@e.email>\n"
 "Language-Team: \n"
@@ -17,35 +17,33 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 3.3.1\n"
 
-#: data/ir.imansalmani.IPlan.desktop.in:3
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:6 src/ui/window.ui:28
+#: data/ir.imansalmani.IPlan.desktop.in:3 src/ui/window.ui:28
 msgid "IPlan"
 msgstr "IPlan"
 
+#: data/ir.imansalmani.IPlan.desktop.in:4
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:7
 msgid "Your plan for improving personal life and workflow"
 msgstr "Votre programme pour faciliter votre vie personnelle et vos activités"
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:9
+#, fuzzy
 msgid ""
-"IPlan goal is to be a user friendly tool for those who want to organize "
-"their personal life or jobs."
+"IPlan goal is to be a user-friendly tool for those who want to organize "
+"their ether personal life, jobs, or both."
 msgstr ""
 "L’objectif de IPlan est d’être un outil simple d’utilisation pour ceux qui "
 "souhaitent organiser leur vie personnelle ou leur travail."
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:10
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:191
 msgid "Features:"
 msgstr "Fonctionnalités :"
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:12
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:193
 msgid "Grouping tasks with project and list"
 msgstr "Groupement des tâches par projets et listes"
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:13
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:194
 msgid "Timer for tasks"
 msgstr "Minuteur pour les tâches"
 
@@ -55,17 +53,14 @@ msgid "Subtasks"
 msgstr "Sous-tâches"
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:15
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:143
 msgid "Calendar for Exploring tasks by date"
 msgstr "Calendrier pour parcourir les tâches par date"
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:16
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:195
 msgid "Global search"
 msgstr "Recherche globale"
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:17
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:196
 msgid "Arranging projects, lists, and tasks by drag and drop"
 msgstr "Réorganisation des projets, listes et tâches par le glisser-déposer"
 
@@ -93,261 +88,6 @@ msgstr "Fenêtre principale de IPlan (en taille réduite)"
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:45
 msgid "Iman Salmani"
 msgstr "Iman Salmani"
-
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:65
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:84
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:96
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:109
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:124
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:140
-msgid "New features and updates"
-msgstr "Nouvelles fonctionnalités et mises à jour"
-
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:67
-msgid "Search button and Primary menu moved to sidebar"
-msgstr ""
-
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:68
-msgid "Navigation in calendar by scroll"
-msgstr ""
-
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:69
-msgid "Calendar Navigation buttons removed"
-msgstr ""
-
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:70
-msgid ""
-"Now task changes applies to other parts of UI too. instead of resetting them"
-msgstr ""
-
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:71
-msgid "Clickable URL Links in description"
-msgstr ""
-
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:72
-msgid "ctrl + w shortcut for closing window"
-msgstr ""
-
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:73
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:90
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:103
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:118
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:134
-#, fuzzy
-msgid "Code refactoring, Bug fixes, and UI improvements"
-msgstr "Refonte du code et améliorations de l’interface"
-
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:79
-msgid ""
-"Fix bug: Dont set position for new task in SectionBox::"
-"handle_new_button_clicked"
-msgstr ""
-
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:86
-msgid "Move up and down option for tasks rows"
-msgstr ""
-
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:87
-msgid "Fade effect for moving between projects"
-msgstr ""
-
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:88
-msgid "Improve date format"
-msgstr ""
-
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:89
-msgid ""
-"Popovers aligned and calendar navigation buttons width reduced, to fit in "
-"phone"
-msgstr ""
-
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:98
-msgid "Chart of Time spent in last 7 days"
-msgstr ""
-
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:99
-msgid "Record delete button moved to record row"
-msgstr ""
-
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:100
-msgid "Improve usability for the phone form factor"
-msgstr ""
-
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:101
-msgid "Option to disable run in background"
-msgstr ""
-
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:102
-msgid "Improve duration format"
-msgstr ""
-
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:111
-msgid "New design for drag and drop"
-msgstr ""
-
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:112
-#, fuzzy
-msgid "New Project create window"
-msgstr "Nouveau projet"
-
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:113
-msgid "Close windows with escape key"
-msgstr ""
-
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:114
-#, fuzzy
-msgid "Scroll while dragging task"
-msgstr "Erreur lors de l’importation des données"
-
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:115
-msgid "Add task inside calendar page"
-msgstr ""
-
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:116
-msgid "Drop task on each other"
-msgstr ""
-
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:117
-msgid "Rename tasks list to section"
-msgstr ""
-
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:126
-msgid "The task row shows the description, subtasks, due date, and reminder"
-msgstr ""
-
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:127
-msgid "New design for task rows"
-msgstr ""
-
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:128
-msgid "Add task button below tasks list"
-msgstr ""
-
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:129
-msgid "One week per calendar page"
-msgstr ""
-
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:130
-msgid "Today and No Date buttons on top of the date picker"
-msgstr ""
-
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:131
-msgid "Click on a searched task will open the task window"
-msgstr ""
-
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:132
-msgid ""
-"Auto start (if the user lets the app run in the background) and checking for "
-"reminders in the startup"
-msgstr ""
-
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:133
-#, fuzzy
-msgid ""
-"Czech and French and Brazilian Portuguese Translations Added or updated "
-"thanks to Amerey.eu, Irénée Thirion, and Fúlvio Leo"
-msgstr "Ajout d’une traduction en portugais brésilien grâce à Fúlvio Leo"
-
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:142
-msgid "Backing up system"
-msgstr "Système de sauvegarde"
-
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:144
-msgid ""
-"Tasks can have date and reminders (Application will remain in background for "
-"handling reminders)"
-msgstr ""
-"Les tâches peuvent avoir une date et des rappels associés (l’application "
-"continuera de fonctionner en arrière-plan pour gérer les rappels)"
-
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:145
-msgid "When a task doesn't have record, Timer button will move to options"
-msgstr ""
-"Lorsqu’une tâche n’a pas de chronomètre, le bouton du minuteur sera dans les "
-"options"
-
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:146
-msgid "Record edit window"
-msgstr "Fenêtre de modification du chronomètre"
-
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:147
-msgid "Now users able to edit record duration by changing start time"
-msgstr ""
-"L’utilisateur peut maintenant modifier la durée du chronomètre en changeant "
-"l’heure de début"
-
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:148
-msgid "Bug fixes, and UI improvements"
-msgstr "Corrections de bogues et améliorations de l’interface"
-
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:154
-msgid "Bug fix"
-msgstr "Correction de bogues"
-
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:159
-msgid "Code refactoring, and UI improvements"
-msgstr "Refonte du code et améliorations de l’interface"
-
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:161
-msgid "New widgets for selecting Date and Time"
-msgstr "Nouveaux widgets pour sélectionner la date et l’heure"
-
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:162
-msgid "Changing duration of the new record by setting end time"
-msgstr ""
-"Modification de la durée du nouveau chronomètre en définissant une heure de "
-"fin"
-
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:163
-msgid "Add Brazilian Portuguese Translation thanks to Fúlvio Leo"
-msgstr "Ajout d’une traduction en portugais brésilien grâce à Fúlvio Leo"
-
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:169
-msgid "Subtasks, Bug fixes, and UI improvements"
-msgstr "Sous-tâches, corrections de bogues et améliorations d’interface"
-
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:171
-msgid "Task Window which contains task info, subtasks, and records"
-msgstr ""
-"La fenêtre des tâches qui contient des informations sur les tâches, sous-"
-"tâches"
-
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:172
-msgid "Translation to Persian and Turkish languages thanks to Sabri Ünal"
-msgstr "Traduction en perse et en turque grâce à Sabri Ünal"
-
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:173
-msgid "New toast message for moving back task from the tasks done list"
-msgstr ""
-"Nouveau message pop-up lorsqu’une tâche est retirée de la liste des tâches "
-"accomplies"
-
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:174
-msgid "Users are now able to pick emojis for their projects in the edit window"
-msgstr ""
-"L’utilisateur peut maintenant choisir des émojis pour ses projets dans la "
-"fenêtre d’édition"
-
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:175
-msgid "Projects and Tasks now can have descriptions"
-msgstr "Les projets et tâches peuvent désormais avoir des descriptions"
-
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:181
-msgid "Performance improvement and records window"
-msgstr "Améliorations des performances et fenêtre des chronomètres"
-
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:183
-msgid "Lazy loading for project tasks and stat"
-msgstr "Chargement lent pour les tâches et statistiques des projets"
-
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:184
-msgid "Records window for creating, editing, and deleting records"
-msgstr ""
-"Fenêtre des chronomètres pour créer, modifier et supprimer les chronomètres"
-
-#: data/ir.imansalmani.IPlan.metainfo.xml.in:190
-msgid "First stable release."
-msgstr "Première version stable."
 
 #: src/ui/window.ui:42 src/ui/project/project_page.ui:28
 msgid "Main Menu"
@@ -378,6 +118,7 @@ msgid "Allow send reminders when the app is closed"
 msgstr ""
 
 #: src/ui/shortcuts_window.ui:13
+#, fuzzy
 msgctxt "shortcut window"
 msgid "Application"
 msgstr "Application"
@@ -388,16 +129,19 @@ msgid "Preferences"
 msgstr ""
 
 #: src/ui/shortcuts_window.ui:23
+#, fuzzy
 msgctxt "shortcut window"
 msgid "Keyboard Shortcuts"
 msgstr "Raccourcis clavier"
 
 #: src/ui/shortcuts_window.ui:30
+#, fuzzy
 msgctxt "shortcut window"
 msgid "Primary Menu"
 msgstr "Menu principal"
 
 #: src/ui/shortcuts_window.ui:36
+#, fuzzy
 msgctxt "shortcut window"
 msgid "Quit"
 msgstr "Quitter"
@@ -680,7 +424,8 @@ msgid "Project should have a name!"
 msgstr ""
 
 #: src/views/project/project_edit_window.rs:157
-msgid "Delete \"{}\" project?"
+#, fuzzy
+msgid "Delete “{}” project?"
 msgstr "Supprimer le projet « {} » ?"
 
 #: src/views/project/project_edit_window.rs:160
@@ -700,19 +445,19 @@ msgstr "Nouveau chronomètre"
 
 #: src/views/project/section_box.rs:80
 #, fuzzy
-msgid "\"{}\" moved to the done tasks list"
+msgid "“{}” moved to the done tasks list"
 msgstr "« {} » déplacé vers la liste des tâches accomplies"
 
-#: src/views/project/section_box.rs:83 src/views/task/task_row.rs:553
+#: src/views/project/section_box.rs:82 src/views/task/task_row.rs:553
 msgid "Undo"
 msgstr "Annuler"
 
-#: src/views/project/section_box.rs:306
+#: src/views/project/section_box.rs:305
 #, fuzzy
-msgid "Delete \"{}\" section?"
+msgid "Delete “{}” section?"
 msgstr "Supprimer la liste « {} » ?"
 
-#: src/views/project/section_box.rs:309
+#: src/views/project/section_box.rs:308
 #, fuzzy
 msgid "The section and its tasks will be permanently lost."
 msgstr "La liste et ses tâches seront définitivement perdues."
@@ -742,7 +487,7 @@ msgstr "L’heure ne peut être dans le passé"
 #: src/views/search/search_result.rs:71
 #, fuzzy
 msgid "project"
-msgstr "Projet"
+msgstr "Projets"
 
 #: src/views/search/search_result.rs:82
 #, fuzzy
@@ -763,12 +508,160 @@ msgid "Inbox"
 msgstr ""
 
 #: src/views/task/task_row.rs:552
-msgid "\"{}\" is going to delete"
+#, fuzzy
+msgid "“{}” is going to delete"
 msgstr "« {} » sera supprimée"
 
 #: src/views/task/tasks_done_window.rs:110
 msgid "Done Tasks"
 msgstr "Tâches accomplies"
+
+#~ msgid "New features and updates"
+#~ msgstr "Nouvelles fonctionnalités et mises à jour"
+
+#, fuzzy
+#~ msgid "Code refactoring, Bug fixes, and UI improvements"
+#~ msgstr "Refonte du code et améliorations de l’interface"
+
+#, fuzzy
+#~ msgid "New Project create window"
+#~ msgstr "Nouveau projet"
+
+#, fuzzy
+#~ msgid "Scroll while dragging task"
+#~ msgstr "Erreur lors de l’importation des données"
+
+#, fuzzy
+#~ msgid ""
+#~ "Czech and French and Brazilian Portuguese Translations Added or updated "
+#~ "thanks to Amerey.eu, Irénée Thirion, and Fúlvio Leo"
+#~ msgstr "Ajout d’une traduction en portugais brésilien grâce à Fúlvio Leo"
+
+#~ msgid "Backing up system"
+#~ msgstr "Système de sauvegarde"
+
+#~ msgid ""
+#~ "Tasks can have date and reminders (Application will remain in background "
+#~ "for handling reminders)"
+#~ msgstr ""
+#~ "Les tâches peuvent avoir une date et des rappels associés (l’application "
+#~ "continuera de fonctionner en arrière-plan pour gérer les rappels)"
+
+#~ msgid "When a task doesn't have record, Timer button will move to options"
+#~ msgstr ""
+#~ "Lorsqu’une tâche n’a pas de chronomètre, le bouton du minuteur sera dans "
+#~ "les options"
+
+#~ msgid "Record edit window"
+#~ msgstr "Fenêtre de modification du chronomètre"
+
+#~ msgid "Now users able to edit record duration by changing start time"
+#~ msgstr ""
+#~ "L’utilisateur peut maintenant modifier la durée du chronomètre en "
+#~ "changeant l’heure de début"
+
+#~ msgid "Bug fixes, and UI improvements"
+#~ msgstr "Corrections de bogues et améliorations de l’interface"
+
+#~ msgid "Bug fix"
+#~ msgstr "Correction de bogues"
+
+#~ msgid "Code refactoring, and UI improvements"
+#~ msgstr "Refonte du code et améliorations de l’interface"
+
+#~ msgid "New widgets for selecting Date and Time"
+#~ msgstr "Nouveaux widgets pour sélectionner la date et l’heure"
+
+#~ msgid "Changing duration of the new record by setting end time"
+#~ msgstr ""
+#~ "Modification de la durée du nouveau chronomètre en définissant une heure "
+#~ "de fin"
+
+#~ msgid "Add Brazilian Portuguese Translation thanks to Fúlvio Leo"
+#~ msgstr "Ajout d’une traduction en portugais brésilien grâce à Fúlvio Leo"
+
+#~ msgid "Subtasks, Bug fixes, and UI improvements"
+#~ msgstr "Sous-tâches, corrections de bogues et améliorations d’interface"
+
+#~ msgid "Task Window which contains task info, subtasks, and records"
+#~ msgstr ""
+#~ "La fenêtre des tâches qui contient des informations sur les tâches, sous-"
+#~ "tâches"
+
+#~ msgid "Translation to Persian and Turkish languages thanks to Sabri Ünal"
+#~ msgstr "Traduction en perse et en turque grâce à Sabri Ünal"
+
+#~ msgid "New toast message for moving back task from the tasks done list"
+#~ msgstr ""
+#~ "Nouveau message pop-up lorsqu’une tâche est retirée de la liste des "
+#~ "tâches accomplies"
+
+#~ msgid ""
+#~ "Users are now able to pick emojis for their projects in the edit window"
+#~ msgstr ""
+#~ "L’utilisateur peut maintenant choisir des émojis pour ses projets dans la "
+#~ "fenêtre d’édition"
+
+#~ msgid "Projects and Tasks now can have descriptions"
+#~ msgstr "Les projets et tâches peuvent désormais avoir des descriptions"
+
+#~ msgid "Performance improvement and records window"
+#~ msgstr "Améliorations des performances et fenêtre des chronomètres"
+
+#~ msgid "Lazy loading for project tasks and stat"
+#~ msgstr "Chargement lent pour les tâches et statistiques des projets"
+
+#~ msgid "Records window for creating, editing, and deleting records"
+#~ msgstr ""
+#~ "Fenêtre des chronomètres pour créer, modifier et supprimer les "
+#~ "chronomètres"
+
+#~ msgid "First stable release."
+#~ msgstr "Première version stable."
+
+#, fuzzy
+#~ msgid "app.search"
+#~ msgstr "Chercher"
+
+#, fuzzy
+#~ msgid "calendar"
+#~ msgstr "Calendrier"
+
+#, fuzzy
+#~ msgid "app.backup"
+#~ msgstr "Sauvegarde"
+
+#, fuzzy
+#~ msgid "duration_label"
+#~ msgstr "Durée"
+
+#, fuzzy
+#~ msgid "delete_button"
+#~ msgstr "Supprimer"
+
+#, fuzzy
+#~ msgid "project_popover"
+#~ msgstr "Projet"
+
+#, fuzzy
+#~ msgid "start"
+#~ msgstr "Commence le"
+
+#, fuzzy
+#~ msgid "section.new"
+#~ msgstr "Nouveau chronomètre"
+
+#, fuzzy
+#~ msgid "project.edit"
+#~ msgstr "Projet"
+
+#, fuzzy
+#~ msgid "capture"
+#~ msgstr "Fonctionnalités :"
+
+#, fuzzy
+#~ msgid "cancel"
+#~ msgstr "Annuler"
 
 #~ msgid "Task"
 #~ msgstr "Tâche"

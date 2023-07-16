@@ -154,7 +154,7 @@ impl ProjectEditWindow {
                 .unwrap();
         dialog.set_transient_for(self.transient_for().as_ref());
         let project = self.project();
-        let dialog_heading = gettext("Delete \"{}\" project?");
+        let dialog_heading = gettext("Delete “{}” project?");
         dialog.set_heading(Some(&dialog_heading.replace("{}", &project.name())));
         dialog.set_body(&gettext(
             "The project and its tasks will be permanently lost.",

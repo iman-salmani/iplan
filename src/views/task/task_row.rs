@@ -549,7 +549,7 @@ impl TaskRow {
             toast_name.push_str("...");
         }
         let toast = adw::Toast::builder()
-            .title(gettext("\"{}\" is going to delete").replace("{}", &toast_name))
+            .title(gettext("“{}” is going to delete").replace("{}", &toast_name))
             .button_label(gettext("Undo"))
             .build();
 

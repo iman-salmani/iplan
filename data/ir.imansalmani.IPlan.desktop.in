@@ -1,5 +1,6 @@
 [Desktop Entry]
 Name=IPlan
+Comment=Your plan for improving personal life and workflow
 Exec=iplan
 Icon=ir.imansalmani.IPlan
 Terminal=false
