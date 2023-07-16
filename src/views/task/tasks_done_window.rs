@@ -217,7 +217,7 @@ impl TasksDoneWindow {
         modal.connect_close_request(
             glib::clone!(@weak self as obj, @weak row => @default-return gtk::Inhibit(false), move |_| {
                 let task = row.task();
-                if task.done() {
+                if !task.done() {
                     obj.imp().tasks_box.remove(&row);
                     obj.emit_by_name::<()>("task-undo", &[&task]);
                 } else if task.suspended() {
