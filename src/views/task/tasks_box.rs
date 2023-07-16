@@ -1,7 +1,7 @@
 use adw::prelude::*;
 use glib::{once_cell::sync::Lazy, subclass::Signal};
 use gtk::{gdk, glib, glib::Properties, graphene, subclass::prelude::*};
-use std::cell::Cell;
+use std::cell::{Cell, RefCell};
 use std::cmp::Ordering;
 use std::thread;
 use std::time::Duration;
@@ -31,6 +31,8 @@ mod imp {
         pub scrollable: Cell<bool>,
         #[property(get, set)]
         pub scroll: Cell<i8>,
+        #[property(get, set)]
+        pub hscroll_controller: RefCell<Option<gtk::EventControllerScroll>>,
         #[template_child]
         pub scrolled_window: TemplateChild<gtk::ScrolledWindow>,
         #[template_child]
@@ -67,6 +69,7 @@ mod imp {
                 items_wrapper: Cell::new(None),
                 scrollable: Cell::new(true),
                 scroll: Cell::new(0),
+                hscroll_controller: RefCell::new(None),
                 scrolled_window: gtk::TemplateChild::default(),
                 items_box: gtk::TemplateChild::default(),
                 bottom_add_task: gtk::TemplateChild::default(),
@@ -142,9 +145,12 @@ mod imp {
 
     impl TasksBox {
         pub fn set_scrollable(&self, scrollable: bool) {
+            let obj = self.obj();
             let policy_type = if scrollable {
+                obj.send_hscroll();
                 gtk::PolicyType::Automatic
             } else {
+                obj.disable_hscroll();
                 gtk::PolicyType::Never
             };
             self.scrolled_window.set_vscrollbar_policy(policy_type);
@@ -267,7 +273,7 @@ impl TasksBox {
         self.imp().items_box.invalidate_filter();
     }
 
-    pub fn send_hscroll(&self) {
+    fn send_hscroll(&self) {
         let imp = self.imp();
         let controller = gtk::EventControllerScroll::builder()
             .flags(gtk::EventControllerScrollFlags::VERTICAL)
@@ -286,7 +292,16 @@ impl TasksBox {
                 }
             ),
         );
+
+        self.set_hscroll_controller(&controller);
         imp.scrolled_window.add_controller(controller);
+    }
+
+    fn disable_hscroll(&self) {
+        let imp = self.imp();
+        if let Some(controller) = self.hscroll_controller() {
+            imp.scrolled_window.remove_controller(&controller);
+        }
     }
 
     fn create_empty_task(&self) -> Task {

@@ -146,16 +146,21 @@ impl SectionBox {
         )
         .unwrap();
 
-        if layout == ProjectLayout::Horizontal {
-            imp.tasks_box.send_hscroll();
-        } else {
-            imp.tasks_box.set_scrollable(false);
-        }
+        obj.set_layout(&layout);
         imp.tasks_box
             .set_items_wrapper(TasksBoxWrapper::Section(section.id(), section.project()));
         imp.tasks_box.add_tasks_lazy(tasks, max_height);
 
         obj
+    }
+
+    pub fn set_layout(&self, layout: &ProjectLayout) {
+        let imp = self.imp();
+        if layout == &ProjectLayout::Horizontal {
+            imp.tasks_box.set_scrollable(true);
+        } else {
+            imp.tasks_box.set_scrollable(false);
+        }
     }
 
     pub fn select_task(&self, target_task: Task) {

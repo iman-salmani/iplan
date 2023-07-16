@@ -287,6 +287,11 @@ impl ProjectPage {
                 self.add_drag_vscroll_controller();
             }
         }
+        let section_boxes = imp.sections_box.observe_children();
+        for i in 0..section_boxes.n_items() {
+            let section_box = section_boxes.item(i).and_downcast::<SectionBox>().unwrap();
+            section_box.set_layout(&layout);
+        }
         imp.layout.set(layout);
     }
 
