@@ -50,15 +50,13 @@
                     <child>
                       <object class="DateRow" id="start_date_row">
                         <property name="title" translatable="yes">Date</property>
-                        <signal name="date-changed" handler="handle_start_date_changed"
-                          swapped="true" />
+                        <signal name="date-changed" handler="handle_start_date_changed" swapped="true" />
                       </object>
                     </child>
                     <child>
                       <object class="TimeRow" id="start_time_row">
                         <property name="title" translatable="yes">Time</property>
-                        <signal name="time-changed" handler="handle_start_time_changed"
-                          swapped="true" />
+                        <signal name="time-changed" handler="handle_start_time_changed" swapped="true" />
                       </object>
                     </child>
                   </object>
@@ -69,8 +67,7 @@
                     <child>
                       <object class="DateRow" id="end_date_row">
                         <property name="title" translatable="yes">Date</property>
-                        <signal name="date-changed" handler="handle_end_date_changed"
-                          swapped="true" />
+                        <signal name="date-changed" handler="handle_end_date_changed" swapped="true" />
                       </object>
                     </child>
                     <child>
@@ -85,8 +82,7 @@
                     <child>
                       <object class="TimeRow" id="duration_row">
                         <property name="title" translatable="yes">Duration</property>
-                        <signal name="time-changed" handler="handle_duration_time_changed"
-                          swapped="true" />
+                        <signal name="time-changed" handler="handle_duration_time_changed" swapped="true" />
                       </object>
                     </child>
                   </object>

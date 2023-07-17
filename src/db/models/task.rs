@@ -111,8 +111,9 @@ impl Task {
 
     pub fn date_display(datetime: &glib::DateTime) -> String {
         let now = glib::DateTime::now_local().unwrap();
+        let local_timezone = glib::TimeZone::local();
         let today = glib::DateTime::new(
-            &glib::TimeZone::local(),
+            &local_timezone,
             now.year(),
             now.month(),
             now.day_of_month(),
@@ -121,7 +122,17 @@ impl Task {
             0.0,
         )
         .unwrap();
-        let difference = datetime.difference(&today).as_days();
+        let date = glib::DateTime::new(
+            &local_timezone,
+            datetime.year(),
+            datetime.month(),
+            datetime.day_of_month(),
+            0,
+            0,
+            0.0,
+        )
+        .unwrap();
+        let difference = date.difference(&today).as_days();
         if difference == 0 {
             gettext("Today")
         } else if difference == 1 {
