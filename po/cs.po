@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: iplan\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-07-16 16:42+0330\n"
+"POT-Creation-Date: 2023-07-17 13:17+0330\n"
 "PO-Revision-Date: 2023-06-22 19:06+0200\n"
 "Last-Translator: Amerey.eu <info@amerey.eu>\n"
 "Language-Team: \n"
@@ -181,7 +181,7 @@ msgid "While importing, previous data will be cached"
 msgstr "Při importu budou předchozí data uložena do mezipaměti"
 
 #: src/ui/calendar/calendar.ui:41 src/ui/snippets/date_row.ui:26
-#: src/db/models/task.rs:126 src/views/calendar/day_view.rs:94
+#: src/db/models/task.rs:137 src/views/calendar/day_view.rs:94
 msgid "Today"
 msgstr "Dnes"
 
@@ -274,21 +274,21 @@ msgstr "Hotovo"
 msgid "Starts"
 msgstr "Začíná"
 
-#: src/ui/record/record_window.ui:52 src/ui/record/record_window.ui:71
+#: src/ui/record/record_window.ui:52 src/ui/record/record_window.ui:69
 #: src/ui/reminder/reminder_window.ui:50
 msgid "Date"
 msgstr "Datum"
 
-#: src/ui/record/record_window.ui:59 src/ui/record/record_window.ui:78
+#: src/ui/record/record_window.ui:58 src/ui/record/record_window.ui:75
 #: src/ui/reminder/reminder_window.ui:56
 msgid "Time"
 msgstr "Čas"
 
-#: src/ui/record/record_window.ui:68
+#: src/ui/record/record_window.ui:66
 msgid "Ends"
 msgstr "Končí"
 
-#: src/ui/record/record_window.ui:87
+#: src/ui/record/record_window.ui:84
 msgid "Duration"
 msgstr "Doba trvání"
 
@@ -332,7 +332,7 @@ msgstr "_Smazat"
 msgid "No Date"
 msgstr "Bez data"
 
-#: src/ui/task/task_row.ui:220 src/views/task/task_row.rs:343
+#: src/ui/task/task_row.ui:220 src/views/task/task_row.rs:344
 #, fuzzy
 msgid "Start _Timer"
 msgstr "Spustit _časovač"
@@ -372,32 +372,32 @@ msgid "no done tasks found"
 msgstr "nenalezeny žádné hotové úkoly"
 
 #. Translators: Replace "translator-credits" with your names, one name per line
-#: src/application.rs:348
+#: src/application.rs:347
 msgid "translator-credits"
 msgstr "Amerey.eu https://amerey.eu"
 
-#: src/application.rs:379 src/application.rs:415
+#: src/application.rs:378 src/application.rs:414
 msgid "IPlan needs to run in the background to send reminders"
 msgstr "IPlan musí běžet na pozadí, aby mohl odesílat připomenutí"
 
-#: src/db/models/task.rs:128
+#: src/db/models/task.rs:139
 msgid "Tomorrow"
 msgstr ""
 
-#: src/db/models/record.rs:70
+#: src/db/models/record.rs:75
 #, fuzzy
 msgid "day"
 msgstr "Dnes"
 
-#: src/db/models/record.rs:72
+#: src/db/models/record.rs:77
 msgid "days"
 msgstr ""
 
-#: src/views/window.rs:403
+#: src/views/window.rs:451
 msgid "Personal"
 msgstr "Osobní"
 
-#: src/views/window.rs:404 src/views/project/project_create_window.rs:148
+#: src/views/window.rs:452 src/views/project/project_create_window.rs:148
 msgid "Tasks"
 msgstr "Úkoly"
 
@@ -440,20 +440,20 @@ msgstr "Nová sekce"
 msgid "“{}” moved to the done tasks list"
 msgstr "Položka „{}“ byla přesunuta do sekce dokončených úkolů"
 
-#: src/views/project/section_box.rs:82 src/views/task/task_row.rs:553
+#: src/views/project/section_box.rs:82 src/views/task/task_row.rs:570
 msgid "Undo"
 msgstr "Zpět"
 
-#: src/views/project/section_box.rs:305
+#: src/views/project/section_box.rs:308
 #, fuzzy
 msgid "Delete “{}” section?"
 msgstr "Smazat sekci „{}“?"
 
-#: src/views/project/section_box.rs:308
+#: src/views/project/section_box.rs:311
 msgid "The section and its tasks will be permanently lost."
 msgstr "Sekce a její úkoly budou nenávratně ztraceny."
 
-#: src/views/record/record_row.rs:103
+#: src/views/record/record_row.rs:102
 msgid "until"
 msgstr "až do"
 
@@ -485,20 +485,20 @@ msgstr "Projekty"
 msgid "task"
 msgstr "Dílčí úkoly"
 
-#: src/views/sidebar/sidebar_projects.rs:374
+#: src/views/sidebar/sidebar_projects.rs:368
 #, fuzzy
 msgid "Task moved to {}"
 msgstr "Úkol přesunut do {}"
 
-#: src/views/sidebar/sidebar_projects.rs:388
+#: src/views/sidebar/sidebar_projects.rs:396
 msgid "{} doesn't have any section"
 msgstr "{} nemá žádnou sekci"
 
-#: src/views/task/task_row.rs:255
+#: src/views/task/task_row.rs:256
 msgid "Inbox"
 msgstr ""
 
-#: src/views/task/task_row.rs:552
+#: src/views/task/task_row.rs:569
 #, fuzzy
 msgid "“{}” is going to delete"
 msgstr "„{}“ bude smazán"
