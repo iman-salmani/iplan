@@ -90,11 +90,9 @@ impl RecordRow {
 
         let start_date_text = Task::date_display(&start);
         let end = start.add_seconds(duration as f64).unwrap();
-        println!("{:?} - {:?}", start.ymd(), end.ymd());
         let end_date_text = if start.ymd() == end.ymd() {
             String::new()
         } else {
-            println!("create end date text: {}", Task::date_display(&end));
             format!("{} ", Task::date_display(&end))
         };
         self.set_subtitle(&format!(
