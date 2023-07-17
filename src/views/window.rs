@@ -326,12 +326,10 @@ impl IPlanWindow {
             .property("maximized", settings.boolean("is-maximized"))
             .property("fullscreened", settings.boolean("is-fullscreen"))
             .build();
-        let home_project = obj.home_project();
         settings
             .bind("default-project-layout", &obj, "project-layout")
             .build();
         obj.set_settings(settings);
-        obj.change_project(home_project);
 
         if let Some(display) = gdk::Display::default() {
             let provider = gtk::CssProvider::new();
@@ -365,6 +363,16 @@ impl IPlanWindow {
             )
             .sync_create()
             .build();
+
+        let (tx, rx) = glib::MainContext::channel(glib::PRIORITY_DEFAULT);
+        glib::idle_add_once(move || tx.send(()).unwrap());
+        rx.attach(
+            None,
+            glib::clone!(@weak obj => @default-return glib::Continue(false), move |_| {
+                obj.change_project(obj.home_project());
+                glib::Continue(false)
+            }),
+        );
 
         obj
     }

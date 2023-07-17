@@ -74,12 +74,12 @@ impl SidebarProjects {
             .unwrap()
             .visible_project_id();
 
-        if let Some(project_id) = project_id {
-            let row = self.project_row_by_id(project_id).unwrap();
-            projects_box.select_row(Some(&row));
+        let row = if let Some(project_id) = project_id {
+            self.project_row_by_id(project_id)
         } else {
-            projects_box.select_row(None::<&gtk::ListBoxRow>);
-        }
+            None
+        };
+        projects_box.select_row(row.as_ref());
     }
 
     pub fn update_project(&self, project: &Project) {

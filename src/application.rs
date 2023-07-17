@@ -108,7 +108,6 @@ mod imp {
                 }
                 window.upcast()
             };
-
             window.present();
         }
     }
