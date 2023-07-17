@@ -27,6 +27,7 @@ pub struct DragBackup {
     position: i32,
     section: i64,
     parent_task: i64,
+    date: i64,
     parent_widget: gtk::ListBox,
 }
 
@@ -356,6 +357,7 @@ impl TaskRow {
         task.set_position(drag_backup.position);
         task.set_section(drag_backup.section);
         task.set_parent(drag_backup.parent_task);
+        task.set_date(drag_backup.date);
         let parent = self.parent().and_downcast::<gtk::ListBox>().unwrap();
         if parent != drag_backup.parent_widget {
             parent.remove(self);
@@ -645,6 +647,7 @@ impl TaskRow {
             position: task.position(),
             section: task.section(),
             parent_task: task.parent(),
+            date: task.date(),
             parent_widget: self.parent().and_downcast::<gtk::ListBox>().unwrap(),
         }))
     }

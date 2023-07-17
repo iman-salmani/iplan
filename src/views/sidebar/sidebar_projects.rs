@@ -6,6 +6,7 @@ use crate::db::models::Project;
 use crate::db::operations::{
     new_task_position, read_project, read_projects, read_sections, update_project, update_task,
 };
+use crate::views::ActionScope;
 use crate::views::{project::ProjectCreateWindow, sidebar::ProjectRow, task::TaskRow, IPlanWindow};
 mod imp {
     use super::*;
@@ -354,40 +355,47 @@ impl SidebarProjects {
         y: f64,
     ) -> bool {
         let row: TaskRow = value.get().unwrap();
-        let task = row.task();
         let project_row = self.imp().projects_box.row_at_y(y as i32).unwrap();
         let project = project_row.property::<Project>("project");
         let project_id = project.id();
         let window = self.root().and_downcast::<IPlanWindow>().unwrap();
         let win_imp = window.imp();
         let project_name = format!("{} {}", project.icon(), project.name());
-        let is_moved: bool;
         let toast_title: String;
 
-        if let Some(section) = read_sections(project_id).unwrap().first() {
+        let is_moved = if let Some(section) = read_sections(project_id).unwrap().first() {
             let section_id = section.id();
-            task.set_project(project_id);
-            task.set_section(section_id);
-            task.set_position(new_task_position(section_id));
-            update_task(&task).unwrap();
-
             toast_title = gettext("Task moved to {}").replace("{}", &project_name);
 
-            if win_imp.calendar.is_visible() {
-                row.imp().project_label.set_label(&project.name());
-                row.keep_after_dnd();
+            let row_imp = row.imp();
+            let action_scope = if row_imp.project_label.is_visible() {
+                row_imp.project_label.set_label(&project.name());
+                row.keep_after_dnd(); // FIXME: section and position change is unnecessary
+                ActionScope::Calendar.to_variant()
             } else {
                 row.parent()
                     .and_downcast::<gtk::ListBox>()
                     .unwrap()
                     .remove(&row);
-            }
+                ActionScope::None.to_variant()
+            };
 
-            is_moved = true;
+            let task = row.task();
+            task.set_project(project_id);
+            task.set_section(section_id);
+            task.set_position(new_task_position(section_id));
+            update_task(&task).unwrap();
+
+            self.activate_action(
+                "task.changed",
+                Some(&glib::Variant::from((task.to_variant(), action_scope))),
+            )
+            .unwrap();
+            true
         } else {
             toast_title = gettext("{} doesn't have any section").replace("{}", &project_name);
-            is_moved = false;
-        }
+            false
+        };
 
         let toast = adw::Toast::new(&toast_title);
         win_imp.toast_overlay.add_toast(toast);

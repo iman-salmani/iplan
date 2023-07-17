@@ -222,6 +222,11 @@ impl Default for Task {
 
 impl Display for Task {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let date_text = if let Some(datetime) = self.date_datetime() {
+            Self::date_display(&datetime)
+        } else {
+            "No Date".to_string()
+        };
         write!(
             f,
             "Task {{ id: {} name: {} done: {} project: {} section: {} position: {} suspended: {} parent: {} description: {} date: {} }}",
@@ -234,7 +239,7 @@ impl Display for Task {
             self.suspended(),
             self.parent(),
             self.description(),
-            self.date()
+            date_text
         )
     }
 }
