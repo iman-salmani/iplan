@@ -62,15 +62,15 @@
   <releases>
     <release version="1.8.1" date="2023-07-17">
       <description translatable="no">
-        <p>bug fixes and performance improvements</p>
+        <p>Bug fixes and performance improvements</p>
         <ul>
-          <li>Task timers in different part of ui are synced togheter</li>
-          <li>Fix bug: Editing task name does not apply to database</li>
-          <li>Fix bug: Drop task on project does not updating the other pages</li>
+          <li>Task timers in different parts of ui are synced together</li>
+          <li>Fix bug: Editing task name does not apply to the database</li>
+          <li>Fix bug: Drop task on a project does not update the other pages</li>
           <li>Fix bug: Excessive CPU usage from startup until opening the calendar page</li>
-          <li>Fix bug: Sections does not have vertical scrollbar in horzontal layout</li>
-          <li>Fix bug: Date label shows today, when task date is in less than 24 hours before</li>
-          <li>Fix bug: Task does not move to Section, when its done state changes inside task window which opens from tasks done window</li>
+          <li>Fix bug: Sections do not have a vertical scrollbar in the horizontal layout</li>
+          <li>Fix bug: Date label shows today when the task date is in less than 24 hours before</li>
+          <li>Fix bug: Task does not move to Section when its done state changes inside task window which opens from the tasks done window</li>
           <li>Add Russian translation</li>
           <li>Update Turkish translation</li>
         </ul>
