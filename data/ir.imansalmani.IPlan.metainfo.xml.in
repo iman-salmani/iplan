@@ -60,7 +60,7 @@
   </categories>
   <content_rating type="oars-1.1" />
   <releases>
-    <release version="1.8.1" date="2023-07-17">
+    <release version="1.9.1" date="2023-07-17">
       <description translatable="no">
         <p>Bug fixes and performance improvements</p>
         <ul>
