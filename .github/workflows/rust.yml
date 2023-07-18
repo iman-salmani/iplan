@@ -15,7 +15,7 @@ jobs:
 
     steps:
     - name: Install curl
-      run: sudo apt install -y curl
+      run: apt-get install -y curl
     - uses: actions/checkout@v3
     - uses: actions-rs/toolchain@v1
       with:
@@ -23,9 +23,9 @@ jobs:
         toolchain: stable
         override: true
     - name: Install libgtk-4-dev
-      run: sudo apt install -y libgtk-4-dev
+      run: apt-get install -y libgtk-4-dev
     - name: install msgfmt
-      run: sudo apt install -y msgfmt
+      run: apt install -y msgfmt
     - uses: BSFishy/meson-build@v1.0.3
       with:
         action: build
