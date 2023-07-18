@@ -20,8 +20,8 @@ jobs:
         profile: minimal
         toolchain: stable
         override: true
-    - name: install msgfmt
-      run: sudo apt install -y msgfmt
+    #- name: install msgfmt
+    #  run: sudo apt install -y msgfmt
     - uses: BSFishy/meson-build@v1.0.3
       with:
         action: build
