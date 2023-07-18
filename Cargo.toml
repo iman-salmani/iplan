@@ -1,6 +1,6 @@
 [package]
 name = "iplan"
-version = "0.1.0"
+version = "1.9.2"
 edition = "2021"
 
 [dependencies]
