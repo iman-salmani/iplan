@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
 
     container:
-      image: ghcr.io/gtk-rs/gtk4-rs/gtk4:latest
+      image: hub.docker.com/ubuntu:23.04
 
     steps:
     - uses: actions/checkout@v3
@@ -20,8 +20,10 @@ jobs:
         profile: minimal
         toolchain: stable
         override: true
-    #- name: install msgfmt
-    #  run: sudo apt install -y msgfmt
+    - name: Install libgtk-4-dev
+      run: sudo apt install -y libgtk-4-dev
+    - name: install msgfmt
+      run: sudo apt install -y msgfmt
     - uses: BSFishy/meson-build@v1.0.3
       with:
         action: build
