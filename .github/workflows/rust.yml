@@ -26,8 +26,8 @@ jobs:
         override: true
     - name: Install libgtk-4-dev
       run: apt install -y libgtk-4-dev
-    - name: install msgfmt
-      run: apt install -y msgfmt
+    - name: install gettext
+      run: apt install -y gettext
     - uses: BSFishy/meson-build@v1.0.3
       with:
         action: build
