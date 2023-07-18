@@ -14,6 +14,8 @@ jobs:
       image: ubuntu:23.04
 
     steps:
+    - name: Install curl
+      run: sudo apt install -y curl
     - uses: actions/checkout@v3
     - uses: actions-rs/toolchain@v1
       with:
