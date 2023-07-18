@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
 
     container:
-      image: hub.docker.com/ubuntu:23.04
+      image: ubuntu:23.04
 
     steps:
     - uses: actions/checkout@v3
