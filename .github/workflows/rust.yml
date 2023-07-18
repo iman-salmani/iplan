@@ -17,7 +17,7 @@ jobs:
     - name: Update repositories
       run: apt update
     - name: Install dependencies
-      run: apt install -y curl libgtk-4-dev gettext python3 ninja-build meson desktop-file-utils
+      run: apt install -y curl libgtk-4-dev libadwaita-1-dev gettext python3 ninja-build meson desktop-file-utils
     - uses: actions/checkout@v3
     - uses: actions-rs/toolchain@v1
       with:
