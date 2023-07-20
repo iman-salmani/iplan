@@ -485,7 +485,9 @@ impl TasksBox {
         let row: TaskRow = value.get().unwrap();
         let task = row.task();
         let task_db = read_task(task.id()).unwrap();
-        if let TasksBoxWrapper::Date(_) = self.items_wrapper().unwrap() {
+        let items_wrapper = self.items_wrapper().unwrap();
+
+        if let TasksBoxWrapper::Date(_) = items_wrapper {
             update_task(&task).unwrap();
         } else if row.moving_out() {
             let task_parent = task.parent();
@@ -502,6 +504,12 @@ impl TasksBox {
             update_task(&task).unwrap();
         }
         row.grab_focus();
+
+        if let TasksBoxWrapper::Task(_, _) = items_wrapper {
+            self.activate_action("task.changed", Some(&task_db.to_variant()))
+                .unwrap();
+        }
+
         true
     }
 
