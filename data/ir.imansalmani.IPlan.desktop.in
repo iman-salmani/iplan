@@ -2,7 +2,7 @@
 Name=IPlan
 Comment=Your plan for improving personal life and workflow
 Keywords=plan;planning;tasks;projects;
-Exec=iplan
+Exec=/usr/bin/flatpak run --branch=stable --arch=x86_64 --command=ir.imansalmani.IPlan ir.imansalmani.IPlan
 Icon=ir.imansalmani.IPlan
 Terminal=false
 Type=Application
