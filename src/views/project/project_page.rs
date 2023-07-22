@@ -10,7 +10,7 @@ use crate::db::operations::{create_section, read_section, read_sections, read_ta
 use crate::views::project::{ProjectHeader, SectionBox};
 use crate::views::{task::TaskRow, ActionScope, IPlanWindow};
 
-#[derive(Default, Clone, Copy, PartialEq)]
+#[derive(Default, Clone, Copy, PartialEq, Debug)]
 pub enum ProjectLayout {
     Horizontal,
     #[default]

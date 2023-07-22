@@ -47,8 +47,6 @@ mod imp {
         #[property(get, set)]
         pub compact: Cell<bool>,
         #[property(get, set)]
-        pub lazy: Cell<bool>,
-        #[property(get, set)]
         pub visible_project_label: Cell<bool>,
         #[property(get, set)]
         pub draggable: Cell<bool>,
@@ -179,20 +177,6 @@ impl TaskRow {
         obj.reset(task);
         obj.reset_timer();
         obj.set_draggable(true);
-        obj
-    }
-
-    pub fn new_lazy(task: &Task, visible_project_label: bool) -> Self {
-        let obj = glib::Object::new::<Self>();
-        obj.set_visible_project_label(visible_project_label);
-        obj.set_task(task);
-        obj.set_lazy(true);
-        obj.set_draggable(true);
-        obj.connect_lazy_notify(|obj| {
-            let task = obj.task();
-            obj.reset(task);
-            obj.reset_timer();
-        });
         obj
     }
 

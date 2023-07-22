@@ -384,7 +384,6 @@ impl IPlanWindow {
             .project_by_id(project_id)
             .unwrap_or_else(|| self.new_project_page(&project));
         self.set_visible_project(project_id);
-        self.apply_project_layout();
         project_page.select_task(None);
         imp.sidebar_projects.check_archive_hidden();
         imp.sidebar_projects.select_active_project();
@@ -469,10 +468,10 @@ impl IPlanWindow {
         let project_page_imp = project_page.imp();
 
         project_page_imp.layout_button.connect_clicked(
-            glib::clone!(@weak self as obj => move |button| {
+            glib::clone!(@weak self as obj, @weak project_page => move |button| {
                 let layout = if button.icon_name().unwrap() == "list-symbolic" { 1 } else { 0 };
                 obj.set_project_layout(layout);
-                obj.apply_project_layout();
+                obj.apply_project_layout(&project_page);
             }),
         );
 
@@ -519,6 +518,7 @@ impl IPlanWindow {
         imp.stack_pages
             .add_named(&project_page, Some(&project.id().to_string()));
 
+        self.apply_project_layout(&project_page);
         project_page.open_project(project);
         project_page
     }
@@ -529,15 +529,11 @@ impl IPlanWindow {
             .set_visible_child_name(&id.to_string());
     }
 
-    fn apply_project_layout(&self) {
+    fn apply_project_layout(&self, page: &ProjectPage) {
         if self.project_layout() == 1 {
-            self.visible_project_page()
-                .unwrap()
-                .set_layout(ProjectLayout::Horizontal);
+            page.set_layout(ProjectLayout::Horizontal);
         } else {
-            self.visible_project_page()
-                .unwrap()
-                .set_layout(ProjectLayout::Vertical);
+            page.set_layout(ProjectLayout::Vertical);
         }
     }
 

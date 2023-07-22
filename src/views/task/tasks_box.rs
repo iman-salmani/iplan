@@ -27,6 +27,7 @@ mod imp {
     #[properties(wrapper_type=super::TasksBox)]
     pub struct TasksBox {
         pub items_wrapper: Cell<Option<TasksBoxWrapper>>,
+        pub lazy_tasks: RefCell<Vec<Task>>,
         #[property(get, set=Self::set_scrollable)]
         pub scrollable: Cell<bool>,
         #[property(get, set)]
@@ -67,6 +68,7 @@ mod imp {
         fn new() -> Self {
             Self {
                 items_wrapper: Cell::new(None),
+                lazy_tasks: RefCell::new(vec![]),
                 scrollable: Cell::new(true),
                 scroll: Cell::new(0),
                 hscroll_controller: RefCell::new(None),
@@ -198,19 +200,16 @@ impl TasksBox {
         row_imp.name_entry.grab_focus();
     }
 
-    pub fn add_tasks_lazy(&self, tasks: Vec<Task>, height: usize) {
+    pub fn add_tasks_lazy(&self, mut tasks: Vec<Task>, height: usize) {
         let imp = self.imp();
-        let page_size = height / 50;
-        if tasks.len() > page_size && self.scrollable() {
-            let (first_rows, other_rows) = tasks.split_at(page_size); // FIXME: check if height += 50 have a better better performance
-            for task in first_rows {
-                let task_row = self.create_task_row(task.to_owned());
+        let page_tasks_count = height / 50;
+        if tasks.len() > page_tasks_count && self.scrollable() {
+            for _ in 0..page_tasks_count {
+                let task = tasks.pop().unwrap();
+                let task_row = self.create_task_row(task);
                 imp.items_box.append(&task_row);
             }
-            for task in other_rows {
-                let task_row = self.create_lazy_task_row(task);
-                imp.items_box.append(&task_row);
-            }
+            imp.lazy_tasks.replace(tasks);
         } else {
             for task in tasks {
                 let task_row = self.create_task_row(task);
@@ -336,20 +335,6 @@ impl TasksBox {
         row
     }
 
-    fn create_lazy_task_row(&self, task: &Task) -> TaskRow {
-        let visible_project_label = if let TasksBoxWrapper::Date(_) = self.items_wrapper().unwrap()
-        {
-            true
-        } else {
-            false
-        };
-        let row = TaskRow::new_lazy(task, visible_project_label);
-        if let TasksBoxWrapper::Date(_) = self.items_wrapper().unwrap() {
-            row.set_hide_move_arrows(true);
-        }
-        row
-    }
-
     fn set_items_box_funcs(&self) {
         let imp = self.imp();
 
@@ -434,21 +419,32 @@ impl TasksBox {
         let height = imp.scrolled_window.height();
         let row = imp.items_box.row_at_y(height + pos as i32 - 50);
 
-        let mut possible_row = row.and_upcast::<gtk::Widget>();
-        loop {
-            if let Some(row) = possible_row {
-                if let Some(row) = row.downcast_ref::<TaskRow>() {
-                    if row.lazy() {
-                        row.set_lazy(false);
-                        possible_row = row.prev_sibling();
-                    } else {
-                        break;
+        let mut lazy_tasks = imp.lazy_tasks.borrow_mut();
+        if lazy_tasks.is_empty() {
+            return;
+        }
+
+        let rows = imp.items_box.observe_children();
+        let last_row = if let Some(row) = rows.item(rows.n_items() - 3) {
+            row.downcast::<TaskRow>().unwrap()
+        } else {
+            return;
+        };
+
+        let possible_row = row.and_upcast::<gtk::Widget>();
+        if let Some(row) = possible_row {
+            if let Ok(row) = row.downcast::<TaskRow>() {
+                let difference = last_row.index() - row.index();
+                if difference < 5 {
+                    for _ in 0..difference {
+                        if let Some(row) = lazy_tasks.pop() {
+                            let new_row = self.create_task_row(row);
+                            imp.items_box.append(&new_row);
+                        } else {
+                            break;
+                        }
                     }
-                } else {
-                    break;
                 }
-            } else {
-                break;
             }
         }
     }
