@@ -1,6 +1,5 @@
 use gtk::{glib, subclass::prelude::*};
 
-use crate::db::models::Task;
 mod imp {
     use super::*;
 
@@ -42,17 +41,16 @@ glib::wrapper! {
 
 #[gtk::template_callbacks]
 impl SubtaskRow {
-    pub fn new(task: Task) -> Self {
+    pub fn new(name: String, done: bool) -> Self {
         let obj = glib::Object::new::<Self>();
         let imp = obj.imp();
-        imp.name.set_label(&task.name());
-        if task.done() {
-            imp.done
-                .set_icon_name(Some("check-round-outline-whole-symbolic"));
+        imp.name.set_label(&name);
+        let done_icon = if done {
+            Some("check-round-outline-whole-symbolic")
         } else {
-            imp.done
-                .set_icon_name(Some("circle-outline-thick-symbolic"));
-        }
+            Some("circle-outline-thick-symbolic")
+        };
+        imp.done.set_icon_name(done_icon);
         obj
     }
 }

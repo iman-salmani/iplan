@@ -8,8 +8,8 @@ use std::time::{Duration, SystemTime};
 
 use crate::db::models::{Record, Task};
 use crate::db::operations::{
-    create_record, delete_task, read_project, read_reminders, read_task, read_tasks, update_record,
-    update_task,
+    create_record, delete_task, read_project, read_reminders, read_subtasks_summary, read_task,
+    update_record, update_task,
 };
 use crate::views::snippets::MenuItem;
 use crate::views::task::{SubtaskRow, TaskWindow, TasksDoneWindow};
@@ -280,13 +280,13 @@ impl TaskRow {
             }
         }
 
-        let subtasks = read_tasks(None, None, None, Some(task.id()), None, false).unwrap();
+        let subtasks = read_subtasks_summary(task.id()).unwrap();
         if subtasks.is_empty() {
             imp.subtasks.set_visible(false);
         } else {
             imp.subtasks.set_visible(true);
-            for subtask in subtasks {
-                let subtask_row = SubtaskRow::new(subtask);
+            for (name, done) in subtasks {
+                let subtask_row = SubtaskRow::new(name, done);
                 imp.subtasks.append(&subtask_row);
             }
         }
@@ -295,7 +295,7 @@ impl TaskRow {
     pub fn add_subtask(&self, subtask: Task) {
         let imp = self.imp();
         imp.subtasks.set_visible(true);
-        let subtask_row = SubtaskRow::new(subtask);
+        let subtask_row = SubtaskRow::new(subtask.name(), subtask.done());
         imp.subtasks.prepend(&subtask_row);
     }
 

@@ -61,6 +61,19 @@ pub fn read_tasks(
     Ok(tasks)
 }
 
+pub fn read_subtasks_summary(task_id: i64) -> Result<Vec<(String, bool)>> {
+    let conn = get_connection();
+    let mut stmt = conn.prepare(&format!(
+        "SELECT name, done FROM tasks WHERE parent = ?1 ORDER BY position DESC"
+    ))?;
+    let mut rows = stmt.query([task_id])?;
+    let mut subtasks = Vec::new();
+    while let Some(row) = rows.next()? {
+        subtasks.push((row.get::<usize, String>(0)?, row.get::<usize, bool>(1)?));
+    }
+    Ok(subtasks)
+}
+
 pub fn read_task(task_id: i64) -> Result<Task> {
     let conn = get_connection();
     let mut stmt = conn.prepare("SELECT * FROM tasks WHERE id = ?")?;
