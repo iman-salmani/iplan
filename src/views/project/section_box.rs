@@ -160,6 +160,10 @@ impl SectionBox {
             imp.tasks_box.set_scrollable(true);
         } else {
             imp.tasks_box.set_scrollable(false);
+            let mut lazy_tasks = imp.tasks_box.imp().lazy_tasks.borrow_mut();
+            for _ in 0..lazy_tasks.len() {
+                imp.tasks_box.add_task(lazy_tasks.pop().unwrap());
+            }
         }
     }
 

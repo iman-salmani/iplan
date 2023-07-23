@@ -274,12 +274,12 @@ impl TasksBox {
 
     fn send_hscroll(&self) {
         let imp = self.imp();
-        let controller = gtk::EventControllerScroll::builder()
-            .flags(gtk::EventControllerScrollFlags::VERTICAL)
-            .build();
-        controller.connect_scroll(
-            glib::clone!(@weak self as obj => @default-return gtk::Inhibit(false),
-                move |controller, _dx, dy| {
+        let controller = self.hscroll_controller().unwrap_or_else(|| {
+            let controller = gtk::EventControllerScroll::builder()
+                .flags(gtk::EventControllerScrollFlags::VERTICAL)
+                .build();
+            controller.connect_scroll(
+                glib::clone!(@weak self as obj => @default-return gtk::Inhibit(false), move |controller, _dx, dy| {
                     if controller.current_event_state().contains(gdk::ModifierType::SHIFT_MASK) {
                         obj.activate_action("hscroll", Some(&dy.to_variant())).unwrap();
                         obj.imp().scrolled_window.vscrollbar().set_sensitive(false);
@@ -288,11 +288,12 @@ impl TasksBox {
                         obj.imp().scrolled_window.vscrollbar().set_sensitive(true); // FIXME: Its fine but dont show scrollbar while hovering after scroll ends with sensitive false
                         gtk::Inhibit(false)
                     }
-                }
-            ),
-        );
+                }),
+            );
 
-        self.set_hscroll_controller(&controller);
+            self.set_hscroll_controller(&controller);
+            controller
+        });
         imp.scrolled_window.add_controller(controller);
     }
 
