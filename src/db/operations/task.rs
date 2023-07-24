@@ -51,7 +51,7 @@ pub fn read_tasks(
     }
     let conn = get_connection();
     let mut stmt = conn.prepare(&format!(
-        "SELECT * FROM tasks {filters_str} ORDER BY position DESC"
+        "SELECT * FROM tasks {filters_str} ORDER BY position"
     ))?;
     let mut rows = stmt.query([])?;
     let mut tasks = Vec::new();

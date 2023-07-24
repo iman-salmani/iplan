@@ -436,7 +436,7 @@ impl TasksBox {
         if let Some(row) = possible_row {
             if let Ok(row) = row.downcast::<TaskRow>() {
                 let difference = last_row.index() - row.index();
-                if difference < 5 {
+                if difference < 14 {
                     for _ in 0..difference {
                         if let Some(row) = lazy_tasks.pop() {
                             let new_row = self.create_task_row(row);
