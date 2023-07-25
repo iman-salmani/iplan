@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: iplan\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-07-17 13:17+0330\n"
-"PO-Revision-Date: 2023-06-22 19:06+0200\n"
+"PO-Revision-Date: 2023-07-25 18:17+0200\n"
 "Last-Translator: Amerey.eu <info@amerey.eu>\n"
 "Language-Team: \n"
 "Language: cs\n"
@@ -27,7 +27,6 @@ msgid "Your plan for improving personal life and workflow"
 msgstr "Váš plán na zlepšení osobního a pracovního života"
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:9
-#, fuzzy
 msgid ""
 "IPlan goal is to be a user-friendly tool for those who want to organize "
 "their ether personal life, jobs, or both."
@@ -91,11 +90,11 @@ msgstr "Iman Salmani"
 
 #: src/ui/window.ui:42 src/ui/project/project_page.ui:28
 msgid "Main Menu"
-msgstr ""
+msgstr "Hlavní menu"
 
 #: src/ui/window.ui:90
 msgid "_Preferences"
-msgstr ""
+msgstr "_Předvolby"
 
 #: src/ui/window.ui:94
 msgid "_Backup"
@@ -111,14 +110,13 @@ msgstr "_O aplikaci IPlan"
 
 #: src/ui/preferences_window.ui:17
 msgid "Run in Background"
-msgstr ""
+msgstr "Spustit v pozadí"
 
 #: src/ui/preferences_window.ui:18
 msgid "Allow send reminders when the app is closed"
-msgstr ""
+msgstr "Povolit odesílání připomenutí, když je aplikace zavřená"
 
 #: src/ui/shortcuts_window.ui:13
-#, fuzzy
 msgctxt "shortcut window"
 msgid "Application"
 msgstr "Aplikace"
@@ -126,22 +124,19 @@ msgstr "Aplikace"
 #: src/ui/shortcuts_window.ui:16
 msgctxt "shortcut window"
 msgid "Preferences"
-msgstr ""
+msgstr "Předvolby"
 
 #: src/ui/shortcuts_window.ui:23
-#, fuzzy
 msgctxt "shortcut window"
 msgid "Keyboard Shortcuts"
 msgstr "Klávesové zkratky"
 
 #: src/ui/shortcuts_window.ui:30
-#, fuzzy
 msgctxt "shortcut window"
 msgid "Primary Menu"
 msgstr "Hlavní nabídka"
 
 #: src/ui/shortcuts_window.ui:36
-#, fuzzy
 msgctxt "shortcut window"
 msgid "Quit"
 msgstr "Ukončit"
@@ -226,7 +221,6 @@ msgid "Delete"
 msgstr "Smazat"
 
 #: src/ui/project/project_header.ui:108
-#, fuzzy
 msgid "Time spent"
 msgstr "Čas strávený denně"
 
@@ -333,20 +327,18 @@ msgid "No Date"
 msgstr "Bez data"
 
 #: src/ui/task/task_row.ui:220 src/views/task/task_row.rs:344
-#, fuzzy
 msgid "Start _Timer"
 msgstr "Spustit _časovač"
 
 #: src/ui/task/task_row.ui:229
 msgid "Move Up"
-msgstr ""
+msgstr "Posunout nahoru"
 
 #: src/ui/task/task_row.ui:237
 msgid "Move Down"
-msgstr ""
+msgstr "Posunout dolů"
 
 #: src/ui/task/task_row.ui:248
-#, fuzzy
 msgid "_Delete Task"
 msgstr "_Smazat úkol"
 
@@ -363,7 +355,6 @@ msgid "Records"
 msgstr "Záznamy"
 
 #: src/ui/task/tasks_box.ui:78
-#, fuzzy
 msgid "Add Task"
 msgstr "Přidat úkol"
 
@@ -382,16 +373,15 @@ msgstr "IPlan musí běžet na pozadí, aby mohl odesílat připomenutí"
 
 #: src/db/models/task.rs:139
 msgid "Tomorrow"
-msgstr ""
+msgstr "Zítra"
 
 #: src/db/models/record.rs:75
-#, fuzzy
 msgid "day"
-msgstr "Dnes"
+msgstr "den"
 
 #: src/db/models/record.rs:77
 msgid "days"
-msgstr ""
+msgstr "dny"
 
 #: src/views/window.rs:451
 msgid "Personal"
@@ -418,7 +408,6 @@ msgid "Project should have a name!"
 msgstr "Projekt by měl mít jméno!"
 
 #: src/views/project/project_edit_window.rs:157
-#, fuzzy
 msgid "Delete “{}” project?"
 msgstr "Smazat projekt „{}“?"
 
@@ -436,7 +425,6 @@ msgid "New Section"
 msgstr "Nová sekce"
 
 #: src/views/project/section_box.rs:80
-#, fuzzy
 msgid "“{}” moved to the done tasks list"
 msgstr "Položka „{}“ byla přesunuta do sekce dokončených úkolů"
 
@@ -445,7 +433,6 @@ msgid "Undo"
 msgstr "Zpět"
 
 #: src/views/project/section_box.rs:308
-#, fuzzy
 msgid "Delete “{}” section?"
 msgstr "Smazat sekci „{}“?"
 
@@ -458,35 +445,30 @@ msgid "until"
 msgstr "až do"
 
 #: src/views/record/record_window.rs:120
-#, fuzzy
 msgid "Edit Record"
-msgstr "Nový záznam"
+msgstr "Editovat záznam"
 
 #: src/views/record/record_window.rs:207
 msgid "Duration can't be 0"
 msgstr "Doba trvání nemůže být 0"
 
 #: src/views/record/record_window.rs:215
-#, fuzzy
 msgid "Record end time can't be in future"
-msgstr "Čas nemůže být v minulosti"
+msgstr "Záznam a čas nemůže být v budoucnosti"
 
 #: src/views/reminder/reminder_window.rs:111
 msgid "Time can't be in the past"
 msgstr "Čas nemůže být v minulosti"
 
 #: src/views/search/search_result.rs:71
-#, fuzzy
 msgid "project"
-msgstr "Projekty"
+msgstr "projekt"
 
 #: src/views/search/search_result.rs:82
-#, fuzzy
 msgid "task"
-msgstr "Dílčí úkoly"
+msgstr "úkol"
 
 #: src/views/sidebar/sidebar_projects.rs:368
-#, fuzzy
 msgid "Task moved to {}"
 msgstr "Úkol přesunut do {}"
 
@@ -496,10 +478,9 @@ msgstr "{} nemá žádnou sekci"
 
 #: src/views/task/task_row.rs:256
 msgid "Inbox"
-msgstr ""
+msgstr "Doručené"
 
 #: src/views/task/task_row.rs:569
-#, fuzzy
 msgid "“{}” is going to delete"
 msgstr "„{}“ bude smazán"
 
