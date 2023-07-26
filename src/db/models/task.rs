@@ -6,7 +6,7 @@ use std::cell::{Cell, RefCell};
 use std::fmt::Display;
 
 use crate::db::models::Record;
-use crate::db::operations::{read_records, read_tasks};
+use crate::db::operations::{read_records, read_tasks, task_duration};
 
 mod imp {
     use super::*;
@@ -69,16 +69,7 @@ impl Task {
     }
 
     pub fn duration(&self) -> i64 {
-        let mut total = 0;
-        for record in
-            read_records(Some(self.id()), false, None, None).expect("Failed to read records")
-        {
-            total += record.duration();
-        }
-        for subtask in read_tasks(None, None, None, Some(self.id()), None, false).unwrap() {
-            total += subtask.duration();
-        }
-        total
+        task_duration(self.id()).unwrap()
     }
 
     pub fn duration_display(&self) -> String {

@@ -8,7 +8,7 @@
     <child><!-- Header -->
       <object class="AdwHeaderBar" id="page_header">
         <property name="title-widget">
-          <object class="GtkLabel"></object>
+          <object class="GtkLabel" />
         </property>
         <child type="start"><!-- Toggle Pane Button -->
           <object class="GtkToggleButton" id="toggle_sidebar_button">
@@ -17,8 +17,7 @@
           </object>
         </child><!-- End Toggle Pane Button -->
         <child type="start">
-          <object class="ProjectHeader" id="project_header">
-          </object>
+          <object class="ProjectHeader" id="project_header" />
         </child>
         <child type="end"><!-- Project Menu Button -->
           <object class="GtkMenuButton">

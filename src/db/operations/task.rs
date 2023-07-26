@@ -245,6 +245,7 @@ pub fn new_task_position(section_id: i64) -> i32 {
     let mut stmt = conn
         .prepare("SELECT position FROM tasks WHERE section = ? ORDER BY position DESC")
         .expect("Failed to find new task position");
+    // FIXME: Do this inside the SQL query?
     let first_row = stmt.query_row([section_id], |row| row.get::<_, i32>(0));
     match first_row {
         Ok(first_row) => first_row + 1,
@@ -262,4 +263,19 @@ pub fn new_subtask_position(parent: i64) -> i32 {
         Ok(first_row) => first_row + 1,
         Err(_) => 0,
     }
+}
+
+pub fn task_duration(task_id: i64) -> Result<i64> {
+    let conn = get_connection();
+    let mut stmt = conn.prepare(
+        "WITH RECURSIVE task_tree(id, parent) AS (
+	        SELECT id, parent FROM tasks WHERE id=?1
+	        UNION ALL
+	        SELECT tasks.id, tasks.parent
+		        FROM tasks
+		        JOIN task_tree ON tasks.parent=task_tree.id
+        )
+        SELECT coalesce(sum(duration), 0) FROM records JOIN task_tree ON records.task=task_tree.id;",
+    )?;
+    stmt.query_row([task_id], |row| row.get::<_, i64>(0))
 }
