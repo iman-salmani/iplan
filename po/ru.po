@@ -98,7 +98,7 @@ msgstr "_Настройки"
 
 #: src/ui/window.ui:94
 msgid "_Backup"
-msgstr "_Резервная копия"
+msgstr "_Резервное копирование"
 
 #: src/ui/window.ui:98
 msgid "_Keyboard Shortcuts"
@@ -153,7 +153,7 @@ msgstr "Поиск"
 
 #: src/ui/backup_window.ui:19
 msgid "Backup"
-msgstr "Резервная копия"
+msgstr "Резервное копирование"
 
 #: src/ui/backup_window.ui:35 src/views/backup_window.rs:62
 msgid "Export"
@@ -210,7 +210,7 @@ msgstr "Описание"
 
 #: src/ui/project/project_edit_window.ui:16
 msgid "Edit Project"
-msgstr "Редактировать Проект"
+msgstr "Редактировать проект"
 
 #: src/ui/project/project_edit_window.ui:104
 msgid "Archive"
@@ -230,7 +230,7 @@ msgstr "Затраченное время за день"
 
 #: src/ui/project/project_page.ui:65
 msgid "no sections found"
-msgstr "разделы не найдены"
+msgstr "Разделы не найдены"
 
 #: src/ui/project/project_page.ui:94
 msgid "New section"
@@ -238,11 +238,11 @@ msgstr "Новый раздел"
 
 #: src/ui/project/project_page.ui:108
 msgid "New _Section"
-msgstr "Новый _Раздел"
+msgstr "Новый _раздел"
 
 #: src/ui/project/project_page.ui:112
 msgid "_Edit Project"
-msgstr "_Редактировать Проект"
+msgstr "_Редактировать проект"
 
 #: src/ui/project/section_box.ui:50 src/ui/task/tasks_box.ui:47
 msgid "Add task"
@@ -328,7 +328,7 @@ msgstr "Нет Даты"
 
 #: src/ui/task/task_row.ui:220 src/views/task/task_row.rs:344
 msgid "Start _Timer"
-msgstr "Запустить _Таймер"
+msgstr "Запустить _таймер"
 
 #: src/ui/task/task_row.ui:229
 msgid "Move Up"
@@ -340,7 +340,7 @@ msgstr "Переместить вниз"
 
 #: src/ui/task/task_row.ui:248
 msgid "_Delete Task"
-msgstr "_Удалить Задачу"
+msgstr "_Удалить задачу"
 
 #: src/ui/task/task_page.ui:26
 msgid "Due date"
@@ -409,7 +409,7 @@ msgstr "Проект должен иметь имя!"
 
 #: src/views/project/project_edit_window.rs:157
 msgid "Delete “{}” project?"
-msgstr "Удалить “{}” проект?"
+msgstr "Удалить проект “{}”?"
 
 #: src/views/project/project_edit_window.rs:160
 msgid "The project and its tasks will be permanently lost."
@@ -434,7 +434,7 @@ msgstr "Отменить"
 
 #: src/views/project/section_box.rs:308
 msgid "Delete “{}” section?"
-msgstr "Удалить “{}” секцию?"
+msgstr "Удалить секцию “{}”?"
 
 #: src/views/project/section_box.rs:311
 msgid "The section and its tasks will be permanently lost."
