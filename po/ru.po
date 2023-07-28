@@ -262,7 +262,7 @@ msgstr "Новая запись"
 
 #: src/ui/record/record_window.ui:32 src/ui/reminder/reminder_window.ui:31
 msgid "Done"
-msgstr "Завершено"
+msgstr "Готово"
 
 #: src/ui/record/record_window.ui:49
 msgid "Starts"
