@@ -6,7 +6,7 @@ use std::cell::{Cell, RefCell};
 use std::fmt::Display;
 
 use crate::db::models::Record;
-use crate::db::operations::{read_records, read_tasks, task_duration};
+use crate::db::operations::{read_records, task_duration};
 
 mod imp {
     use super::*;

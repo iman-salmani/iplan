@@ -2,7 +2,7 @@ use gtk::{glib, glib::Properties, prelude::*, subclass::prelude::*};
 use rusqlite::{Error, Result, Row};
 use std::cell::{Cell, RefCell};
 
-use crate::db::operations::read_tasks;
+use crate::db::operations::project_duration;
 
 mod imp {
     use super::*;
@@ -69,11 +69,7 @@ impl Project {
     }
 
     pub fn duration(&self) -> i64 {
-        let mut total = 0;
-        for task in read_tasks(Some(self.id()), None, None, Some(0), None, false).unwrap() {
-            total += task.duration();
-        }
-        total
+        project_duration(self.id()).unwrap()
     }
 
     pub fn static_variant_type_string() -> String {

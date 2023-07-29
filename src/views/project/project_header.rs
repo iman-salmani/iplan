@@ -3,7 +3,7 @@ use std::cell::Cell;
 use std::thread;
 
 use crate::db::models::{Project, Record};
-use crate::db::operations::{read_records, read_tasks};
+use crate::db::operations::{project_duration, read_records, read_tasks};
 use crate::views::snippets::Chart;
 
 mod imp {
@@ -169,10 +169,7 @@ impl ProjectHeader {
                 tooltips.push(Record::duration_display(duration));
             }
 
-            let mut total_time = 0;
-            for task in tasks {
-                total_time += task.duration();
-            }
+            let total_time = project_duration(project_id).unwrap();
             tx.send((total_time, last_7_days, labels, values, tooltips))
                 .unwrap();
         });

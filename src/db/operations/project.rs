@@ -114,6 +114,15 @@ pub fn find_projects(text: &str, archive: bool) -> Result<Vec<Project>> {
     Ok(projects)
 }
 
+pub fn project_duration(project_id: i64) -> Result<i64> {
+    let conn = get_connection();
+    let mut stmt = conn.prepare(
+        "SELECT coalesce(sum(records.duration), 0) FROM tasks
+        JOIN records ON records.task = tasks.id AND tasks.project = ?1",
+    )?;
+    stmt.query_row([project_id], |row| row.get::<_, i64>(0))
+}
+
 fn new_index() -> i32 {
     let conn = get_connection();
     let mut stmt = conn
