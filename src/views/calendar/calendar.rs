@@ -1,10 +1,11 @@
 use gtk::{gdk, glib, prelude::*, subclass::prelude::*};
 use std::cell::{Cell, RefCell};
+use std::cmp::Ordering;
 use std::thread;
 use std::time::Duration;
 
 use crate::db::models::Task;
-use crate::db::operations::{read_records, read_task, read_tasks};
+use crate::db::operations::{read_records, read_task, task_tree};
 use crate::views::calendar::{DayIndicator, DayView};
 use crate::views::task::TaskRow;
 use crate::views::ActionScope;
@@ -126,29 +127,16 @@ glib::wrapper! {
         @implements gtk::Buildable;
 }
 
+impl Default for Calendar {
+    fn default() -> Self {
+        glib::Object::new::<Self>()
+    }
+}
+
 #[gtk::template_callbacks]
 impl Calendar {
     pub fn new() -> Self {
-        glib::Object::new::<Self>()
-    }
-
-    pub fn go_today(&self) {
-        let imp = self.imp();
-        let today = self.today_datetime();
-
-        loop {
-            if let Some(indicator) = imp.navigation_bar.first_child() {
-                imp.navigation_bar.remove(&indicator);
-            } else {
-                break;
-            }
-        }
-
-        for day in -2..5 {
-            let datetime = today.add_days(day).unwrap();
-            imp.navigation_bar.append(&self.new_day_indicator(datetime));
-        }
-        self.foucs_on_date(today);
+        Self::default()
     }
 
     pub fn refresh(&self) {
@@ -173,7 +161,7 @@ impl Calendar {
         let day_view = self.day_view_by_date(datetime).unwrap();
         let (tx, rx) = glib::MainContext::channel(glib::PRIORITY_DEFAULT);
         glib::idle_add(move || {
-            if let Ok(_) = tx.send(()) {
+            if tx.send(()).is_ok() {
                 glib::Continue(true)
             } else {
                 glib::Continue(false)
@@ -259,16 +247,9 @@ impl Calendar {
     }
 
     pub fn set_subtasks_suspended(&self, task_id: i64, suspended: bool) {
-        let subtasks = read_tasks(None, None, None, Some(task_id), None, true).unwrap();
+        let subtasks = task_tree(task_id, true).unwrap();
         for subtask in subtasks {
-            let subtask_id = subtask.id();
-            self.set_subtasks_suspended(subtask_id, suspended);
-
-            if subtask.date() == 0 {
-                continue;
-            }
-
-            if let Some((_, row)) = self.task_row(subtask_id) {
+            if let Some((_, row)) = self.task_row(subtask) {
                 row.task().set_suspended(suspended);
                 row.changed();
             }
@@ -380,43 +361,46 @@ impl Calendar {
                     .difference(&first_day_indicator.datetime())
                     .as_days();
 
-                if difference > 0 {
-                    for _ in 0..difference {
-                        let first_day_indicator = imp
-                            .navigation_bar
-                            .first_child()
-                            .and_downcast::<DayIndicator>()
-                            .unwrap();
-                        let last_day_indicator = imp
-                            .navigation_bar
-                            .last_child()
-                            .and_downcast::<DayIndicator>()
-                            .unwrap();
-                        imp.navigation_bar.remove(&first_day_indicator);
-    
+                match difference.cmp(&0) {
+                    Ordering::Greater => {
+                        for _ in 0..difference {
+                            let first_day_indicator = imp
+                                .navigation_bar
+                                .first_child()
+                                .and_downcast::<DayIndicator>()
+                                .unwrap();
+                            let last_day_indicator = imp
+                                .navigation_bar
+                                .last_child()
+                                .and_downcast::<DayIndicator>()
+                                .unwrap();
+                            imp.navigation_bar.remove(&first_day_indicator);
                         
-                        let date = last_day_indicator.datetime().add_days(1).unwrap();
-                        let day_indicator = obj.new_day_indicator(date);
-                        imp.navigation_bar.append(&day_indicator);
-                    }
-                } else if difference < 0 {
-                    for _ in 0..difference.abs() {
-                        let first_day_indicator = imp
-                            .navigation_bar
-                            .first_child()
-                            .and_downcast::<DayIndicator>()
-                            .unwrap();
-                        let last_day_indicator = imp
-                            .navigation_bar
-                            .last_child()
-                            .and_downcast::<DayIndicator>()
-                            .unwrap();
-                        imp.navigation_bar.remove(&last_day_indicator);
+                            let date = last_day_indicator.datetime().add_days(1).unwrap();
+                            let day_indicator = obj.new_day_indicator(date);
+                            imp.navigation_bar.append(&day_indicator);
+                        }
+                    },
+                    Ordering::Less => {
+                        for _ in 0..difference.abs() {
+                            let first_day_indicator = imp
+                                .navigation_bar
+                                .first_child()
+                                .and_downcast::<DayIndicator>()
+                                .unwrap();
+                            let last_day_indicator = imp
+                                .navigation_bar
+                                .last_child()
+                                .and_downcast::<DayIndicator>()
+                                .unwrap();
+                            imp.navigation_bar.remove(&last_day_indicator);
     
-                        let date = first_day_indicator.datetime().add_days(-1).unwrap();
-                        let day_indicator = obj.new_day_indicator(date);
-                        imp.navigation_bar.prepend(&day_indicator);
-                    }
+                            let date = first_day_indicator.datetime().add_days(-1).unwrap();
+                            let day_indicator = obj.new_day_indicator(date);
+                            imp.navigation_bar.prepend(&day_indicator);
+                        }
+                    },
+                    Ordering::Equal => {}
                 }
 
                 let first_day_view = imp.days_box.first_child().and_downcast::<DayView>().unwrap();
@@ -427,7 +411,7 @@ impl Calendar {
                     imp.days_box.prepend(&day_view);
                     let (tx, rx) = glib::MainContext::channel(glib::PRIORITY_DEFAULT);
                     glib::idle_add(move || {
-                        if let Ok(_) = tx.send(()) {
+                        if tx.send(()).is_ok() {
                             glib::Continue(true)
                         } else {
                             glib::Continue(false)
@@ -554,6 +538,7 @@ impl Calendar {
 
     #[template_callback]
     fn handle_calendar_today_clicked(&self, _: gtk::Button) {
-        self.go_today();
+        let today = self.today_datetime();
+        self.foucs_on_date(today);
     }
 }

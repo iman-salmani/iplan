@@ -9,7 +9,7 @@ pub fn create_task(task: Task) -> Result<Task> {
         "INSERT INTO tasks(name, project, section, position, parent, description, date) VALUES (?1,?2,?3,?4,?5,?6,?7)",
         (task.name(), task.project(), task.section(), task.position(), task.parent(), task.description(), task.date()),
     )?;
-    task.set_id(&conn.last_insert_rowid());
+    task.set_id(conn.last_insert_rowid());
     Ok(task)
 }
 
@@ -38,7 +38,7 @@ pub fn read_tasks(
         filters.push(format!("date >= {start} AND date < {end}"));
     }
     if !suspended {
-        filters.push(format!("suspended = false"));
+        filters.push("suspended = false".to_string());
     }
     let filters_str = &mut String::new();
     for filter in filters {
@@ -63,14 +63,35 @@ pub fn read_tasks(
 
 pub fn read_subtasks_summary(task_id: i64) -> Result<Vec<(String, bool)>> {
     let conn = get_connection();
-    let mut stmt = conn.prepare(&format!(
-        "SELECT name, done FROM tasks WHERE parent = ?1 ORDER BY position DESC"
-    ))?;
+    let mut stmt =
+        conn.prepare("SELECT name, done FROM tasks WHERE parent = ?1 ORDER BY position DESC")?;
     let mut rows = stmt.query([task_id])?;
     let mut subtasks = Vec::new();
     while let Some(row) = rows.next()? {
         subtasks.push((row.get::<usize, String>(0)?, row.get::<usize, bool>(1)?));
     }
+    Ok(subtasks)
+}
+
+pub fn task_tree(task_id: i64, has_date: bool) -> Result<Vec<i64>> {
+    let conn = get_connection();
+    let filter = if has_date { "WHERE date != 0" } else { "" };
+    let mut stmt = conn.prepare(&format!(
+        "WITH RECURSIVE task_tree(id, parent, date) AS (
+	        SELECT id, parent, date FROM tasks WHERE id=?1
+	        UNION ALL
+	        SELECT tasks.id, tasks.parent, tasks.date
+		        FROM tasks
+		        JOIN task_tree ON tasks.parent=task_tree.id
+        )
+        SELECT id FROM task_tree {filter}",
+    ))?;
+    let mut rows = stmt.query([task_id])?;
+    let mut subtasks = Vec::new();
+    while let Some(row) = rows.next()? {
+        subtasks.push(row.get::<usize, i64>(0)?);
+    }
+
     Ok(subtasks)
 }
 
