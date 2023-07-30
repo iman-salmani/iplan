@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ir.imansalmani.IPlan\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-07-17 13:17+0330\n"
+"POT-Creation-Date: 2023-07-30 20:17+0330\n"
 "PO-Revision-Date: 2023-07-15 01:53+0300\n"
 "Last-Translator: Sabri Ünal <libreajans@gmail.com>\n"
 "Language-Team: Türkçe <takim@gnome.org.tr>\n"
@@ -27,6 +27,10 @@ msgstr "IPlan"
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:7
 msgid "Your plan for improving personal life and workflow"
 msgstr "Kişisel yaşamınızı ve iş akışınızı iyileştirme planınız"
+
+#: data/ir.imansalmani.IPlan.desktop.in:5
+msgid "plan;planning;tasks;projects;"
+msgstr ""
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:9
 #, fuzzy
@@ -91,7 +95,7 @@ msgstr "IPlan ana penceresi (küçük boyut)"
 msgid "Iman Salmani"
 msgstr "Iman Salmani"
 
-#: src/ui/window.ui:42 src/ui/project/project_page.ui:28
+#: src/ui/window.ui:42
 msgid "Main Menu"
 msgstr "Ana Menü"
 
@@ -182,7 +186,7 @@ msgid "While importing, previous data will be cached"
 msgstr "İçe aktarılırken önceki veriler önbelleğe alınır"
 
 #: src/ui/calendar/calendar.ui:41 src/ui/snippets/date_row.ui:26
-#: src/db/models/task.rs:137 src/views/calendar/day_view.rs:94
+#: src/db/models/task.rs:128 src/views/calendar/day_view.rs:94
 msgid "Today"
 msgstr "Bugün"
 
@@ -234,21 +238,26 @@ msgstr "Harcanan zaman"
 msgid "Time spent per day"
 msgstr "Günlük harcanan zaman"
 
+#: src/ui/project/project_page.ui:27
+#, fuzzy
+msgid "Project Menu"
+msgstr "Projeler"
+
 # Başlık düzeni tercih edildi.
-#: src/ui/project/project_page.ui:65
+#: src/ui/project/project_page.ui:64
 msgid "no sections found"
 msgstr "Bölüm Bulunamadı"
 
 # Başlık düzeni tercih edildi
-#: src/ui/project/project_page.ui:94
+#: src/ui/project/project_page.ui:93
 msgid "New section"
 msgstr "Yeni Bölüm"
 
-#: src/ui/project/project_page.ui:108
+#: src/ui/project/project_page.ui:107
 msgid "New _Section"
 msgstr "Yeni _Bölüm"
 
-#: src/ui/project/project_page.ui:112
+#: src/ui/project/project_page.ui:111
 msgid "_Edit Project"
 msgstr "Projeyi _Düzenle"
 
@@ -337,7 +346,7 @@ msgstr "_Sil"
 msgid "No Date"
 msgstr "Tarih Yok"
 
-#: src/ui/task/task_row.ui:220 src/views/task/task_row.rs:344
+#: src/ui/task/task_row.ui:220 src/views/task/task_row.rs:328
 msgid "Start _Timer"
 msgstr "Zamanlayıcıyı _Başlat"
 
@@ -383,7 +392,7 @@ msgstr "Sabri Ünal <libreajans@gmail.com>"
 msgid "IPlan needs to run in the background to send reminders"
 msgstr "Iplan anımsatıcıları göndermek için arka planda çalışmak istiyor"
 
-#: src/db/models/task.rs:139
+#: src/db/models/task.rs:130
 msgid "Tomorrow"
 msgstr "Yarın"
 
@@ -395,11 +404,11 @@ msgstr "gün"
 msgid "days"
 msgstr "gün"
 
-#: src/views/window.rs:451
+#: src/views/window.rs:450
 msgid "Personal"
 msgstr "Kişisel"
 
-#: src/views/window.rs:452 src/views/project/project_create_window.rs:148
+#: src/views/window.rs:451 src/views/project/project_create_window.rs:148
 msgid "Tasks"
 msgstr "Görevler"
 
@@ -440,15 +449,15 @@ msgstr "Yeni Bölüm"
 msgid "“{}” moved to the done tasks list"
 msgstr "“{}” tamamlanmış görevler listesine taşındı"
 
-#: src/views/project/section_box.rs:82 src/views/task/task_row.rs:570
+#: src/views/project/section_box.rs:82 src/views/task/task_row.rs:554
 msgid "Undo"
 msgstr "Geri Al"
 
-#: src/views/project/section_box.rs:308
+#: src/views/project/section_box.rs:312
 msgid "Delete “{}” section?"
 msgstr "“{}” bölümü silinsin mi?"
 
-#: src/views/project/section_box.rs:311
+#: src/views/project/section_box.rs:315
 msgid "The section and its tasks will be permanently lost."
 msgstr "Bölüm ve görevleri kalıcı olarak kaybedilecek."
 
@@ -490,11 +499,11 @@ msgstr "Görev şuraya taşındı: {}"
 msgid "{} doesn't have any section"
 msgstr "“{}” bölüm içermiyor"
 
-#: src/views/task/task_row.rs:256
+#: src/views/task/task_row.rs:240
 msgid "Inbox"
 msgstr "Gelen Kutusu"
 
-#: src/views/task/task_row.rs:569
+#: src/views/task/task_row.rs:553
 #, fuzzy
 msgid "“{}” is going to delete"
 msgstr "“{}” silinecek"

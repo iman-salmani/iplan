@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: iplan\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-07-17 13:17+0330\n"
+"POT-Creation-Date: 2023-07-30 20:17+0330\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Iman Salmani <contact.imansalmani@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -24,6 +24,10 @@ msgstr "IPlan"
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:7
 msgid "Your plan for improving personal life and workflow"
 msgstr "برنامه شما برای بهبود زندگی شخصی و کاری"
+
+#: data/ir.imansalmani.IPlan.desktop.in:5
+msgid "plan;planning;tasks;projects;"
+msgstr ""
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:9
 msgid ""
@@ -87,7 +91,7 @@ msgstr "پنجره ی آیپلن (سایز کوچک)"
 msgid "Iman Salmani"
 msgstr "ایمان سلمانی"
 
-#: src/ui/window.ui:42 src/ui/project/project_page.ui:28
+#: src/ui/window.ui:42
 msgid "Main Menu"
 msgstr "فهرست اصلی"
 
@@ -175,7 +179,7 @@ msgid "While importing, previous data will be cached"
 msgstr "هنگام وارد کردن، داده های قبلی در حافظه پنهان ذخیره می شوند"
 
 #: src/ui/calendar/calendar.ui:41 src/ui/snippets/date_row.ui:26
-#: src/db/models/task.rs:137 src/views/calendar/day_view.rs:94
+#: src/db/models/task.rs:128 src/views/calendar/day_view.rs:94
 msgid "Today"
 msgstr "امروز"
 
@@ -227,19 +231,24 @@ msgstr "زمان صرف شده"
 msgid "Time spent per day"
 msgstr "زمان صرف شده در روز"
 
-#: src/ui/project/project_page.ui:65
+#: src/ui/project/project_page.ui:27
+#, fuzzy
+msgid "Project Menu"
+msgstr "پروژه ها"
+
+#: src/ui/project/project_page.ui:64
 msgid "no sections found"
 msgstr "هیچ بخشی پیدا نشد"
 
-#: src/ui/project/project_page.ui:94
+#: src/ui/project/project_page.ui:93
 msgid "New section"
 msgstr "بخش جدید"
 
-#: src/ui/project/project_page.ui:108
+#: src/ui/project/project_page.ui:107
 msgid "New _Section"
 msgstr "_بخش جدید"
 
-#: src/ui/project/project_page.ui:112
+#: src/ui/project/project_page.ui:111
 msgid "_Edit Project"
 msgstr "_ویرایش پروژه"
 
@@ -325,7 +334,7 @@ msgstr "حذف"
 msgid "No Date"
 msgstr "بدون تاریخ"
 
-#: src/ui/task/task_row.ui:220 src/views/task/task_row.rs:344
+#: src/ui/task/task_row.ui:220 src/views/task/task_row.rs:328
 msgid "Start _Timer"
 msgstr "شروع _تایمر"
 
@@ -370,7 +379,7 @@ msgstr "ایمان سلمانی <contact.imansalmani@gmail.com>"
 msgid "IPlan needs to run in the background to send reminders"
 msgstr "برای ارسال یادآوری، آپلن باید در پس‌زمینه اجرا شود"
 
-#: src/db/models/task.rs:139
+#: src/db/models/task.rs:130
 msgid "Tomorrow"
 msgstr "فردا"
 
@@ -382,11 +391,11 @@ msgstr "روز"
 msgid "days"
 msgstr "روز"
 
-#: src/views/window.rs:451
+#: src/views/window.rs:450
 msgid "Personal"
 msgstr "شخصی"
 
-#: src/views/window.rs:452 src/views/project/project_create_window.rs:148
+#: src/views/window.rs:451 src/views/project/project_create_window.rs:148
 msgid "Tasks"
 msgstr "وظایف"
 
@@ -427,15 +436,15 @@ msgstr "بخش جدید"
 msgid "“{}” moved to the done tasks list"
 msgstr "“{}” به فهرست کارهای انجام شده منتقل شد"
 
-#: src/views/project/section_box.rs:82 src/views/task/task_row.rs:570
+#: src/views/project/section_box.rs:82 src/views/task/task_row.rs:554
 msgid "Undo"
 msgstr "برگرد"
 
-#: src/views/project/section_box.rs:308
+#: src/views/project/section_box.rs:312
 msgid "Delete “{}” section?"
 msgstr "بخش “{}” حذف شود؟"
 
-#: src/views/project/section_box.rs:311
+#: src/views/project/section_box.rs:315
 msgid "The section and its tasks will be permanently lost."
 msgstr "بخش و وظایف آن برای همیشه از بین خواهد رفت."
 
@@ -475,11 +484,11 @@ msgstr "کار به {} منتقل شد"
 msgid "{} doesn't have any section"
 msgstr "{} هیچ بخشی ندارد"
 
-#: src/views/task/task_row.rs:256
+#: src/views/task/task_row.rs:240
 msgid "Inbox"
 msgstr "صندوق"
 
-#: src/views/task/task_row.rs:569
+#: src/views/task/task_row.rs:553
 msgid "“{}” is going to delete"
 msgstr "درحال حذف “{}”"
 

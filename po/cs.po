@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: iplan\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-07-17 13:17+0330\n"
+"POT-Creation-Date: 2023-07-30 20:17+0330\n"
 "PO-Revision-Date: 2023-07-25 18:17+0200\n"
 "Last-Translator: Amerey.eu <info@amerey.eu>\n"
 "Language-Team: \n"
@@ -25,6 +25,10 @@ msgstr "IPlan"
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:7
 msgid "Your plan for improving personal life and workflow"
 msgstr "Váš plán na zlepšení osobního a pracovního života"
+
+#: data/ir.imansalmani.IPlan.desktop.in:5
+msgid "plan;planning;tasks;projects;"
+msgstr ""
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:9
 msgid ""
@@ -88,7 +92,7 @@ msgstr "Hlavní okno IPlan (malá velikost)"
 msgid "Iman Salmani"
 msgstr "Iman Salmani"
 
-#: src/ui/window.ui:42 src/ui/project/project_page.ui:28
+#: src/ui/window.ui:42
 msgid "Main Menu"
 msgstr "Hlavní menu"
 
@@ -176,7 +180,7 @@ msgid "While importing, previous data will be cached"
 msgstr "Při importu budou předchozí data uložena do mezipaměti"
 
 #: src/ui/calendar/calendar.ui:41 src/ui/snippets/date_row.ui:26
-#: src/db/models/task.rs:137 src/views/calendar/day_view.rs:94
+#: src/db/models/task.rs:128 src/views/calendar/day_view.rs:94
 msgid "Today"
 msgstr "Dnes"
 
@@ -228,19 +232,24 @@ msgstr "Čas strávený denně"
 msgid "Time spent per day"
 msgstr "Čas strávený denně"
 
-#: src/ui/project/project_page.ui:65
+#: src/ui/project/project_page.ui:27
+#, fuzzy
+msgid "Project Menu"
+msgstr "Projekty"
+
+#: src/ui/project/project_page.ui:64
 msgid "no sections found"
 msgstr "nebyly nalezeny žádné sekce"
 
-#: src/ui/project/project_page.ui:94
+#: src/ui/project/project_page.ui:93
 msgid "New section"
 msgstr "Nová sekce"
 
-#: src/ui/project/project_page.ui:108
+#: src/ui/project/project_page.ui:107
 msgid "New _Section"
 msgstr "Nová _sekce"
 
-#: src/ui/project/project_page.ui:112
+#: src/ui/project/project_page.ui:111
 msgid "_Edit Project"
 msgstr "_Upravit projekt"
 
@@ -326,7 +335,7 @@ msgstr "_Smazat"
 msgid "No Date"
 msgstr "Bez data"
 
-#: src/ui/task/task_row.ui:220 src/views/task/task_row.rs:344
+#: src/ui/task/task_row.ui:220 src/views/task/task_row.rs:328
 msgid "Start _Timer"
 msgstr "Spustit _časovač"
 
@@ -371,7 +380,7 @@ msgstr "Amerey.eu https://amerey.eu"
 msgid "IPlan needs to run in the background to send reminders"
 msgstr "IPlan musí běžet na pozadí, aby mohl odesílat připomenutí"
 
-#: src/db/models/task.rs:139
+#: src/db/models/task.rs:130
 msgid "Tomorrow"
 msgstr "Zítra"
 
@@ -383,11 +392,11 @@ msgstr "den"
 msgid "days"
 msgstr "dny"
 
-#: src/views/window.rs:451
+#: src/views/window.rs:450
 msgid "Personal"
 msgstr "Osobní"
 
-#: src/views/window.rs:452 src/views/project/project_create_window.rs:148
+#: src/views/window.rs:451 src/views/project/project_create_window.rs:148
 msgid "Tasks"
 msgstr "Úkoly"
 
@@ -428,15 +437,15 @@ msgstr "Nová sekce"
 msgid "“{}” moved to the done tasks list"
 msgstr "Položka „{}“ byla přesunuta do sekce dokončených úkolů"
 
-#: src/views/project/section_box.rs:82 src/views/task/task_row.rs:570
+#: src/views/project/section_box.rs:82 src/views/task/task_row.rs:554
 msgid "Undo"
 msgstr "Zpět"
 
-#: src/views/project/section_box.rs:308
+#: src/views/project/section_box.rs:312
 msgid "Delete “{}” section?"
 msgstr "Smazat sekci „{}“?"
 
-#: src/views/project/section_box.rs:311
+#: src/views/project/section_box.rs:315
 msgid "The section and its tasks will be permanently lost."
 msgstr "Sekce a její úkoly budou nenávratně ztraceny."
 
@@ -476,11 +485,11 @@ msgstr "Úkol přesunut do {}"
 msgid "{} doesn't have any section"
 msgstr "{} nemá žádnou sekci"
 
-#: src/views/task/task_row.rs:256
+#: src/views/task/task_row.rs:240
 msgid "Inbox"
 msgstr "Doručené"
 
-#: src/views/task/task_row.rs:569
+#: src/views/task/task_row.rs:553
 msgid "“{}” is going to delete"
 msgstr "„{}“ bude smazán"
 

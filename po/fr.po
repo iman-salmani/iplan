@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: iplan\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-07-17 13:17+0330\n"
+"POT-Creation-Date: 2023-07-30 20:17+0330\n"
 "PO-Revision-Date: 2023-06-11 20:32+0200\n"
 "Last-Translator: Irénée Thirion <irenee.thirion@e.email>\n"
 "Language-Team: \n"
@@ -25,6 +25,10 @@ msgstr "IPlan"
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:7
 msgid "Your plan for improving personal life and workflow"
 msgstr "Votre programme pour faciliter votre vie personnelle et vos activités"
+
+#: data/ir.imansalmani.IPlan.desktop.in:5
+msgid "plan;planning;tasks;projects;"
+msgstr ""
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:9
 #, fuzzy
@@ -89,7 +93,7 @@ msgstr "Fenêtre principale de IPlan (en taille réduite)"
 msgid "Iman Salmani"
 msgstr "Iman Salmani"
 
-#: src/ui/window.ui:42 src/ui/project/project_page.ui:28
+#: src/ui/window.ui:42
 msgid "Main Menu"
 msgstr ""
 
@@ -181,7 +185,7 @@ msgid "While importing, previous data will be cached"
 msgstr "Pendant l’importation, les données précédentes seront mises en cache"
 
 #: src/ui/calendar/calendar.ui:41 src/ui/snippets/date_row.ui:26
-#: src/db/models/task.rs:137 src/views/calendar/day_view.rs:94
+#: src/db/models/task.rs:128 src/views/calendar/day_view.rs:94
 msgid "Today"
 msgstr "Aujourd’hui"
 
@@ -235,22 +239,27 @@ msgstr "Temps passé par jour"
 msgid "Time spent per day"
 msgstr "Temps passé par jour"
 
-#: src/ui/project/project_page.ui:65
+#: src/ui/project/project_page.ui:27
+#, fuzzy
+msgid "Project Menu"
+msgstr "Projets"
+
+#: src/ui/project/project_page.ui:64
 #, fuzzy
 msgid "no sections found"
 msgstr "Aucun chronomètre trouvé"
 
-#: src/ui/project/project_page.ui:94
+#: src/ui/project/project_page.ui:93
 #, fuzzy
 msgid "New section"
 msgstr "Nouveau chronomètre"
 
-#: src/ui/project/project_page.ui:108
+#: src/ui/project/project_page.ui:107
 #, fuzzy
 msgid "New _Section"
 msgstr "Nouveau chronomètre"
 
-#: src/ui/project/project_page.ui:112
+#: src/ui/project/project_page.ui:111
 msgid "_Edit Project"
 msgstr "_Modifier le projet"
 
@@ -338,7 +347,7 @@ msgstr "_Supprimer"
 msgid "No Date"
 msgstr "Date"
 
-#: src/ui/task/task_row.ui:220 src/views/task/task_row.rs:344
+#: src/ui/task/task_row.ui:220 src/views/task/task_row.rs:328
 msgid "Start _Timer"
 msgstr ""
 
@@ -386,7 +395,7 @@ msgid "IPlan needs to run in the background to send reminders"
 msgstr ""
 "IPlan nécessite de fonctionner en arrière-plan pour envoyer des rappels"
 
-#: src/db/models/task.rs:139
+#: src/db/models/task.rs:130
 msgid "Tomorrow"
 msgstr ""
 
@@ -399,11 +408,11 @@ msgstr "Aujourd’hui"
 msgid "days"
 msgstr ""
 
-#: src/views/window.rs:451
+#: src/views/window.rs:450
 msgid "Personal"
 msgstr "Personnel"
 
-#: src/views/window.rs:452 src/views/project/project_create_window.rs:148
+#: src/views/window.rs:451 src/views/project/project_create_window.rs:148
 msgid "Tasks"
 msgstr "Tâches"
 
@@ -448,16 +457,16 @@ msgstr "Nouveau chronomètre"
 msgid "“{}” moved to the done tasks list"
 msgstr "« {} » déplacé vers la liste des tâches accomplies"
 
-#: src/views/project/section_box.rs:82 src/views/task/task_row.rs:570
+#: src/views/project/section_box.rs:82 src/views/task/task_row.rs:554
 msgid "Undo"
 msgstr "Annuler"
 
-#: src/views/project/section_box.rs:308
+#: src/views/project/section_box.rs:312
 #, fuzzy
 msgid "Delete “{}” section?"
 msgstr "Supprimer la liste « {} » ?"
 
-#: src/views/project/section_box.rs:311
+#: src/views/project/section_box.rs:315
 #, fuzzy
 msgid "The section and its tasks will be permanently lost."
 msgstr "La liste et ses tâches seront définitivement perdues."
@@ -503,11 +512,11 @@ msgstr ""
 msgid "{} doesn't have any section"
 msgstr "« {} » déplacé vers la liste des tâches accomplies"
 
-#: src/views/task/task_row.rs:256
+#: src/views/task/task_row.rs:240
 msgid "Inbox"
 msgstr ""
 
-#: src/views/task/task_row.rs:569
+#: src/views/task/task_row.rs:553
 #, fuzzy
 msgid "“{}” is going to delete"
 msgstr "« {} » sera supprimée"
