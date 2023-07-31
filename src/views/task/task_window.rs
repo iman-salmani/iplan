@@ -55,7 +55,7 @@ mod imp {
             });
             klass.install_action(
                 "task.changed",
-                Some(&Task::static_variant_type().as_str()),
+                Some(Task::static_variant_type().as_str()),
                 move |obj, _, value| {
                     let task: Task = value.unwrap().get().unwrap();
                     obj.emit_by_name::<()>("task-changed", &[&task]);
@@ -82,7 +82,7 @@ mod imp {
             );
             klass.install_action(
                 "timer.stop",
-                Some(&Task::static_variant_type().as_str()),
+                Some(Task::static_variant_type().as_str()),
                 move |obj, _, value| {
                     let app = obj
                         .application()
@@ -190,10 +190,10 @@ impl TaskWindow {
             let transient_for_name = transient_for.widget_name();
             if transient_for_name == "IPlanWindow" {
                 let transient_for = transient_for.downcast::<IPlanWindow>().unwrap();
-                transient_for.add_delete_toast(&task, toast);
+                transient_for.add_delete_toast(task, toast);
             } else if transient_for_name == "TasksDoneWindow" {
                 let transient_for = transient_for.downcast::<TasksDoneWindow>().unwrap();
-                transient_for.add_delete_toast(&task, toast);
+                transient_for.add_delete_toast(task, toast);
             }
             self.close();
             return;

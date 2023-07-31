@@ -19,10 +19,7 @@
             <child><!-- Sidebar Header -->
               <object class="AdwHeaderBar">
                 <property name="show-end-title-buttons">false</property>
-                <property name="show-start-title-buttons"
-                  bind-source="flap"
-                  bind-property="folded"
-                  bind-flags="sync-create|invert-boolean" />
+                <property name="show-start-title-buttons" bind-source="flap" bind-property="folded" bind-flags="sync-create|invert-boolean" />
                 <property name="title-widget">
                   <object class="AdwWindowTitle">
                     <property name="title" translatable="yes">IPlan</property>
@@ -71,7 +68,7 @@
                     <property name="name">calendar</property>
                     <property name="title">Calendar</property>
                     <property name="child">
-                      <object class="Calendar" id="calendar"></object>
+                      <object class="CalendarPage" id="calendar" />
                     </property>
                   </object>
                 </child>

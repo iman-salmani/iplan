@@ -140,7 +140,7 @@ fn to9() -> Result<()> {
         let mut parent_id = subtask.get::<usize, i64>(1)?;
         let mut project = None;
         let mut delete_subtask = false;
-        while project == None {
+        while project.is_none() {
             // FIXME: needs to have a max cycle or refactor
             let mut stmt = conn.prepare("SELECT parent, project FROM tasks WHERE id = ?")?;
             let parent = stmt.query_row([parent_id], |row| {
@@ -166,7 +166,7 @@ fn to9() -> Result<()> {
             conn.execute("DELETE FROM tasks WHERE id = ?", (id,))?;
         } else {
             conn.execute(
-                &format!("UPDATE tasks SET project = ?2 WHERE id = ?1"),
+                "UPDATE tasks SET project = ?2 WHERE id = ?1",
                 (id, project.unwrap()),
             )?;
         }

@@ -14,8 +14,8 @@ mod imp {
     use super::*;
 
     #[derive(gtk::CompositeTemplate, glib::Properties)]
-    #[template(resource = "/ir/imansalmani/iplan/ui/calendar/calendar.ui")]
-    #[properties(wrapper_type=super::Calendar)]
+    #[template(resource = "/ir/imansalmani/iplan/ui/calendar/calendar_page.ui")]
+    #[properties(wrapper_type=super::CalendarPage)]
     pub struct Calendar {
         #[property(get, set)]
         pub datetime: RefCell<glib::DateTime>,
@@ -35,8 +35,8 @@ mod imp {
 
     #[glib::object_subclass]
     impl ObjectSubclass for Calendar {
-        const NAME: &'static str = "Calendar";
-        type Type = super::Calendar;
+        const NAME: &'static str = "CalendarPage";
+        type Type = super::CalendarPage;
         type ParentType = gtk::Box;
 
         fn class_init(klass: &mut Self::Class) {
@@ -122,19 +122,19 @@ mod imp {
 }
 
 glib::wrapper! {
-    pub struct Calendar(ObjectSubclass<imp::Calendar>)
+    pub struct CalendarPage(ObjectSubclass<imp::Calendar>)
         @extends gtk::Widget, gtk::Box,
         @implements gtk::Buildable;
 }
 
-impl Default for Calendar {
+impl Default for CalendarPage {
     fn default() -> Self {
         glib::Object::new::<Self>()
     }
 }
 
 #[gtk::template_callbacks]
-impl Calendar {
+impl CalendarPage {
     pub fn new() -> Self {
         Self::default()
     }

@@ -131,12 +131,9 @@ impl IPlanApplication {
     }
 
     pub fn window_by_name(&self, name: &str) -> Option<gtk::Window> {
-        for window in self.windows() {
-            if window.widget_name() == name {
-                return Some(window);
-            }
-        }
-        None
+        self.windows()
+            .into_iter()
+            .find(|window| window.widget_name() == name)
     }
 
     pub fn send_reminder(&self, reminder: Reminder) {

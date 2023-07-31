@@ -3,12 +3,12 @@
 <interface>
   <requires lib="gtk" version="4.0" />
   <requires lib="Adw" version="1.0" />
-  <template class="Calendar" parent="GtkBox">
+  <template class="CalendarPage" parent="GtkBox">
     <property name="orientation">vertical</property>
     <child><!-- Header -->
       <object class="AdwHeaderBar" id="page_header">
         <property name="title-widget">
-          <object class="GtkLabel"></object>
+          <object class="GtkLabel" />
         </property>
         <child type="start"><!-- Toggle Pane Button -->
           <object class="GtkToggleButton" id="toggle_sidebar_button">

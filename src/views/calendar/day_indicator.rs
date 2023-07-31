@@ -82,7 +82,7 @@ impl DayIndicator {
         let imp = obj.imp();
         imp.month.set_label(&datetime.format("%b").unwrap());
         imp.day
-            .set_label(&datetime.format("%e").unwrap().trim_start());
+            .set_label(datetime.format("%e").unwrap().trim_start());
         imp.weekday.set_label(&datetime.format("%a").unwrap());
         obj.set_datetime(datetime);
         obj

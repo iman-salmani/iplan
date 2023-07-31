@@ -39,7 +39,7 @@ mod imp {
             klass.bind_template_instance_callbacks();
             klass.install_action(
                 "task.changed",
-                Some(&Task::static_variant_type().as_str()),
+                Some(Task::static_variant_type().as_str()),
                 move |obj, _, value| {
                     let imp = obj.imp();
                     let task: Task = value.unwrap().get().unwrap();

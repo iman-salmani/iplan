@@ -262,7 +262,7 @@ impl TaskRow {
 
         let task_name = task.name();
         self.set_task(task);
-        imp.name_entry.buffer().set_text(&task_name);
+        imp.name_entry.buffer().set_text(task_name);
         if !self.compact() {
             self.reset_subtasks();
         }
@@ -272,12 +272,8 @@ impl TaskRow {
         let imp = self.imp();
         let task = self.task();
 
-        loop {
-            if let Some(subtask) = imp.subtasks.first_child() {
-                imp.subtasks.remove(&subtask);
-            } else {
-                break;
-            }
+        while let Some(subtask) = imp.subtasks.first_child() {
+            imp.subtasks.remove(&subtask);
         }
 
         let subtasks = read_subtasks_summary(task.id()).unwrap();
@@ -441,7 +437,7 @@ impl TaskRow {
     fn cancel_edit_name(&self) {
         let imp = self.imp();
         let name = self.backup_task_name();
-        imp.name_entry.buffer().set_text(&name);
+        imp.name_entry.buffer().set_text(name);
         imp.name_button.set_visible(true);
     }
 
@@ -604,9 +600,7 @@ impl TaskRow {
 
     #[template_callback]
     fn handle_drag_prepare(&self, _x: f64, _y: f64) -> Option<gdk::ContentProvider> {
-        if !self.draggable() {
-            None
-        } else if self.imp().name_entry.get_visible() {
+        if !self.draggable() || self.imp().name_entry.get_visible() {
             None
         } else {
             Some(gdk::ContentProvider::for_value(&self.to_value()))
@@ -622,7 +616,7 @@ impl TaskRow {
         label
             .last_child()
             .unwrap()
-            .set_property("label", &self.task().name());
+            .set_property("label", self.task().name());
         drag_icon.set_child(Some(&label));
         self.add_css_class("dragged");
         drag.set_hotspot(0, 0);

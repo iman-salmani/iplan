@@ -115,20 +115,14 @@ impl ProjectEditWindow {
         project.connect_notify_local(
             None,
             glib::clone!(@weak self as obj => move|project, _| {
-                update_project(&project).expect("Failed to update task");
+                update_project(project).expect("Failed to update task");
                 obj.emit_by_name::<()>("changed", &[&project]);
             }),
         );
 
         imp.description_buffer
             .bind_property("text", &imp.description_expander_row.get(), "subtitle")
-            .transform_to(|_, text: String| {
-                if let Some(first_line) = text.lines().next() {
-                    Some(String::from(first_line))
-                } else {
-                    None
-                }
-            })
+            .transform_to(|_, text: String| text.lines().next().map(String::from))
             .sync_create()
             .build();
     }

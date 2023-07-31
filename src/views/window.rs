@@ -28,7 +28,7 @@ use crate::db::models::{Project, Record, Task};
 use crate::db::operations::{create_project, create_section, read_projects};
 use crate::views::project::{ProjectEditWindow, ProjectLayout, ProjectPage};
 use crate::views::snippets::MenuItem;
-use crate::views::{calendar::Calendar, sidebar::SidebarProjects};
+use crate::views::{calendar::CalendarPage, sidebar::SidebarProjects};
 
 #[derive(PartialEq, Debug)]
 pub enum ActionScope {
@@ -40,30 +40,29 @@ pub enum ActionScope {
 
 impl StaticVariantType for ActionScope {
     fn static_variant_type() -> std::borrow::Cow<'static, glib::VariantTy> {
-        std::borrow::Cow::from(glib::VariantTy::new("ax").unwrap())
+        std::borrow::Cow::from(glib::VariantTy::new("(yx)").unwrap())
     }
 }
 
 impl ToVariant for ActionScope {
     fn to_variant(&self) -> glib::Variant {
-        let data: [i64; 2] = match self {
-            ActionScope::None => [0, 0],
-            ActionScope::Calendar => [1, 0],
-            ActionScope::Project(id) => [2, id.clone()],
-            ActionScope::DeleteToast => [3, 0],
+        let data: (u8, i64) = match self {
+            ActionScope::None => (0, 0),
+            ActionScope::Calendar => (1, 0),
+            ActionScope::Project(id) => (2, *id),
+            ActionScope::DeleteToast => (3, 0),
         };
-        glib::Variant::array_from_fixed_array(&data)
+        data.to_variant()
     }
 }
 
 impl FromVariant for ActionScope {
     fn from_variant(variant: &glib::Variant) -> Option<Self> {
-        let data = variant.fixed_array::<i64>().ok()?;
-        let id = data.get(0)?;
-        match id {
+        let (target, param): (u8, i64) = variant.get().unwrap();
+        match target {
             0 => Some(ActionScope::None),
             1 => Some(ActionScope::Calendar),
-            2 => Some(ActionScope::Project(data.get(1)?.clone())),
+            2 => Some(ActionScope::Project(param)),
             3 => Some(ActionScope::DeleteToast),
             _ => None,
         }
@@ -90,7 +89,7 @@ mod imp {
         #[template_child]
         pub stack_pages: TemplateChild<gtk::Stack>,
         #[template_child]
-        pub calendar: TemplateChild<Calendar>,
+        pub calendar: TemplateChild<CalendarPage>,
         #[template_child]
         pub calendar_button: TemplateChild<gtk::Button>,
     }
@@ -249,7 +248,7 @@ mod imp {
             );
             klass.install_action(
                 "timer.stop",
-                Some(&Task::static_variant_type().as_str()),
+                Some(Task::static_variant_type().as_str()),
                 |obj, _, value| {
                     let task: Task = value.unwrap().get().unwrap();
 

@@ -323,12 +323,8 @@ impl TasksBox {
     }
 
     fn create_task_row(&self, task: Task) -> TaskRow {
-        let visible_project_label = if let TasksBoxWrapper::Date(_) = self.items_wrapper().unwrap()
-        {
-            true
-        } else {
-            false
-        };
+        let visible_project_label =
+            matches!(self.items_wrapper().unwrap(), TasksBoxWrapper::Date(_));
         let row = TaskRow::new(task, false, visible_project_label);
         if let TasksBoxWrapper::Date(_) = self.items_wrapper().unwrap() {
             row.set_hide_move_arrows(true);
@@ -340,10 +336,8 @@ impl TasksBox {
         let imp = self.imp();
 
         imp.items_box.set_sort_func(glib::clone!(@weak self as obj => @default-return gtk::Ordering::Larger, move |row1, row2| {
-            if let Some(wrapper) = obj.items_wrapper() {
-                if let TasksBoxWrapper::Date(_) = wrapper {
-                    return gtk::Ordering::Larger;
-                }
+            if let Some(TasksBoxWrapper::Date(_)) = obj.items_wrapper() {
+                return gtk::Ordering::Larger;
             }
             let row1 = if let Some(row1) = row1.downcast_ref::<TaskRow>() {
                 row1
@@ -670,9 +664,7 @@ impl TasksBox {
         let item_task: Task = item.task();
         let item_task_position = item_task.position();
 
-        if up && item_index == 0 {
-            return;
-        } else if !up && item_task_position == 0 {
+        if (up && item_index == 0) || (!up && item_task_position == 0) {
             return;
         }
 
@@ -734,7 +726,7 @@ impl TasksBox {
 
         let task_rows = imp.items_box.observe_children();
         for i in 0..task_rows.n_items() {
-            if let Some(row) = task_rows.item(i as u32).and_downcast::<TaskRow>() {
+            if let Some(row) = task_rows.item(i).and_downcast::<TaskRow>() {
                 let row_task = row.task();
                 row_task.set_position(row_task.position() + 1);
             }

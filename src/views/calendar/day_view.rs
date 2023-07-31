@@ -93,10 +93,10 @@ impl DayView {
         if now.ymd() == datetime.ymd() {
             let name_format = format!("%e %b, {}", gettext("Today"));
             imp.name
-                .set_label(&datetime.format(&name_format).unwrap().replace(" ", ""));
+                .set_label(&datetime.format(&name_format).unwrap().replace(' ', ""));
         } else {
             imp.name
-                .set_label(&datetime.format("%e %b, %A").unwrap().replace(" ", ""));
+                .set_label(&datetime.format("%e %b, %A").unwrap().replace(' ', ""));
         }
 
         let tasks = read_tasks(
@@ -142,7 +142,7 @@ impl DayView {
 
     pub fn remove_row(&self, row: &TaskRow) {
         let imp = self.imp();
-        imp.tasks_box.remove_item(&row);
+        imp.tasks_box.remove_item(row);
         if imp.tasks_box.item_by_index(0).is_none() {
             imp.name.add_css_class("dim-label");
         }

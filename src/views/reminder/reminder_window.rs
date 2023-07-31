@@ -87,7 +87,7 @@ impl ReminderWindow {
         imp.date_row.set_datetime(&datetime);
         imp.time_row
             .set_time_from_digits(datetime.hour(), datetime.minute(), datetime.seconds());
-        if state == true {
+        if state {
             imp.delete_group.set_visible(true);
         }
         obj.set_reminder(reminder);

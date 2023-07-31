@@ -134,7 +134,7 @@ impl SectionBox {
         let imp = obj.imp();
         let section = obj.section();
 
-        imp.name_entry.buffer().set_text(&section.name());
+        imp.name_entry.buffer().set_text(section.name());
 
         let tasks = read_tasks(
             Some(section.project()),

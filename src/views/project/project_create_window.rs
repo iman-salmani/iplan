@@ -102,13 +102,7 @@ impl ProjectCreateWindow {
 
         imp.description_buffer
             .bind_property("text", &imp.description_expander_row.get(), "subtitle")
-            .transform_to(|_, text: String| {
-                if let Some(first_line) = text.lines().next() {
-                    Some(String::from(first_line))
-                } else {
-                    None
-                }
-            })
+            .transform_to(|_, text: String| text.lines().next().map(String::from))
             .sync_create()
             .build();
     }
