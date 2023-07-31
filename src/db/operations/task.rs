@@ -212,31 +212,36 @@ fn set_subtasks_suspended(
     Ok(())
 }
 
-pub fn delete_task(task: &Task) -> Result<()> {
+pub fn delete_task(task_id: i64) -> Result<()> {
     let conn = get_connection();
-    // Notify: Not return error when id not exists
-    let task_id = task.id();
-    conn.execute("DELETE FROM tasks WHERE id = ?", (task_id,))?;
-    conn.execute("DELETE FROM records WHERE task = ?", (task_id,))?;
-    conn.execute("DELETE FROM reminders WHERE task = ?", (task_id,))?;
+    // No return error when id not exists
+    conn.execute_batch(&format!(
+        "BEGIN TRANSACTION;
+        CREATE TEMPORARY TABLE temp_task_tree (id INT, project INT, section INT, position INT, parent INT);
 
-    let subtasks = read_tasks(None, None, None, Some(task_id), None, false).unwrap();
-    for subtask in subtasks {
-        delete_task(&subtask).unwrap();
-    }
+        WITH RECURSIVE cte_task_tree(id, project, section, position, parent) AS (
+            SELECT id, project, section, position, parent FROM tasks WHERE id={task_id}
+            UNION ALL
+            SELECT tasks.id, tasks.project, tasks.section, tasks.position, tasks.parent
+                FROM tasks
+                JOIN cte_task_tree ON tasks.parent=cte_task_tree.id
+        )
+        INSERT INTO temp_task_tree (id, project, section, position, parent) SELECT * FROM cte_task_tree;
 
-    // Decrease upper tasks position
-    if task.parent() == 0 {
-        conn.execute(
-            "UPDATE tasks SET position = position - 1 WHERE position > ?1 AND section = ?2",
-            (task.position(), task.section()),
-        )?;
-    } else {
-        conn.execute(
-            "UPDATE tasks SET position = position - 1 WHERE position > ?1 AND parent = ?2",
-            (task.position(), task.parent()),
-        )?;
-    }
+        DELETE FROM records WHERE task IN (SELECT id from temp_task_tree);
+        DELETE FROM reminders WHERE task IN (SELECT id from temp_task_tree);
+        DELETE FROM tasks WHERE  id in (SELECT id from temp_task_tree);
+
+        UPDATE tasks
+            SET position = tasks.position - 1
+            FROM temp_task_tree
+            WHERE tasks.position > temp_task_tree.position
+            AND tasks.section = temp_task_tree.section
+            AND tasks.parent = temp_task_tree.parent;
+
+        DROP TABLE temp_task_tree;
+        COMMIT;"
+    ))?;
 
     Ok(())
 }
