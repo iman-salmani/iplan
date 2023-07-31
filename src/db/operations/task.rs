@@ -170,14 +170,14 @@ pub fn update_task(task: &Task) -> Result<()> {
 
     let task_suspended = task.suspended();
     if task_suspended != old_task.suspended() {
-        set_subtasks_suspended(&conn, task.id(), task_suspended)?;
+        update_task_tree_suspended(&conn, task.id(), task_suspended)?;
     }
 
     conn.execute(
         &format!(
             "UPDATE tasks SET
             name = ?2, done = ?3, project = ?4, section = ?5,
-            {position_stmt} suspended = ?6, parent = ?7, description = ?8, date = ?9 WHERE id = ?1"
+            {position_stmt} parent = ?6, description = ?7, date = ?8 WHERE id = ?1"
         ),
         (
             task.id(),
@@ -185,7 +185,6 @@ pub fn update_task(task: &Task) -> Result<()> {
             task.done(),
             task.project(),
             task.section(),
-            task.suspended(),
             task.parent(),
             task.description(),
             task.date(),
@@ -194,21 +193,22 @@ pub fn update_task(task: &Task) -> Result<()> {
     Ok(())
 }
 
-fn set_subtasks_suspended(
+fn update_task_tree_suspended(
     conn: &rusqlite::Connection,
     task_id: i64,
     suspended: bool,
 ) -> Result<()> {
     conn.execute(
-        "UPDATE tasks SET suspended = ?1 WHERE parent = ?2",
-        (suspended, task_id),
+        "WITH RECURSIVE task_tree(id, parent) AS (
+	        SELECT id, parent FROM tasks WHERE id=?1
+	        UNION ALL
+	        SELECT tasks.id, tasks.parent
+		        FROM tasks
+		        JOIN task_tree ON tasks.parent=task_tree.id
+        )
+        UPDATE tasks SET suspended = ?2 WHERE id IN (SELECT id FROM task_tree)",
+        (task_id, suspended),
     )?;
-    let mut stmt = conn.prepare("SELECT id FROM tasks WHERE parent = ?1")?;
-    let mut rows = stmt.query((task_id,))?;
-    while let Some(row) = rows.next()? {
-        let id: i64 = row.get(0)?;
-        set_subtasks_suspended(conn, id, suspended)?;
-    }
     Ok(())
 }
 
