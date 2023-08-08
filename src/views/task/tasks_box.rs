@@ -492,6 +492,7 @@ impl TasksBox {
                 parent_row.imp().subtask_drop_target.set_visible(false);
             }
         } else if task_db.position() != task.position() || task_db.section() != task.section() {
+            task.set_parent(0);
             update_task(&task).unwrap();
         }
         row.grab_focus();

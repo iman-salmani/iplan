@@ -384,6 +384,7 @@ impl SidebarProjects {
             task.set_project(project_id);
             task.set_section(section_id);
             task.set_position(new_task_position(section_id));
+            task.set_parent(0);
             update_task(&task).unwrap();
 
             self.activate_action(
