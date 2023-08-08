@@ -236,14 +236,14 @@ impl SectionBox {
         let modal = TaskWindow::new(&win.application().unwrap(), &win, row.task());
         modal.present();
         modal.connect_close_request(
-            glib::clone!(@weak row => @default-return gtk::Inhibit(false), move |_| {
+            glib::clone!(@weak row => @default-return glib::Propagation::Proceed, move |_| {
                 let task = row.task();
                 if task.done() {
                     tasks_box.remove(&row);
                 } else if task.suspended() {
                     row.changed();
                 }
-                gtk::Inhibit(false)
+                glib::Propagation::Proceed
             }),
         );
         modal.connect_closure(

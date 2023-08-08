@@ -215,7 +215,7 @@ impl TasksDoneWindow {
         let modal = TaskWindow::new(&obj.application().unwrap(), &obj, row.task());
         modal.present();
         modal.connect_close_request(
-            glib::clone!(@weak self as obj, @weak row => @default-return gtk::Inhibit(false), move |_| {
+            glib::clone!(@weak self as obj, @weak row => @default-return glib::signal::Propagation::Proceed, move |_| {
                 let task = row.task();
                 if !task.done() {
                     obj.imp().tasks_box.remove(&row);
@@ -223,7 +223,7 @@ impl TasksDoneWindow {
                 } else if task.suspended() {
                     row.changed();
                 }
-                gtk::Inhibit(false)
+				glib::signal::Propagation::Proceed
             }),
         );
         modal.connect_closure(

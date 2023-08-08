@@ -472,7 +472,7 @@ impl TaskRow {
         button.remove_css_class("flat");
         self.move_timer_button(true);
 
-        let (tx, rx) = glib::MainContext::channel(glib::PRIORITY_DEFAULT);
+        let (tx, rx) = glib::MainContext::channel(glib::Priority::DEFAULT);
         let duration = Duration::from_secs(record.duration() as u64);
         let start = SystemTime::now().checked_sub(duration).unwrap();
         thread::spawn(move || loop {
@@ -481,7 +481,7 @@ impl TaskRow {
             }
             thread::sleep(Duration::from_secs_f32(0.3));
         });
-        rx.attach(None,glib::clone!(@weak button, @weak self as obj => @default-return glib::Continue(false),
+        rx.attach(None,glib::clone!(@weak button, @weak self as obj => @default-return glib::ControlFlow::Break,
             move |duration| {
                 let imp = obj.imp();
                 match imp.timer_status.get() {
@@ -489,7 +489,7 @@ impl TaskRow {
                         button.set_label(
                             Record::duration_display(duration as i64)
                         );
-                        glib::Continue(true)
+                        glib::ControlFlow::Continue
                     },
                     TimerStatus::Off => {
                         button.remove_css_class("destructive-action");
@@ -502,12 +502,12 @@ impl TaskRow {
                             obj.activate_action("timer.stop", Some(&task.to_variant())).unwrap();
                             obj.activate_action("task.duration-changed", Some(&task.to_variant())).unwrap();
                         }
-                        glib::Continue(false)
+                        glib::ControlFlow::Break
                     },
                     TimerStatus::Cancel => {
                         button.remove_css_class("destructive-action");
                         button.add_css_class("flat");
-                        glib::Continue(false)
+                        glib::ControlFlow::Break
                     }
                 }
             }

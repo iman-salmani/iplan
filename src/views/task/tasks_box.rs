@@ -279,14 +279,14 @@ impl TasksBox {
                 .flags(gtk::EventControllerScrollFlags::VERTICAL)
                 .build();
             controller.connect_scroll(
-                glib::clone!(@weak self as obj => @default-return gtk::Inhibit(false), move |controller, _dx, dy| {
+                glib::clone!(@weak self as obj => @default-return glib::Propagation::Proceed, move |controller, _dx, dy| {
                     if controller.current_event_state().contains(gdk::ModifierType::SHIFT_MASK) {
                         obj.activate_action("hscroll", Some(&dy.to_variant())).unwrap();
                         obj.imp().scrolled_window.vscrollbar().set_sensitive(false);
-                        gtk::Inhibit(true)
+                        glib::Propagation::Stop
                     } else {
                         obj.imp().scrolled_window.vscrollbar().set_sensitive(true); // FIXME: Its fine but dont show scrollbar while hovering after scroll ends with sensitive false
-                        gtk::Inhibit(false)
+                        glib::Propagation::Proceed
                     }
                 }),
             );
@@ -679,7 +679,7 @@ impl TasksBox {
     }
 
     fn start_scroll(&self) {
-        let (tx, rx) = glib::MainContext::channel(glib::PRIORITY_DEFAULT);
+        let (tx, rx) = glib::MainContext::channel(glib::Priority::DEFAULT);
         thread::spawn(move || loop {
             if tx.send(()).is_err() {
                 break;
@@ -688,16 +688,16 @@ impl TasksBox {
         });
         rx.attach(
             None,
-            glib::clone!(@weak self as obj => @default-return glib::Continue(false), move |_| {
+            glib::clone!(@weak self as obj => @default-return glib::ControlFlow::Break, move |_| {
                 let scroll = obj.scroll();
                 if scroll == 0 {
-                    glib::Continue(false)
+                    glib::ControlFlow::Break
                 } else if scroll.is_positive() {
                     obj.imp().scrolled_window.emit_scroll_child(gtk::ScrollType::StepDown, false);
-                    glib::Continue(true)
+                    glib::ControlFlow::Continue
                 } else {
                     obj.imp().scrolled_window.emit_scroll_child(gtk::ScrollType::StepUp, false);
-                    glib::Continue(true)
+                    glib::ControlFlow::Continue
                 }
             }),
         );

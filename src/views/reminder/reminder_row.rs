@@ -102,7 +102,7 @@ impl ReminderRow {
         let modal = ReminderWindow::new(&win.application().unwrap(), &win, self.reminder(), true);
         modal.present();
         modal.connect_close_request(
-            glib::clone!(@weak self as obj => @default-return gtk::Inhibit(false), move |_| {
+            glib::clone!(@weak self as obj => @default-return glib::Propagation::Proceed, move |_| {
                 match read_reminder(obj.reminder().id()) {
                     Ok(reminder) => {
                         obj.emit_by_name::<()>("changed", &[&reminder]);
@@ -118,7 +118,7 @@ impl ReminderRow {
                         err => panic!("{err}")
                     }
                 }
-                gtk::Inhibit(false)
+                glib::Propagation::Proceed
             }),
         );
     }

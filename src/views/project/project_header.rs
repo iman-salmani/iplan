@@ -120,7 +120,7 @@ impl ProjectHeader {
         }
 
         let imp = self.imp();
-        let (tx, rx) = glib::MainContext::channel(glib::PRIORITY_DEFAULT);
+        let (tx, rx) = glib::MainContext::channel(glib::Priority::DEFAULT);
         let project_id = self.project_id();
 
         imp.chart.clear();
@@ -176,13 +176,13 @@ impl ProjectHeader {
         rx.attach(
             None,
             glib::clone!(
-            @weak imp => @default-return glib::Continue(false),
+            @weak imp => @default-return glib::ControlFlow::Break,
             move |data| {
                 let (total_time, last_7_days, labels, values, tooltips) = data;
 
                 if total_time == 0 {
                     imp.placeholder.set_visible(true);
-                    return glib::Continue(false);
+                    return glib::ControlFlow::Break
                 } else {
                     imp.placeholder.set_visible(false);
                     imp.chart_header.set_visible(true);
@@ -207,7 +207,7 @@ impl ProjectHeader {
                     value / max as f64
                 }).collect();
                 imp.chart.set_data(labels, percentages, y_labels, tooltips);
-                glib::Continue(false)
+                glib::ControlFlow::Break
             }),
         );
     }

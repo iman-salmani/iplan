@@ -93,7 +93,7 @@ impl SearchWindow {
         imp.search_entry.grab_focus();
         let search_entry_controller = gtk::EventControllerKey::new();
         search_entry_controller.connect_key_pressed(glib::clone!(
-            @weak win => @default-return gtk::Inhibit(false),
+            @weak win => @default-return glib::Propagation::Proceed,
             move |_controller, keyval, _keycode, _state| {
                 let imp = win.imp();
 
@@ -102,7 +102,7 @@ impl SearchWindow {
                     let step = match keyval {
                         gdk::Key::Up => -1,
                         gdk::Key::Down => 1,
-                        _ => return gtk::Inhibit(false)
+                        _ => return glib::Propagation::Proceed
                     };
                     if let Some(selected_row) = imp.search_results.selected_row() {
                         if let Some(row) =
@@ -114,7 +114,7 @@ impl SearchWindow {
                     }
 
                 }
-                gtk::Inhibit(false)
+				glib::Propagation::Proceed
         }));
         imp.search_entry.add_controller(search_entry_controller);
         win

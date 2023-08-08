@@ -286,7 +286,7 @@ mod imp {
     }
     impl WidgetImpl for IPlanWindow {}
     impl WindowImpl for IPlanWindow {
-        fn close_request(&self) -> glib::signal::Inhibit {
+        fn close_request(&self) -> glib::Propagation {
             let obj = self.obj();
             if let Some(settings) = obj.settings() {
                 settings
@@ -363,13 +363,13 @@ impl IPlanWindow {
             .sync_create()
             .build();
 
-        let (tx, rx) = glib::MainContext::channel(glib::PRIORITY_DEFAULT);
+        let (tx, rx) = glib::MainContext::channel(glib::Priority::DEFAULT);
         glib::idle_add_once(move || tx.send(()).unwrap());
         rx.attach(
             None,
-            glib::clone!(@weak obj => @default-return glib::Continue(false), move |_| {
+            glib::clone!(@weak obj => @default-return glib::ControlFlow::Break, move |_| {
                 obj.change_project(obj.home_project());
-                glib::Continue(false)
+                glib::ControlFlow::Break
             }),
         );
 

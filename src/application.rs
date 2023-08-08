@@ -137,7 +137,7 @@ impl IPlanApplication {
     }
 
     pub fn send_reminder(&self, reminder: Reminder) {
-        let (tx, rx) = glib::MainContext::channel(glib::PRIORITY_DEFAULT);
+        let (tx, rx) = glib::MainContext::channel(glib::Priority::DEFAULT);
         let now = SystemTime::now()
             .duration_since(UNIX_EPOCH)
             .expect("Time went backwards");
@@ -154,11 +154,11 @@ impl IPlanApplication {
             thread::sleep(remains);
             if tx.send("").is_err() {}
         });
-        rx.attach(None,glib::clone!(@weak self as obj => @default-return glib::Continue(false), move |_: &str| {
+        rx.attach(None, glib::clone!(@weak self as obj => @default-return glib::ControlFlow::Break, move |_: &str| {
             let fresh_reminder = read_reminder(reminder.id()).expect("Failed to read reminder");
 
             if fresh_reminder.past() || fresh_reminder.datetime() != reminder.datetime() {
-                return glib::Continue(false);
+				return glib::ControlFlow::Break;
             }
 
             let task = read_task(fresh_reminder.task()).expect("Failed to read task");
@@ -168,7 +168,7 @@ impl IPlanApplication {
             fresh_reminder.set_past(true);
             update_reminder(&fresh_reminder).expect("Failed to update reminder");
 
-            glib::Continue(false)
+            glib::ControlFlow::Break
         }));
     }
 

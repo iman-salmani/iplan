@@ -159,23 +159,24 @@ impl CalendarPage {
         }
 
         let day_view = self.day_view_by_date(datetime).unwrap();
-        let (tx, rx) = glib::MainContext::channel(glib::PRIORITY_DEFAULT);
+        let (tx, rx) = glib::MainContext::channel(glib::Priority::DEFAULT);
         glib::idle_add(move || {
             if tx.send(()).is_ok() {
-                glib::Continue(true)
+				glib::ControlFlow::Continue
             } else {
-                glib::Continue(false)
+                glib::ControlFlow::Break
             }
         });
         rx.attach(
             None,
-            glib::clone!(@weak self as obj, @weak day_view => @default-return glib::Continue(false), move |_| {
+            glib::clone!(@weak self as obj, @weak day_view => @default-return glib::ControlFlow::Break, move |_| {
                 let y =  day_view.allocation().y();
                 if y == 0 {
-                    glib::Continue(true)
+					// FIXME: check this for cpu usage
+                    glib::ControlFlow::Continue
                 } else {
                     obj.imp().scrolled_view.vadjustment().set_value(y as f64);
-                    glib::Continue(false)
+                    glib::ControlFlow::Break
                 }
             }),
         );
@@ -409,21 +410,22 @@ impl CalendarPage {
                     let date = first_day_view_date.add_days(-1).unwrap();
                     let day_view = DayView::new(date);
                     imp.days_box.prepend(&day_view);
-                    let (tx, rx) = glib::MainContext::channel(glib::PRIORITY_DEFAULT);
+                    let (tx, rx) = glib::MainContext::channel(glib::Priority::DEFAULT);
                     glib::idle_add(move || {
                         if tx.send(()).is_ok() {
-                            glib::Continue(true)
+							glib::ControlFlow::Continue
                         } else {
-                            glib::Continue(false)
+                            glib::ControlFlow::Break
                         }
                     });
-                    rx.attach(None, glib::clone!(@weak adjustment => @default-return glib::Continue(false), move |_| {
+                    rx.attach(None, glib::clone!(@weak adjustment => @default-return glib::ControlFlow::Break, move |_| {
                         let height = day_view.height();
                         if height == 0 {
-                            glib::Continue(true)
+							// FIXME: check this for cpu usage
+                            glib::ControlFlow::Continue
                         } else {
                             adjustment.set_value(adjustment.value() + height as f64);
-                            glib::Continue(false)
+                            glib::ControlFlow::Break
                         }
                     }));
                     return;
@@ -490,7 +492,7 @@ impl CalendarPage {
     }
 
     fn start_scroll(&self) {
-        let (tx, rx) = glib::MainContext::channel(glib::PRIORITY_DEFAULT);
+        let (tx, rx) = glib::MainContext::channel(glib::Priority::DEFAULT);
         thread::spawn(move || loop {
             if tx.send(()).is_err() {
                 break;
@@ -499,16 +501,16 @@ impl CalendarPage {
         });
         rx.attach(
             None,
-            glib::clone!(@weak self as obj => @default-return glib::Continue(false), move |_| {
+            glib::clone!(@weak self as obj => @default-return glib::ControlFlow::Break, move |_| {
                 let scroll = obj.scroll();
                 if scroll == 0 {
-                    glib::Continue(false)
+					glib::ControlFlow::Break
                 } else if scroll.is_positive() {
                     obj.imp().scrolled_view.emit_scroll_child(gtk::ScrollType::StepDown, false);
-                    glib::Continue(true)
+					glib::ControlFlow::Continue
                 } else {
                     obj.imp().scrolled_view.emit_scroll_child(gtk::ScrollType::StepUp, false);
-                    glib::Continue(true)
+					glib::ControlFlow::Continue
                 }
             }),
         );

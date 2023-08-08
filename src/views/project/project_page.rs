@@ -259,12 +259,12 @@ impl ProjectPage {
         imp.sections_box.append(&section_box);
         let section_box_imp = section_box.imp();
         section_box_imp.name_button.set_visible(false); // Name entry visibility have binding to this
-        let (tx, rx) = glib::MainContext::channel(glib::PRIORITY_DEFAULT);
+        let (tx, rx) = glib::MainContext::channel(glib::Priority::DEFAULT);
         glib::idle_add_once(move || tx.send("").unwrap());
         let name_entry = section_box_imp.name_entry.get();
         rx.attach(None, move |_text| {
             name_entry.grab_focus();
-            glib::Continue(false)
+            glib::ControlFlow::Break
         });
     }
 
@@ -373,7 +373,7 @@ impl ProjectPage {
     }
 
     fn start_scroll(&self) {
-        let (tx, rx) = glib::MainContext::channel(glib::PRIORITY_DEFAULT);
+        let (tx, rx) = glib::MainContext::channel(glib::Priority::DEFAULT);
         thread::spawn(move || loop {
             if tx.send(()).is_err() {
                 break;
@@ -382,27 +382,27 @@ impl ProjectPage {
         });
         rx.attach(
             None,
-            glib::clone!(@weak self as obj => @default-return glib::Continue(false), move |_| {
+            glib::clone!(@weak self as obj => @default-return glib::ControlFlow::Break, move |_| {
                 let scroll = obj.scroll();
                 match scroll {
-                    0 => glib::Continue(false),
+                    0 => glib::ControlFlow::Break,
                     1 => {
                         obj.imp().scrolled_window.emit_scroll_child(gtk::ScrollType::StepDown, false);
-                        glib::Continue(true)
+                        glib::ControlFlow::Continue
                     }
                     -1 => {
                         obj.imp().scrolled_window.emit_scroll_child(gtk::ScrollType::StepUp, false);
-                        glib::Continue(true)
-                    }
+                        glib::ControlFlow::Continue
+					}
                     2 => {
                         obj.imp().scrolled_window.emit_scroll_child(gtk::ScrollType::StepRight, false);
-                        glib::Continue(true)
-                    }
+                        glib::ControlFlow::Continue
+					}
                     -2 => {
                         obj.imp().scrolled_window.emit_scroll_child(gtk::ScrollType::StepLeft, false);
-                        glib::Continue(true)
-                    }
-                    _ => glib::Continue(false),
+                        glib::ControlFlow::Continue
+					}
+                    _ => glib::ControlFlow::Break,
                 }
             }),
         );
