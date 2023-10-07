@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: ir.imansalmani.IPlan\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-07-30 20:17+0330\n"
-"PO-Revision-Date: 2023-07-15 01:53+0300\n"
+"PO-Revision-Date: 2023-10-07 11:24+0300\n"
 "Last-Translator: Sabri Ünal <libreajans@gmail.com>\n"
 "Language-Team: Türkçe <takim@gnome.org.tr>\n"
 "Language: tr\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 3.2.2\n"
+"X-Generator: Poedit 3.4\n"
 
 #: data/ir.imansalmani.IPlan.desktop.in:3 src/ui/window.ui:28
 msgid "IPlan"
@@ -30,16 +30,15 @@ msgstr "Kişisel yaşamınızı ve iş akışınızı iyileştirme planınız"
 
 #: data/ir.imansalmani.IPlan.desktop.in:5
 msgid "plan;planning;tasks;projects;"
-msgstr ""
+msgstr "plan;planning;tasks;projects;planlama;görevler;projeler;"
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:9
-#, fuzzy
 msgid ""
 "IPlan goal is to be a user-friendly tool for those who want to organize "
 "their ether personal life, jobs, or both."
 msgstr ""
-"Iplanʼın amacı, kişisel hayatını veya işlerini düzenlemek isteyenler için "
-"kullanıcı dostu bir araç olmaktır."
+"Iplanʼın amacı, kişisel hayatını, işlerini veya her ikisini  düzenlemek "
+"isteyenler için kullanıcı dostu bir araç olmaktır."
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:10
 msgid "Features:"
@@ -239,9 +238,8 @@ msgid "Time spent per day"
 msgstr "Günlük harcanan zaman"
 
 #: src/ui/project/project_page.ui:27
-#, fuzzy
 msgid "Project Menu"
-msgstr "Projeler"
+msgstr "Proje Menüsü"
 
 # Başlık düzeni tercih edildi.
 #: src/ui/project/project_page.ui:64
@@ -482,16 +480,14 @@ msgid "Time can't be in the past"
 msgstr "Zaman geçmişte olamaz"
 
 #: src/views/search/search_result.rs:71
-#, fuzzy
 msgid "project"
-msgstr "Projeler"
+msgstr "proje"
 
 #: src/views/search/search_result.rs:82
 msgid "task"
 msgstr "görev"
 
 #: src/views/sidebar/sidebar_projects.rs:368
-#, fuzzy
 msgid "Task moved to {}"
 msgstr "Görev şuraya taşındı: {}"
 
@@ -504,7 +500,6 @@ msgid "Inbox"
 msgstr "Gelen Kutusu"
 
 #: src/views/task/task_row.rs:553
-#, fuzzy
 msgid "“{}” is going to delete"
 msgstr "“{}” silinecek"
 
