@@ -40,11 +40,13 @@
     </screenshot>
   </screenshots>
   <launchable type="desktop-id">ir.imansalmani.IPlan.desktop</launchable>
+  <translation type="gettext">iplan</translation>
   <url type="homepage">https://github.com/iman-salmani/iplan</url>
   <url type="bugtracker">https://github.com/iman-salmani/iplan/issues</url>
+  <url type="vcs-browser">https://github.com/iman-salmani/iplan</url>
+  <url type="translate">https://github.com/iman-salmani/iplan/tree/main/po</url>
   <developer_name>Iman Salmani</developer_name>
   <custom>
-    <value key="Purism::form_factor">workstation</value>
     <value key="Purism::form_factor">mobile</value>
   </custom>
   <requires>
@@ -55,9 +57,6 @@
     <control>keyboard</control>
     <control>touch</control>
   </recommends>
-  <categories>
-    <category>Utility</category>
-  </categories>
   <content_rating type="oars-1.1" />
   <releases>
     <release version="1.9.2" date="2023-07-17">
