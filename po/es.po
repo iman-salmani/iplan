@@ -1,0 +1,498 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the iplan package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: iplan\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-07-30 20:17+0330\n"
+"PO-Revision-Date: 2024-03-16 13:37-0300\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: es\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.4.2\n"
+
+#: data/ir.imansalmani.IPlan.desktop.in:3 src/ui/window.ui:28
+msgid "IPlan"
+msgstr "IPlan"
+
+#: data/ir.imansalmani.IPlan.desktop.in:4
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:7
+msgid "Your plan for improving personal life and workflow"
+msgstr "Su plan para mejorar su vida personal y su flujo de trabajo"
+
+#: data/ir.imansalmani.IPlan.desktop.in:5
+msgid "plan;planning;tasks;projects;"
+msgstr "planificar;planificación;tareas;proyectos;"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:9
+msgid ""
+"IPlan goal is to be a user-friendly tool for those who want to organize "
+"their ether personal life, jobs, or both."
+msgstr ""
+"El objetivo de IPlan es ser una herramienta fácil de usar para quienes "
+"deseen organizar su vida personal, su trabajo o ambos."
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:10
+msgid "Features:"
+msgstr "Características:"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:12
+msgid "Grouping tasks with project and list"
+msgstr "Agrupación de tareas por proyecto y lista"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:13
+msgid "Timer for tasks"
+msgstr "Temporizador de tareas"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:14 src/ui/task/task_page.ui:73
+#: src/ui/task/task_page.ui:89
+msgid "Subtasks"
+msgstr "Subtareas"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:15
+msgid "Calendar for Exploring tasks by date"
+msgstr "Calendario para explorar las tareas por fecha"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:16
+msgid "Global search"
+msgstr "Búsqueda global"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:17
+msgid "Arranging projects, lists, and tasks by drag and drop"
+msgstr "Organización de proyectos, listas y tareas mediante arrastrar y soltar"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:22
+msgid "The IPlan main window"
+msgstr "La ventana principal del IPlan"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:26
+msgid "Task window"
+msgstr "Ventana de tarea"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:30 src/ui/window.ui:53
+#: src/ui/calendar/calendar.ui:31
+msgid "Calendar"
+msgstr "Calendario"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:34
+msgid "The IPlan main window (dark mode)"
+msgstr "Ventana principal del IPlan (modo oscuro)"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:38
+msgid "The IPlan main window (small size)"
+msgstr "Ventana principal del IPlan (tamaño pequeño)"
+
+#: data/ir.imansalmani.IPlan.metainfo.xml.in:45
+msgid "Iman Salmani"
+msgstr "Iman Salmani"
+
+#: src/ui/window.ui:42
+msgid "Main Menu"
+msgstr "Menú principal"
+
+#: src/ui/window.ui:90
+msgid "_Preferences"
+msgstr "_Preferencias"
+
+#: src/ui/window.ui:94
+msgid "_Backup"
+msgstr "_Copia de seguridad"
+
+#: src/ui/window.ui:98
+msgid "_Keyboard Shortcuts"
+msgstr "_Atajos de teclado"
+
+#: src/ui/window.ui:102
+msgid "_About IPlan"
+msgstr "_Acerca de IPlan"
+
+#: src/ui/preferences_window.ui:17
+msgid "Run in Background"
+msgstr "Ejecutar en segundo plano"
+
+#: src/ui/preferences_window.ui:18
+msgid "Allow send reminders when the app is closed"
+msgstr "Permitir el envío de recordatorios cuando se cierra la aplicación"
+
+#: src/ui/shortcuts_window.ui:13
+msgctxt "shortcut window"
+msgid "Application"
+msgstr "Aplicación"
+
+#: src/ui/shortcuts_window.ui:16
+msgctxt "shortcut window"
+msgid "Preferences"
+msgstr "Preferencias"
+
+#: src/ui/shortcuts_window.ui:23
+msgctxt "shortcut window"
+msgid "Keyboard Shortcuts"
+msgstr "Atajos de teclado"
+
+#: src/ui/shortcuts_window.ui:30
+msgctxt "shortcut window"
+msgid "Primary Menu"
+msgstr "Menú principal"
+
+#: src/ui/shortcuts_window.ui:36
+msgctxt "shortcut window"
+msgid "Quit"
+msgstr "Salir"
+
+#: src/ui/shortcuts_window.ui:45
+msgctxt "shortcut window"
+msgid "Tasks"
+msgstr "Tareas"
+
+#: src/ui/shortcuts_window.ui:48
+msgctxt "shortcut window"
+msgid "Search"
+msgstr "Buscar"
+
+#: src/ui/backup_window.ui:19
+msgid "Backup"
+msgstr "Copia de seguridad"
+
+#: src/ui/backup_window.ui:35 src/views/backup_window.rs:62
+msgid "Export"
+msgstr "Exportar"
+
+#: src/ui/backup_window.ui:47
+msgid "Data folder path"
+msgstr "Ruta de la carpeta de datos"
+
+#: src/ui/backup_window.ui:48
+msgid "Add this path to your backup application"
+msgstr "Añade esta ruta a su aplicación de copia de seguridad"
+
+#: src/ui/backup_window.ui:68 src/views/backup_window.rs:98
+msgid "Import"
+msgstr "Importar"
+
+#: src/ui/backup_window.ui:69
+msgid "While importing, previous data will be cached"
+msgstr "Durante la importación, se almacenarán en caché los datos anteriores"
+
+#: src/ui/calendar/calendar.ui:41 src/ui/snippets/date_row.ui:26
+#: src/db/models/task.rs:128 src/views/calendar/day_view.rs:94
+msgid "Today"
+msgstr "Hoy"
+
+#: src/ui/project/project_create_window.ui:16
+msgid "New Project"
+msgstr "Nuevo proyecto"
+
+#: src/ui/project/project_create_window.ui:24 src/ui/record/record_window.ui:26
+#: src/ui/reminder/reminder_window.ui:25
+msgid "Cancel"
+msgstr "Cancelar"
+
+#: src/ui/project/project_create_window.ui:30
+msgid "Add"
+msgstr "Agregar"
+
+#: src/ui/project/project_create_window.ui:62
+#: src/ui/project/project_edit_window.ui:50
+msgid "Name"
+msgstr "Nombre"
+
+#: src/ui/project/project_create_window.ui:69
+#: src/ui/project/project_edit_window.ui:57
+msgid "Icon"
+msgstr "Ícono"
+
+#: src/ui/project/project_create_window.ui:88
+#: src/ui/project/project_edit_window.ui:76 src/ui/task/task_page.ui:45
+msgid "Description"
+msgstr "Descripción"
+
+#: src/ui/project/project_edit_window.ui:16
+msgid "Edit Project"
+msgstr "Editar proyecto"
+
+#: src/ui/project/project_edit_window.ui:104
+msgid "Archive"
+msgstr "Archivo"
+
+#: src/ui/project/project_edit_window.ui:115
+msgid "Delete"
+msgstr "Eliminar"
+
+#: src/ui/project/project_header.ui:108
+msgid "Time spent"
+msgstr "Tiempo empleado"
+
+#: src/ui/project/project_header.ui:141
+msgid "Time spent per day"
+msgstr "Tiempo dedicado por día"
+
+#: src/ui/project/project_page.ui:27
+msgid "Project Menu"
+msgstr "Menú del proyecto"
+
+#: src/ui/project/project_page.ui:64
+msgid "no sections found"
+msgstr "no se han encontrado secciones"
+
+#: src/ui/project/project_page.ui:93
+msgid "New section"
+msgstr "Nueva sección"
+
+#: src/ui/project/project_page.ui:107
+msgid "New _Section"
+msgstr "Nueva _Sección"
+
+#: src/ui/project/project_page.ui:111
+msgid "_Edit Project"
+msgstr "_Editar proyecto"
+
+#: src/ui/project/section_box.ui:50 src/ui/task/tasks_box.ui:47
+msgid "Add task"
+msgstr "Añadir tarea"
+
+#: src/ui/project/section_box.ui:80
+msgid "Done tasks"
+msgstr "Tareas completadas"
+
+#: src/ui/project/section_box.ui:91
+msgid "Delete section"
+msgstr "Eliminar sección"
+
+#: src/ui/record/record_window.ui:18 src/ui/task/task_page.ui:166
+msgid "New Record"
+msgstr "Nuevo registro"
+
+#: src/ui/record/record_window.ui:32 src/ui/reminder/reminder_window.ui:31
+msgid "Done"
+msgstr "Listo"
+
+#: src/ui/record/record_window.ui:49
+msgid "Starts"
+msgstr "Inicia"
+
+#: src/ui/record/record_window.ui:52 src/ui/record/record_window.ui:69
+#: src/ui/reminder/reminder_window.ui:50
+msgid "Date"
+msgstr "Fecha"
+
+#: src/ui/record/record_window.ui:58 src/ui/record/record_window.ui:75
+#: src/ui/reminder/reminder_window.ui:56
+msgid "Time"
+msgstr "Hora"
+
+#: src/ui/record/record_window.ui:66
+msgid "Ends"
+msgstr "Finaliza"
+
+#: src/ui/record/record_window.ui:84
+msgid "Duration"
+msgstr "Duración"
+
+#: src/ui/reminder/reminder_window.ui:17
+msgid "Reminder"
+msgstr "Recordatorio"
+
+#: src/ui/reminder/reminder_window.ui:67
+msgid "delete"
+msgstr "eliminar"
+
+#: src/ui/search/search_window.ui:18
+msgid "Search"
+msgstr "Buscar"
+
+#: src/ui/search/search_window.ui:55
+msgid "no results found"
+msgstr "no se encontraron resultados"
+
+#: src/ui/sidebar/sidebar_projects.ui:21
+msgid "Projects"
+msgstr "Projectos"
+
+#: src/ui/sidebar/sidebar_projects.ui:36
+msgid "Show archive projects"
+msgstr "Mostrar proyectos archivados"
+
+#: src/ui/sidebar/sidebar_projects.ui:43
+msgid "New project"
+msgstr "Nuevo proyecto"
+
+#: src/ui/snippets/delete_dialog.ui:13
+msgid "_Cancel"
+msgstr "_Cancelar"
+
+#: src/ui/snippets/delete_dialog.ui:14
+msgid "_Delete"
+msgstr "_Eliminar"
+
+#: src/ui/snippets/date_row.ui:40
+msgid "No Date"
+msgstr "Sin fecha"
+
+#: src/ui/task/task_row.ui:220 src/views/task/task_row.rs:328
+msgid "Start _Timer"
+msgstr "Iniciar _Temporizador"
+
+#: src/ui/task/task_row.ui:229
+msgid "Move Up"
+msgstr "Subir"
+
+#: src/ui/task/task_row.ui:237
+msgid "Move Down"
+msgstr "Bajar"
+
+#: src/ui/task/task_row.ui:248
+msgid "_Delete Task"
+msgstr "_Eliminar tarea"
+
+#: src/ui/task/task_page.ui:26
+msgid "Due date"
+msgstr "Fecha de vencimiento"
+
+#: src/ui/task/task_page.ui:32
+msgid "Reminders"
+msgstr "Recordatorios"
+
+#: src/ui/task/task_page.ui:94
+msgid "Records"
+msgstr "Registros"
+
+#: src/ui/task/tasks_box.ui:78
+msgid "Add Task"
+msgstr "Añadir tarea"
+
+#: src/ui/task/tasks_done_window.ui:52
+msgid "no done tasks found"
+msgstr "no se han encontrado tareas completadas"
+
+#. Translators: Replace "translator-credits" with your names, one name per line
+#: src/application.rs:347
+msgid "translator-credits"
+msgstr "haggen88"
+
+#: src/application.rs:378 src/application.rs:414
+msgid "IPlan needs to run in the background to send reminders"
+msgstr "IPlan necesita ejecutarse en segundo plano para enviar recordatorios"
+
+#: src/db/models/task.rs:130
+msgid "Tomorrow"
+msgstr "Mañana"
+
+#: src/db/models/record.rs:75
+msgid "day"
+msgstr "día"
+
+#: src/db/models/record.rs:77
+msgid "days"
+msgstr "días"
+
+#: src/views/window.rs:450
+msgid "Personal"
+msgstr "Personal"
+
+#: src/views/window.rs:451 src/views/project/project_create_window.rs:148
+msgid "Tasks"
+msgstr "Tareas"
+
+#: src/views/backup_window.rs:91
+msgid "Path copied!"
+msgstr "¡Ruta copiada!"
+
+#: src/views/backup_window.rs:111
+msgid "Error while caching previous data"
+msgstr "Error al almacenar en caché datos anteriores"
+
+#: src/views/backup_window.rs:114
+msgid "Error while importing data"
+msgstr "Error al importar datos"
+
+#: src/views/project/project_create_window.rs:140
+msgid "Project should have a name!"
+msgstr "¡El proyecto debería tener un nombre!"
+
+#: src/views/project/project_edit_window.rs:157
+msgid "Delete “{}” project?"
+msgstr "¿Eliminar el proyecto “{}”?"
+
+#: src/views/project/project_edit_window.rs:160
+msgid "The project and its tasks will be permanently lost."
+msgstr "El proyecto y sus tareas se perderán definitivamente."
+
+#. Translators: {} Will be replaced with a shortcut label.
+#: src/views/project/project_page.rs:96
+msgid "Use the primary menu {} for adding a new section"
+msgstr "Utilice el menú principal {} para añadir una nueva sección"
+
+#: src/views/project/project_page.rs:254
+msgid "New Section"
+msgstr "Nueva sección"
+
+#: src/views/project/section_box.rs:80
+msgid "“{}” moved to the done tasks list"
+msgstr "\"{}\" movido a la lista de tareas completadas"
+
+#: src/views/project/section_box.rs:82 src/views/task/task_row.rs:554
+msgid "Undo"
+msgstr "Deshacer"
+
+#: src/views/project/section_box.rs:312
+msgid "Delete “{}” section?"
+msgstr "¿Eliminar la sección \"{}\"?"
+
+#: src/views/project/section_box.rs:315
+msgid "The section and its tasks will be permanently lost."
+msgstr "La sección y sus tareas se perderán definitivamente."
+
+#: src/views/record/record_row.rs:102
+msgid "until"
+msgstr "hasta"
+
+#: src/views/record/record_window.rs:120
+msgid "Edit Record"
+msgstr "Editar registro"
+
+#: src/views/record/record_window.rs:207
+msgid "Duration can't be 0"
+msgstr "La duración no puede ser 0"
+
+#: src/views/record/record_window.rs:215
+msgid "Record end time can't be in future"
+msgstr "La hora de finalización del registro no puede ser en el futuro"
+
+#: src/views/reminder/reminder_window.rs:111
+msgid "Time can't be in the past"
+msgstr "El tiempo no puede estar en el pasado"
+
+#: src/views/search/search_result.rs:71
+msgid "project"
+msgstr "proyecto"
+
+#: src/views/search/search_result.rs:82
+msgid "task"
+msgstr "tarea"
+
+#: src/views/sidebar/sidebar_projects.rs:368
+msgid "Task moved to {}"
+msgstr "Tarea movida a {}"
+
+#: src/views/sidebar/sidebar_projects.rs:396
+msgid "{} doesn't have any section"
+msgstr "{} no tiene ninguna sección"
+
+#: src/views/task/task_row.rs:240
+msgid "Inbox"
+msgstr "Bandeja de entrada"
+
+#: src/views/task/task_row.rs:553
+msgid "“{}” is going to delete"
+msgstr "“{}” se va a eliminar"
+
+#: src/views/task/tasks_done_window.rs:110
+msgid "Done Tasks"
+msgstr "Tareas completadas"
