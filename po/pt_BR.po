@@ -1,21 +1,21 @@
 # Brazilian Portuguese translation for ir.imansalmani.IPlan.
 # Copyright (C) 2023 ir.imansalmani.IPlan
 # This file is distributed under the same license as the iplan package.
-# Fúlvio Leo <fulviokaldas@outlook.com>, 2023.
+# Fúlvio Leo <fulviokaldas@outlook.com>, 2023-2024.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: iplan\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-07-30 20:17+0330\n"
-"PO-Revision-Date: 2023-06-10 12:30-0300\n"
+"PO-Revision-Date: 2024-04-07 16:38-0300\n"
 "Last-Translator: Fúlvio Leo <fulviokaldas@outlook.com>\n"
 "Language: pt_BR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n > 1)\n"
-"X-Generator: Gtranslator 42.0\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Gtranslator 46.0\n"
 
 #: data/ir.imansalmani.IPlan.desktop.in:3 src/ui/window.ui:28
 msgid "IPlan"
@@ -28,16 +28,15 @@ msgstr "Seu planejador para melhorar a vida pessoal e o fluxo de trabalho"
 
 #: data/ir.imansalmani.IPlan.desktop.in:5
 msgid "plan;planning;tasks;projects;"
-msgstr ""
+msgstr "plano;planejamento;tarefas;projetos;"
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:9
-#, fuzzy
 msgid ""
 "IPlan goal is to be a user-friendly tool for those who want to organize "
 "their ether personal life, jobs, or both."
 msgstr ""
 "O objetivo do IPlan é ser uma ferramenta amigável para quem deseja organizar "
-"sua vida pessoal ou trabalho"
+"sua vida pessoal, de trabalho ou ambas."
 
 #: data/ir.imansalmani.IPlan.metainfo.xml.in:10
 msgid "Features:"
@@ -95,11 +94,11 @@ msgstr "Iman Salmani"
 
 #: src/ui/window.ui:42
 msgid "Main Menu"
-msgstr ""
+msgstr "Menu Principal"
 
 #: src/ui/window.ui:90
 msgid "_Preferences"
-msgstr ""
+msgstr "_Preferências"
 
 #: src/ui/window.ui:94
 msgid "_Backup"
@@ -115,14 +114,13 @@ msgstr "_Sobre o IPlan"
 
 #: src/ui/preferences_window.ui:17
 msgid "Run in Background"
-msgstr ""
+msgstr "Executar em Segundo plano"
 
 #: src/ui/preferences_window.ui:18
 msgid "Allow send reminders when the app is closed"
-msgstr ""
+msgstr "Autorizar o envio de lembretes quando o aplicativo está fechado"
 
 #: src/ui/shortcuts_window.ui:13
-#, fuzzy
 msgctxt "shortcut window"
 msgid "Application"
 msgstr "Aplicação"
@@ -130,22 +128,19 @@ msgstr "Aplicação"
 #: src/ui/shortcuts_window.ui:16
 msgctxt "shortcut window"
 msgid "Preferences"
-msgstr ""
+msgstr "Preferências"
 
 #: src/ui/shortcuts_window.ui:23
-#, fuzzy
 msgctxt "shortcut window"
 msgid "Keyboard Shortcuts"
 msgstr "Atalhos de Teclado"
 
 #: src/ui/shortcuts_window.ui:30
-#, fuzzy
 msgctxt "shortcut window"
 msgid "Primary Menu"
 msgstr "Menu Principal"
 
 #: src/ui/shortcuts_window.ui:36
-#, fuzzy
 msgctxt "shortcut window"
 msgid "Quit"
 msgstr "Sair"
@@ -190,7 +185,6 @@ msgid "Today"
 msgstr "Hoje"
 
 #: src/ui/project/project_create_window.ui:16
-#, fuzzy
 msgid "New Project"
 msgstr "Novo projeto"
 
@@ -201,7 +195,7 @@ msgstr "Cancelar"
 
 #: src/ui/project/project_create_window.ui:30
 msgid "Add"
-msgstr ""
+msgstr "Adicionar"
 
 #: src/ui/project/project_create_window.ui:62
 #: src/ui/project/project_edit_window.ui:50
@@ -231,33 +225,28 @@ msgid "Delete"
 msgstr "Deletar"
 
 #: src/ui/project/project_header.ui:108
-#, fuzzy
 msgid "Time spent"
-msgstr "Tempo gasto por dia"
+msgstr "Tempo gasto"
 
 #: src/ui/project/project_header.ui:141
 msgid "Time spent per day"
 msgstr "Tempo gasto por dia"
 
 #: src/ui/project/project_page.ui:27
-#, fuzzy
 msgid "Project Menu"
-msgstr "Projetos"
+msgstr "Menu de Projetos"
 
 #: src/ui/project/project_page.ui:64
-#, fuzzy
 msgid "no sections found"
-msgstr "nenhum registro encontrado"
+msgstr "nenhuma seção encontrada"
 
 #: src/ui/project/project_page.ui:93
-#, fuzzy
 msgid "New section"
-msgstr "Novo Registro"
+msgstr "Nova seção"
 
 #: src/ui/project/project_page.ui:107
-#, fuzzy
 msgid "New _Section"
-msgstr "Novo Registro"
+msgstr "Nova_Seção"
 
 #: src/ui/project/project_page.ui:111
 msgid "_Edit Project"
@@ -265,16 +254,15 @@ msgstr "_Editar Projeto"
 
 #: src/ui/project/section_box.ui:50 src/ui/task/tasks_box.ui:47
 msgid "Add task"
-msgstr ""
+msgstr "Adicionar tarefa"
 
 #: src/ui/project/section_box.ui:80
 msgid "Done tasks"
 msgstr "Tarefas concluídas"
 
 #: src/ui/project/section_box.ui:91
-#, fuzzy
 msgid "Delete section"
-msgstr "Deletar lista"
+msgstr "Deletar seção"
 
 #: src/ui/record/record_window.ui:18 src/ui/task/task_page.ui:166
 msgid "New Record"
@@ -343,32 +331,28 @@ msgid "_Delete"
 msgstr "_Deletar"
 
 #: src/ui/snippets/date_row.ui:40
-#, fuzzy
 msgid "No Date"
-msgstr "Data"
+msgstr "Sem Data"
 
 #: src/ui/task/task_row.ui:220 src/views/task/task_row.rs:328
-#, fuzzy
 msgid "Start _Timer"
-msgstr "começar"
+msgstr "Começar _Temporizador"
 
 #: src/ui/task/task_row.ui:229
 msgid "Move Up"
-msgstr ""
+msgstr "Mover Acima"
 
 #: src/ui/task/task_row.ui:237
 msgid "Move Down"
-msgstr ""
+msgstr "Mover Abaixo"
 
 #: src/ui/task/task_row.ui:248
-#, fuzzy
 msgid "_Delete Task"
-msgstr "_Deletar"
+msgstr "_Deletar Tarefa"
 
 #: src/ui/task/task_page.ui:26
-#, fuzzy
 msgid "Due date"
-msgstr "data"
+msgstr "Data de vencimento"
 
 #: src/ui/task/task_page.ui:32
 msgid "Reminders"
@@ -379,9 +363,8 @@ msgid "Records"
 msgstr "Registros"
 
 #: src/ui/task/tasks_box.ui:78
-#, fuzzy
 msgid "Add Task"
-msgstr "Tarefa"
+msgstr "Adicionar Tarefa"
 
 #: src/ui/task/tasks_done_window.ui:52
 msgid "no done tasks found"
@@ -398,16 +381,15 @@ msgstr "O IPlan precisa ser executado em segundo plano para enviar lembretes"
 
 #: src/db/models/task.rs:130
 msgid "Tomorrow"
-msgstr ""
+msgstr "Amanhã"
 
 #: src/db/models/record.rs:75
-#, fuzzy
 msgid "day"
-msgstr "Hoje"
+msgstr "dia"
 
 #: src/db/models/record.rs:77
 msgid "days"
-msgstr ""
+msgstr "dias"
 
 #: src/views/window.rs:450
 msgid "Personal"
@@ -431,10 +413,9 @@ msgstr "Erro ao importar dados"
 
 #: src/views/project/project_create_window.rs:140
 msgid "Project should have a name!"
-msgstr ""
+msgstr "Projeto deve ter um nome!"
 
 #: src/views/project/project_edit_window.rs:157
-#, fuzzy
 msgid "Delete “{}” project?"
 msgstr "Deletar o projeto “{}”?"
 
@@ -444,17 +425,14 @@ msgstr "O projeto e suas tarefas associadas serão perdidos permanentemente."
 
 #. Translators: {} Will be replaced with a shortcut label.
 #: src/views/project/project_page.rs:96
-#, fuzzy
 msgid "Use the primary menu {} for adding a new section"
-msgstr "Use o menu principal {} para adicionar novas listas"
+msgstr "Use o menu principal {} para adicionar novas seções"
 
 #: src/views/project/project_page.rs:254
-#, fuzzy
 msgid "New Section"
-msgstr "Novo Registro"
+msgstr "Nova Seção"
 
 #: src/views/project/section_box.rs:80
-#, fuzzy
 msgid "“{}” moved to the done tasks list"
 msgstr "“{}” movido para a lista de tarefas concluídas"
 
@@ -463,62 +441,54 @@ msgid "Undo"
 msgstr "Desfazer"
 
 #: src/views/project/section_box.rs:312
-#, fuzzy
 msgid "Delete “{}” section?"
-msgstr "Deletar a lista “{}”?"
+msgstr "Deletar a seção “{}”?"
 
 #: src/views/project/section_box.rs:315
-#, fuzzy
 msgid "The section and its tasks will be permanently lost."
-msgstr "A lista e suas tarefas associadas serão perdidas permanentemente."
+msgstr "A seção e suas tarefas associadas serão perdidas permanentemente."
 
 #: src/views/record/record_row.rs:102
 msgid "until"
 msgstr "até"
 
 #: src/views/record/record_window.rs:120
-#, fuzzy
 msgid "Edit Record"
-msgstr "Novo Registro"
+msgstr "Editar Registro"
 
 #: src/views/record/record_window.rs:207
 msgid "Duration can't be 0"
 msgstr "A duração não pode ser 0"
 
 #: src/views/record/record_window.rs:215
-#, fuzzy
 msgid "Record end time can't be in future"
-msgstr "O tempo não pode estar no passado"
+msgstr "Tempo de registro final não pode estar no futuro"
 
 #: src/views/reminder/reminder_window.rs:111
 msgid "Time can't be in the past"
 msgstr "O tempo não pode estar no passado"
 
 #: src/views/search/search_result.rs:71
-#, fuzzy
 msgid "project"
-msgstr "Projetos"
+msgstr "projeto"
 
 #: src/views/search/search_result.rs:82
-#, fuzzy
 msgid "task"
-msgstr "Subtarefas"
+msgstr "tarefa"
 
 #: src/views/sidebar/sidebar_projects.rs:368
 msgid "Task moved to {}"
-msgstr ""
+msgstr "Tarefa movida para {}"
 
 #: src/views/sidebar/sidebar_projects.rs:396
-#, fuzzy
 msgid "{} doesn't have any section"
-msgstr "“{}” movido para a lista de tarefas concluídas"
+msgstr "“{}” não tem nenhuma seção"
 
 #: src/views/task/task_row.rs:240
 msgid "Inbox"
-msgstr ""
+msgstr "Caixa de entrada"
 
 #: src/views/task/task_row.rs:553
-#, fuzzy
 msgid "“{}” is going to delete"
 msgstr "“{}” irá deletar"
 
